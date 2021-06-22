@@ -5,25 +5,31 @@
 
 namespace irlba {
 
-/*
+/**
  * Orthogonalizes a vector against a set of orthonormal column vectors in a matrix.
  */
 class OrthogonalizeVector {
 public:
     /**
-     * @param mat A matrix of orthonormal column vectors.
-     * @param vec The vector of interest, of length equal to `mat.cols()`.
-     *
-     * @return `vec` is modified to contain `vec - mat * t(mat) * vec`,
-     * which is orthogonal to each column of `mat`.
+     * @param max Expected maximum number of columns in `mat`, to be used to construct the workspace.
      */
-    void operator()(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec) {
-        tmpmat.noalias() = mat.adjoint() * vec;
-        vec.noalias() -= mat * tmpmat;
+    OrthogonalizeVector(int max=10) : tmp(max) {}
+
+    /**
+     * @param mat A matrix where the left-most `ncols` columns are orthonormal vectors.
+     * @param vec The vector of interest, of length equal to the number of rows in `mat`.
+     * @param ncols Number of left-most columns of `mat` to use.
+     *
+     * @return `vec` is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
+     * This ensures that it is orthogonal to each column of `mat0`.
+     */
+    void operator()(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols) {
+        tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
+        vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
         return;
     }
 private:
-    Eigen::MatrixXd tmpmat;
+    Eigen::VectorXd tmp;
 };
 
 }
