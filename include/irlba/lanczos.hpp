@@ -12,7 +12,7 @@ class LanczosProcess {
 public:
     LanczosProcess() {} 
 public:
-    static constexpr double default_eps = std::pow(std::numeric_limits<double>::epsilon, 0.8); // inherited from irlba.
+    static constexpr double default_eps = std::pow(std::numeric_limits<double>::epsilon(), 0.8); // inherited from irlba.
 
     LanczosProcess& set_eps(double e = default_eps) {
         eps = e;
@@ -21,7 +21,7 @@ public:
 
 public:
     template<class M, class CENTER, class SCALE, class NORMSAMP>
-    void operator()(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, const CENTER& center, const SCALE& scale, NORMSAMP& norm, int work, int start, bool first) {
+    void run(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, Eigen::MatrixXd& B, const CENTER& center, const SCALE& scale, NORMSAMP& norm, int work, bool first) {
         constexpr bool do_center = !std::is_same<CENTER, bool>::value;
         constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
 
@@ -30,18 +30,18 @@ public:
         W_next.resize(mat.rows());
 
         // Doing some preparatory work.
-        if (start == 0 && first) {
+        if (first) {
             double d = V.col(0).norm();
             if (d < eps) {
-                throw -1; // TODO: try refilling with another random normal?
+                throw -1; 
             }
             V.col(0) /= d;
         }
 
-        F.noalias() = V.col(start);
+        F = V.col(0);
 
         if constexpr(do_scale) {
-            F /= scale;
+            F = F.cwiseQuotient(scale);
         }
 
         W_next.noalias() = mat * F;
@@ -53,38 +53,35 @@ public:
             }
         }
 
-        if (start && !first) {
-            orthog(W, W_next, start);
-        }
-
         double S = W_next.norm();
-        if (S < eps && start == 0) {
-            throw -4; // TODO: try refilling with another random normal? And what happens if S < eps and start > 0; div by zero?
+        if (S < eps) {
+            throw -4;
         }
         W_next /= S;
-        W.col(start) = W_next;
+        W.col(0) = W_next;
 
         // The Lanczos iterations themselves.
-        for (int j = start; j < work; ++j) {
+        for (int j = 0; j < work; ++j) {
             F.noalias() = mat.adjoint() * W.col(j);
 
             // Centering and scaling, if requested.
             if constexpr(do_center) {
-                F.noalias() -= center;
+                double beta = W.col(j).sum();
+                F -= beta * center;
             }
             if constexpr(do_scale) {
-                F.noalias() /= scale;
+                F = F.cwiseQuotient(scale);
             }
 
-            F.noalias() -= S * V.col(j); // equivalent to daxpy.
-            orthog(V, F, j + 1);
+            F -= S * V.col(j); // equivalent to daxpy.
+            orthog.run(V, F, j + 1);
 
             if (j + 1 < work) {
                 double R_F = F.norm();
 
                 if (R_F < eps) {
                     for (auto& f : F) { f = norm(); }
-                    orthog(V, F, j + 1);
+                    orthog.run(V, F, j + 1);
                     R_F = F.norm();
                     F /= R_F;
                     R_F = 0;
@@ -104,7 +101,7 @@ public:
 
                 // Applying the scaling.
                 if constexpr(do_scale) {
-                    x /= scale;
+                    x = x.cwiseQuotient(scale);
                 }
 
                 W_next.noalias() = mat * x;
@@ -118,15 +115,15 @@ public:
                 }
 
                 // One round of classical Gram-Schmidt. 
-                W_next.noalias() -= R_F * W.col(j);
+                W_next -= R_F * W.col(j);
 
                 // Full re-orthogonalization of W_{j+1}.
-                orthog(W, W_next, j + 1);
+                orthog.run(W, W_next, j + 1);
 
                 S = W_next.norm();
                 if (S < eps) {
                     for (auto& w : W_next) { w = norm(); }
-                    orthog(W, W_next, j + 1);
+                    orthog.run(W, W_next, j + 1);
                     S = W_next.norm();
                     W_next /= S;
                     S = 0;
@@ -140,7 +137,7 @@ public:
             }
         }
 
-        return 0;
+        return;
     }
 
 private:

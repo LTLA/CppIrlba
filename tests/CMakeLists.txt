@@ -13,6 +13,7 @@ enable_testing()
 add_executable(
     libtest 
     src/utils.cpp
+    src/lanczos.cpp
 )
 
 target_link_libraries(
