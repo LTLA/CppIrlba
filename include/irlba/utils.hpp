@@ -14,7 +14,7 @@ public:
     /**
      * @param max Expected maximum number of columns in `mat`, to be used to construct the workspace.
      */
-    OrthogonalizeVector() : {}
+    OrthogonalizeVector() {}
 
     OrthogonalizeVector& set_size(int max) {
         tmp.resize(max);
@@ -29,7 +29,7 @@ public:
      * @return `vec` is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
      * This ensures that it is orthogonal to each column of `mat0`.
      */
-    void operator()(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols) {
+    void run(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols) {
         tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
         vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
         return;

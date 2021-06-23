@@ -17,11 +17,12 @@ TEST(UtilsTest, Orthogonalize) {
     Eigen::VectorXd v(5);
     v << -0.24054848, -0.04785069, -0.76491749, -0.65634291, 0.62815141;
 
-    y(m, v);
+    auto copy = v;
+    y.set_size(4).run(m, copy, 4);
 
     // Checking that the L2 norm is not all-zero.
     double l2 = 0;
-    for (auto x : v) { l2 += x*x; }
+    for (auto x : copy) { l2 += x*x; }
     EXPECT_TRUE(l2 > 0.1);
 
     // Checking that we do have orthogonality.
@@ -29,10 +30,29 @@ TEST(UtilsTest, Orthogonalize) {
         auto col = m.col(i);
         auto cit = col.begin();
         double sum = 0;
-        for (auto x : v) {
+        for (auto x : copy) {
             sum += x * (*cit);
         }
         EXPECT_TRUE(sum < 0.0000000001);
     }
+
+    // Checking that the specification of columns has an effect.
+    auto copy2 = v;
+    y.set_size(4).run(m, copy, 2);
+    EXPECT_NE(copy, copy2);
+}
+
+TEST(UtilsTest, NormalSampler) {
+    irlba::NormalSampler norm(10);
+
+    // Different results.
+    double first = norm();
+    double second = norm();
+    EXPECT_NE(first, second);
+
+    // Same results.
+    irlba::NormalSampler norm2(10);
+    double first2 = norm2();
+    EXPECT_EQ(first, first2);
 }
 
