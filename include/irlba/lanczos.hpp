@@ -10,8 +10,6 @@ namespace irlba {
     
 class LanczosProcess {
 public:
-    LanczosProcess() {} 
-public:
     static constexpr double default_eps = std::pow(std::numeric_limits<double>::epsilon(), 0.8); // inherited from irlba.
 
     LanczosProcess& set_eps(double e = default_eps) {
@@ -140,6 +138,11 @@ public:
         return;
     }
 
+public:
+    const Eigen::VectorXd& finalF() const {
+        return F;
+    }
+    
 private:
     OrthogonalizeVector orthog;
     double eps = default_eps;

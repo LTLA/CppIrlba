@@ -55,6 +55,47 @@ private:
 #endif
 };
 
+struct ConvergenceTest {
+private:
+    double tol;
+    double svtol;
+public:
+    ConvergenceTest& set_tol(double t) {
+        tol = t;
+        return *this;
+    }
+
+    ConvergenceTest& set_svtol(double s) {
+        svtol = s;
+        return *this;
+    }
+
+    template<class V>
+    ConvergenceTest& set_last(V&& l) {
+        last = l;
+        return *this;
+    }
+
+public:
+    bool run(int desired, const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals) {
+        int counter = 0;
+        double Smax = *std::max_element(sv.begin(), sv.end());
+
+        for (int j = 0; j < sv.size(); ++j) {
+            double ratio = std::abs(sv[j] - last[j]) / sv[j];
+            if (std::abs(residuals[j]) < tol * Smax && ratio < svtol) {
+                ++counter;
+            } else {
+                break;
+            }
+        }
+
+        return counter >= desired;
+    }
+private:
+    Eigen::VectorXd last;
+};
+
 }
 
 #endif
