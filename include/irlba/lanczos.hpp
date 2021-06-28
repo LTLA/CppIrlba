@@ -7,13 +7,33 @@
 #include <limits>
 
 namespace irlba {
-    
-class LanczosProcess {
-public:
-    static constexpr double default_eps = std::pow(std::numeric_limits<double>::epsilon(), 0.8); // inherited from irlba.
 
-    LanczosProcess& set_eps(double e = default_eps) {
+/**
+ * @brief Perform Lanczos bidiagonalization on an input matrix
+ */
+class LanczosBidiagonalization {
+public:
+    /**
+     * Set the tolerance to use to define invariant subspaces.
+     * 
+     * @param e Tolerance, a positive number.
+     *
+     * @return A reference to the `LanczosBidiagonalization` instance.
+     */
+    LanczosBidiagonalization& set_eps(double e) {
         eps = e;
+        return *this;
+    }
+
+    /**
+     * Set the default tolerance to use to define invariant subspaces.
+     * This inherits the same default as that defined from the **irlba** R package,
+     * i.e., the machine epsilon to the power of 0.8.
+     * 
+     * @return A reference to the `LanczosBidiagonalization` instance.
+     */
+    LanczosBidiagonalization& set_eps() {
+        eps = default_eps;
         return *this;
     }
 
@@ -178,6 +198,7 @@ public:
     
 private:
     OrthogonalizeVector orthog;
+    const double default_eps = std::pow(std::numeric_limits<double>::epsilon(), 0.8); 
     double eps = default_eps;
 
     Eigen::VectorXd F; 
