@@ -190,68 +190,76 @@ $(function() {
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            }</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="comment">// Not really sure what this is, but here we are.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            F = lp.finalF();</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            <span class="keywordtype">double</span> R_F = F.norm();</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            F /= R_F;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            <span class="comment">// irlba&#39;s original code uses &#39;j - 1&#39; here, but it seems that &#39;j&#39; must</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <span class="comment">// be equal to &#39;work&#39; when it exits the Lanczos iterations, so I&#39;m</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="comment">// just going to use that instead. </span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            res = R_F * BU.row(work - 1);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <span class="keywordtype">int</span> n_converged = 0;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">if</span> (iter &gt; 0) {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                n_converged = convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">run</a>(BS, res);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                <span class="keywordflow">if</span> (n_converged &gt;= number) {</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                    converged = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                }</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            }</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#abb7f1cdf2d53c991a4494fdeb8eb8bc9">set_last</a>(BS);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="comment">// Setting &#39;k&#39;.</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <span class="keywordflow">if</span> (n_converged + number &gt; k) {</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                k = n_converged + number;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">if</span> (k &gt; work - 3) {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                k = work - 3;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            <span class="keywordflow">if</span> (k &lt; 1) {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                k = 1;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="comment">// Updating B, W and V.</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            V.leftCols(k) = Vtmp.leftCols(k);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            V.col(k) = F; <span class="comment">// should still be orthogonal to the new left-most columns of V.</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            W.leftCols(k) = Wtmp.leftCols(k);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            B.setZero(work, work);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; l &lt; k; ++l) {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                B(l, l) = BS[l];</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                B(l, k) = res[l];</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            }</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        }</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        outS.resize(number);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        outS = svd.singularValues().head(number);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        outU.resize(mat.rows(), number);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        outU.noalias() = W * svd.matrixU().leftCols(number);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        outV.resize(mat.cols(), number);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        outV.noalias() = V * svd.matrixV().leftCols(number);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">return</span> std::make_pair(converged, iter + 1);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;};</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;}</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            F = lp.<a class="code" href="classirlba_1_1LanczosBidiagonalization.html#a65385b829636001cdc48e1639d6b3bf2">residuals</a>();</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="keywordtype">double</span> R_F = F.norm();</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            F /= R_F;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="comment">// Computes the convergence criterion defined in on the LHS of Equation 2.13 of Baglama and Riechel.</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            <span class="comment">// We expose it here as we will be re-using the same values to update B, see below.</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            res = R_F * BU.row(work - 1);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            <span class="keywordtype">int</span> n_converged = 0;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="keywordflow">if</span> (iter &gt; 0) {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                n_converged = convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">run</a>(BS, res);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                <span class="keywordflow">if</span> (n_converged &gt;= number) {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                    converged = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            }</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#abb7f1cdf2d53c991a4494fdeb8eb8bc9">set_last</a>(BS);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <span class="comment">// Setting &#39;k&#39;.</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="keywordflow">if</span> (n_converged + number &gt; k) {</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                k = n_converged + number;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            }</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">if</span> (k &gt; work - 3) {</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                k = work - 3;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            }</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="keywordflow">if</span> (k &lt; 1) {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                k = 1;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            }</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="comment">// Updating B, W and V.</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            V.leftCols(k) = Vtmp.leftCols(k);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            V.col(k) = F; <span class="comment">// See 3.2 of Baglama and Reichel, where our &#39;V&#39; is</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                          <span class="comment">// their &#39;P&#39;, and our &#39;F&#39; is their &#39;p_{m+1}&#39; (2.2).</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                          <span class="comment">// &#39;F&#39; was orthogonal to the old &#39;V&#39; and it so it</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                          <span class="comment">// should still be orthogonal to the new left-most</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                          <span class="comment">// columns of &#39;V&#39;; the input expectations of &#39;lp&#39;</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                          <span class="comment">// are still met.</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            W.leftCols(k) = Wtmp.leftCols(k);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            B.setZero(work, work);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; l &lt; k; ++l) {</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                B(l, l) = BS[l];</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                B(l, k) = res[l]; <span class="comment">// this looks weird but is deliberate, see</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                                  <span class="comment">// Equation 3.6 of Baglama and Reichel.</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                                  <span class="comment">// By happy coincidence, this is the same</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                                  <span class="comment">// value used to determine convergence in</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                                  <span class="comment">// 2.13, so we can just re-use it.</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        }</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        outS.resize(number);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        outS = svd.singularValues().head(number);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        outU.resize(mat.rows(), number);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        outU.noalias() = W * svd.matrixU().leftCols(number);</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        outV.resize(mat.cols(), number);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        outV.noalias() = V * svd.matrixV().leftCols(number);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordflow">return</span> std::make_pair(converged, iter + 1);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;};</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;}</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html"><div class="ttname"><a href="classirlba_1_1Irlba.html">irlba::Irlba</a></div><div class="ttdoc">Run IRLBA on an input matrix.</div><div class="ttdef"><b>Definition:</b> irlba.hpp:24</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a0a7e2023de5073846365cc94ff43a63c"><div class="ttname"><a href="classirlba_1_1Irlba.html#a0a7e2023de5073846365cc94ff43a63c">irlba::Irlba::set_work</a></div><div class="ttdeci">Irlba &amp; set_work(int w=7)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:84</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a1a2e2ad5ef56d273005b7760e6d386dd"><div class="ttname"><a href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">irlba::Irlba::set_number</a></div><div class="ttdeci">Irlba &amp; set_number(int n=5)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:58</div></div>
@@ -264,10 +272,11 @@ $(function() {
 <div class="ttc" id="aclassirlba_1_1Irlba_html_af8390bc6fa68667b9300c3730c655c71"><div class="ttname"><a href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outS)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:173</div></div>
 <div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html">irlba::LanczosBidiagonalization</a></div><div class="ttdoc">Perform Lanczos bidiagonalization on an input matrix.</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:14</div></div>
 <div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html_a2e853a93d83a15df2a1a63c191835bd7"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html#a2e853a93d83a15df2a1a63c191835bd7">irlba::LanczosBidiagonalization::set_eps</a></div><div class="ttdeci">LanczosBidiagonalization &amp; set_eps(double e)</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:23</div></div>
-<div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html_aa65332f528a1f56ae8f39bc0ea3a4c45"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html#aa65332f528a1f56ae8f39bc0ea3a4c45">irlba::LanczosBidiagonalization::run</a></div><div class="ttdeci">void run(const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, int start=0)</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:71</div></div>
+<div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html_a65385b829636001cdc48e1639d6b3bf2"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html#a65385b829636001cdc48e1639d6b3bf2">irlba::LanczosBidiagonalization::residuals</a></div><div class="ttdeci">const Eigen::VectorXd &amp; residuals() const</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:196</div></div>
+<div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html_aa65332f528a1f56ae8f39bc0ea3a4c45"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html#aa65332f528a1f56ae8f39bc0ea3a4c45">irlba::LanczosBidiagonalization::run</a></div><div class="ttdeci">void run(const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, int start=0)</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:74</div></div>
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html">irlba::ConvergenceTest</a></div><div class="ttdoc">Test for IRLBA convergence.</div><div class="ttdef"><b>Definition:</b> utils.hpp:82</div></div>
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html_a0e5c240e1bc4ed7c118de815e3643a95"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#a0e5c240e1bc4ed7c118de815e3643a95">irlba::ConvergenceTest::set_svtol</a></div><div class="ttdeci">ConvergenceTest &amp; set_svtol(double s=-1)</div><div class="ttdef"><b>Definition:</b> utils.hpp:107</div></div>
-<div class="ttc" id="astructirlba_1_1ConvergenceTest_html_a2eb178a5948f016d4e117d05a638e691"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">irlba::ConvergenceTest::run</a></div><div class="ttdeci">int run(const Eigen::VectorXd &amp;sv, const Eigen::VectorXd &amp;residuals)</div><div class="ttdef"><b>Definition:</b> utils.hpp:137</div></div>
+<div class="ttc" id="astructirlba_1_1ConvergenceTest_html_a2eb178a5948f016d4e117d05a638e691"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">irlba::ConvergenceTest::run</a></div><div class="ttdeci">int run(const Eigen::VectorXd &amp;sv, const Eigen::VectorXd &amp;residuals)</div><div class="ttdef"><b>Definition:</b> utils.hpp:133</div></div>
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html_aa3c5f64920cdb8a31ea18592e8132043"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#aa3c5f64920cdb8a31ea18592e8132043">irlba::ConvergenceTest::set_tol</a></div><div class="ttdeci">ConvergenceTest &amp; set_tol(double t=1e-5)</div><div class="ttdef"><b>Definition:</b> utils.hpp:94</div></div>
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html_abb7f1cdf2d53c991a4494fdeb8eb8bc9"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#abb7f1cdf2d53c991a4494fdeb8eb8bc9">irlba::ConvergenceTest::set_last</a></div><div class="ttdeci">ConvergenceTest &amp; set_last(const Eigen::VectorXd &amp;l)</div><div class="ttdef"><b>Definition:</b> utils.hpp:119</div></div>
 </div><!-- fragment --></div><!-- contents -->

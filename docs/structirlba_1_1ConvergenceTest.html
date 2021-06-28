@@ -131,12 +131,11 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sv</td><td>Vector of singular values. </td></tr>
-    <tr><td class="paramname">residuals</td><td>Vector of residuals of some sort?</td></tr>
+    <tr><td class="paramname">residuals</td><td>Vector of residuals for each singular value/vector.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of singular values/vectors that have achieved convergence.</dd></dl>
-<p>Convergence of each singular value/vector is defined by two conditions. The first is that the relative change from the previous singular value is less than the value set in <code><a class="el" href="structirlba_1_1ConvergenceTest.html#a0e5c240e1bc4ed7c118de815e3643a95">set_svtol()</a></code>. The second is that the residual is less than the value set in <code><a class="el" href="structirlba_1_1ConvergenceTest.html#aa3c5f64920cdb8a31ea18592e8132043">set_tol()</a></code> (scaled by the largest singular value, which approximates the spectral norm of the input matrix). </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of singular values/vectors that have achieved convergence. </dd></dl>
 
 </div>
 </div>
