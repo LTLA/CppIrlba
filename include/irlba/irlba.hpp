@@ -6,8 +6,21 @@
 #include "lanczos.hpp"
 #include <cmath>
 
+/**
+ * @file irlba.hpp
+ *
+ * Implements the main user-visible class for running IRLBA.
+ */
+
 namespace irlba {
 
+/**
+ * @brief Run IRLBA on an input matrix.
+ *
+ * Implements the Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) for fast truncated singular value decomposition.
+ * This is heavily derived from the C code in the [**irlba** package](https://github.com/bwlewis/irlba),
+ * with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.
+ */
 class Irlba {
 private:
     Eigen::MatrixXd W, V, B;
@@ -22,27 +35,85 @@ private:
     ConvergenceTest convtest;
 
 public:
+    /**
+     * Set the starting vector for V.
+     *
+     * @param v Arbitrary vector of length equal to the number of columns in the matrix supplied to `run()`.
+     * 
+     * @return A reference to the `Irlba` instance.
+     */
     Irlba& set_init(const Eigen::VectorXd& v) {
         initV = v;
         return *this;
     }
 
+    /**
+     * Specify the number of singular values/vectors to obtain.
+     * This should be less than the smaller dimension of the matrix supplied to `run()`.
+     *
+     * @param n Number of singular values/vectors of interest.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
     Irlba& set_number(int n = 5) {
         number = n;
         return *this;
     }
 
+    /**
+     * Set the maximum number of restart iterations.
+     * In most cases, convergence will occur before reaching this limit.
+     *
+     * @param n Maximum number of iterations.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
     Irlba& set_maxit(int m = 1000) {
         maxit = m;
         return *this;
     }
 
+    /**
+     * Set the number of extra dimensions to define the working subspace.
+     * Larger values can speed up convergence at the cost of more memory use.
+     *
+     * @param w Number of extra dimensions, added to the value specified in `set_number()` to obtain the working subspace dimension.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
     Irlba& set_work(int w = 7) {
         extra_work = w;
         return *this;
     }
 
 public:
+    /** 
+     * Run IRLBA on an input matrix to perform an approximate SVD.
+     * If `center` (and optionally `scale`) are set accordingly, this can be used to perform an approximate PCA.
+     * 
+     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
+     * This is most typically a class from the Eigen library.
+     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
+     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
+     *
+     * @param mat Input matrix.
+     * @param center A vector of length equal to the number of columns of `mat`.
+     * Each value is to be subtracted from the corresponding column of `mat`.
+     * Alternatively `false`, if no centering is to be performed.
+     * @param scale A vector of length equal to the number of columns of `mat`.
+     * Each value should be positive and is used to divide the corresponding column of `mat`.
+     * Alternatively `false`, if no scaling is to be performed.
+     * @param outU Output matrix where columns contain the first left singular vectors.
+     * The number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
+     * @param outV Output matrix where columns contain the first right singular vectors.
+     * The number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
+     * @param outS Vector to store the first singular values.
+     * Number of values is defined by `set_number()`.
+     *
+     * @return A pair where the first entry indicates whether the algorithm converged,
+     * and the second entry indicates the number of restart iterations performed.
+     */
     template<class M, class CENTER, class SCALE, class NORMSAMP>
     std::pair<bool, int> run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outS) {
         int work = number + extra_work;
