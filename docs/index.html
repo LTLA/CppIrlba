@@ -67,14 +67,15 @@ $(function() {
 <div class="title">C++ library for IRLBA </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__github_workspace_README"></a> </p><h1>Overview</h1>
-<p>This repository contains a header-only C++ library implementing the Augment Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) from Baglama and Lothar (2005). IRLBA is fast and memory-efficient method for truncated singular value decomposition, and is particularly useful for approximate principal components analysis of large matrices. The code here is derived from the C code in the <a href="https://github.com/bwlewis/irlba"><b>irlba</b> R package</a>, refactored to use the <a href="http://eigen.tuxfamily.org/">Eigen</a> library for matrix algebra.</p>
+<div class="textblock"><p><a class="anchor" id="md__github_workspace_README"></a> <img src="https://github.com/LTLA/CppIrlba/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/LTLA/CppIrlba/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/></p>
+<h1>Overview</h1>
+<p>This repository contains a header-only C++ library implementing the Augmented Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) from Baglama and Lothar (2005). IRLBA is a fast and memory-efficient method for truncated singular value decomposition, and is particularly useful for approximate principal components analysis of large matrices. The code here is derived from the C code in the <a href="https://github.com/bwlewis/irlba"><b>irlba</b> R package</a>, refactored to use the <a href="http://eigen.tuxfamily.org/">Eigen</a> library for matrix algebra.</p>
 <h1>Quick start</h1>
 <p>Using this library is as simple as including the header file in your source code:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="irlba_8hpp.html">irlba/irlba.hpp</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code" href="classirlba_1_1Irlba.html">irlba::Irlba</a> runner;</div>
-<div class="line">irlba::NormalSampler norm(50);</div>
+<div class="line"><a class="code" href="classirlba_1_1NormalSampler.html">irlba::NormalSampler</a> norm(50);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// optional; specify the number of singular vectors, workspace, etc.</span></div>
 <div class="line">runner.<a class="code" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number</a>(5).<a class="code" href="classirlba_1_1Irlba.html#a0a7e2023de5073846365cc94ff43a63c">set_work</a>(20);</div>
@@ -85,7 +86,8 @@ $(function() {
 <div class="ttc" id="aclassirlba_1_1Irlba_html"><div class="ttname"><a href="classirlba_1_1Irlba.html">irlba::Irlba</a></div><div class="ttdoc">Run IRLBA on an input matrix.</div><div class="ttdef"><b>Definition:</b> irlba.hpp:24</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a0a7e2023de5073846365cc94ff43a63c"><div class="ttname"><a href="classirlba_1_1Irlba.html#a0a7e2023de5073846365cc94ff43a63c">irlba::Irlba::set_work</a></div><div class="ttdeci">Irlba &amp; set_work(int w=7)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:84</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a1a2e2ad5ef56d273005b7760e6d386dd"><div class="ttname"><a href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">irlba::Irlba::set_number</a></div><div class="ttdeci">Irlba &amp; set_number(int n=5)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:58</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_af8390bc6fa68667b9300c3730c655c71"><div class="ttname"><a href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outS)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:118</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_af8390bc6fa68667b9300c3730c655c71"><div class="ttname"><a href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outS)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:173</div></div>
+<div class="ttc" id="aclassirlba_1_1NormalSampler_html"><div class="ttname"><a href="classirlba_1_1NormalSampler.html">irlba::NormalSampler</a></div><div class="ttdoc">Sample from a normal distribution.</div><div class="ttdef"><b>Definition:</b> utils.hpp:55</div></div>
 <div class="ttc" id="airlba_8hpp_html"><div class="ttname"><a href="irlba_8hpp.html">irlba.hpp</a></div></div>
 </div><!-- fragment --><p>To perform a PCA, compute the relevant vector of centering values (and optionally scaling values, if desired) and supply this to <code>run()</code>:</p>
 <div class="fragment"><div class="line">Eigen::VectorXd center = mat.colwise().sum();</div>

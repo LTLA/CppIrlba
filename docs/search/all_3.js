@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['run_4',['run',['../classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71',1,'irlba::Irlba::run()'],['../classirlba_1_1OrthogonalizeVector.html#a39ece7f9990c151d897a87cb5f75180d',1,'irlba::OrthogonalizeVector::run()']]]
+  ['normalsampler_5',['NormalSampler',['../classirlba_1_1NormalSampler.html',1,'irlba::NormalSampler'],['../classirlba_1_1NormalSampler.html#af70dd849ed27d7190b2a2289ffb15489',1,'irlba::NormalSampler::NormalSampler()']]]
 ];

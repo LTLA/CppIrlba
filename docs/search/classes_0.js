@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['irlba_9',['Irlba',['../classirlba_1_1Irlba.html',1,'irlba']]]
+  ['convergencetest_21',['ConvergenceTest',['../structirlba_1_1ConvergenceTest.html',1,'irlba']]]
 ];

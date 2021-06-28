@@ -75,20 +75,22 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Orthogonalize a vector against a set of orthonormal column vectors.  
+ <a href="classirlba_1_1OrthogonalizeVector.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="utils_8hpp_source.html">utils.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a785e5e6cf09122c7a7724310fb4a374d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1OrthogonalizeVector.html#a785e5e6cf09122c7a7724310fb4a374d">OrthogonalizeVector</a> ()</td></tr>
 <tr class="separator:a785e5e6cf09122c7a7724310fb4a374d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a932618d7927e42633511a4e7c4bf04bc"><td class="memItemLeft" align="right" valign="top"><a id="a932618d7927e42633511a4e7c4bf04bc"></a>
-<a class="el" href="classirlba_1_1OrthogonalizeVector.html">OrthogonalizeVector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>set_size</b> (int max)</td></tr>
+<tr class="memitem:a932618d7927e42633511a4e7c4bf04bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1OrthogonalizeVector.html">OrthogonalizeVector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1OrthogonalizeVector.html#a932618d7927e42633511a4e7c4bf04bc">set_size</a> (int max)</td></tr>
 <tr class="separator:a932618d7927e42633511a4e7c4bf04bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39ece7f9990c151d897a87cb5f75180d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1OrthogonalizeVector.html#a39ece7f9990c151d897a87cb5f75180d">run</a> (const Eigen::MatrixXd &amp;mat, Eigen::VectorXd &amp;vec, size_t ncols)</td></tr>
 <tr class="separator:a39ece7f9990c151d897a87cb5f75180d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Orthogonalizes a vector against a set of orthonormal column vectors in a matrix. </p>
+<div class="textblock"><p>Orthogonalize a vector against a set of orthonormal column vectors. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a785e5e6cf09122c7a7724310fb4a374d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a785e5e6cf09122c7a7724310fb4a374d">&#9670;&nbsp;</a></span>OrthogonalizeVector()</h2>
@@ -170,6 +172,40 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>vec</code> is modified to contain <code>vec - mat0 * t(mat0) * vec</code>, where <code>mat0</code> is defined as the first <code>ncols</code> columns of <code>mat</code>. This ensures that it is orthogonal to each column of <code>mat0</code>. </dd></dl>
+
+</div>
+</div>
+<a id="a932618d7927e42633511a4e7c4bf04bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a932618d7927e42633511a4e7c4bf04bc">&#9670;&nbsp;</a></span>set_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classirlba_1_1OrthogonalizeVector.html">OrthogonalizeVector</a>&amp; irlba::OrthogonalizeVector::set_size </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the maximum size of the temporary vector.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max</td><td>Maximum size of the temporary vector, equivalent to the maximum <code>ncols</code> in <code><a class="el" href="classirlba_1_1OrthogonalizeVector.html#a39ece7f9990c151d897a87cb5f75180d">run()</a></code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1OrthogonalizeVector.html" title="Orthogonalize a vector against a set of orthonormal column vectors.">OrthogonalizeVector</a></code> instance. </dd></dl>
 
 </div>
 </div>

@@ -90,6 +90,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abfa3f83f3fcea5526acbaf75601dc4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a7e2023de5073846365cc94ff43a63c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#a0a7e2023de5073846365cc94ff43a63c">set_work</a> (int w=7)</td></tr>
 <tr class="separator:a0a7e2023de5073846365cc94ff43a63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79b96ff73898ffe31d9ce63d08185491"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#a79b96ff73898ffe31d9ce63d08185491">set_invariant_tolerance</a> (double e)</td></tr>
+<tr class="separator:a79b96ff73898ffe31d9ce63d08185491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa80319c841ba4b5700b781d2ca67b80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#aaa80319c841ba4b5700b781d2ca67b80">set_invariant_tolerance</a> ()</td></tr>
+<tr class="separator:aaa80319c841ba4b5700b781d2ca67b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a9a64620207cc47d965ca831bf9cf3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#ad5a9a64620207cc47d965ca831bf9cf3">set_convergence_tolerance</a> (double t=1e-5)</td></tr>
+<tr class="separator:ad5a9a64620207cc47d965ca831bf9cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54fdd8672c80faf7cd795557ed02e5e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#a54fdd8672c80faf7cd795557ed02e5e6">set_singular_value_ratio_tolerance</a> (double t=-1)</td></tr>
+<tr class="separator:a54fdd8672c80faf7cd795557ed02e5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8390bc6fa68667b9300c3730c655c71"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </td></tr>
 <tr class="memitem:af8390bc6fa68667b9300c3730c655c71"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">run</a> (const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outS)</td></tr>
 <tr class="separator:af8390bc6fa68667b9300c3730c655c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,14 +185,49 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
   <table class="params">
     <tr><td class="paramname">mat</td><td>Input matrix. </td></tr>
     <tr><td class="paramname">center</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value is to be subtracted from the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no centering is to be performed. </td></tr>
-    <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no scaling is to be performed. </td></tr>
-    <tr><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. The number of columns is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
-    <tr><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. The number of columns is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
-    <tr><td class="paramname">outS</td><td>Vector to store the first singular values. Number of values is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code>.</td></tr>
+    <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. </td></tr>
+    <tr><td class="paramname">norm</td><td>An instance of a functor to generate normally distributed values. Alternatively <code>false</code>, if no scaling is to be performed. </td></tr>
+    <tr><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramname">outS</td><td>Vector to store the first singular values. The length is set automatically as defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed. </dd></dl>
+
+</div>
+</div>
+<a id="ad5a9a64620207cc47d965ca831bf9cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5a9a64620207cc47d965ca831bf9cf3">&#9670;&nbsp;</a></span>set_convergence_tolerance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a>&amp; irlba::Irlba::set_convergence_tolerance </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em> = <code>1e-5</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the tolerance for convergence based on the residuals. This is used to define a threshold against which the residuals of the decomposition are compared; all values must be below the threshold for convergence to be considered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>Positive tolerance value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1Irlba.html" title="Run IRLBA on an input matrix.">Irlba</a></code> instance. </dd></dl>
 
 </div>
 </div>
@@ -222,6 +265,67 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
 
 </div>
 </div>
+<a id="aaa80319c841ba4b5700b781d2ca67b80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa80319c841ba4b5700b781d2ca67b80">&#9670;&nbsp;</a></span>set_invariant_tolerance() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a>&amp; irlba::Irlba::set_invariant_tolerance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the tolerance for detecting invariant subspaces to its default value, namely the epsilon for double-precision values to the power of 0.8.</p>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1Irlba.html" title="Run IRLBA on an input matrix.">Irlba</a></code> instance. </dd></dl>
+
+</div>
+</div>
+<a id="a79b96ff73898ffe31d9ce63d08185491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79b96ff73898ffe31d9ce63d08185491">&#9670;&nbsp;</a></span>set_invariant_tolerance() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a>&amp; irlba::Irlba::set_invariant_tolerance </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the tolerance for detecting invariant subspaces.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">e</td><td>Positive tolerance value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1Irlba.html" title="Run IRLBA on an input matrix.">Irlba</a></code> instance. </dd></dl>
+
+</div>
+</div>
 <a id="abfa3f83f3fcea5526acbaf75601dc4da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abfa3f83f3fcea5526acbaf75601dc4da">&#9670;&nbsp;</a></span>set_maxit()</h2>
 
@@ -248,7 +352,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
 <p>Set the maximum number of restart iterations. In most cases, convergence will occur before reaching this limit.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>Maximum number of iterations.</td></tr>
+    <tr><td class="paramname">m</td><td>Maximum number of iterations.</td></tr>
   </table>
   </dd>
 </dl>
@@ -283,6 +387,40 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Number of singular values/vectors of interest.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1Irlba.html" title="Run IRLBA on an input matrix.">Irlba</a></code> instance. </dd></dl>
+
+</div>
+</div>
+<a id="a54fdd8672c80faf7cd795557ed02e5e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54fdd8672c80faf7cd795557ed02e5e6">&#9670;&nbsp;</a></span>set_singular_value_ratio_tolerance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a>&amp; irlba::Irlba::set_singular_value_ratio_tolerance </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em> = <code>-1</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the tolerance for convergence based on the singular value ratios. At each iteration, the absolute value of the relative difference in the singular values is compared to the tolerance; all values must be below the threshold for convergence to be considered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>Positive tolerance value. Alternatively, a negative value, in which case the value from <code><a class="el" href="classirlba_1_1Irlba.html#ad5a9a64620207cc47d965ca831bf9cf3">set_convergence_tolerance()</a></code> is used instead.</td></tr>
   </table>
   </dd>
 </dl>

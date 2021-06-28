@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['orthogonalizevector_10',['OrthogonalizeVector',['../classirlba_1_1OrthogonalizeVector.html',1,'irlba']]]
+  ['irlba_22',['Irlba',['../classirlba_1_1Irlba.html',1,'irlba']]]
 ];
