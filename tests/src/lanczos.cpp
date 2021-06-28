@@ -31,7 +31,7 @@ TEST_F(LanczosTester, Basic) {
     irlba::LanczosProcess y;
 
     irlba::NormalSampler norm(50);
-    y.run(A, W, V, B, false, false, norm, work, true);
+    y.run(A, W, V, B, false, false, norm, work, 0, true);
 
     // Check that vectors in W are self-orthogonal.
     Eigen::MatrixXd Wcheck = W.adjoint() * W;
@@ -69,7 +69,7 @@ TEST_F(LanczosTester, Center) {
     Eigen::MatrixXd V2 = V;
     Eigen::MatrixXd B2 = B;
     irlba::NormalSampler norm2(50);
-    y.run(A, W2, V2, B2, center, false, norm2, work, true);
+    y.run(A, W2, V2, B2, center, false, norm2, work, 0, true);
 
     Eigen::MatrixXd Acopy = A;
     for (size_t i = 0; i < A.cols(); ++i) {
@@ -82,7 +82,7 @@ TEST_F(LanczosTester, Center) {
     Eigen::MatrixXd V3 = V;
     Eigen::MatrixXd B3 = B;
     irlba::NormalSampler norm3(50);
-    y.run(Acopy, W3, V3, B3, false, false, norm3, work, true);
+    y.run(Acopy, W3, V3, B3, false, false, norm3, work, 0, true);
 
     // Numerically equivalent values.
     for (size_t i = 0; i < W2.cols(); ++i) {
@@ -117,7 +117,7 @@ TEST_F(LanczosTester, CenterAndScale) {
     Eigen::MatrixXd V2 = V;
     Eigen::MatrixXd B2 = B;
     irlba::NormalSampler norm2(50);
-    y.run(A, W2, V2, B2, center, scale, norm2, work, true);
+    y.run(A, W2, V2, B2, center, scale, norm2, work, 0, true);
 
     Eigen::MatrixXd Acopy = A;
     for (size_t i = 0; i < A.cols(); ++i) {
@@ -131,7 +131,7 @@ TEST_F(LanczosTester, CenterAndScale) {
     Eigen::MatrixXd V3 = V;
     Eigen::MatrixXd B3 = B;
     irlba::NormalSampler norm3(50);
-    y.run(Acopy, W3, V3, B3, false, false, norm3, work, true);
+    y.run(Acopy, W3, V3, B3, false, false, norm3, work, 0, true);
 
     // Numerically equivalent values.
     for (size_t i = 0; i < W2.cols(); ++i) {
