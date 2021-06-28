@@ -57,8 +57,8 @@ private:
 
 struct ConvergenceTest {
 private:
-    double tol;
-    double svtol;
+    double tol = 1e-5;
+    double svtol = -1;
 public:
     ConvergenceTest& set_tol(double t) {
         tol = t;
@@ -77,20 +77,21 @@ public:
     }
 
 public:
-    bool run(int desired, const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals) {
+    int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals) {
         int counter = 0;
         double Smax = *std::max_element(sv.begin(), sv.end());
 
+        const double& svtol_actual = (svtol >= 0 ? svtol : tol);
+
         for (int j = 0; j < sv.size(); ++j) {
             double ratio = std::abs(sv[j] - last[j]) / sv[j];
-            if (std::abs(residuals[j]) < tol * Smax && ratio < svtol) {
+            if (std::abs(residuals[j]) < tol * Smax && ratio < svtol_actual) {
                 ++counter;
-            } else {
-                break;
             }
         }
+        std::cout << counter << std::endl;
 
-        return counter >= desired;
+        return counter;
     }
 private:
     Eigen::VectorXd last;

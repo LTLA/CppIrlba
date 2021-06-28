@@ -11,9 +11,9 @@ namespace irlba {
 class Irlba {
 private:
     Eigen::MatrixXd W, V, B;
-    bool used = false;
+    Eigen::MatrixXd Wtmp, Vtmp;
 
-    Eigen::VectorXd initV, res;
+    Eigen::VectorXd initV, res, F;
 
     LanczosProcess lp;
     int number = 5, extra_work = 7;
@@ -46,9 +46,19 @@ public:
     template<class M, class CENTER, class SCALE, class NORMSAMP>
     std::pair<bool, int> run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outS) {
         int work = number + extra_work;
+        if (work > mat.rows()) {
+            work = mat.rows();
+        }
+        if (work > mat.cols()) {
+            work = mat.cols();
+        }
+
         W.resize(mat.rows(), work);
+        Wtmp.resize(mat.rows(), work);
         V.resize(mat.cols(), work);
+        Vtmp.resize(mat.cols(), work);
         res.resize(work);
+        F.resize(mat.cols());
 
         if (initV.size() == V.rows()) {
             V.col(0) = initV;
@@ -59,51 +69,80 @@ public:
         }
 
         B.resize(work, work);
-        if (used) {
-            B.setZero(work, work);
-        } else {
-            used = true;
-        }
+        B.setZero(work, work);
 
         bool converged = false;
+        int iter = 0, k =0;
         Eigen::BDCSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
 
-        for (int iter = 0; iter < maxit; ++iter) {
-            lp.run(mat, W, V, B, center, scale, norm, work, iter==0);
+        for (; iter < maxit; ++iter) {
+            lp.run(mat, W, V, B, center, scale, norm, work, k, iter==0);
+
+//            if (iter < 2) {
+//                std::cout << "B is currently:\n" << B << std::endl;
+//                std::cout << "W is currently:\n" << W << std::endl;
+//                std::cout << "V is currently:\n" << V << std::endl;
+//            }
 
             svd.compute(B);
             const auto& BS = svd.singularValues();
             const auto& BU = svd.matrixU();
             const auto& BV = svd.matrixV();
 
-            if (iter > 0) {
-                if (B(work-1, work-1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
-                    return std::make_pair(true, iter + 1);
-                }
-                
-                // Not really sure what this is, but here we are.
-                double R_F = lp.finalF().norm();
+            // Checking for convergence.
+            if (B(work-1, work-1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
+                converged = true;
+                break;
+            }
 
-                // irlba's original code uses 'j - 1' here, but it seems that 'j' must
-                // be equal to 'work' when it exits the Lanczos iterations, so I'm
-                // just going to use that instead. 
-                res = R_F * BU.row(work - 1);
-                if (convtest.run(number, BS, res)) {
-                    return std::make_pair(true, iter + 1);
+            // Not really sure what this is, but here we are.
+            F = lp.finalF();
+            double R_F = F.norm();
+            F /= R_F;
+
+            // irlba's original code uses 'j - 1' here, but it seems that 'j' must
+            // be equal to 'work' when it exits the Lanczos iterations, so I'm
+            // just going to use that instead. 
+            res = R_F * BU.row(work - 1);
+
+            int n_converged = 0;
+            if (iter > 0) {
+                n_converged = convtest.run(BS, res);
+                if (n_converged >= number) {
+                    converged = true;
+                    break;
                 }
             }
             convtest.set_last(BS);
-            for (auto x : BS) { std::cout << x << " "; }
-            std::cout << std::endl;
 
-            // Update the first column in V only, as everything else
-            // gets overwritten as part of the Lanczos process anyway.
-            V.col(0) = V * BV.col(0);
-            std::cout << iter << std::endl;
+            // Setting 'k'.
+            if (n_converged + number > k) {
+                k = n_converged + number;
+            }
+            if (k > work - 3) {
+                k = work - 3;
+            }
+            if (k < 1) {
+                k = 1;
+            }
+
+            // Updating B, W and V.
+            Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
+            V.leftCols(k) = Vtmp.leftCols(k);
+            V.col(k) = F;
+
+            Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);
+            W.leftCols(k) = Wtmp.leftCols(k);
+
+            B.setZero(work, work);
+            for (int l = 0; l < k; ++l) {
+                B(l, l) = BS[l];
+                B(l, k) = res[l];
+            }
         }
 
         outS.resize(number);
-        outS = svd.singularValues();
+        outS = svd.singularValues().head(number);
 
         outU.resize(mat.rows(), number);
         outU.noalias() = W * svd.matrixU().leftCols(number);
@@ -111,7 +150,7 @@ public:
         outV.resize(mat.cols(), number);
         outV.noalias() = V * svd.matrixV().leftCols(number);
 
-        return std::make_pair(false, maxit);
+        return std::make_pair(converged, iter + 1);
     }
 };
 

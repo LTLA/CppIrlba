@@ -19,7 +19,7 @@ public:
 
 public:
     template<class M, class CENTER, class SCALE, class NORMSAMP>
-    void run(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, Eigen::MatrixXd& B, const CENTER& center, const SCALE& scale, NORMSAMP& norm, int work, bool first) {
+    void run(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, Eigen::MatrixXd& B, const CENTER& center, const SCALE& scale, NORMSAMP& norm, int work, int start, bool first) {
         constexpr bool do_center = !std::is_same<CENTER, bool>::value;
         constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
 
@@ -29,14 +29,14 @@ public:
 
         // Doing some preparatory work.
         if (first) {
-            double d = V.col(0).norm();
+            double d = V.col(start).norm();
             if (d < eps) {
                 throw -1; 
             }
-            V.col(0) /= d;
+            V.col(start) /= d;
         }
 
-        F = V.col(0);
+        F = V.col(start);
 
         if constexpr(do_scale) {
             F = F.cwiseQuotient(scale);
@@ -51,15 +51,19 @@ public:
             }
         }
 
+        if (start) {
+            orthog.run(W, W_next, start);
+        }
+
         double S = W_next.norm();
         if (S < eps) {
             throw -4;
         }
         W_next /= S;
-        W.col(0) = W_next;
+        W.col(start) = W_next;
 
         // The Lanczos iterations themselves.
-        for (int j = 0; j < work; ++j) {
+        for (int j = start; j < work; ++j) {
             F.noalias() = mat.adjoint() * W.col(j);
 
             // Centering and scaling, if requested.
