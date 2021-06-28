@@ -126,13 +126,9 @@ public:
      * Calculate the number of singular values/vectors that have converged.
      *
      * @param sv Vector of singular values.
-     * @param residuals Vector of residuals of some sort?
+     * @param residuals Vector of residuals for each singular value/vector.
      *
      * @return The number of singular values/vectors that have achieved convergence.
-     *
-     * Convergence of each singular value/vector is defined by two conditions.
-     * The first is that the relative change from the previous singular value is less than the value set in `set_svtol()`.
-     * The second is that the residual is less than the value set in `set_tol()` (scaled by the largest singular value, which approximates the spectral norm of the input matrix).
      */
     int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals) {
         int counter = 0;
@@ -141,7 +137,8 @@ public:
 
         for (int j = 0; j < sv.size(); ++j) {
             double ratio = std::abs(sv[j] - last[j]) / sv[j];
-            if (std::abs(residuals[j]) < tol * Smax && ratio < svtol_actual) {
+            if (std::abs(residuals[j]) < tol * Smax && // see the RHS of Equation 2.13 in Baglama and Reichel.
+                    ratio < svtol_actual) {
                 ++counter;
             }
         }

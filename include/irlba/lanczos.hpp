@@ -40,6 +40,9 @@ public:
 public:
     /**
      * Perform the Lanczos bidiagonalization on an input matrix, optionally with scaling and centering.
+     * This implements Algorithm 2.1 described by Baglama and Reichel (2005).
+     * Support is provided for centering and scaling without modifying `mat`.
+     * Protection against invariant subspaces is also implemented.
      *
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
      * This is most typically a class from the Eigen library.
@@ -185,7 +188,12 @@ public:
     }
 
 public:
-    const Eigen::VectorXd& finalF() const {
+    /**
+     * Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).
+     *
+     * @return Vector of residuals of length equal to the number of columns of `mat` in `run()`.
+     */
+    const Eigen::VectorXd& residuals() const {
         return F;
     }
     

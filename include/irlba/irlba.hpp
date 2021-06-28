@@ -223,14 +223,12 @@ public:
                 break;
             }
 
-            // Not really sure what this is, but here we are.
-            F = lp.finalF();
+            F = lp.residuals();
             double R_F = F.norm();
             F /= R_F;
 
-            // irlba's original code uses 'j - 1' here, but it seems that 'j' must
-            // be equal to 'work' when it exits the Lanczos iterations, so I'm
-            // just going to use that instead. 
+            // Computes the convergence criterion defined in on the LHS of Equation 2.13 of Baglama and Riechel.
+            // We expose it here as we will be re-using the same values to update B, see below.
             res = R_F * BU.row(work - 1);
 
             int n_converged = 0;
@@ -257,7 +255,13 @@ public:
             // Updating B, W and V.
             Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
             V.leftCols(k) = Vtmp.leftCols(k);
-            V.col(k) = F; // should still be orthogonal to the new left-most columns of V.
+
+            V.col(k) = F; // See 3.2 of Baglama and Reichel, where our 'V' is
+                          // their 'P', and our 'F' is their 'p_{m+1}' (2.2).
+                          // 'F' was orthogonal to the old 'V' and it so it
+                          // should still be orthogonal to the new left-most
+                          // columns of 'V'; the input expectations of 'lp'
+                          // are still met.
 
             Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);
             W.leftCols(k) = Wtmp.leftCols(k);
@@ -265,7 +269,11 @@ public:
             B.setZero(work, work);
             for (int l = 0; l < k; ++l) {
                 B(l, l) = BS[l];
-                B(l, k) = res[l];
+                B(l, k) = res[l]; // this looks weird but is deliberate, see
+                                  // Equation 3.6 of Baglama and Reichel.
+                                  // By happy coincidence, this is the same
+                                  // value used to determine convergence in
+                                  // 2.13, so we can just re-use it.
             }
         }
 
