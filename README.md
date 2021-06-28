@@ -1,9 +1,12 @@
 # C++ library for IRLBA
 
+![Unit tests](https://github.com/LTLA/CppIrlba/actions/workflows/run-tests.yaml/badge.svg)
+![Documentation](https://github.com/LTLA/CppIrlba/actions/workflows/doxygenate.yaml/badge.svg)
+
 ## Overview
 
-This repository contains a header-only C++ library implementing the Augment Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) from Baglama and Lothar (2005).
-IRLBA is fast and memory-efficient method for truncated singular value decomposition, and is particularly useful for approximate principal components analysis of large matrices.
+This repository contains a header-only C++ library implementing the Augmented Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) from Baglama and Lothar (2005).
+IRLBA is a fast and memory-efficient method for truncated singular value decomposition, and is particularly useful for approximate principal components analysis of large matrices.
 The code here is derived from the C code in the [**irlba** R package](https://github.com/bwlewis/irlba), refactored to use the [Eigen](http://eigen.tuxfamily.org/) library for matrix algebra.
 
 ## Quick start
