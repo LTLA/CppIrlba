@@ -28,7 +28,7 @@ private:
 
     Eigen::VectorXd initV, res, F;
 
-    LanczosProcess lp;
+    LanczosBidiagonalization lp;
     int number = 5, extra_work = 7;
     int maxit = 1000;
 
@@ -64,7 +64,7 @@ public:
      * Set the maximum number of restart iterations.
      * In most cases, convergence will occur before reaching this limit.
      *
-     * @param n Maximum number of iterations.
+     * @param m Maximum number of iterations.
      *
      * @return A reference to the `Irlba` instance.
      */
@@ -86,6 +86,58 @@ public:
         return *this;
     }
 
+    /**
+     * Set the tolerance for detecting invariant subspaces. 
+     *
+     * @param e Positive tolerance value.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_invariant_tolerance(double e) {
+         lp.set_eps(e);
+         return *this;
+    }
+
+    /**
+     * Set the tolerance for detecting invariant subspaces to its default value, 
+     * namely the epsilon for double-precision values to the power of 0.8.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_invariant_tolerance() {
+        lp.set_eps();
+        return *this;
+    }
+
+    /**
+     * Set the tolerance for convergence based on the residuals.
+     * This is used to define a threshold against which the residuals of the decomposition are compared;
+     * all values must be below the threshold for convergence to be considered.
+     *
+     * @param t Positive tolerance value.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_convergence_tolerance(double t = 1e-5) {
+        convtest.set_tol(t);
+        return *this;
+    }
+
+    /**
+     * Set the tolerance for convergence based on the singular value ratios.
+     * At each iteration, the absolute value of the relative difference in the singular values is compared to the tolerance; 
+     * all values must be below the threshold for convergence to be considered.
+     *
+     * @param t Positive tolerance value.
+     * Alternatively, a negative value, in which case the value from `set_convergence_tolerance()` is used instead.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_singular_value_ratio_tolerance(double t = -1) {
+        convtest.set_svtol(t);
+        return *this;
+    }
+
 public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD.
@@ -103,13 +155,16 @@ public:
      * Alternatively `false`, if no centering is to be performed.
      * @param scale A vector of length equal to the number of columns of `mat`.
      * Each value should be positive and is used to divide the corresponding column of `mat`.
+     * @param norm An instance of a functor to generate normally distributed values.
      * Alternatively `false`, if no scaling is to be performed.
      * @param outU Output matrix where columns contain the first left singular vectors.
-     * The number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
+     * Dimensions are set automatically on output;
+     * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
      * @param outV Output matrix where columns contain the first right singular vectors.
-     * The number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
+     * Dimensions are set automatically on output;
+     * the number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
      * @param outS Vector to store the first singular values.
-     * Number of values is defined by `set_number()`.
+     * The length is set automatically as defined by `set_number()`.
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.

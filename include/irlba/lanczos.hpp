@@ -18,6 +18,35 @@ public:
     }
 
 public:
+    /**
+     * Perform the Lanczos diagonalization on an input matrix, optionally with scaling and centering.
+     *
+     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
+     * This is most typically a class from the Eigen library.
+     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
+     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
+     *
+     * @param mat Input matrix.
+     * @param center A vector of length equal to the number of columns of `mat`.
+     * Each value is to be subtracted from the corresponding column of `mat`.
+     * Alternatively `false`, if no centering is to be performed.
+     * @param scale A vector of length equal to the number of columns of `mat`.
+     * Each value should be positive and is used to divide the corresponding column of `mat`.
+     * @param norm An instance of a functor to generate normally distributed values.
+     * @param W Output matrix with number of rows equal to `mat.rows()`.
+     * The size of the working subspace is defined from the number of columns.
+     * The first `start` columns should contain orthonormal column vectors with non-zero L2 norms.
+     * @param V Matrix with number of rows equal to `mat.cols()` and number of columns equal to `W.cols()`.
+     * On input, the first `start + 1` columns should contain orthonormal column vectors with non-zero L2 norms.
+     * @param B Square matrix with number of rows and columns equal to the size of the working subspace.
+     * Number of values is defined by `set_number()`.
+     * @param start The dimension from which to start the bidiagonalization.
+     *
+     * @return
+     * `W` is filled with orthonormal vectors, as is `V`.
+     * `B` is filled with upper diagonal entries.
+     */
     template<class M, class CENTER, class SCALE, class NORMSAMP>
     void run(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, Eigen::MatrixXd& B, const CENTER& center, const SCALE& scale, NORMSAMP& norm, int work, int start, bool first) {
         constexpr bool do_center = !std::is_same<CENTER, bool>::value;
