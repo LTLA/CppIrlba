@@ -186,13 +186,15 @@ public:
         res.resize(work);
         F.resize(mat.cols());
 
-        if (initV.size() == V.rows()) {
+        if (initV.size()) {
+            assert(initV.size() == V.rows());
             V.col(0) = initV;
         } else {
             for (Eigen::Index i = 0; i < V.rows(); ++i) {
                 V(i, 0) = norm();
             }
         }
+        V.col(0) /= V.col(0).norm();
 
         B.resize(work, work);
         B.setZero(work, work);
@@ -202,7 +204,7 @@ public:
         Eigen::BDCSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
 
         for (; iter < maxit; ++iter) {
-            lp.run(mat, W, V, B, center, scale, norm, work, k, iter==0);
+            lp.run(mat, W, V, B, center, scale, norm, k);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -255,7 +257,7 @@ public:
             // Updating B, W and V.
             Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
             V.leftCols(k) = Vtmp.leftCols(k);
-            V.col(k) = F;
+            V.col(k) = F; // should still be orthogonal to the new left-most columns of V.
 
             Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);
             W.leftCols(k) = Wtmp.leftCols(k);
