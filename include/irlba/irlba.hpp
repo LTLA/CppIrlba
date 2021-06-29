@@ -210,6 +210,9 @@ public:
         Eigen::BDCSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
 
         for (; iter < maxit; ++iter) {
+            // Technically, this is only a 'true' Lanczos bidiagonalization
+            // when k = 0. All other times, we're just recycling the machinery,
+            // see the text below Equation 3.11 in Baglama and Reichel.
             lp.run(mat, W, V, B, center, scale, norm, k);
 
 //            if (iter < 2) {
@@ -247,7 +250,8 @@ public:
             }
             convtest.set_last(BS);
 
-            // Setting 'k'.
+            // Setting 'k'. This looks kinda weird, but this is deliberate,
+            // see the text below Algorithm 3.1 of Baglama and Reichel.
             if (n_converged + number > k) {
                 k = n_converged + number;
             }
@@ -262,7 +266,7 @@ public:
             Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
             V.leftCols(k) = Vtmp.leftCols(k);
 
-            V.col(k) = F; // See 3.2 of Baglama and Reichel, where our 'V' is
+            V.col(k) = F; // See Equation 3.2 of Baglama and Reichel, where our 'V' is
                           // their 'P', and our 'F' is their 'p_{m+1}' (2.2).
                           // 'F' was orthogonal to the old 'V' and it so it
                           // should still be orthogonal to the new left-most
@@ -283,6 +287,8 @@ public:
             }
         }
 
+        // See Equation 2.11 of Baglama and Reichel for how to get from B's
+        // singular triplets to mat's singular triplets.
         outS.resize(number);
         outS = svd.singularValues().head(number);
 
