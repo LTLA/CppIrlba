@@ -171,7 +171,9 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Run IRLBA on an input matrix to perform an approximate SVD. If <code>center</code> (and optionally <code>scale</code>) are set accordingly, this can be used to perform an approximate PCA.</p>
+<p>Run IRLBA on an input matrix to perform an approximate SVD.</p>
+<p>If <code>center</code> (and optionally <code>scale</code>) are set accordingly, this can be used to perform an approximate PCA.</p>
+<p>If the smallest dimension of <code>mat</code> is below 6, this method falls back to performing an exact SVD.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>Matrix class that supports <code>cols()</code>, <code>rows()</code>, <code>*</code> and <code>adjoint()</code>. This is most typically a class from the Eigen library. </td></tr>
