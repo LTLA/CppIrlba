@@ -17,15 +17,35 @@ protected:
     }
 
     size_t nr = 20, nc = 10;
-    Eigen::MatrixXd A, V;
+    Eigen::MatrixXd A;
+    Eigen::MatrixXd U, V;
+    Eigen::VectorXd S;
+
+    void expect_equal_column_vectors(const Eigen::MatrixXd& left, const Eigen::MatrixXd& right) {
+        ASSERT_EQ(left.cols(), right.cols());
+        ASSERT_EQ(left.rows(), right.rows());
+
+        for (size_t i = 0; i < left.cols(); ++i) {
+            for (size_t j = 0; j < left.rows(); ++j) {
+                EXPECT_FLOAT_EQ(std::abs(left(j, i)), std::abs(right(j, i)));
+            }
+            EXPECT_FLOAT_EQ(std::abs(left.col(i).sum()), std::abs(right.col(i).sum()));
+        }
+        return;
+    }
+
+    void expect_equal_vectors(const Eigen::VectorXd& left, const Eigen::VectorXd& right) {
+        ASSERT_EQ(left.size(), right.size());
+        for (size_t i = 0; i < left.size(); ++i) {
+            EXPECT_FLOAT_EQ(left[i], right[i]);
+        }
+        return;
+    }
 };
 
 TEST_F(IrlbaTester, Basic) {
     irlba::Irlba irb;
-
     irlba::NormalSampler norm(50);
-    Eigen::MatrixXd U, V;
-    Eigen::VectorXd S;
 
     irb.set_number(5).run(A, false, false, norm, U, V, S);
     ASSERT_EQ(V.cols(), 5);
@@ -33,26 +53,99 @@ TEST_F(IrlbaTester, Basic) {
     ASSERT_EQ(S.size(), 5);
 
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
-    auto refS = svd.singularValues();
-    for (size_t i = 0; i < S.size(); ++i) {
-        EXPECT_FLOAT_EQ(refS[i], S[i]);
+    expect_equal_vectors(S, svd.singularValues().head(5));
+    expect_equal_column_vectors(U, svd.matrixU().leftCols(5));
+    expect_equal_column_vectors(V, svd.matrixV().leftCols(5));
+}
+
+TEST_F(IrlbaTester, CenterScale) {
+    irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
+
+    Eigen::VectorXd center(A.cols());
+    for (auto& c : center) { c = norm(); }
+    Eigen::VectorXd scale(A.cols());
+    for (auto& s : scale) { s = std::abs(norm() + 1); }
+
+    irb.run(A, center, scale, norm, U, V, S);
+
+    Eigen::MatrixXd copy = A;
+    for (size_t i = 0; i < A.cols(); ++i) {
+        for (size_t j = 0; j < A.rows(); ++j) {
+            copy(j, i) -= center(i);
+            copy(j, i) /= scale(i);
+        }
     }
 
-    auto refV = svd.matrixV();
-    for (size_t i = 0; i < S.size(); ++i) {
-        for (size_t j = 0; j < nc; ++j) {
-            EXPECT_FLOAT_EQ(std::abs(V(j, i)), std::abs(refV(j, i)));
+    irlba::NormalSampler norm2(50);
+    Eigen::MatrixXd U2(U.rows(), U.cols());
+    Eigen::MatrixXd V2(V.rows(), V.cols());
+    Eigen::VectorXd S2(S.size());
+    irb.run(copy, false, false, norm2, U2, V2, S2);
+
+    expect_equal_vectors(S, S2);
+    expect_equal_column_vectors(U, U2);
+    expect_equal_column_vectors(V, V2);
+}
+
+TEST_F(IrlbaTester, Exact) {
+    irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
+
+    Eigen::MatrixXd small = A.leftCols(3);
+    irb.set_number(2).run(small, false, false, norm, U, V, S);
+      
+    Eigen::BDCSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    EXPECT_EQ(svd.singularValues().head(2), S);
+    EXPECT_EQ(svd.matrixU().leftCols(2), U);
+    EXPECT_EQ(svd.matrixV().leftCols(2), V);
+}
+
+TEST_F(IrlbaTester, ExactCenterScale) {
+    irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
+
+    Eigen::MatrixXd small = A.leftCols(3);
+
+    Eigen::VectorXd center(small.cols());
+    for (auto& c : center) { c = norm(); }
+    Eigen::VectorXd scale(small.cols());
+    for (auto& s : scale) { s = std::abs(norm() + 1); }
+
+    irb.set_number(2).run(small, center, scale, norm, U, V, S);
+
+    Eigen::MatrixXd copy = small;
+    for (size_t i = 0; i < small.cols(); ++i) {
+        for (size_t j = 0; j < small.rows(); ++j) {
+            copy(j, i) -= center(i);
+            copy(j, i) /= scale(i);
         }
-        EXPECT_FLOAT_EQ(std::abs(V.col(i).sum()), std::abs(refV.col(i).sum()));
     }
 
-    auto refU = svd.matrixU();
-    for (size_t i = 0; i < S.size(); ++i) {
-        for (size_t j = 0; j < nr; ++j) {
-            EXPECT_FLOAT_EQ(std::abs(U(j, i)), std::abs(refU(j, i)));
-        }
-        EXPECT_FLOAT_EQ(std::abs(U.col(i).sum()), std::abs(refU.col(i).sum()));
-    }
+    Eigen::MatrixXd U2(U.rows(), U.cols());
+    Eigen::MatrixXd V2(V.rows(), V.cols());
+    Eigen::VectorXd S2(S.size());
+    irb.set_number(2).run(copy, false, false, norm, U2, V2, S2);
+
+    EXPECT_EQ(U, U2);
+    EXPECT_EQ(V, V2);
+    EXPECT_EQ(S, S2);
+}
+
+using IrlbaDeathTest = IrlbaTester;
+
+TEST_F(IrlbaDeathTest, AssertionFails) {
+    irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
+    Eigen::MatrixXd U, V;
+    Eigen::VectorXd S;
+
+    // Requested number of SVs > smaller dimension of the matrix.
+    ASSERT_DEATH(irb.set_number(100).run(A, false, false, norm, U, V, S), "number");
+
+    // Initialization vector is not of the right length.
+    Eigen::VectorXd init(1);
+    ASSERT_DEATH(irb.set_number(5).set_init(init).run(A, false, false, norm, U, V, S), "initV");
 }
 
 /* 
@@ -129,6 +222,7 @@ std::vector<double> init {
 
 TEST_F(IrlbaTester, Reference) {
     irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
 
     Eigen::MatrixXd X(25, 20);
     ASSERT_EQ(X.rows() * X.cols(), store.size());
@@ -141,10 +235,6 @@ TEST_F(IrlbaTester, Reference) {
 
     Eigen::VectorXd initV(init.size());
     std::copy(init.begin(), init.end(), initV.begin());
-
-    Eigen::MatrixXd U, V;
-    Eigen::VectorXd S;
-    irlba::NormalSampler norm(50);
 
     irb.set_number(3).set_work(7).set_init(initV).run(X, false, false, norm, U, V, S);
     EXPECT_EQ(S.size(), 3);

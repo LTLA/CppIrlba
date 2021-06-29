@@ -141,7 +141,10 @@ public:
 public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD.
+     *
      * If `center` (and optionally `scale`) are set accordingly, this can be used to perform an approximate PCA.
+     *
+     * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      * 
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
      * This is most typically a class from the Eigen library.
@@ -171,13 +174,16 @@ public:
      */
     template<class M, class CENTER, class SCALE, class NORMSAMP>
     std::pair<bool, int> run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outS) {
-        int work = number + extra_work;
-        if (work > mat.rows()) {
-            work = mat.rows();
+        const int smaller = std::min(mat.rows(), mat.cols());
+        assert(number < smaller);
+
+        // Falling back to an exact SVD for small matrices.
+        if (smaller < 6) {
+            exact(mat, center, scale, outU, outV, outS);
+            return std::make_pair(true, 0);
         }
-        if (work > mat.cols()) {
-            work = mat.cols();
-        }
+
+        const int work = std::min(number + extra_work, smaller);
 
         W.resize(mat.rows(), work);
         Wtmp.resize(mat.rows(), work);
@@ -287,6 +293,42 @@ public:
         outV.noalias() = V * svd.matrixV().leftCols(number);
 
         return std::make_pair(converged, iter + 1);
+    }
+private:
+    template<class M, class CENTER, class SCALE> 
+    void exact(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outS) {
+        Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
+        constexpr bool do_center = !std::is_same<CENTER, bool>::value;
+        constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
+
+        if constexpr(std::is_same<M, Eigen::MatrixXd>::value && !do_center && !do_scale) {
+            svd.compute(mat);
+        } else {
+            Eigen::MatrixXd adjusted(mat);
+
+            for (Eigen::Index i = 0; i < mat.cols(); ++i) {
+                if (do_center) {
+                    for (Eigen::Index j = 0; j < mat.rows(); ++j) {
+                        adjusted(j, i) -= center[i];
+                    }
+                }
+                if (do_scale) {
+                    adjusted.col(i) /= scale[i];
+                }
+            }
+            svd.compute(adjusted);
+        }
+
+        outS.resize(number);
+        outS = svd.singularValues().head(number);
+
+        outU.resize(mat.rows(), number);
+        outU = svd.matrixU().leftCols(number);
+
+        outV.resize(mat.cols(), number);
+        outV = svd.matrixV().leftCols(number);
+
+        return;
     }
 };
 
