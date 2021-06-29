@@ -9,7 +9,7 @@
 namespace irlba {
 
 /**
- * @brief Perform Lanczos bidiagonalization on an input matrix
+ * @brief Perform Lanczos bidiagonalization on an input matrix.
  */
 class LanczosBidiagonalization {
 public:
@@ -26,9 +26,8 @@ public:
     }
 
     /**
-     * Set the default tolerance to use to define invariant subspaces.
-     * This inherits the same default as that defined from the **irlba** R package,
-     * i.e., the machine epsilon to the power of 0.8.
+     * Set the default tolerance for defining invariant subspaces.
+     * This uses the same value as the **irlba** R package, i.e., the machine epsilon to the power of 0.8.
      * 
      * @return A reference to the `LanczosBidiagonalization` instance.
      */
@@ -80,25 +79,9 @@ public:
         F.resize(mat.cols());
         W_next.resize(mat.rows());
 
-        // We assume that the starting column is already normalized.
+        // We assume that the starting column is already normalized, see argument description for 'V'.
         F = V.col(start);
-
-        if constexpr(do_scale) {
-            F = F.cwiseQuotient(scale);
-        }
-
-        W_next.noalias() = mat * F;
-
-        if constexpr(do_center) {
-            double beta = F.dot(center);
-            for (auto& w : W_next) {
-                w -= beta;
-            }
-        }
-
-        if (start) {
-            orthog.run(W, W_next, start);
-        }
+        update_W_next(mat, center, scale, W, start);
 
         double S = W_next.norm();
         if (S < eps) {
@@ -141,31 +124,7 @@ public:
                 B(j, j) = S;
                 B(j, j + 1) = R_F;
 
-                // Re-using 'F' as 'x', the temporary buffer used in irlb.c's
-                // inner loop. 'F's original value will not be used in the
-                // rest of the loop, so no harm, no foul.
-                auto& x = F;
-
-                // Applying the scaling.
-                if constexpr(do_scale) {
-                    x = x.cwiseQuotient(scale);
-                }
-
-                W_next.noalias() = mat * x;
-
-                // Applying the centering.
-                if constexpr(do_center) {
-                    double beta = x.dot(center);
-                    for (auto& x : W_next) {
-                        x -= beta;
-                    }
-                }
-
-                // One round of classical Gram-Schmidt. 
-                W_next -= R_F * W.col(j);
-
-                // Full re-orthogonalization of W_{j+1}.
-                orthog.run(W, W_next, j + 1);
+                update_W_next(mat, center, scale, W, j+1);
 
                 S = W_next.norm();
                 if (S < eps) {
@@ -184,6 +143,45 @@ public:
             }
         }
 
+        return;
+    }
+
+private:
+    /* This function just updates W_next based on the current F, i.e., the
+     * initialization vector (when ncols = 0) or the residual vector
+     * (otherwise). It will also mutate F if centering or scaling is requested.
+     * 
+     * It's worth noting that, when ncols > 0, 'F' at this point is equivalent
+     * to 'x', the temporary buffer used in irlb.c's inner loop. 'F's original
+     * value will not be used in the rest of the loop, so it's safe to mutate
+     * 'F' inside the function here.
+     */
+    template<class M, class CENTER, class SCALE>
+    void update_W_next(const M& mat, const CENTER& center, const SCALE& scale, const Eigen::MatrixXd& W, int ncols) {
+        constexpr bool do_center = !std::is_same<CENTER, bool>::value;
+        constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
+
+        // Applying the scaling.
+        if constexpr(do_scale) {
+            F = F.cwiseQuotient(scale);
+        }
+
+        W_next.noalias() = mat * F;
+
+        // Applying the centering.
+        if constexpr(do_center) {
+            double beta = F.dot(center);
+            for (auto& w : W_next) {
+                w -= beta;
+            }
+        }
+
+        // Full re-orthogonalization, using the left-most 'ncol' columns of W.
+        // Recall that W_next will be the 'ncol + 1' column, i.e., W.col(ncol) in
+        // 0-indexed terms, so we want to orthogonalize to all previous columns.
+        if (ncols) {
+            orthog.run(W, W_next, ncols);
+        }
         return;
     }
 
