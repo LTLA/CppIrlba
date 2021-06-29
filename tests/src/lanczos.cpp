@@ -10,6 +10,7 @@ protected:
         W = Eigen::MatrixXd(nr, work);
         V = Eigen::MatrixXd(nc, work);
         B = Eigen::MatrixXd(work, work);
+        B.setZero();
 
         irlba::NormalSampler norm(42);
         for (size_t i = 0; i < nc; ++i) {
@@ -150,6 +151,43 @@ TEST_F(LanczosTester, CenterAndScale) {
     for (size_t i = 0; i < B2.cols(); ++i) {
         for (size_t j = 0; j < B2.rows(); ++j) {
             EXPECT_FLOAT_EQ(B2(j, i), B3(j, i));
+        }
+    }
+}
+
+TEST_F(LanczosTester, Restart) {
+    irlba::LanczosBidiagonalization y;
+
+    irlba::NormalSampler norm(50);
+    Eigen::MatrixXd subW = W.leftCols(3); 
+    Eigen::MatrixXd subV = V.leftCols(3); 
+    Eigen::MatrixXd subB = B.topLeftCorner(3,3); 
+    y.run(A, subW, subV, subB, false, false, norm);
+
+    Eigen::MatrixXd copyW(nr, work);
+    copyW.leftCols(3) = subW;
+    Eigen::MatrixXd copyV(nc, work);
+    copyV.leftCols(3) = subV;
+    Eigen::MatrixXd copyB(work, work);
+    copyB.setZero();
+    copyB.topLeftCorner(3,3) = subB;
+    copyV.col(3) = y.residuals() / y.residuals().norm();
+    y.run(A, copyW, copyV, copyB, false, false, norm, 3); //restarting from start = 3.
+
+    // Numerically equivalent to a full compuation... except for B, where the
+    // restart loses one of the superdiagonal elements (which is normally 
+    // filled in by the residual error in the IRLBA loop, see Equation 3.6).
+    y.run(A, W, V, B, false, false, norm);
+
+    for (size_t i = 0; i < copyW.cols(); ++i) {
+        for (size_t j = 0; j < copyW.rows(); ++j) {
+            EXPECT_FLOAT_EQ(copyW(j, i), W(j, i));
+        }
+    }
+
+    for (size_t i = 0; i < copyV.cols(); ++i) {
+        for (size_t j = 0; j < copyV.rows(); ++j) {
+            EXPECT_FLOAT_EQ(copyV(j, i), V(j, i));
         }
     }
 }
