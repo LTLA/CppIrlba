@@ -313,12 +313,12 @@ private:
             Eigen::MatrixXd adjusted(mat);
 
             for (Eigen::Index i = 0; i < mat.cols(); ++i) {
-                if (do_center) {
+                if constexpr(do_center) {
                     for (Eigen::Index j = 0; j < mat.rows(); ++j) {
                         adjusted(j, i) -= center[i];
                     }
                 }
-                if (do_scale) {
+                if constexpr(do_scale) {
                     adjusted.col(i) /= scale[i];
                 }
             }
