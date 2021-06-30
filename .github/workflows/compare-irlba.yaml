@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - master
+
+name: irlba comparison
+
+jobs:
+  build:
+    name: Compare to irlba reference
+    runs-on: ubuntu-latest
+    container: bioconductor/bioconductor_docker:devel
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Get latest CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Install packages
+      shell: Rscript {0}
+      run: |
+        BiocManager::install(c("irlba", "Rcpp", "testthat"))
+
+    - name: Build the test dependencies
+      run: |
+        cd tests/R
+        bash build.sh
+
+    - name: Run the comparisons
+      run: |
+        cd tests/R
+        R -e 'testthat::test_file("run.R")'
