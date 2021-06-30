@@ -277,12 +277,12 @@ $(function() {
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            Eigen::MatrixXd adjusted(mat);</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordflow">for</span> (Eigen::Index i = 0; i &lt; mat.cols(); ++i) {</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">if</span> (do_center) {</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">if</span> constexpr(do_center) {</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    <span class="keywordflow">for</span> (Eigen::Index j = 0; j &lt; mat.rows(); ++j) {</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                        adjusted(j, i) -= center[i];</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                    }</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                }</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                <span class="keywordflow">if</span> (do_scale) {</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                <span class="keywordflow">if</span> constexpr(do_scale) {</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                    adjusted.col(i) /= scale[i];</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                }</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            }</div>
