@@ -142,38 +142,115 @@ public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD.
      *
-     * If `center` (and optionally `scale`) are set accordingly, this can be used to perform an approximate PCA.
+     * If `CENTER` (and optionally `SCALE`) are set to `true`, this can be used to perform an approximate PCA.
+     * Each column's values is centered, and optionally scaled, as part of the IRLBA calculations.
+     * Note that `SCALE = true` usually only makes sense if `CENTER = true`, where scaling is done by the sample deviation of each column.
+     * If `SCALE = true` but `CENTER = false`, we will scale by the square root of the mean squared value of each column.
      *
      * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      * 
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the Eigen library.
-     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
-     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
+     * This is most typically a class from the **Eigen** matrix manipulation library.
+     * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
+     * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
      *
-     * @param mat Input matrix.
-     * @param center A vector of length equal to the number of columns of `mat`.
-     * Each value is to be subtracted from the corresponding column of `mat`.
-     * Alternatively `false`, if no centering is to be performed.
-     * @param scale A vector of length equal to the number of columns of `mat`.
-     * Each value should be positive and is used to divide the corresponding column of `mat`.
-     * @param norm An instance of a functor to generate normally distributed values.
-     * Alternatively `false`, if no scaling is to be performed.
-     * @param outU Output matrix where columns contain the first left singular vectors.
+     * @param[in] mat Input matrix.
+     * @param[in] norm An instance of a functor to generate normally distributed values.
+     * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
-     * @param outV Output matrix where columns contain the first right singular vectors.
+     * @param[out] outV Output matrix where columns contain the first right singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
-     * @param outD Vector to store the first singular values.
+     * @param[out] outD Vector to store the first singular values.
      * The length is set automatically as defined by `set_number()`.
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      */
+    template<bool CENTER = false, bool SCALE = false, class M, class NORMSAMP>
+    std::pair<bool, int> run(const M& mat, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+        Eigen::VectorXd center0, scale0;
+
+        if constexpr(SCALE || CENTER) {
+            if constexpr(SCALE) {
+                assert(mat.rows() >= 2); // avoid div by zero.
+                scale0.resize(mat.cols());
+            }
+            if constexpr(CENTER) {
+                assert(mat.rows() >= 1);
+                center0.resize(mat.cols());
+            }
+
+            for (Eigen::Index i = 0; i < mat.cols(); ++i) {
+                double mean = 0;
+                if constexpr(CENTER) {
+                    mean = mat.col(i).sum() / mat.rows();
+                    center0[i] = mean;
+                }
+                if constexpr(SCALE) {
+                    Eigen::VectorXd current = mat.col(i); // force it to be a VectorXd, even if it's a sparse matrix.
+                    double var = 0;
+                    for (auto x : current) {
+                        var += (x - mean)*(x - mean);
+                    }
+                    scale0[i] = std::sqrt(var/(mat.rows() - 1));
+                }
+            }
+        }
+
+        if constexpr(CENTER) {
+            if constexpr(SCALE) {
+                return run_internal(mat, center0, scale0, norm, outU, outV, outD);
+            } else {
+                return run_internal(mat, center0, false, norm, outU, outV, outD);
+            }
+        } else {
+            if constexpr(SCALE) {
+                return run_internal(mat, false, scale0, norm, outU, outV, outD);
+            } else {
+                return run_internal(mat, false, false, norm, outU, outV, outD);
+            }
+        }
+    }
+
+    /** 
+     * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
+     *
+     * Centering is performed by subtracting each element of `center` from the corresponding column of `mat`.
+     * Scaling is performed by dividing each column of `mat` by the corresponding element of `scale` (after any centering has been applied).
+     *
+     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
+     * This is most typically a class from the **Eigen** matrix manipulation library.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
+     *
+     * @param[in] mat Input matrix.
+     * @param[in] norm An instance of a functor to generate normally distributed values.
+     * @param[out] outU Output matrix where columns contain the first left singular vectors.
+     * Dimensions are set automatically on output;
+     * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
+     * @param[out] outV Output matrix where columns contain the first right singular vectors.
+     * Dimensions are set automatically on output;
+     * the number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
+     * @param[out] outD Vector to store the first singular values.
+     * The length is set automatically as defined by `set_number()`.
+     * @param[in] center A vector of length equal to the number of columns of `mat`.
+     * @param[in] scale A vector of length equal to the number of columns of `mat`, containing positive values.
+     *
+     * @return A pair where the first entry indicates whether the algorithm converged,
+     * and the second entry indicates the number of restart iterations performed.
+     *
+     * @overload
+     */
+    template<class M, class NORMSAMP>
+    std::pair<bool, int> run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+        return run_internal(mat, center, scale, norm, outU, outV, outD);
+    }
+
+private:
     template<class M, class CENTER, class SCALE, class NORMSAMP>
-    std::pair<bool, int> run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         const int smaller = std::min(mat.rows(), mat.cols());
         assert(number < smaller);
 
@@ -374,27 +451,49 @@ public:
     };
 
     /** 
-     * Run IRLBA on an input matrix to perform an approximate SVD.
+     * Run IRLBA on an input matrix to perform an approximate SVD, see the `run()` documentation for more details.
      * 
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the Eigen library.
-     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
-     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
+     * This is most typically a class from the **Eigen** matrix manipulation library.
+     * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
+     * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
      *
-     * @param mat Input matrix.
-     * @param center A vector of length equal to the number of columns of `mat`.
-     * Each value is to be subtracted from the corresponding column of `mat`.
-     * Alternatively `false`, if no centering is to be performed.
-     * @param scale A vector of length equal to the number of columns of `mat`.
-     * Each value should be positive and is used to divide the corresponding column of `mat`.
-     * @param norm An instance of a functor to generate normally distributed values.
-     * Alternatively `false`, if no scaling is to be performed.
+     * @param[in] mat Input matrix.
+     * @param[in] norm An instance of a functor to generate normally distributed values.
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
-    template<class M, class CENTER, class SCALE, class NORMSAMP>
-    Results run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm) {
+    template<bool CENTER = false, bool SCALE = false, class M, class NORMSAMP>
+    Results run(const M& mat, NORMSAMP& norm) {
+        Results output;
+        auto stats = run<CENTER, SCALE>(mat, norm, output.U, output.V, output.D);
+        output.converged = stats.first;
+        output.iterations = stats.second;
+        return output;
+    }
+
+    /** 
+     * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
+     * See the `run()` method for more details.
+     *
+     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
+     * This is most typically a class from the **Eigen** matrix manipulation library.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
+     *
+     * @param[in] mat Input matrix.
+     * @param[in] norm An instance of a functor to generate normally distributed values.
+     * @param[in] center A vector of length equal to the number of columns of `mat`.
+     * Each value is to be subtracted from the corresponding column of `mat`.
+     * @param[in] scale A vector of length equal to the number of columns of `mat`.
+     * Each value should be positive and is used to divide the corresponding column of `mat`.
+     *
+     * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
+     *
+     * @overload
+     */
+    template<class M, class NORMSAMP>
+    Results run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, NORMSAMP& norm) {
         Results output;
         auto stats = run(mat, center, scale, norm, output.U, output.V, output.D);
         output.converged = stats.first;

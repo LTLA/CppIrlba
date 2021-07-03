@@ -41,20 +41,42 @@ protected:
 TEST_F(SparseTester, Sparse) {
     irlba::Irlba irb;
     irlba::NormalSampler norm(50);
-    auto res = irb.set_number(8).set_work(7).run(A, false, false, norm);
+    auto res = irb.set_number(8).set_work(7).run(A, norm);
 
     irlba::NormalSampler norm2(50);
-    auto res2 = irb.set_number(8).set_work(7).run(B, false, false, norm2);
-    
+    auto res2 = irb.set_number(8).set_work(7).run(B, norm2);
+
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.U, res2.U);
     expect_equal_column_vectors(res.V, res2.V);
 }
 
+TEST_F(SparseTester, CenterScale) {
+    irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
+    auto res = irb.set_number(8).set_work(7).run<true, true>(A, norm);
+
+    irlba::NormalSampler norm2(50);
+    auto res2 = irb.set_number(8).set_work(7).run<true, true>(B, norm2);
+
+    expect_equal_vectors(res.D, res2.D);
+    expect_equal_column_vectors(res.V, res2.V);
+
+    // Don't compare U, as this will always be zero.
+    for (size_t i = 0; i < res.U.cols(); ++i) {
+        for (size_t j = 0; j < res.U.rows(); ++j) {
+            double labs = std::abs(res.U(j, i));
+            double rabs = std::abs(res2.U(j, i));
+            EXPECT_TRUE(same_same(labs, rabs, 1e-8));
+        }
+        EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
+    }    
+}
+
 TEST_F(SparseTester, SparseToReference) {
     irlba::Irlba irb;
     irlba::NormalSampler norm(50);
-    auto res = irb.set_number(13).set_work(20).run(B, false, false, norm);
+    auto res = irb.set_number(13).set_work(20).run(B, norm);
 
     // Bumping up the tolerance as later SV's tend to be a bit more variable.
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);

@@ -18,17 +18,14 @@ Rcpp::List run_irlba(Rcpp::NumericMatrix x, Rcpp::NumericVector init, int number
     // Can't be bothered making a Map, just copying everything for testing purposes.
     Eigen::MatrixXd A(x.nrow(), x.ncol());
     std::copy(x.begin(), x.end(), A.data());
+    auto res = irl.run(A, norm);
 
-    Eigen::MatrixXd U, V;
-    Eigen::VectorXd S;
-    irl.run(A, false, false, norm, U, V, S);
-
-    Rcpp::NumericMatrix outU(U.rows(), U.cols());
-    std::copy(U.data(), U.data() + U.size(), outU.begin());
-    Rcpp::NumericMatrix outV(V.rows(), V.cols());
-    std::copy(V.data(), V.data() + V.size(), outV.begin());
-    Rcpp::NumericVector outS(S.size());
-    std::copy(S.begin(), S.end(), outS.begin());
+    Rcpp::NumericMatrix outU(res.U.rows(), res.U.cols());
+    std::copy(res.U.data(), res.U.data() + res.U.size(), outU.begin());
+    Rcpp::NumericMatrix outV(res.V.rows(), res.V.cols());
+    std::copy(res.V.data(), res.V.data() + res.V.size(), outV.begin());
+    Rcpp::NumericVector outD(res.D.size());
+    std::copy(res.D.begin(), res.D.end(), outD.begin());
     
-    return Rcpp::List::create(Rcpp::Named("U")=outU, Rcpp::Named("V")=outV, Rcpp::Named("S")=outS);
+    return Rcpp::List::create(Rcpp::Named("U")=outU, Rcpp::Named("V")=outV, Rcpp::Named("D")=outD);
 }
