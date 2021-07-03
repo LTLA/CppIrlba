@@ -68,6 +68,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classirlba_1_1Irlba-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -80,6 +81,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="irlba_8hpp_source.html">irlba.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Irlba_1_1Results.html">Results</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8a2166d6ed5b2c2acbebc934b2dac79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#ac8a2166d6ed5b2c2acbebc934b2dac79">set_init</a> (const Eigen::VectorXd &amp;v)</td></tr>
@@ -98,16 +104,89 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad5a9a64620207cc47d965ca831bf9cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54fdd8672c80faf7cd795557ed02e5e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#a54fdd8672c80faf7cd795557ed02e5e6">set_singular_value_ratio_tolerance</a> (double t=-1)</td></tr>
 <tr class="separator:a54fdd8672c80faf7cd795557ed02e5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8390bc6fa68667b9300c3730c655c71"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </td></tr>
-<tr class="memitem:af8390bc6fa68667b9300c3730c655c71"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">run</a> (const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outS)</td></tr>
-<tr class="separator:af8390bc6fa68667b9300c3730c655c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5d5aba933bf1b3a6f49c5201eb8eb0"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </td></tr>
+<tr class="memitem:aee5d5aba933bf1b3a6f49c5201eb8eb0"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">run</a> (const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD)</td></tr>
+<tr class="separator:aee5d5aba933bf1b3a6f49c5201eb8eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb4ab028d2db0ab438d759dcaf580ff0"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </td></tr>
+<tr class="memitem:abb4ab028d2db0ab438d759dcaf580ff0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Irlba_1_1Results.html">Results</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#abb4ab028d2db0ab438d759dcaf580ff0">run</a> (const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm)</td></tr>
+<tr class="separator:abb4ab028d2db0ab438d759dcaf580ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Run IRLBA on an input matrix. </p>
 <p>Implements the Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) for fast truncated singular value decomposition. This is heavily derived from the C code in the <a href="https://github.com/bwlewis/irlba"><b>irlba</b> package</a>, with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af8390bc6fa68667b9300c3730c655c71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8390bc6fa68667b9300c3730c655c71">&#9670;&nbsp;</a></span>run()</h2>
+<a id="abb4ab028d2db0ab438d759dcaf580ff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb4ab028d2db0ab438d759dcaf580ff0">&#9670;&nbsp;</a></span>run() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structirlba_1_1Irlba_1_1Results.html">Results</a> irlba::Irlba::run </td>
+          <td>(</td>
+          <td class="paramtype">const M &amp;&#160;</td>
+          <td class="paramname"><em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CENTER &amp;&#160;</td>
+          <td class="paramname"><em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SCALE &amp;&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">NORMSAMP &amp;&#160;</td>
+          <td class="paramname"><em>norm</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Run IRLBA on an input matrix to perform an approximate SVD.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">M</td><td>Matrix class that supports <code>cols()</code>, <code>rows()</code>, <code>*</code> and <code>adjoint()</code>. This is most typically a class from the Eigen library. </td></tr>
+    <tr><td class="paramname">CENTER</td><td>Either <code>Eigen::VectorXd</code> or <code>bool</code>. </td></tr>
+    <tr><td class="paramname">CENTER</td><td>Either <code>Eigen::VectorXd</code> or <code>bool</code>. </td></tr>
+    <tr><td class="paramname">NORMSAMP</td><td>A functor that, when called with no arguments, returns a random Normal value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mat</td><td>Input matrix. </td></tr>
+    <tr><td class="paramname">center</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value is to be subtracted from the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no centering is to be performed. </td></tr>
+    <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. </td></tr>
+    <tr><td class="paramname">norm</td><td>An instance of a functor to generate normally distributed values. Alternatively <code>false</code>, if no scaling is to be performed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Irlba_1_1Results.html">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+
+</div>
+</div>
+<a id="aee5d5aba933bf1b3a6f49c5201eb8eb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee5d5aba933bf1b3a6f49c5201eb8eb0">&#9670;&nbsp;</a></span>run() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +236,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>outS</em>&#160;</td>
+          <td class="paramname"><em>outD</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -191,7 +270,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
     <tr><td class="paramname">norm</td><td>An instance of a functor to generate normally distributed values. Alternatively <code>false</code>, if no scaling is to be performed. </td></tr>
     <tr><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
     <tr><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
-    <tr><td class="paramname">outS</td><td>Vector to store the first singular values. The length is set automatically as defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code>.</td></tr>
+    <tr><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set automatically as defined by <code><a class="el" href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">set_number()</a></code>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -259,7 +338,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
 <p>Set the starting vector for V.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">v</td><td>Arbitrary vector of length equal to the number of columns in the matrix supplied to <code><a class="el" href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">run()</a></code>.</td></tr>
+    <tr><td class="paramname">v</td><td>Arbitrary vector of length equal to the number of columns in the matrix supplied to <code><a class="el" href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">run()</a></code>.</td></tr>
   </table>
   </dd>
 </dl>
@@ -385,7 +464,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Specify the number of singular values/vectors to obtain. This should be less than the smaller dimension of the matrix supplied to <code><a class="el" href="classirlba_1_1Irlba.html#af8390bc6fa68667b9300c3730c655c71">run()</a></code>.</p>
+<p>Specify the number of singular values/vectors to obtain. This should be less than the smaller dimension of the matrix supplied to <code><a class="el" href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">run()</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Number of singular values/vectors of interest.</td></tr>

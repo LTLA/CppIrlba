@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['irlba_2',['Irlba',['../classirlba_1_1Irlba.html',1,'irlba']]],
-  ['irlba_2ehpp_3',['irlba.hpp',['../irlba_8hpp.html',1,'']]]
+  ['d_3',['D',['../structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f',1,'irlba::Irlba::Results']]]
 ];

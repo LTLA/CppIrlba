@@ -1,5 +1,6 @@
 var searchData=
 [
   ['c_2b_2b_20library_20for_20irlba_0',['C++ library for IRLBA',['../index.html',1,'']]],
-  ['convergencetest_1',['ConvergenceTest',['../structirlba_1_1ConvergenceTest.html',1,'irlba']]]
+  ['converged_1',['converged',['../structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc',1,'irlba::Irlba::Results']]],
+  ['convergencetest_2',['ConvergenceTest',['../structirlba_1_1ConvergenceTest.html',1,'irlba']]]
 ];
