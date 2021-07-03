@@ -166,20 +166,20 @@ public:
      * @param outV Output matrix where columns contain the first right singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
-     * @param outS Vector to store the first singular values.
+     * @param outD Vector to store the first singular values.
      * The length is set automatically as defined by `set_number()`.
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      */
     template<class M, class CENTER, class SCALE, class NORMSAMP>
-    std::pair<bool, int> run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outS) {
+    std::pair<bool, int> run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         const int smaller = std::min(mat.rows(), mat.cols());
         assert(number < smaller);
 
         // Falling back to an exact SVD for small matrices.
         if (smaller < 6) {
-            exact(mat, center, scale, outU, outV, outS);
+            exact(mat, center, scale, outU, outV, outD);
             return std::make_pair(true, 0);
         }
 
@@ -289,8 +289,8 @@ public:
 
         // See Equation 2.11 of Baglama and Reichel for how to get from B's
         // singular triplets to mat's singular triplets.
-        outS.resize(number);
-        outS = svd.singularValues().head(number);
+        outD.resize(number);
+        outD = svd.singularValues().head(number);
 
         outU.resize(mat.rows(), number);
         outU.noalias() = W * svd.matrixU().leftCols(number);
@@ -302,7 +302,7 @@ public:
     }
 private:
     template<class M, class CENTER, class SCALE> 
-    void exact(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outS) {
+    void exact(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
         constexpr bool do_center = !std::is_same<CENTER, bool>::value;
         constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
@@ -325,8 +325,8 @@ private:
             svd.compute(adjusted);
         }
 
-        outS.resize(number);
-        outS = svd.singularValues().head(number);
+        outD.resize(number);
+        outD = svd.singularValues().head(number);
 
         outU.resize(mat.rows(), number);
         outU = svd.matrixU().leftCols(number);
@@ -335,6 +335,71 @@ private:
         outV = svd.matrixV().leftCols(number);
 
         return;
+    }
+
+public:
+    /**
+     * Result of the IRLBA-based decomposition.
+     */
+    struct Results {
+        /**
+         * The left singular vectors, stored as columns of `U`.
+         * The number of rows in `U` is equal to the number of rows in the input matrix,
+         * and the number of columns is equal to the number of requested vectors.
+         */
+        Eigen::MatrixXd U;
+
+        /**
+         * The right singular vectors, stored as columns of `U`.
+         * The number of rows in `U` is equal to the number of columns in the input matrix,
+         * and the number of columns is equal to the number of requested vectors.
+         */
+        Eigen::MatrixXd V;
+
+        /**
+         * The requested number of singular values, ordered by decreasing value.
+         * These correspond to the vectors in `U` and `V`.
+         */
+        Eigen::VectorXd D;
+
+        /**
+         * Whether the algorithm converged.
+         */
+        int iterations;
+
+        /**
+         * The number of restart iterations performed.
+         */
+        bool converged;
+    };
+
+    /** 
+     * Run IRLBA on an input matrix to perform an approximate SVD.
+     * 
+     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
+     * This is most typically a class from the Eigen library.
+     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
+     * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
+     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
+     *
+     * @param mat Input matrix.
+     * @param center A vector of length equal to the number of columns of `mat`.
+     * Each value is to be subtracted from the corresponding column of `mat`.
+     * Alternatively `false`, if no centering is to be performed.
+     * @param scale A vector of length equal to the number of columns of `mat`.
+     * Each value should be positive and is used to divide the corresponding column of `mat`.
+     * @param norm An instance of a functor to generate normally distributed values.
+     * Alternatively `false`, if no scaling is to be performed.
+     *
+     * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
+     */
+    template<class M, class CENTER, class SCALE, class NORMSAMP>
+    Results run(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm) {
+        Results output;
+        auto stats = run(mat, center, scale, norm, output.U, output.V, output.D);
+        output.converged = stats.first;
+        output.iterations = stats.second;
+        return output;
     }
 };
 
