@@ -50,3 +50,15 @@ TEST_F(SparseTester, Sparse) {
     expect_equal_column_vectors(res.U, res2.U);
     expect_equal_column_vectors(res.V, res2.V);
 }
+
+TEST_F(SparseTester, SparseToReference) {
+    irlba::Irlba irb;
+    irlba::NormalSampler norm(50);
+    auto res = irb.set_number(13).set_work(20).run(B, false, false, norm);
+
+    // Bumping up the tolerance as later SV's tend to be a bit more variable.
+    Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    expect_equal_vectors(res.D, svd.singularValues().head(13), 1e-5);
+    expect_equal_column_vectors(res.U, svd.matrixU().leftCols(13), 1e-5);
+    expect_equal_column_vectors(res.V, svd.matrixV().leftCols(13), 1e-5);
+}
