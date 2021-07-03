@@ -136,208 +136,271 @@ $(function() {
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    }</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> CENTER, <span class="keyword">class</span> SCALE, <span class="keyword">class</span> NORMSAMP&gt;</div>
-<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">  176</a></span>&#160;    std::pair&lt;bool, int&gt; <a class="code" href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">run</a>(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> CENTER&amp; center, <span class="keyword">const</span> SCALE&amp; scale, NORMSAMP&amp; norm, Eigen::MatrixXd&amp; outU, Eigen::MatrixXd&amp; outV, Eigen::VectorXd&amp; outD) {</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> smaller = std::min(mat.rows(), mat.cols());</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        assert(number &lt; smaller);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="comment">// Falling back to an exact SVD for small matrices.</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">if</span> (smaller &lt; 6) {</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            exact(mat, center, scale, outU, outV, outD);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">return</span> std::make_pair(<span class="keyword">true</span>, 0);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> CENTER = false, <span class="keywordtype">bool</span> SCALE = false, <span class="keyword">class</span> M, <span class="keyword">class</span> NORMSAMP&gt;</div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classirlba_1_1Irlba.html#af8e40aefbde9ff742cd4922c00e28267">  173</a></span>&#160;    std::pair&lt;bool, int&gt; <a class="code" href="classirlba_1_1Irlba.html#af8e40aefbde9ff742cd4922c00e28267">run</a>(<span class="keyword">const</span> M&amp; mat, NORMSAMP&amp; norm, Eigen::MatrixXd&amp; outU, Eigen::MatrixXd&amp; outV, Eigen::VectorXd&amp; outD) {</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        Eigen::VectorXd center0, scale0;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">if</span> constexpr(SCALE || CENTER) {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">if</span> constexpr(SCALE) {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                assert(mat.rows() &gt;= 2); <span class="comment">// avoid div by zero.</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                scale0.resize(mat.cols());</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordflow">if</span> constexpr(CENTER) {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                assert(mat.rows() &gt;= 1);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                center0.resize(mat.cols());</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            }</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> work = std::min(number + extra_work, smaller);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        W.resize(mat.rows(), work);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        Wtmp.resize(mat.rows(), work);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        V.resize(mat.cols(), work);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        Vtmp.resize(mat.cols(), work);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        res.resize(work);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        F.resize(mat.cols());</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">if</span> (initV.size()) {</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            assert(initV.size() == V.rows());</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            V.col(0) = initV;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <span class="keywordflow">for</span> (Eigen::Index i = 0; i &lt; V.rows(); ++i) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                V(i, 0) = norm();</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        V.col(0) /= V.col(0).norm();</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        B.resize(work, work);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        B.setZero(work, work);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordtype">bool</span> converged = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordtype">int</span> iter = 0, k =0;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        Eigen::BDCSVD&lt;Eigen::MatrixXd&gt; svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordflow">for</span> (; iter &lt; maxit; ++iter) {</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="comment">// Technically, this is only a &#39;true&#39; Lanczos bidiagonalization</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="comment">// when k = 0. All other times, we&#39;re just recycling the machinery,</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <span class="comment">// see the text below Equation 3.11 in Baglama and Reichel.</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            lp.<a class="code" href="classirlba_1_1LanczosBidiagonalization.html#aa65332f528a1f56ae8f39bc0ea3a4c45">run</a>(mat, W, V, B, center, scale, norm, k);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">for</span> (Eigen::Index i = 0; i &lt; mat.cols(); ++i) {</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <span class="keywordtype">double</span> mean = 0;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="keywordflow">if</span> constexpr(CENTER) {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                    mean = mat.col(i).sum() / mat.rows();</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                    center0[i] = mean;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                }</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                <span class="keywordflow">if</span> constexpr(SCALE) {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    Eigen::VectorXd current = mat.col(i); <span class="comment">// force it to be a VectorXd, even if it&#39;s a sparse matrix.</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                    <span class="keywordtype">double</span> var = 0;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">auto</span> x : current) {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                        var += (x - mean)*(x - mean);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                    }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                    scale0[i] = std::sqrt(var/(mat.rows() - 1));</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                }</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">if</span> constexpr(CENTER) {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            <span class="keywordflow">if</span> constexpr(SCALE) {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                <span class="keywordflow">return</span> run_internal(mat, center0, scale0, norm, outU, outV, outD);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                <span class="keywordflow">return</span> run_internal(mat, center0, <span class="keyword">false</span>, norm, outU, outV, outD);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">if</span> constexpr(SCALE) {</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keywordflow">return</span> run_internal(mat, <span class="keyword">false</span>, scale0, norm, outU, outV, outD);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                <span class="keywordflow">return</span> run_internal(mat, <span class="keyword">false</span>, <span class="keyword">false</span>, norm, outU, outV, outD);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            }</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">//            if (iter &lt; 2) {</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">//                std::cout &lt;&lt; &quot;B is currently:\n&quot; &lt;&lt; B &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">//                std::cout &lt;&lt; &quot;W is currently:\n&quot; &lt;&lt; W &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">//                std::cout &lt;&lt; &quot;V is currently:\n&quot; &lt;&lt; V &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">//            }</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            svd.compute(B);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BS = svd.singularValues();</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BU = svd.matrixU();</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BV = svd.matrixV();</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <span class="comment">// Checking for convergence.</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="keywordflow">if</span> (B(work-1, work-1) == 0) { <span class="comment">// a.k.a. the final value of &#39;S&#39; from the Lanczos iterations.</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                converged = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            F = lp.<a class="code" href="classirlba_1_1LanczosBidiagonalization.html#a65385b829636001cdc48e1639d6b3bf2">residuals</a>();</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <span class="keywordtype">double</span> R_F = F.norm();</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            F /= R_F;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <span class="comment">// Computes the convergence criterion defined in on the LHS of Equation 2.13 of Baglama and Riechel.</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            <span class="comment">// We expose it here as we will be re-using the same values to update B, see below.</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            res = R_F * BU.row(work - 1);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            <span class="keywordtype">int</span> n_converged = 0;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <span class="keywordflow">if</span> (iter &gt; 0) {</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                n_converged = convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">run</a>(BS, res);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                <span class="keywordflow">if</span> (n_converged &gt;= number) {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                    converged = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            }</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#abb7f1cdf2d53c991a4494fdeb8eb8bc9">set_last</a>(BS);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            <span class="comment">// Setting &#39;k&#39;. This looks kinda weird, but this is deliberate,</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="comment">// see the text below Algorithm 3.1 of Baglama and Reichel.</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">if</span> (n_converged + number &gt; k) {</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                k = n_converged + number;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            }</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="keywordflow">if</span> (k &gt; work - 3) {</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                k = work - 3;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            <span class="keywordflow">if</span> (k &lt; 1) {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                k = 1;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            }</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> NORMSAMP&gt;</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classirlba_1_1Irlba.html#ab3cbfcd1268acf9adf61338c4f0e9be2">  247</a></span>&#160;    std::pair&lt;bool, int&gt; <a class="code" href="classirlba_1_1Irlba.html#ab3cbfcd1268acf9adf61338c4f0e9be2">run</a>(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> Eigen::VectorXd&amp; center, <span class="keyword">const</span> Eigen::VectorXd&amp; scale, NORMSAMP&amp; norm, Eigen::MatrixXd&amp; outU, Eigen::MatrixXd&amp; outV, Eigen::VectorXd&amp; outD) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keywordflow">return</span> run_internal(mat, center, scale, norm, outU, outV, outD);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> CENTER, <span class="keyword">class</span> SCALE, <span class="keyword">class</span> NORMSAMP&gt;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    std::pair&lt;bool, int&gt; run_internal(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> CENTER&amp; center, <span class="keyword">const</span> SCALE&amp; scale, NORMSAMP&amp; norm, Eigen::MatrixXd&amp; outU, Eigen::MatrixXd&amp; outV, Eigen::VectorXd&amp; outD) {</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> smaller = std::min(mat.rows(), mat.cols());</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        assert(number &lt; smaller);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="comment">// Falling back to an exact SVD for small matrices.</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keywordflow">if</span> (smaller &lt; 6) {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            exact(mat, center, scale, outU, outV, outD);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <span class="keywordflow">return</span> std::make_pair(<span class="keyword">true</span>, 0);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> work = std::min(number + extra_work, smaller);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="comment">// Updating B, W and V.</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            V.leftCols(k) = Vtmp.leftCols(k);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            V.col(k) = F; <span class="comment">// See Equation 3.2 of Baglama and Reichel, where our &#39;V&#39; is</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                          <span class="comment">// their &#39;P&#39;, and our &#39;F&#39; is their &#39;p_{m+1}&#39; (2.2).</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                          <span class="comment">// &#39;F&#39; was orthogonal to the old &#39;V&#39; and it so it</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                          <span class="comment">// should still be orthogonal to the new left-most</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                          <span class="comment">// columns of &#39;V&#39;; the input expectations of &#39;lp&#39;</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                          <span class="comment">// are still met.</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            W.leftCols(k) = Wtmp.leftCols(k);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            B.setZero(work, work);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; l &lt; k; ++l) {</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                B(l, l) = BS[l];</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                B(l, k) = res[l]; <span class="comment">// this looks weird but is deliberate, see</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                                  <span class="comment">// Equation 3.6 of Baglama and Reichel.</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                                  <span class="comment">// By happy coincidence, this is the same</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                                  <span class="comment">// value used to determine convergence in</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                                  <span class="comment">// 2.13, so we can just re-use it.</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        }</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="comment">// See Equation 2.11 of Baglama and Reichel for how to get from B&#39;s</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="comment">// singular triplets to mat&#39;s singular triplets.</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        outD.resize(number);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        outD = svd.singularValues().head(number);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        W.resize(mat.rows(), work);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        Wtmp.resize(mat.rows(), work);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        V.resize(mat.cols(), work);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        Vtmp.resize(mat.cols(), work);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        res.resize(work);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        F.resize(mat.cols());</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <span class="keywordflow">if</span> (initV.size()) {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            assert(initV.size() == V.rows());</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            V.col(0) = initV;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">for</span> (Eigen::Index i = 0; i &lt; V.rows(); ++i) {</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                V(i, 0) = norm();</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            }</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        }</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        V.col(0) /= V.col(0).norm();</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        B.resize(work, work);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        B.setZero(work, work);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordtype">bool</span> converged = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordtype">int</span> iter = 0, k =0;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        Eigen::BDCSVD&lt;Eigen::MatrixXd&gt; svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordflow">for</span> (; iter &lt; maxit; ++iter) {</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="comment">// Technically, this is only a &#39;true&#39; Lanczos bidiagonalization</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="comment">// when k = 0. All other times, we&#39;re just recycling the machinery,</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="comment">// see the text below Equation 3.11 in Baglama and Reichel.</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            lp.<a class="code" href="classirlba_1_1LanczosBidiagonalization.html#aa65332f528a1f56ae8f39bc0ea3a4c45">run</a>(mat, W, V, B, center, scale, norm, k);</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        outU.resize(mat.rows(), number);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        outU.noalias() = W * svd.matrixU().leftCols(number);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        outV.resize(mat.cols(), number);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        outV.noalias() = V * svd.matrixV().leftCols(number);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">//            if (iter &lt; 2) {</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">//                std::cout &lt;&lt; &quot;B is currently:\n&quot; &lt;&lt; B &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">//                std::cout &lt;&lt; &quot;W is currently:\n&quot; &lt;&lt; W &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">//                std::cout &lt;&lt; &quot;V is currently:\n&quot; &lt;&lt; V &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">//            }</span></div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">return</span> std::make_pair(converged, iter + 1);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    }</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> CENTER, <span class="keyword">class</span> SCALE&gt; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordtype">void</span> exact(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> CENTER&amp; center, <span class="keyword">const</span> SCALE&amp; scale, Eigen::MatrixXd&amp; outU, Eigen::MatrixXd&amp; outV, Eigen::VectorXd&amp; outD) {</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        Eigen::BDCSVD&lt;Eigen::MatrixXd&gt; svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        constexpr <span class="keywordtype">bool</span> do_center = !std::is_same&lt;CENTER, bool&gt;::value;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        constexpr <span class="keywordtype">bool</span> do_scale = !std::is_same&lt;SCALE, bool&gt;::value;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keywordflow">if</span> constexpr(std::is_same&lt;M, Eigen::MatrixXd&gt;::value &amp;&amp; !do_center &amp;&amp; !do_scale) {</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            svd.compute(mat);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            Eigen::MatrixXd adjusted(mat);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordflow">for</span> (Eigen::Index i = 0; i &lt; mat.cols(); ++i) {</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">if</span> constexpr(do_center) {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    <span class="keywordflow">for</span> (Eigen::Index j = 0; j &lt; mat.rows(); ++j) {</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                        adjusted(j, i) -= center[i];</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                    }</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                }</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                <span class="keywordflow">if</span> constexpr(do_scale) {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                    adjusted.col(i) /= scale[i];</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                }</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            }</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;            svd.compute(adjusted);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        outD.resize(number);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        outD = svd.singularValues().head(number);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        outU.resize(mat.rows(), number);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        outU = svd.matrixU().leftCols(number);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        outV.resize(mat.cols(), number);</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        outV = svd.matrixV().leftCols(number);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00344"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html">  344</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> {</div>
-<div class="line"><a name="l00350"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">  350</a></span>&#160;        Eigen::MatrixXd <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">U</a>;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
-<div class="line"><a name="l00357"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">  357</a></span>&#160;        Eigen::MatrixXd <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">V</a>;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">  363</a></span>&#160;        Eigen::VectorXd <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">D</a>;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
-<div class="line"><a name="l00368"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">  368</a></span>&#160;        <span class="keywordtype">int</span> <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">iterations</a>;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">  373</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">converged</a>;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    };</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> CENTER, <span class="keyword">class</span> SCALE, <span class="keyword">class</span> NORMSAMP&gt;</div>
-<div class="line"><a name="l00397"></a><span class="lineno"><a class="line" href="classirlba_1_1Irlba.html#abb4ab028d2db0ab438d759dcaf580ff0">  397</a></span>&#160;    <a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> <a class="code" href="classirlba_1_1Irlba.html#abb4ab028d2db0ab438d759dcaf580ff0">run</a>(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> CENTER&amp; center, <span class="keyword">const</span> SCALE&amp; scale, NORMSAMP&amp; norm) {</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> output;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keyword">auto</span> stats = <a class="code" href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">run</a>(mat, center, scale, norm, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">U</a>, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">V</a>, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">D</a>);</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">converged</a> = stats.first;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">iterations</a> = stats.second;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        <span class="keywordflow">return</span> output;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    }</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;};</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;}</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            svd.compute(B);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BS = svd.singularValues();</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BU = svd.matrixU();</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BV = svd.matrixV();</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            <span class="comment">// Checking for convergence.</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="keywordflow">if</span> (B(work-1, work-1) == 0) { <span class="comment">// a.k.a. the final value of &#39;S&#39; from the Lanczos iterations.</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                converged = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            }</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            F = lp.<a class="code" href="classirlba_1_1LanczosBidiagonalization.html#a65385b829636001cdc48e1639d6b3bf2">residuals</a>();</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            <span class="keywordtype">double</span> R_F = F.norm();</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            F /= R_F;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            <span class="comment">// Computes the convergence criterion defined in on the LHS of Equation 2.13 of Baglama and Riechel.</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            <span class="comment">// We expose it here as we will be re-using the same values to update B, see below.</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            res = R_F * BU.row(work - 1);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            <span class="keywordtype">int</span> n_converged = 0;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="keywordflow">if</span> (iter &gt; 0) {</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                n_converged = convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">run</a>(BS, res);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                <span class="keywordflow">if</span> (n_converged &gt;= number) {</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                    converged = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                }</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;            convtest.<a class="code" href="structirlba_1_1ConvergenceTest.html#abb7f1cdf2d53c991a4494fdeb8eb8bc9">set_last</a>(BS);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <span class="comment">// Setting &#39;k&#39;. This looks kinda weird, but this is deliberate,</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            <span class="comment">// see the text below Algorithm 3.1 of Baglama and Reichel.</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <span class="keywordflow">if</span> (n_converged + number &gt; k) {</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                k = n_converged + number;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            }</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            <span class="keywordflow">if</span> (k &gt; work - 3) {</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                k = work - 3;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keywordflow">if</span> (k &lt; 1) {</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                k = 1;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            }</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            <span class="comment">// Updating B, W and V.</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            V.leftCols(k) = Vtmp.leftCols(k);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            V.col(k) = F; <span class="comment">// See Equation 3.2 of Baglama and Reichel, where our &#39;V&#39; is</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                          <span class="comment">// their &#39;P&#39;, and our &#39;F&#39; is their &#39;p_{m+1}&#39; (2.2).</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                          <span class="comment">// &#39;F&#39; was orthogonal to the old &#39;V&#39; and it so it</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                          <span class="comment">// should still be orthogonal to the new left-most</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                          <span class="comment">// columns of &#39;V&#39;; the input expectations of &#39;lp&#39;</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                          <span class="comment">// are still met.</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;            Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            W.leftCols(k) = Wtmp.leftCols(k);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            B.setZero(work, work);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> l = 0; l &lt; k; ++l) {</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;                B(l, l) = BS[l];</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                B(l, k) = res[l]; <span class="comment">// this looks weird but is deliberate, see</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                                  <span class="comment">// Equation 3.6 of Baglama and Reichel.</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                                  <span class="comment">// By happy coincidence, this is the same</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                                  <span class="comment">// value used to determine convergence in</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                                  <span class="comment">// 2.13, so we can just re-use it.</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;            }</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        }</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="comment">// See Equation 2.11 of Baglama and Reichel for how to get from B&#39;s</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="comment">// singular triplets to mat&#39;s singular triplets.</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        outD.resize(number);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        outD = svd.singularValues().head(number);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        outU.resize(mat.rows(), number);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        outU.noalias() = W * svd.matrixU().leftCols(number);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        outV.resize(mat.cols(), number);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        outV.noalias() = V * svd.matrixV().leftCols(number);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">return</span> std::make_pair(converged, iter + 1);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    }</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> CENTER, <span class="keyword">class</span> SCALE&gt; </div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="keywordtype">void</span> exact(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> CENTER&amp; center, <span class="keyword">const</span> SCALE&amp; scale, Eigen::MatrixXd&amp; outU, Eigen::MatrixXd&amp; outV, Eigen::VectorXd&amp; outD) {</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        Eigen::BDCSVD&lt;Eigen::MatrixXd&gt; svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        constexpr <span class="keywordtype">bool</span> do_center = !std::is_same&lt;CENTER, bool&gt;::value;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        constexpr <span class="keywordtype">bool</span> do_scale = !std::is_same&lt;SCALE, bool&gt;::value;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keywordflow">if</span> constexpr(std::is_same&lt;M, Eigen::MatrixXd&gt;::value &amp;&amp; !do_center &amp;&amp; !do_scale) {</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            svd.compute(mat);</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            Eigen::MatrixXd adjusted(mat);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; </div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;            <span class="keywordflow">for</span> (Eigen::Index i = 0; i &lt; mat.cols(); ++i) {</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                <span class="keywordflow">if</span> constexpr(do_center) {</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                    <span class="keywordflow">for</span> (Eigen::Index j = 0; j &lt; mat.rows(); ++j) {</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                        adjusted(j, i) -= center[i];</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                    }</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                }</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                <span class="keywordflow">if</span> constexpr(do_scale) {</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                    adjusted.col(i) /= scale[i];</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                }</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            }</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            svd.compute(adjusted);</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        }</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        outD.resize(number);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        outD = svd.singularValues().head(number);</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        outU.resize(mat.rows(), number);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        outU = svd.matrixU().leftCols(number);</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; </div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        outV.resize(mat.cols(), number);</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        outV = svd.matrixV().leftCols(number);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    }</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00421"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html">  421</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> {</div>
+<div class="line"><a name="l00427"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">  427</a></span>&#160;        Eigen::MatrixXd <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">U</a>;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
+<div class="line"><a name="l00434"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">  434</a></span>&#160;        Eigen::MatrixXd <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">V</a>;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
+<div class="line"><a name="l00440"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">  440</a></span>&#160;        Eigen::VectorXd <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">D</a>;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
+<div class="line"><a name="l00445"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">  445</a></span>&#160;        <span class="keywordtype">int</span> <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">iterations</a>;</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160; </div>
+<div class="line"><a name="l00450"></a><span class="lineno"><a class="line" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">  450</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">converged</a>;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    };</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160; </div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> CENTER = false, <span class="keywordtype">bool</span> SCALE = false, <span class="keyword">class</span> M, <span class="keyword">class</span> NORMSAMP&gt;</div>
+<div class="line"><a name="l00468"></a><span class="lineno"><a class="line" href="classirlba_1_1Irlba.html#acd4e95c53c8adf5192132bd925507f68">  468</a></span>&#160;    <a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> <a class="code" href="classirlba_1_1Irlba.html#acd4e95c53c8adf5192132bd925507f68">run</a>(<span class="keyword">const</span> M&amp; mat, NORMSAMP&amp; norm) {</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        <a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> output;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        <span class="keyword">auto</span> stats = run&lt;CENTER, SCALE&gt;(mat, norm, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">U</a>, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">V</a>, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">D</a>);</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;        output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">converged</a> = stats.first;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;        output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">iterations</a> = stats.second;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;        <span class="keywordflow">return</span> output;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    }</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160; </div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> M, <span class="keyword">class</span> NORMSAMP&gt;</div>
+<div class="line"><a name="l00496"></a><span class="lineno"><a class="line" href="classirlba_1_1Irlba.html#a8fbedcd166e235141628391eea6a8901">  496</a></span>&#160;    <a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> <a class="code" href="classirlba_1_1Irlba.html#a8fbedcd166e235141628391eea6a8901">run</a>(<span class="keyword">const</span> M&amp; mat, <span class="keyword">const</span> Eigen::VectorXd&amp; center, <span class="keyword">const</span> Eigen::VectorXd&amp; scale, NORMSAMP&amp; norm) {</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <a class="code" href="structirlba_1_1Irlba_1_1Results.html">Results</a> output;</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="keyword">auto</span> stats = <a class="code" href="classirlba_1_1Irlba.html#af8e40aefbde9ff742cd4922c00e28267">run</a>(mat, center, scale, norm, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">U</a>, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">V</a>, output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">D</a>);</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">converged</a> = stats.first;</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        output.<a class="code" href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">iterations</a> = stats.second;</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        <span class="keywordflow">return</span> output;</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;    }</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;};</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160; </div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;}</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160; </div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html"><div class="ttname"><a href="classirlba_1_1Irlba.html">irlba::Irlba</a></div><div class="ttdoc">Run IRLBA on an input matrix.</div><div class="ttdef"><b>Definition:</b> irlba.hpp:24</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a0a7e2023de5073846365cc94ff43a63c"><div class="ttname"><a href="classirlba_1_1Irlba.html#a0a7e2023de5073846365cc94ff43a63c">irlba::Irlba::set_work</a></div><div class="ttdeci">Irlba &amp; set_work(int w=7)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:84</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a1a2e2ad5ef56d273005b7760e6d386dd"><div class="ttname"><a href="classirlba_1_1Irlba.html#a1a2e2ad5ef56d273005b7760e6d386dd">irlba::Irlba::set_number</a></div><div class="ttdeci">Irlba &amp; set_number(int n=5)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:58</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a54fdd8672c80faf7cd795557ed02e5e6"><div class="ttname"><a href="classirlba_1_1Irlba.html#a54fdd8672c80faf7cd795557ed02e5e6">irlba::Irlba::set_singular_value_ratio_tolerance</a></div><div class="ttdeci">Irlba &amp; set_singular_value_ratio_tolerance(double t=-1)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:136</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a79b96ff73898ffe31d9ce63d08185491"><div class="ttname"><a href="classirlba_1_1Irlba.html#a79b96ff73898ffe31d9ce63d08185491">irlba::Irlba::set_invariant_tolerance</a></div><div class="ttdeci">Irlba &amp; set_invariant_tolerance(double e)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:96</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_a8fbedcd166e235141628391eea6a8901"><div class="ttname"><a href="classirlba_1_1Irlba.html#a8fbedcd166e235141628391eea6a8901">irlba::Irlba::run</a></div><div class="ttdeci">Results run(const M &amp;mat, const Eigen::VectorXd &amp;center, const Eigen::VectorXd &amp;scale, NORMSAMP &amp;norm)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:496</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_aaa80319c841ba4b5700b781d2ca67b80"><div class="ttname"><a href="classirlba_1_1Irlba.html#aaa80319c841ba4b5700b781d2ca67b80">irlba::Irlba::set_invariant_tolerance</a></div><div class="ttdeci">Irlba &amp; set_invariant_tolerance()</div><div class="ttdef"><b>Definition:</b> irlba.hpp:107</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_abb4ab028d2db0ab438d759dcaf580ff0"><div class="ttname"><a href="classirlba_1_1Irlba.html#abb4ab028d2db0ab438d759dcaf580ff0">irlba::Irlba::run</a></div><div class="ttdeci">Results run(const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:397</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_ab3cbfcd1268acf9adf61338c4f0e9be2"><div class="ttname"><a href="classirlba_1_1Irlba.html#ab3cbfcd1268acf9adf61338c4f0e9be2">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, const Eigen::VectorXd &amp;center, const Eigen::VectorXd &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:247</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_abfa3f83f3fcea5526acbaf75601dc4da"><div class="ttname"><a href="classirlba_1_1Irlba.html#abfa3f83f3fcea5526acbaf75601dc4da">irlba::Irlba::set_maxit</a></div><div class="ttdeci">Irlba &amp; set_maxit(int m=1000)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:71</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_ac8a2166d6ed5b2c2acbebc934b2dac79"><div class="ttname"><a href="classirlba_1_1Irlba.html#ac8a2166d6ed5b2c2acbebc934b2dac79">irlba::Irlba::set_init</a></div><div class="ttdeci">Irlba &amp; set_init(const Eigen::VectorXd &amp;v)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:45</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_acd4e95c53c8adf5192132bd925507f68"><div class="ttname"><a href="classirlba_1_1Irlba.html#acd4e95c53c8adf5192132bd925507f68">irlba::Irlba::run</a></div><div class="ttdeci">Results run(const M &amp;mat, NORMSAMP &amp;norm)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:468</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_ad5a9a64620207cc47d965ca831bf9cf3"><div class="ttname"><a href="classirlba_1_1Irlba.html#ad5a9a64620207cc47d965ca831bf9cf3">irlba::Irlba::set_convergence_tolerance</a></div><div class="ttdeci">Irlba &amp; set_convergence_tolerance(double t=1e-5)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:121</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_aee5d5aba933bf1b3a6f49c5201eb8eb0"><div class="ttname"><a href="classirlba_1_1Irlba.html#aee5d5aba933bf1b3a6f49c5201eb8eb0">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:176</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_af8e40aefbde9ff742cd4922c00e28267"><div class="ttname"><a href="classirlba_1_1Irlba.html#af8e40aefbde9ff742cd4922c00e28267">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:173</div></div>
 <div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html">irlba::LanczosBidiagonalization</a></div><div class="ttdoc">Perform Lanczos bidiagonalization on an input matrix.</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:14</div></div>
 <div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html_a2e853a93d83a15df2a1a63c191835bd7"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html#a2e853a93d83a15df2a1a63c191835bd7">irlba::LanczosBidiagonalization::set_eps</a></div><div class="ttdeci">LanczosBidiagonalization &amp; set_eps(double e)</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:23</div></div>
 <div class="ttc" id="aclassirlba_1_1LanczosBidiagonalization_html_a65385b829636001cdc48e1639d6b3bf2"><div class="ttname"><a href="classirlba_1_1LanczosBidiagonalization.html#a65385b829636001cdc48e1639d6b3bf2">irlba::LanczosBidiagonalization::residuals</a></div><div class="ttdeci">const Eigen::VectorXd &amp; residuals() const</div><div class="ttdef"><b>Definition:</b> lanczos.hpp:196</div></div>
@@ -347,12 +410,12 @@ $(function() {
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html_a2eb178a5948f016d4e117d05a638e691"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#a2eb178a5948f016d4e117d05a638e691">irlba::ConvergenceTest::run</a></div><div class="ttdeci">int run(const Eigen::VectorXd &amp;sv, const Eigen::VectorXd &amp;residuals)</div><div class="ttdef"><b>Definition:</b> utils.hpp:133</div></div>
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html_aa3c5f64920cdb8a31ea18592e8132043"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#aa3c5f64920cdb8a31ea18592e8132043">irlba::ConvergenceTest::set_tol</a></div><div class="ttdeci">ConvergenceTest &amp; set_tol(double t=1e-5)</div><div class="ttdef"><b>Definition:</b> utils.hpp:94</div></div>
 <div class="ttc" id="astructirlba_1_1ConvergenceTest_html_abb7f1cdf2d53c991a4494fdeb8eb8bc9"><div class="ttname"><a href="structirlba_1_1ConvergenceTest.html#abb7f1cdf2d53c991a4494fdeb8eb8bc9">irlba::ConvergenceTest::set_last</a></div><div class="ttdeci">ConvergenceTest &amp; set_last(const Eigen::VectorXd &amp;l)</div><div class="ttdef"><b>Definition:</b> utils.hpp:119</div></div>
-<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html">irlba::Irlba::Results</a></div><div class="ttdef"><b>Definition:</b> irlba.hpp:344</div></div>
-<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a01a33644ef84e921f611699d5656f255"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">irlba::Irlba::Results::iterations</a></div><div class="ttdeci">int iterations</div><div class="ttdef"><b>Definition:</b> irlba.hpp:368</div></div>
-<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a2812e34506e7779d176132d3a80e7207"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">irlba::Irlba::Results::U</a></div><div class="ttdeci">Eigen::MatrixXd U</div><div class="ttdef"><b>Definition:</b> irlba.hpp:350</div></div>
-<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a56642661468cc1865a9e30b547ef7f6f"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">irlba::Irlba::Results::D</a></div><div class="ttdeci">Eigen::VectorXd D</div><div class="ttdef"><b>Definition:</b> irlba.hpp:363</div></div>
-<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a5c10f0d3b70685913c81bff3a7022bcd"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">irlba::Irlba::Results::V</a></div><div class="ttdeci">Eigen::MatrixXd V</div><div class="ttdef"><b>Definition:</b> irlba.hpp:357</div></div>
-<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a6bf7cdbdef24df8f02d7e309ee7c7dcc"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">irlba::Irlba::Results::converged</a></div><div class="ttdeci">bool converged</div><div class="ttdef"><b>Definition:</b> irlba.hpp:373</div></div>
+<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html">irlba::Irlba::Results</a></div><div class="ttdef"><b>Definition:</b> irlba.hpp:421</div></div>
+<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a01a33644ef84e921f611699d5656f255"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255">irlba::Irlba::Results::iterations</a></div><div class="ttdeci">int iterations</div><div class="ttdef"><b>Definition:</b> irlba.hpp:445</div></div>
+<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a2812e34506e7779d176132d3a80e7207"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207">irlba::Irlba::Results::U</a></div><div class="ttdeci">Eigen::MatrixXd U</div><div class="ttdef"><b>Definition:</b> irlba.hpp:427</div></div>
+<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a56642661468cc1865a9e30b547ef7f6f"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f">irlba::Irlba::Results::D</a></div><div class="ttdeci">Eigen::VectorXd D</div><div class="ttdef"><b>Definition:</b> irlba.hpp:440</div></div>
+<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a5c10f0d3b70685913c81bff3a7022bcd"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a5c10f0d3b70685913c81bff3a7022bcd">irlba::Irlba::Results::V</a></div><div class="ttdeci">Eigen::MatrixXd V</div><div class="ttdef"><b>Definition:</b> irlba.hpp:434</div></div>
+<div class="ttc" id="astructirlba_1_1Irlba_1_1Results_html_a6bf7cdbdef24df8f02d7e309ee7c7dcc"><div class="ttname"><a href="structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc">irlba::Irlba::Results::converged</a></div><div class="ttdeci">bool converged</div><div class="ttdef"><b>Definition:</b> irlba.hpp:450</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
