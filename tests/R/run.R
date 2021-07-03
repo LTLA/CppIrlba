@@ -36,5 +36,5 @@ test_that("simple", {
 
     compare(ref$u, out$U)
     compare(ref$v, out$V)
-    expect_equal(ref$s, out$d)
+    expect_equal(ref$d, out$D)
 })
