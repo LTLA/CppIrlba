@@ -3,6 +3,7 @@
 ![Unit tests](https://github.com/LTLA/CppIrlba/actions/workflows/run-tests.yaml/badge.svg)
 ![Documentation](https://github.com/LTLA/CppIrlba/actions/workflows/doxygenate.yaml/badge.svg)
 ![Irlba comparison](https://github.com/LTLA/CppIrlba/actions/workflows/compare-irlba.yaml/badge.svg)
+[![Codecov](https://codecov.io/gh/LTLA/CppIrlba/branch/master/graph/badge.svg?token=E2AFGW2XDB)](https://codecov.io/gh/LTLA/CppIrlba)
 
 ## Overview
 
