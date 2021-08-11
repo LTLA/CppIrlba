@@ -284,7 +284,7 @@ private:
 
         bool converged = false;
         int iter = 0, k =0;
-        Eigen::BDCSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
+        Eigen::JacobiSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
 
         for (; iter < maxit; ++iter) {
             // Technically, this is only a 'true' Lanczos bidiagonalization
