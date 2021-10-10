@@ -2,6 +2,7 @@
 #define IRLBA_UTILS_HPP
 
 #include "Eigen/Dense"
+#include <random>
 #include "aarand/aarand.hpp"
 
 namespace irlba {
@@ -65,7 +66,7 @@ void fill_with_random_normals(Vec& vec, Engine& eng) {
         vec[i + 1] = paired.second;
         i += 2;
     }
-    
+
     if (i != vec.size()) {
         auto paired = aarand::standard_normal(eng);
         vec[i] = paired.first;
@@ -178,6 +179,14 @@ public:
 private:
     Eigen::VectorXd last;
 };
+
+/**
+ * Utility function to generate a default `NULL` argument for the random number generator input.
+ *
+ * @return A null pointer to an RNG.
+ * Any RNG will do here, so we use the most common one.
+ */
+constexpr std::mt19937_64* null_rng() { return NULL; }
 
 }
 

@@ -2,6 +2,7 @@
 #include "irlba/lanczos.hpp"
 #include "irlba/utils.hpp"
 #include "Eigen/Dense"
+#include "NormalSampler.h"
 
 class LanczosTester : public ::testing::Test {
 protected:
@@ -12,7 +13,7 @@ protected:
         B = Eigen::MatrixXd(work, work);
         B.setZero();
 
-        irlba::NormalSampler norm(42);
+        NormalSampler norm(42);
         for (size_t i = 0; i < nc; ++i) {
             for (size_t j = 0; j < nr; ++j) {
                 A(j, i) = norm();
@@ -32,8 +33,8 @@ protected:
 TEST_F(LanczosTester, Basic) {
     irlba::LanczosBidiagonalization y;
 
-    irlba::NormalSampler norm(50);
-    y.run(A, W, V, B, false, false, norm);
+    std::mt19937_64 eng(50);
+    y.run(A, W, V, B, false, false, eng);
 
     // Check that vectors in W are self-orthogonal.
     Eigen::MatrixXd Wcheck = W.adjoint() * W;
@@ -63,15 +64,15 @@ TEST_F(LanczosTester, Basic) {
 TEST_F(LanczosTester, Center) {
     irlba::LanczosBidiagonalization y;
 
-    irlba::NormalSampler norm(50);
+    NormalSampler norm(50);
     Eigen::VectorXd center(A.cols());
     for (auto& c : center) { c = norm(); }
 
     Eigen::MatrixXd W2 = W;
     Eigen::MatrixXd V2 = V;
     Eigen::MatrixXd B2 = B;
-    irlba::NormalSampler norm2(50);
-    y.run(A, W2, V2, B2, center, false, norm2);
+    std::mt19937_64 eng(50);
+    y.run(A, W2, V2, B2, center, false, eng);
 
     Eigen::MatrixXd Acopy = A;
     for (size_t i = 0; i < A.cols(); ++i) {
@@ -83,8 +84,8 @@ TEST_F(LanczosTester, Center) {
     Eigen::MatrixXd W3 = W;
     Eigen::MatrixXd V3 = V;
     Eigen::MatrixXd B3 = B;
-    irlba::NormalSampler norm3(50);
-    y.run(Acopy, W3, V3, B3, false, false, norm3);
+    std::mt19937_64 eng2(50);
+    y.run(Acopy, W3, V3, B3, false, false, eng2);
 
     // Numerically equivalent values.
     for (size_t i = 0; i < W2.cols(); ++i) {
@@ -109,7 +110,7 @@ TEST_F(LanczosTester, Center) {
 TEST_F(LanczosTester, CenterAndScale) {
     irlba::LanczosBidiagonalization y;
 
-    irlba::NormalSampler norm(50);
+    NormalSampler norm(50);
     Eigen::VectorXd center(A.cols());
     for (auto& c : center) { c = norm(); }
     Eigen::VectorXd scale(A.cols());
@@ -118,8 +119,8 @@ TEST_F(LanczosTester, CenterAndScale) {
     Eigen::MatrixXd W2 = W;
     Eigen::MatrixXd V2 = V;
     Eigen::MatrixXd B2 = B;
-    irlba::NormalSampler norm2(50);
-    y.run(A, W2, V2, B2, center, scale, norm2);
+    std::mt19937_64 eng(50);
+    y.run(A, W2, V2, B2, center, scale, eng);
 
     Eigen::MatrixXd Acopy = A;
     for (size_t i = 0; i < A.cols(); ++i) {
@@ -132,8 +133,8 @@ TEST_F(LanczosTester, CenterAndScale) {
     Eigen::MatrixXd W3 = W;
     Eigen::MatrixXd V3 = V;
     Eigen::MatrixXd B3 = B;
-    irlba::NormalSampler norm3(50);
-    y.run(Acopy, W3, V3, B3, false, false, norm3);
+    std::mt19937_64 eng2(50);
+    y.run(Acopy, W3, V3, B3, false, false, eng2);
 
     // Numerically equivalent values.
     for (size_t i = 0; i < W2.cols(); ++i) {
@@ -158,11 +159,11 @@ TEST_F(LanczosTester, CenterAndScale) {
 TEST_F(LanczosTester, Restart) {
     irlba::LanczosBidiagonalization y;
 
-    irlba::NormalSampler norm(50);
     Eigen::MatrixXd subW = W.leftCols(3); 
     Eigen::MatrixXd subV = V.leftCols(3); 
     Eigen::MatrixXd subB = B.topLeftCorner(3,3); 
-    y.run(A, subW, subV, subB, false, false, norm);
+    std::mt19937_64 eng(50);
+    y.run(A, subW, subV, subB, false, false, eng);
 
     Eigen::MatrixXd copyW(nr, work);
     copyW.leftCols(3) = subW;
@@ -172,12 +173,12 @@ TEST_F(LanczosTester, Restart) {
     copyB.setZero();
     copyB.topLeftCorner(3,3) = subB;
     copyV.col(3) = y.residuals() / y.residuals().norm();
-    y.run(A, copyW, copyV, copyB, false, false, norm, 3); //restarting from start = 3.
+    y.run(A, copyW, copyV, copyB, false, false, eng, 3); //restarting from start = 3.
 
     // Numerically equivalent to a full compuation... except for B, where the
     // restart loses one of the superdiagonal elements (which is normally 
     // filled in by the residual error in the IRLBA loop, see Equation 3.6).
-    y.run(A, W, V, B, false, false, norm);
+    y.run(A, W, V, B, false, false, eng);
 
     for (size_t i = 0; i < copyW.cols(); ++i) {
         for (size_t j = 0; j < copyW.rows(); ++j) {

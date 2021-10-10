@@ -3,6 +3,7 @@
 #include "irlba/irlba.hpp"
 
 #include "compare.h"
+#include "NormalSampler.h"
 
 #include "Eigen/Dense"
 #include "Eigen/Sparse"
@@ -19,7 +20,7 @@ protected:
 
         int counter = 0;
         std::vector<T> coefficients;
-        irlba::NormalSampler norm(42);
+        NormalSampler norm(42);
         for (size_t i = 0; i < nc; ++i) {
             for (size_t j = 0; j < nr; ++j, ++counter) {
                 if (norm() > 0) { // introducing sparsity by only filling in ~50% elements.
@@ -40,11 +41,8 @@ protected:
 
 TEST_F(SparseTester, Sparse) {
     irlba::Irlba irb;
-    irlba::NormalSampler norm(50);
-    auto res = irb.set_number(8).set_work(7).run(A, norm);
-
-    irlba::NormalSampler norm2(50);
-    auto res2 = irb.set_number(8).set_work(7).run(B, norm2);
+    auto res = irb.set_number(8).set_work(7).run(A);
+    auto res2 = irb.set_number(8).set_work(7).run(B);
 
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.U, res2.U);
@@ -53,11 +51,8 @@ TEST_F(SparseTester, Sparse) {
 
 TEST_F(SparseTester, CenterScale) {
     irlba::Irlba irb;
-    irlba::NormalSampler norm(50);
-    auto res = irb.set_number(8).set_work(7).run<true, true>(A, norm);
-
-    irlba::NormalSampler norm2(50);
-    auto res2 = irb.set_number(8).set_work(7).run<true, true>(B, norm2);
+    auto res = irb.set_number(8).set_work(7).run<true, true>(A);
+    auto res2 = irb.set_number(8).set_work(7).run<true, true>(B);
 
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.V, res2.V);
@@ -75,8 +70,7 @@ TEST_F(SparseTester, CenterScale) {
 
 TEST_F(SparseTester, SparseToReference) {
     irlba::Irlba irb;
-    irlba::NormalSampler norm(50);
-    auto res = irb.set_number(13).set_work(20).run(B, norm);
+    auto res = irb.set_number(13).set_work(20).run(B);
 
     // Bumping up the tolerance as later SV's tend to be a bit more variable.
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);

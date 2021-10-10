@@ -6,6 +6,7 @@
 #include "lanczos.hpp"
 #include <cmath>
 #include <cstdint>
+#include <random>
 
 /**
  * @file irlba.hpp
@@ -171,7 +172,6 @@ public:
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] eng Instance of a random number generator.
      * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
@@ -180,12 +180,20 @@ public:
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
      * @param[out] outD Vector to store the first singular values.
      * The length is set automatically as defined by `set_number()`.
+     * @param eng Pointer to an instance of a random number generator.
+     * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      */
-    template<bool CENTER = false, bool SCALE = false, class M, class Engine>
-    std::pair<bool, int> run(const M& mat, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    template<bool CENTER = false, bool SCALE = false, class M, class Engine = std::mt19937_64>
+    std::pair<bool, int> run(
+        const M& mat, 
+        Eigen::MatrixXd& outU, 
+        Eigen::MatrixXd& outV, 
+        Eigen::VectorXd& outD, 
+        Engine* eng = null_rng()) 
+    {
         Eigen::VectorXd center0, scale0;
 
         if constexpr(SCALE || CENTER) {
@@ -217,15 +225,15 @@ public:
 
         if constexpr(CENTER) {
             if constexpr(SCALE) {
-                return run_internal(mat, center0, scale0, eng, outU, outV, outD);
+                return run_internal(mat, center0, scale0, outU, outV, outD, eng);
             } else {
-                return run_internal(mat, center0, false, eng, outU, outV, outD);
+                return run_internal(mat, center0, false, outU, outV, outD, eng);
             }
         } else {
             if constexpr(SCALE) {
-                return run_internal(mat, false, scale0, eng, outU, outV, outD);
+                return run_internal(mat, false, scale0, outU, outV, outD, eng);
             } else {
-                return run_internal(mat, false, false, eng, outU, outV, outD);
+                return run_internal(mat, false, false, outU, outV, outD, eng);
             }
         }
     }
@@ -241,7 +249,8 @@ public:
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] eng Instance of a random number generator.
+     * @param[in] center A vector of length equal to the number of columns of `mat`.
+     * @param[in] scale A vector of length equal to the number of columns of `mat`, containing positive values.
      * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
@@ -250,20 +259,38 @@ public:
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of columns in `mat`.
      * @param[out] outD Vector to store the first singular values.
      * The length is set automatically as defined by `set_number()`.
-     * @param[in] center A vector of length equal to the number of columns of `mat`.
-     * @param[in] scale A vector of length equal to the number of columns of `mat`, containing positive values.
+     * @param eng Pointer to an instance of a random number generator.
+     * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      *
      * @overload
      */
-    template<class M, class Engine>
-    std::pair<bool, int> run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
-        return run_internal(mat, center, scale, eng, outU, outV, outD);
+    template<class Matrix, class Engine = std::mt19937_64>
+    std::pair<bool, int> run(
+        const Matrix& mat, 
+        const Eigen::VectorXd& center, 
+        const Eigen::VectorXd& scale, 
+        Eigen::MatrixXd& outU, 
+        Eigen::MatrixXd& outV, 
+        Eigen::VectorXd& outD, 
+        Engine* eng = null_rng())
+    {
+        return run_internal(mat, center, scale, outU, outV, outD, eng);
     }
 
 private:
+    template<class M, class CENTER, class SCALE, class Engine>
+    std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD, Engine* eng) {
+        if (eng == NULL) {
+            std::mt19937_64 rng(seed);
+            return run_internal(mat, center, scale, rng, outU, outV, outD);
+        } else {
+            return run_internal(mat, center, scale, *eng, outU, outV, outD);
+        }
+    }
+
     template<class M, class CENTER, class SCALE, class Engine>
     std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         const int smaller = std::min(mat.rows(), mat.cols());
@@ -390,6 +417,7 @@ private:
 
         return std::make_pair(converged, iter + 1);
     }
+
 private:
     template<class M, class CENTER, class SCALE> 
     void exact(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
@@ -470,17 +498,18 @@ public:
      * This is most typically a class from the **Eigen** matrix manipulation library.
      * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
      * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
+     * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] norm An instance of a functor to generate normally distributed values.
+     * @param eng Pointer to an instance of a random number generator.
+     * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
-    template<bool CENTER = false, bool SCALE = false, class M, class NORMSAMP>
-    Results run(const M& mat, NORMSAMP& norm) {
+    template<bool CENTER = false, bool SCALE = false, class M, class Engine = std::mt19937_64>
+    Results run(const M& mat, Engine* eng = null_rng()) {
         Results output;
-        auto stats = run<CENTER, SCALE>(mat, norm, output.U, output.V, output.D);
+        auto stats = run<CENTER, SCALE>(mat, output.U, output.V, output.D, eng);
         output.converged = stats.first;
         output.iterations = stats.second;
         return output;
@@ -492,23 +521,24 @@ public:
      *
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
      * This is most typically a class from the **Eigen** matrix manipulation library.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
+     * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] norm An instance of a functor to generate normally distributed values.
      * @param[in] center A vector of length equal to the number of columns of `mat`.
      * Each value is to be subtracted from the corresponding column of `mat`.
      * @param[in] scale A vector of length equal to the number of columns of `mat`.
      * Each value should be positive and is used to divide the corresponding column of `mat`.
+     * @param eng Pointer to an instance of a random number generator.
+     * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      *
      * @overload
      */
-    template<class M, class NORMSAMP>
-    Results run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, NORMSAMP& norm) {
+    template<class M, class Engine = std::mt19937_64>
+    Results run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, Engine* eng = null_rng()) {
         Results output;
-        auto stats = run(mat, center, scale, norm, output.U, output.V, output.D);
+        auto stats = run(mat, center, scale, output.U, output.V, output.D, eng);
         output.converged = stats.first;
         output.iterations = stats.second;
         return output;
