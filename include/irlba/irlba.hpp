@@ -5,6 +5,7 @@
 #include "utils.hpp"
 #include "lanczos.hpp"
 #include <cmath>
+#include <cstdint>
 
 /**
  * @file irlba.hpp
@@ -31,6 +32,7 @@ private:
     LanczosBidiagonalization lp;
     int number = 5, extra_work = 7;
     int maxit = 1000;
+    uint64_t seed = 42;
 
     ConvergenceTest convtest;
 
@@ -70,6 +72,19 @@ public:
      */
     Irlba& set_maxit(int m = 1000) {
         maxit = m;
+        return *this;
+    }
+
+    /**
+     * Set the maximum number of restart iterations.
+     * In most cases, convergence will occur before reaching this limit.
+     *
+     * @param m Maximum number of iterations.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_seed(uint64_t s = 5678u) {
+        seed = s;
         return *this;
     }
 
@@ -153,10 +168,10 @@ public:
      * This is most typically a class from the **Eigen** matrix manipulation library.
      * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
      * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
+     * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] norm An instance of a functor to generate normally distributed values.
+     * @param[in] eng Instance of a random number generator.
      * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
@@ -169,8 +184,8 @@ public:
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      */
-    template<bool CENTER = false, bool SCALE = false, class M, class NORMSAMP>
-    std::pair<bool, int> run(const M& mat, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    template<bool CENTER = false, bool SCALE = false, class M, class Engine>
+    std::pair<bool, int> run(const M& mat, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         Eigen::VectorXd center0, scale0;
 
         if constexpr(SCALE || CENTER) {
@@ -202,15 +217,15 @@ public:
 
         if constexpr(CENTER) {
             if constexpr(SCALE) {
-                return run_internal(mat, center0, scale0, norm, outU, outV, outD);
+                return run_internal(mat, center0, scale0, eng, outU, outV, outD);
             } else {
-                return run_internal(mat, center0, false, norm, outU, outV, outD);
+                return run_internal(mat, center0, false, eng, outU, outV, outD);
             }
         } else {
             if constexpr(SCALE) {
-                return run_internal(mat, false, scale0, norm, outU, outV, outD);
+                return run_internal(mat, false, scale0, eng, outU, outV, outD);
             } else {
-                return run_internal(mat, false, false, norm, outU, outV, outD);
+                return run_internal(mat, false, false, eng, outU, outV, outD);
             }
         }
     }
@@ -223,10 +238,10 @@ public:
      *
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
      * This is most typically a class from the **Eigen** matrix manipulation library.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random value from a standard Normal distribution.
+     * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] norm An instance of a functor to generate normally distributed values.
+     * @param[in] eng Instance of a random number generator.
      * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
@@ -243,14 +258,14 @@ public:
      *
      * @overload
      */
-    template<class M, class NORMSAMP>
-    std::pair<bool, int> run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
-        return run_internal(mat, center, scale, norm, outU, outV, outD);
+    template<class M, class Engine>
+    std::pair<bool, int> run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+        return run_internal(mat, center, scale, eng, outU, outV, outD);
     }
 
 private:
-    template<class M, class CENTER, class SCALE, class NORMSAMP>
-    std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, NORMSAMP& norm, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    template<class M, class CENTER, class SCALE, class Engine>
+    std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         const int smaller = std::min(mat.rows(), mat.cols());
         assert(number < smaller);
 
@@ -273,9 +288,7 @@ private:
             assert(initV.size() == V.rows());
             V.col(0) = initV;
         } else {
-            for (Eigen::Index i = 0; i < V.rows(); ++i) {
-                V(i, 0) = norm();
-            }
+            fill_with_random_normals(V, 0, eng);
         }
         V.col(0) /= V.col(0).norm();
 
@@ -290,7 +303,7 @@ private:
             // Technically, this is only a 'true' Lanczos bidiagonalization
             // when k = 0. All other times, we're just recycling the machinery,
             // see the text below Equation 3.11 in Baglama and Reichel.
-            lp.run(mat, W, V, B, center, scale, norm, k);
+            lp.run(mat, W, V, B, center, scale, eng, k);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;

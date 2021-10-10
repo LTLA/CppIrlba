@@ -2,7 +2,7 @@
 #define IRLBA_UTILS_HPP
 
 #include "Eigen/Dense"
-#include <random>
+#include "aarand/aarand.hpp"
 
 namespace irlba {
 
@@ -45,36 +45,66 @@ private:
     Eigen::VectorXd tmp;
 };
 
-/**
- * @brief Sample from a normal distribution.
+/** 
+ * Fill an **Eigen** vector with random normals via **aarand**.
  *
- * This performs pseudo-random sampling from the normal distribution, using the 64-bit Mersenne Twister from the C++ `<random>` standard library as the random number engine.
- * However, the former may not be consistently implemented across different platforms;
- * users may prefer to use the Boost `normal_distribution` implementation to ensure reproducibility across compilers.
+ * @param Vec Any **Eigen** vector class or equivalent proxy object.
+ * @param Engine A (pseudo-)random number generator class that returns a random number when called with no arguments.
+ *
+ * @param vec Instance of a `Vec` class.
+ * @param eng Instance of an `Engine` class.
+ *
+ * @return `vec` is filled with random draws from a standard normal distribution.
  */
-class NormalSampler {
-public:
-    /**
-     * @param s Seed value.
-     */
-    NormalSampler(uint_fast64_t s) : generator(s) {}
-
-    /**
-     * @return A pseudo-random value from a normal distribution.
-     */
-    double operator()() { 
-        return distr(generator);
+template<class Vec, class Engine>
+void fill_with_random_normals(Vec& vec, Engine& eng) {
+    Eigen::Index i = 0;
+    while (i < vec.size() - 1) {
+        auto paired = aarand::standard_normal(eng);
+        vec[i] = paired.first;
+        vec[i + 1] = paired.second;
+        i += 2;
     }
-private:
-    std::mt19937_64 generator;
+    
+    if (i != vec.size()) {
+        auto paired = aarand::standard_normal(eng);
+        vec[i] = paired.first;
+    }
+    return;
+}
 
-#ifdef IRLBA_RANDOM_REPRODUCIBLE
-    // Probably should use Boost's method here, to ensure we 
-    // get the same implementation across compilers.
-#else 
-    std::normal_distribution<double> distr;
-#endif
+/**
+ * @cond
+ */
+template<class M>
+struct ColumnVectorProxy {
+    ColumnVectorProxy(M& m, int c) : mat(m), col(c) {}
+    auto size () { return mat.rows(); }
+    auto& operator[](int r) { return mat(r, col); }
+    M& mat;
+    int col;
 };
+/**
+ * @endcond
+ */
+ 
+/** 
+ * Fill a column of an **Eigen** matrix with random normals via **aarand**.
+ *
+ * @param Matrix Any **Eigen** matrix class or equivalent proxy object.
+ * @param Engine A (pseudo-)random number generator class that returns a random number when called with no arguments.
+ *
+ * @param mat Instance of a `Matrix` class.
+ * @param eng Instance of an `Engine` class.
+ *
+ * @return The `column` column of `mat` is filled with random draws from a standard normal distribution.
+ */
+template<class Matrix, class Engine>
+void fill_with_random_normals(Matrix& mat, int column, Engine& eng) {
+    ColumnVectorProxy proxy(mat, column);
+    fill_with_random_normals(proxy, eng);
+    return;
+}
 
 /**
  * @brief Test for IRLBA convergence.

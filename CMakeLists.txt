@@ -13,7 +13,7 @@ target_include_directories(irlba INTERFACE include/)
 
 add_subdirectory(extern)
 
-target_link_libraries(irlba INTERFACE eigen)
+target_link_libraries(irlba INTERFACE eigen aarand)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)

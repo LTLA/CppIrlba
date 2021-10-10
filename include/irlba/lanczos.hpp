@@ -54,7 +54,7 @@ public:
      *   The method should accept an `Eigen::VectorXd` of length equal to the number of rows and return and return an `Eigen::VectorXd`-coercible object of length equal to the number of columns.
      * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
      * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
-     * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
+     * @tparam Engine A functor that, when called with no arguments, returns a random integer from a discrete uniform distribution.
      *
      * @param mat Input matrix.
      * @param center A vector of length equal to the number of columns of `mat`.
@@ -62,7 +62,7 @@ public:
      * Alternatively `false`, if no centering is to be performed.
      * @param scale A vector of length equal to the number of columns of `mat`.
      * Each value should be positive and is used to divide the corresponding column of `mat`.
-     * @param norm An instance of a functor to generate normally distributed values.
+     * @param eng An instance of a random number `Engine`.
      * @param W Output matrix with number of rows equal to `mat.rows()`.
      * The size of the working subspace is defined from the number of columns.
      * The first `start` columns should contain orthonormal column vectors with non-zero L2 norms.
@@ -76,8 +76,8 @@ public:
      * `W` is filled with orthonormal vectors, as is `V`.
      * `B` is filled with upper diagonal entries.
      */
-    template<class M, class CENTER, class SCALE, class NORMSAMP>
-    void run(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, Eigen::MatrixXd& B, const CENTER& center, const SCALE& scale, NORMSAMP& norm, int start = 0) {
+    template<class M, class CENTER, class SCALE, class Engine>
+    void run(const M& mat, Eigen::MatrixXd& W, Eigen::MatrixXd& V, Eigen::MatrixXd& B, const CENTER& center, const SCALE& scale, Engine& eng, int start = 0) {
         constexpr bool do_center = !std::is_same<CENTER, bool>::value;
         constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
 
@@ -117,7 +117,7 @@ public:
                 double R_F = F.norm();
 
                 if (R_F < eps) {
-                    for (auto& f : F) { f = norm(); }
+                    fill_with_random_normals(F, eng);
                     orthog.run(V, F, j + 1);
                     R_F = F.norm();
                     F /= R_F;
@@ -135,7 +135,7 @@ public:
 
                 S = W_next.norm();
                 if (S < eps) {
-                    for (auto& w : W_next) { w = norm(); }
+                    fill_with_random_normals(F, eng);
                     orthog.run(W, W_next, j + 1);
                     S = W_next.norm();
                     W_next /= S;
@@ -191,7 +191,6 @@ private:
         }
         return;
     }
-
 public:
     /**
      * Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).
