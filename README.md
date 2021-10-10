@@ -19,22 +19,22 @@ Using this library is as simple as including the header file in your source code
 #include "irlba/irlba.hpp"
 
 irlba::Irlba runner;
-irlba::NormalSampler norm(50);
 
 // optional; specify the number of singular vectors, workspace, etc.
 runner.set_number(5).set_work(20);
 
-Eigen::MatrixXd U, V;
-Eigen::VectorXd S;
-runner.run(mat, false, false, norm, U, V, S);
+auto result = runner.run(mat, false, false, U, V, S);
+result.U; // left singular vectors
+result.V; // right singular vectors
+result.S; // singular values
 ```
 
-To perform a PCA, compute the relevant vector of centering values (and optionally scaling values, if desired) and supply this to `run()`:
+To perform a PCA:
 
 ```cpp
-Eigen::VectorXd center = mat.colwise().sum();
-runner.run(mat, center, false, norm, U, V, S);
-U *= S.asDiagonal();
+auto res = runner.run(mat, true, false);
+Eigen::MatrixXd components = res.U;
+components *= res.S.asDiagonal();
 ```
 
 See the [reference documentation](https://ltla.github.io/CppIrlba) for more details.
