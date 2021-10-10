@@ -4,9 +4,11 @@
 #include "Eigen/Dense"
 #include "utils.hpp"
 #include "lanczos.hpp"
+
 #include <cmath>
 #include <cstdint>
 #include <random>
+#include <stdexcept>
 
 /**
  * @file irlba.hpp
@@ -24,32 +26,39 @@ namespace irlba {
  * with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.
  */
 class Irlba {
+public:
+    struct Defaults {
+        /**
+         * See `set_number()` for more details.
+         */
+        static constexpr int number = 5;
+
+        /**
+         * See `set_work()` for more details.
+         */
+        static constexpr int extra_work = 7;
+
+        /**
+         * See `set_maxit()` for more details.
+         */
+        static constexpr int maxit = 1000;
+
+        /**
+         * See `set_seed()` for more details.
+         */
+        static constexpr uint64_t seed = std::mt19937_64::default_seed;
+    };
 private:
-    Eigen::MatrixXd W, V, B;
-    Eigen::MatrixXd Wtmp, Vtmp;
-
-    Eigen::VectorXd initV, res, F;
-
     LanczosBidiagonalization lp;
-    int number = 5, extra_work = 7;
-    int maxit = 1000;
-    uint64_t seed = 42;
+
+    int number = Defaults::number; 
+    int extra_work = Defaults::extra_work;
+    int maxit = Defaults::maxit;
+    uint64_t seed = Defaults::seed;
 
     ConvergenceTest convtest;
 
 public:
-    /**
-     * Set the starting vector for V.
-     *
-     * @param v Arbitrary vector of length equal to the number of columns in the matrix supplied to `run()`.
-     * 
-     * @return A reference to the `Irlba` instance.
-     */
-    Irlba& set_init(const Eigen::VectorXd& v) {
-        initV = v;
-        return *this;
-    }
-
     /**
      * Specify the number of singular values/vectors to obtain.
      * This should be less than the smaller dimension of the matrix supplied to `run()`.
@@ -58,7 +67,7 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_number(int n = 5) {
+    Irlba& set_number(int n = Defaults::number) {
         number = n;
         return *this;
     }
@@ -71,7 +80,7 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_maxit(int m = 1000) {
+    Irlba& set_maxit(int m = Defaults::maxit) {
         maxit = m;
         return *this;
     }
@@ -84,7 +93,7 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_seed(uint64_t s = 5678u) {
+    Irlba& set_seed(uint64_t s = Defaults::seed) {
         seed = s;
         return *this;
     }
@@ -97,59 +106,43 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_work(int w = 7) {
+    Irlba& set_work(int w = Defaults::extra_work) {
         extra_work = w;
         return *this;
     }
 
     /**
-     * Set the tolerance for detecting invariant subspaces. 
+     * See `LanczosBidiagonalization::set_epsilon()` for details.
      *
-     * @param e Positive tolerance value.
+     * @param e Epsilon value.
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_invariant_tolerance(double e) {
-         lp.set_eps(e);
+    Irlba& set_invariant_tolerance(double e = LanczosBidiagonalization::Defaults::epsilon) {
+         lp.set_epsilon(e);
          return *this;
     }
 
     /**
-     * Set the tolerance for detecting invariant subspaces to its default value, 
-     * namely the epsilon for double-precision values to the power of 0.8.
-     *
-     * @return A reference to the `Irlba` instance.
-     */
-    Irlba& set_invariant_tolerance() {
-        lp.set_eps();
-        return *this;
-    }
-
-    /**
-     * Set the tolerance for convergence based on the residuals.
-     * This is used to define a threshold against which the residuals of the decomposition are compared;
-     * all values must be below the threshold for convergence to be considered.
+     * See `ConvergenceTest::set_tol()` for details.
      *
      * @param t Positive tolerance value.
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_convergence_tolerance(double t = 1e-5) {
+    Irlba& set_convergence_tolerance(double t = ConvergenceTest::Defaults::tol) {
         convtest.set_tol(t);
         return *this;
     }
 
     /**
-     * Set the tolerance for convergence based on the singular value ratios.
-     * At each iteration, the absolute value of the relative difference in the singular values is compared to the tolerance; 
-     * all values must be below the threshold for convergence to be considered.
+     * See `ConvergenceTest::set_svtol()` for details.
      *
-     * @param t Positive tolerance value.
-     * Alternatively, a negative value, in which case the value from `set_convergence_tolerance()` is used instead.
+     * @param t Positive tolerance value, or -1.
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_singular_value_ratio_tolerance(double t = -1) {
+    Irlba& set_singular_value_ratio_tolerance(double t = ConvergenceTest::Defaults::svtol) {
         convtest.set_svtol(t);
         return *this;
     }
@@ -182,6 +175,8 @@ public:
      * The length is set automatically as defined by `set_number()`.
      * @param eng Pointer to an instance of a random number generator.
      * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
+     * @param[in] init Pointer to a vector of length equal to the number of columns of `mat`,
+     * containing the initial values of the first right singular vector.
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
@@ -192,7 +187,8 @@ public:
         Eigen::MatrixXd& outU, 
         Eigen::MatrixXd& outV, 
         Eigen::VectorXd& outD, 
-        Engine* eng = null_rng()) 
+        Engine* eng = null_rng(),
+        Eigen::VectorXd* init = NULL) 
     {
         Eigen::VectorXd center0, scale0;
 
@@ -225,15 +221,15 @@ public:
 
         if constexpr(CENTER) {
             if constexpr(SCALE) {
-                return run_internal(mat, center0, scale0, outU, outV, outD, eng);
+                return run_internal(mat, center0, scale0, outU, outV, outD, eng, init);
             } else {
-                return run_internal(mat, center0, false, outU, outV, outD, eng);
+                return run_internal(mat, center0, false, outU, outV, outD, eng, init);
             }
         } else {
             if constexpr(SCALE) {
-                return run_internal(mat, false, scale0, outU, outV, outD, eng);
+                return run_internal(mat, false, scale0, outU, outV, outD, eng, init);
             } else {
-                return run_internal(mat, false, false, outU, outV, outD, eng);
+                return run_internal(mat, false, false, outU, outV, outD, eng, init);
             }
         }
     }
@@ -261,6 +257,8 @@ public:
      * The length is set automatically as defined by `set_number()`.
      * @param eng Pointer to an instance of a random number generator.
      * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
+     * @param[in] init Pointer to a vector of length equal to the number of columns of `mat`,
+     * containing the initial values of the first right singular vector.
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
@@ -275,26 +273,47 @@ public:
         Eigen::MatrixXd& outU, 
         Eigen::MatrixXd& outV, 
         Eigen::VectorXd& outD, 
-        Engine* eng = null_rng())
+        Engine* eng = null_rng(),
+        Eigen::VectorXd* init = NULL) 
     {
-        return run_internal(mat, center, scale, outU, outV, outD, eng);
+        return run_internal(mat, center, scale, outU, outV, outD, eng, init);
     }
 
 private:
     template<class M, class CENTER, class SCALE, class Engine>
-    std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD, Engine* eng) {
+    std::pair<bool, int> run_internal(
+        const M& mat, 
+        const CENTER& center, 
+        const SCALE& scale, 
+        Eigen::MatrixXd& outU, 
+        Eigen::MatrixXd& outV, 
+        Eigen::VectorXd& outD, 
+        Engine* eng, 
+        Eigen::VectorXd* init) 
+    {
         if (eng == NULL) {
             std::mt19937_64 rng(seed);
-            return run_internal(mat, center, scale, rng, outU, outV, outD);
+            return run_internal(mat, center, scale, rng, outU, outV, outD, init);
         } else {
-            return run_internal(mat, center, scale, *eng, outU, outV, outD);
+            return run_internal(mat, center, scale, *eng, outU, outV, outD, init);
         }
     }
 
     template<class M, class CENTER, class SCALE, class Engine>
-    std::pair<bool, int> run_internal(const M& mat, const CENTER& center, const SCALE& scale, Engine& eng, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    std::pair<bool, int> run_internal(
+        const M& mat, 
+        const CENTER& center, 
+        const SCALE& scale, 
+        Engine& eng, 
+        Eigen::MatrixXd& outU, 
+        Eigen::MatrixXd& outV, 
+        Eigen::VectorXd& outD, 
+        Eigen::VectorXd* init)
+    {
         const int smaller = std::min(mat.rows(), mat.cols());
-        assert(number < smaller);
+        if (number >= smaller) {
+            throw std::runtime_error("requested number of singular values must be less than smaller matrix dimension");
+        }
 
         // Falling back to an exact SVD for small matrices.
         if (smaller < 6) {
@@ -304,33 +323,38 @@ private:
 
         const int work = std::min(number + extra_work, smaller);
 
-        W.resize(mat.rows(), work);
-        Wtmp.resize(mat.rows(), work);
-        V.resize(mat.cols(), work);
-        Vtmp.resize(mat.cols(), work);
-        res.resize(work);
-        F.resize(mat.cols());
-
-        if (initV.size()) {
-            assert(initV.size() == V.rows());
-            V.col(0) = initV;
+        Eigen::MatrixXd V(mat.cols(), work);
+        if (init) {
+            if (init->size() != V.rows()) {
+                throw std::runtime_error("initialization vector does not have expected number of rows");
+            }
+            V.col(0) = *init;
         } else {
             fill_with_random_normals(V, 0, eng);
         }
         V.col(0) /= V.col(0).norm();
 
-        B.resize(work, work);
-        B.setZero(work, work);
-
         bool converged = false;
         int iter = 0, k =0;
         Eigen::JacobiSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
+        auto lptmp = lp.initialize(mat);
+
+        Eigen::MatrixXd W(mat.rows(), work);
+        Eigen::MatrixXd Wtmp(mat.rows(), work);
+        Eigen::MatrixXd Vtmp(mat.cols(), work);
+
+        Eigen::MatrixXd B(work, work);
+        B.setZero(work, work);
+        Eigen::VectorXd res(work);
+        Eigen::VectorXd F(mat.cols());
+
+        Eigen::VectorXd prevS(work);
 
         for (; iter < maxit; ++iter) {
             // Technically, this is only a 'true' Lanczos bidiagonalization
             // when k = 0. All other times, we're just recycling the machinery,
             // see the text below Equation 3.11 in Baglama and Reichel.
-            lp.run(mat, W, V, B, center, scale, eng, k);
+            lp.run(mat, W, V, B, center, scale, eng, lptmp, k);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -349,7 +373,7 @@ private:
                 break;
             }
 
-            F = lp.residuals();
+            F = lptmp.residuals();
             double R_F = F.norm();
             F /= R_F;
 
@@ -359,13 +383,13 @@ private:
 
             int n_converged = 0;
             if (iter > 0) {
-                n_converged = convtest.run(BS, res);
+                n_converged = convtest.run(BS, res, prevS);
                 if (n_converged >= number) {
                     converged = true;
                     break;
                 }
             }
-            convtest.set_last(BS);
+            prevS = BS;
 
             // Setting 'k'. This looks kinda weird, but this is deliberate,
             // see the text below Algorithm 3.1 of Baglama and Reichel.
@@ -503,13 +527,15 @@ public:
      * @param[in] mat Input matrix.
      * @param eng Pointer to an instance of a random number generator.
      * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
+     * @param[in] init Pointer to a vector of length equal to the number of columns of `mat`,
+     * containing the initial values of the first right singular vector.
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
     template<bool CENTER = false, bool SCALE = false, class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, Engine* eng = null_rng()) {
+    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
         Results output;
-        auto stats = run<CENTER, SCALE>(mat, output.U, output.V, output.D, eng);
+        auto stats = run<CENTER, SCALE>(mat, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
         output.iterations = stats.second;
         return output;
@@ -530,15 +556,17 @@ public:
      * Each value should be positive and is used to divide the corresponding column of `mat`.
      * @param eng Pointer to an instance of a random number generator.
      * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
+     * @param[in] init Pointer to a vector of length equal to the number of columns of `mat`,
+     * containing the initial values of the first right singular vector.
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      *
      * @overload
      */
     template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, Engine* eng = null_rng()) {
+    Results run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
         Results output;
-        auto stats = run(mat, center, scale, output.U, output.V, output.D, eng);
+        auto stats = run(mat, center, scale, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
         output.iterations = stats.second;
         return output;

@@ -130,15 +130,23 @@ TEST_F(IrlbaTester, ExactCenterScale) {
     EXPECT_EQ(res.D, res2.D);
 }
 
-using IrlbaDeathTest = IrlbaTester;
-
-TEST_F(IrlbaDeathTest, AssertionFails) {
+TEST_F(IrlbaTester, Fails) {
     irlba::Irlba irb;
 
     // Requested number of SVs > smaller dimension of the matrix.
-    ASSERT_DEATH(irb.set_number(100).run(A), "number");
+    try {
+        irb.set_number(100).run(A);
+    } catch (const std::exception& e) {
+        std::string message(e.what());
+        EXPECT_EQ(message.find("requested"), 0);
+    }
 
     // Initialization vector is not of the right length.
     Eigen::VectorXd init(1);
-    ASSERT_DEATH(irb.set_number(5).set_init(init).run(A), "initV");
+    try {
+        irb.set_number(5).run(A, irlba::null_rng(), &init);
+    } catch (const std::exception& e) {
+        std::string message(e.what());
+        EXPECT_EQ(message.find("initialization"), 0);
+    }
 }

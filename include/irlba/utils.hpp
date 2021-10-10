@@ -8,43 +8,21 @@
 namespace irlba {
 
 /**
- * @brief Orthogonalize a vector against a set of orthonormal column vectors. 
+ * Orthogonalize a vector against a set of orthonormal column vectors. 
+ *
+ * @param mat A matrix where the left-most `ncols` columns are orthonormal vectors.
+ * @param vec The vector of interest, of length equal to the number of rows in `mat`.
+ * @param tmp A vector of length equal to `mat.cols()`, used to store intermediate matrix products.
+ * @param ncols Number of left-most columns of `mat` to use.
+ *
+ * @return `vec` is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
+ * This ensures that it is orthogonal to each column of `mat0`.
  */
-class OrthogonalizeVector {
-public:
-    /**
-     * @param max Expected maximum number of columns in `mat`, to be used to construct the workspace.
-     */
-    OrthogonalizeVector() {}
-
-    /**
-     * Set the maximum size of the temporary vector.
-     *
-     * @param max Maximum size of the temporary vector, equivalent to the maximum `ncols` in `run()`.
-     *
-     * @return A reference to the `OrthogonalizeVector` instance.
-     */
-    OrthogonalizeVector& set_size(int max) {
-        tmp.resize(max);
-        return *this;
-    }
-public:
-    /**
-     * @param mat A matrix where the left-most `ncols` columns are orthonormal vectors.
-     * @param vec The vector of interest, of length equal to the number of rows in `mat`.
-     * @param ncols Number of left-most columns of `mat` to use.
-     *
-     * @return `vec` is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
-     * This ensures that it is orthogonal to each column of `mat0`.
-     */
-    void run(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols) {
-        tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
-        vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
-        return;
-    }
-private:
-    Eigen::VectorXd tmp;
-};
+inline void orthogonalize_vector(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols, Eigen::VectorXd& tmp) {
+    tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
+    vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
+    return;
+}
 
 /** 
  * Fill an **Eigen** vector with random normals via **aarand**.
@@ -111,9 +89,23 @@ void fill_with_random_normals(Matrix& mat, int column, Engine& eng) {
  * @brief Test for IRLBA convergence.
  */
 struct ConvergenceTest {
+public:
+    struct Defaults {
+        /**
+         * See `set_tol()` for more details.
+         */
+        static constexpr double tol = 1e-5;
+
+        /**
+         * See `set_svtol()` for more details.
+         */
+        static constexpr double svtol = -1;
+    };
+
 private:
-    double tol = 1e-5;
-    double svtol = -1;
+    double tol = Defaults::tol;
+    double svtol = Defaults::svtol;
+
 public:
     /**
      * Set the tolerance on the residuals.
@@ -122,7 +114,7 @@ public:
      *
      * @return A reference to this `ConvergenceTest` instance.
      */
-    ConvergenceTest& set_tol(double t = 1e-5) {
+    ConvergenceTest& set_tol(double t = Defaults::tol) {
         tol = t;
         return *this;
     }
@@ -135,20 +127,8 @@ public:
      *
      * @return A reference to this `ConvergenceTest` instance.
      */
-    ConvergenceTest& set_svtol(double s = -1) {
+    ConvergenceTest& set_svtol(double s = Defaults::svtol) {
         svtol = s;
-        return *this;
-    }
-
-    /**
-     * Memorize this iteration's singular values, for comparison to the next iteration's values.
-     *
-     * @param l A vector of singular values.
-     *
-     * @return A reference to this `ConvergenceTest` instance.
-     */
-    ConvergenceTest& set_last(const Eigen::VectorXd& l) {
-        last = l;
         return *this;
     }
 
@@ -161,7 +141,7 @@ public:
      *
      * @return The number of singular values/vectors that have achieved convergence.
      */
-    int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals) {
+    int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals, const Eigen::VectorXd& last) {
         int counter = 0;
         double Smax = *std::max_element(sv.begin(), sv.end());
         double svtol_actual = (svtol >= 0 ? svtol : tol);
@@ -176,8 +156,6 @@ public:
 
         return counter;
     }
-private:
-    Eigen::VectorXd last;
 };
 
 /**

@@ -34,7 +34,8 @@ TEST_F(LanczosTester, Basic) {
     irlba::LanczosBidiagonalization y;
 
     std::mt19937_64 eng(50);
-    y.run(A, W, V, B, false, false, eng);
+    auto init = y.initialize(A);
+    y.run(A, W, V, B, false, false, eng, init);
 
     // Check that vectors in W are self-orthogonal.
     Eigen::MatrixXd Wcheck = W.adjoint() * W;
@@ -72,7 +73,8 @@ TEST_F(LanczosTester, Center) {
     Eigen::MatrixXd V2 = V;
     Eigen::MatrixXd B2 = B;
     std::mt19937_64 eng(50);
-    y.run(A, W2, V2, B2, center, false, eng);
+    auto init = y.initialize(A);
+    y.run(A, W2, V2, B2, center, false, eng, init);
 
     Eigen::MatrixXd Acopy = A;
     for (size_t i = 0; i < A.cols(); ++i) {
@@ -85,7 +87,8 @@ TEST_F(LanczosTester, Center) {
     Eigen::MatrixXd V3 = V;
     Eigen::MatrixXd B3 = B;
     std::mt19937_64 eng2(50);
-    y.run(Acopy, W3, V3, B3, false, false, eng2);
+    auto init2 = y.initialize(A);
+    y.run(Acopy, W3, V3, B3, false, false, eng2, init2);
 
     // Numerically equivalent values.
     for (size_t i = 0; i < W2.cols(); ++i) {
@@ -120,7 +123,8 @@ TEST_F(LanczosTester, CenterAndScale) {
     Eigen::MatrixXd V2 = V;
     Eigen::MatrixXd B2 = B;
     std::mt19937_64 eng(50);
-    y.run(A, W2, V2, B2, center, scale, eng);
+    auto init = y.initialize(A);
+    y.run(A, W2, V2, B2, center, scale, eng, init);
 
     Eigen::MatrixXd Acopy = A;
     for (size_t i = 0; i < A.cols(); ++i) {
@@ -134,7 +138,8 @@ TEST_F(LanczosTester, CenterAndScale) {
     Eigen::MatrixXd V3 = V;
     Eigen::MatrixXd B3 = B;
     std::mt19937_64 eng2(50);
-    y.run(Acopy, W3, V3, B3, false, false, eng2);
+    auto init2 = y.initialize(A);
+    y.run(Acopy, W3, V3, B3, false, false, eng2, init2);
 
     // Numerically equivalent values.
     for (size_t i = 0; i < W2.cols(); ++i) {
@@ -163,7 +168,8 @@ TEST_F(LanczosTester, Restart) {
     Eigen::MatrixXd subV = V.leftCols(3); 
     Eigen::MatrixXd subB = B.topLeftCorner(3,3); 
     std::mt19937_64 eng(50);
-    y.run(A, subW, subV, subB, false, false, eng);
+    auto init = y.initialize(A);
+    y.run(A, subW, subV, subB, false, false, eng, init);
 
     Eigen::MatrixXd copyW(nr, work);
     copyW.leftCols(3) = subW;
@@ -172,13 +178,15 @@ TEST_F(LanczosTester, Restart) {
     Eigen::MatrixXd copyB(work, work);
     copyB.setZero();
     copyB.topLeftCorner(3,3) = subB;
-    copyV.col(3) = y.residuals() / y.residuals().norm();
-    y.run(A, copyW, copyV, copyB, false, false, eng, 3); //restarting from start = 3.
+    copyV.col(3) = init.residuals() / init.residuals().norm();
+    y.run(A, copyW, copyV, copyB, false, false, eng, init, 3); //restarting from start = 3.
 
     // Numerically equivalent to a full compuation... except for B, where the
     // restart loses one of the superdiagonal elements (which is normally 
     // filled in by the residual error in the IRLBA loop, see Equation 3.6).
-    y.run(A, W, V, B, false, false, eng);
+    std::mt19937_64 eng2(50);
+    auto init2 = y.initialize(A);
+    y.run(A, W, V, B, false, false, eng2, init2);
 
     for (size_t i = 0; i < copyW.cols(); ++i) {
         for (size_t j = 0; j < copyW.rows(); ++j) {
