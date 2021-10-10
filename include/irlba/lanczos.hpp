@@ -43,8 +43,15 @@ public:
      * Support is provided for centering and scaling without modifying `mat`.
      * Protection against invariant subspaces is also implemented.
      *
-     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the Eigen library.
+     * @tparam M Matrix class, most typically from the **Eigen** library.
+     * We expect:
+     * - A `rows()` method that returns the number of rows.
+     * - A `cols()` method that returns the number of columns.
+     * - A `*` method for matrix-vector multiplication.
+     *   This should accept an `Eigen::VectorXd` of length equal to the number of columns as the right-hand argument,
+     *   and return an `Eigen::VectorXd`-coercible object of length equal to the number of rows.
+     * - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
+     *   The method should accept an `Eigen::VectorXd` of length equal to the number of rows and return and return an `Eigen::VectorXd`-coercible object of length equal to the number of columns.
      * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
      * @tparam CENTER Either `Eigen::VectorXd` or `bool`.
      * @tparam NORMSAMP A functor that, when called with no arguments, returns a random Normal value.
