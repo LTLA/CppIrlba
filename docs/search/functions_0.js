@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['orthogonalizevector_0',['OrthogonalizeVector',['../classirlba_1_1OrthogonalizeVector.html#a785e5e6cf09122c7a7724310fb4a374d',1,'irlba::OrthogonalizeVector']]]
+  ['intermediates_0',['Intermediates',['../structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#aa4ab4f7eeb1ab670021fce26f6dcbdd3',1,'irlba::LanczosBidiagonalization::Intermediates']]]
 ];

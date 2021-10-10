@@ -69,6 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classirlba_1_1LanczosBidiagonalization-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">irlba::LanczosBidiagonalization Class Reference</div></div>
@@ -80,50 +81,29 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="lanczos_8hpp_source.html">lanczos.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intermediate data structures to avoid repeated allocations.  <a href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae035bb63183c25b06b69178c6dd68cbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#ae035bb63183c25b06b69178c6dd68cbf">set_eps</a> (double e)</td></tr>
-<tr class="separator:ae035bb63183c25b06b69178c6dd68cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a251d735951aa5cc1bcac54329edb76f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a251d735951aa5cc1bcac54329edb76f2">set_eps</a> ()</td></tr>
-<tr class="separator:a251d735951aa5cc1bcac54329edb76f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b057e17e8172dc68eb94286b046701"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class Engine &gt; </td></tr>
-<tr class="memitem:ac4b057e17e8172dc68eb94286b046701"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#ac4b057e17e8172dc68eb94286b046701">run</a> (const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, Engine &amp;eng, int start=0)</td></tr>
-<tr class="separator:ac4b057e17e8172dc68eb94286b046701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a494f4cdcc9aba32357d024989af58b78"><td class="memItemLeft" align="right" valign="top">const Eigen::VectorXd &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a494f4cdcc9aba32357d024989af58b78">residuals</a> () const</td></tr>
-<tr class="separator:a494f4cdcc9aba32357d024989af58b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ab346a06e95819dacb124d5827bebf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#af0ab346a06e95819dacb124d5827bebf">set_epsilon</a> (double e=Defaults::epsilon)</td></tr>
+<tr class="separator:af0ab346a06e95819dacb124d5827bebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a822af3a056f2f53fd6a96703cf5adfd2"><td class="memTemplParams" colspan="2"><a id="a822af3a056f2f53fd6a96703cf5adfd2" name="a822af3a056f2f53fd6a96703cf5adfd2"></a>
+template&lt;class M &gt; </td></tr>
+<tr class="memitem:a822af3a056f2f53fd6a96703cf5adfd2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>initialize</b> (const M &amp;mat)</td></tr>
+<tr class="separator:a822af3a056f2f53fd6a96703cf5adfd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a36e38176265b5e81adeb293cade7fc"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class Engine &gt; </td></tr>
+<tr class="memitem:a1a36e38176265b5e81adeb293cade7fc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a1a36e38176265b5e81adeb293cade7fc">run</a> (const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, Engine &amp;eng, <a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a> &amp;inter, int start=0)</td></tr>
+<tr class="separator:a1a36e38176265b5e81adeb293cade7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Perform Lanczos bidiagonalization on an input matrix. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a494f4cdcc9aba32357d024989af58b78" name="a494f4cdcc9aba32357d024989af58b78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a494f4cdcc9aba32357d024989af58b78">&#9670;&nbsp;</a></span>residuals()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const Eigen::VectorXd &amp; irlba::LanczosBidiagonalization::residuals </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).</p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of residuals of length equal to the number of columns of <code>mat</code> in <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#ac4b057e17e8172dc68eb94286b046701">run()</a></code>. </dd></dl>
-
-</div>
-</div>
-<a id="ac4b057e17e8172dc68eb94286b046701" name="ac4b057e17e8172dc68eb94286b046701"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4b057e17e8172dc68eb94286b046701">&#9670;&nbsp;</a></span>run()</h2>
+<a id="a1a36e38176265b5e81adeb293cade7fc" name="a1a36e38176265b5e81adeb293cade7fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a36e38176265b5e81adeb293cade7fc">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,6 +158,12 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a> &amp;&#160;</td>
+          <td class="paramname"><em>inter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>start</em> = <code>0</code>&#160;</td>
         </tr>
@@ -212,12 +198,13 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mat</td><td>Input matrix. </td></tr>
-    <tr><td class="paramname">center</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value is to be subtracted from the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no centering is to be performed. </td></tr>
-    <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. </td></tr>
-    <tr><td class="paramname">eng</td><td>An instance of a random number <code>Engine</code>. </td></tr>
     <tr><td class="paramname">W</td><td>Output matrix with number of rows equal to <code>mat.rows()</code>. The size of the working subspace is defined from the number of columns. The first <code>start</code> columns should contain orthonormal column vectors with non-zero L2 norms. </td></tr>
     <tr><td class="paramname">V</td><td>Matrix with number of rows equal to <code>mat.cols()</code> and number of columns equal to <code>W.cols()</code>. The first <code>start + 1</code> columns should contain orthonormal column vectors with non-zero L2 norms. </td></tr>
     <tr><td class="paramname">B</td><td>Square matrix with number of rows and columns equal to the size of the working subspace. Number of values is defined by <code>set_number()</code>. </td></tr>
+    <tr><td class="paramname">center</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value is to be subtracted from the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no centering is to be performed. </td></tr>
+    <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. </td></tr>
+    <tr><td class="paramname">eng</td><td>An instance of a random number <code>Engine</code>. </td></tr>
+    <tr><td class="paramname">inter</td><td>Collection of intermediate data structures generated by calling <code>initialize()</code> on <code>mat</code>. </td></tr>
     <tr><td class="paramname">start</td><td>The dimension from which to start the bidiagonalization.</td></tr>
   </table>
   </dd>
@@ -226,8 +213,8 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
 
 </div>
 </div>
-<a id="a251d735951aa5cc1bcac54329edb76f2" name="a251d735951aa5cc1bcac54329edb76f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a251d735951aa5cc1bcac54329edb76f2">&#9670;&nbsp;</a></span>set_eps() <span class="overload">[1/2]</span></h2>
+<a id="af0ab346a06e95819dacb124d5827bebf" name="af0ab346a06e95819dacb124d5827bebf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0ab346a06e95819dacb124d5827bebf">&#9670;&nbsp;</a></span>set_epsilon()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,37 +223,10 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp; irlba::LanczosBidiagonalization::set_eps </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >Set the default tolerance for defining invariant subspaces. This uses the same value as the <b>irlba</b> R package, i.e., the machine epsilon to the power of 0.8.</p>
-<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html" title="Perform Lanczos bidiagonalization on an input matrix.">LanczosBidiagonalization</a></code> instance. </dd></dl>
-
-</div>
-</div>
-<a id="ae035bb63183c25b06b69178c6dd68cbf" name="ae035bb63183c25b06b69178c6dd68cbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae035bb63183c25b06b69178c6dd68cbf">&#9670;&nbsp;</a></span>set_eps() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp; irlba::LanczosBidiagonalization::set_eps </td>
+          <td class="memname"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp; irlba::LanczosBidiagonalization::set_epsilon </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
+          <td class="paramname"><em>e</em> = <code>Defaults::epsilon</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -276,10 +236,10 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Set the tolerance to use to define invariant subspaces.</p>
+<p >Set the tolerance to use to define invariant subspaces. This is used as the lower bound for the L2 norm for the subspace vectors; below this bound, vectors are treated as all-zero and filled with random draws from a normal distribution.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">e</td><td>Tolerance, a positive number.</td></tr>
+    <tr><td class="paramname">e</td><td>A positive number defining the tolerance. If negative, we instead use the machine epsilon to the power of 0.8 (the same value as the <b>irlba</b> R package).</td></tr>
   </table>
   </dd>
 </dl>
