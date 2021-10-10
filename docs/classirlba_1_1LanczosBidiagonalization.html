@@ -86,9 +86,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae035bb63183c25b06b69178c6dd68cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a251d735951aa5cc1bcac54329edb76f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a251d735951aa5cc1bcac54329edb76f2">set_eps</a> ()</td></tr>
 <tr class="separator:a251d735951aa5cc1bcac54329edb76f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa65332f528a1f56ae8f39bc0ea3a4c45"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </td></tr>
-<tr class="memitem:aa65332f528a1f56ae8f39bc0ea3a4c45"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#aa65332f528a1f56ae8f39bc0ea3a4c45">run</a> (const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, NORMSAMP &amp;norm, int start=0)</td></tr>
-<tr class="separator:aa65332f528a1f56ae8f39bc0ea3a4c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4b057e17e8172dc68eb94286b046701"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class Engine &gt; </td></tr>
+<tr class="memitem:ac4b057e17e8172dc68eb94286b046701"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#ac4b057e17e8172dc68eb94286b046701">run</a> (const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, Engine &amp;eng, int start=0)</td></tr>
+<tr class="separator:ac4b057e17e8172dc68eb94286b046701"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a494f4cdcc9aba32357d024989af58b78"><td class="memItemLeft" align="right" valign="top">const Eigen::VectorXd &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a494f4cdcc9aba32357d024989af58b78">residuals</a> () const</td></tr>
 <tr class="separator:a494f4cdcc9aba32357d024989af58b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -118,17 +118,17 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p >Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).</p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of residuals of length equal to the number of columns of <code>mat</code> in <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#aa65332f528a1f56ae8f39bc0ea3a4c45">run()</a></code>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of residuals of length equal to the number of columns of <code>mat</code> in <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#ac4b057e17e8172dc68eb94286b046701">run()</a></code>. </dd></dl>
 
 </div>
 </div>
-<a id="aa65332f528a1f56ae8f39bc0ea3a4c45" name="aa65332f528a1f56ae8f39bc0ea3a4c45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa65332f528a1f56ae8f39bc0ea3a4c45">&#9670;&nbsp;</a></span>run()</h2>
+<a id="ac4b057e17e8172dc68eb94286b046701" name="ac4b057e17e8172dc68eb94286b046701"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4b057e17e8172dc68eb94286b046701">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
+template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -172,8 +172,8 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NORMSAMP &amp;&#160;</td>
-          <td class="paramname"><em>norm</em>, </td>
+          <td class="paramtype">Engine &amp;&#160;</td>
+          <td class="paramname"><em>eng</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -205,7 +205,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
 </td></tr>
     <tr><td class="paramname">CENTER</td><td>Either <code>Eigen::VectorXd</code> or <code>bool</code>. </td></tr>
     <tr><td class="paramname">CENTER</td><td>Either <code>Eigen::VectorXd</code> or <code>bool</code>. </td></tr>
-    <tr><td class="paramname">NORMSAMP</td><td>A functor that, when called with no arguments, returns a random Normal value.</td></tr>
+    <tr><td class="paramname">Engine</td><td>A functor that, when called with no arguments, returns a random integer from a discrete uniform distribution.</td></tr>
   </table>
   </dd>
 </dl>
@@ -214,7 +214,7 @@ template&lt;class M , class CENTER , class SCALE , class NORMSAMP &gt; </div>
     <tr><td class="paramname">mat</td><td>Input matrix. </td></tr>
     <tr><td class="paramname">center</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value is to be subtracted from the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no centering is to be performed. </td></tr>
     <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. </td></tr>
-    <tr><td class="paramname">norm</td><td>An instance of a functor to generate normally distributed values. </td></tr>
+    <tr><td class="paramname">eng</td><td>An instance of a random number <code>Engine</code>. </td></tr>
     <tr><td class="paramname">W</td><td>Output matrix with number of rows equal to <code>mat.rows()</code>. The size of the working subspace is defined from the number of columns. The first <code>start</code> columns should contain orthonormal column vectors with non-zero L2 norms. </td></tr>
     <tr><td class="paramname">V</td><td>Matrix with number of rows equal to <code>mat.cols()</code> and number of columns equal to <code>W.cols()</code>. The first <code>start + 1</code> columns should contain orthonormal column vectors with non-zero L2 norms. </td></tr>
     <tr><td class="paramname">B</td><td>Square matrix with number of rows and columns equal to the size of the working subspace. Number of values is defined by <code>set_number()</code>. </td></tr>

@@ -75,23 +75,22 @@ $(function() {
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="irlba_8hpp.html">irlba/irlba.hpp</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_class" href="classirlba_1_1Irlba.html">irlba::Irlba</a> runner;</div>
-<div class="line"><a class="code hl_class" href="classirlba_1_1NormalSampler.html">irlba::NormalSampler</a> norm(50);</div>
+<div class="line">irlba::NormalSampler norm(50);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// optional; specify the number of singular vectors, workspace, etc.</span></div>
 <div class="line">runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#a2960639080b5a1462784f7494d75f0b8">set_number</a>(5).<a class="code hl_function" href="classirlba_1_1Irlba.html#ab1cef53f30ea1a4f2b9bb6aaf7748441">set_work</a>(20);</div>
 <div class="line"> </div>
 <div class="line">Eigen::MatrixXd U, V;</div>
 <div class="line">Eigen::VectorXd S;</div>
-<div class="line">runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#aed2f746efbcddb9eeedcd8697144cbb4">run</a>(mat, <span class="keyword">false</span>, <span class="keyword">false</span>, norm, U, V, S);</div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html"><div class="ttname"><a href="classirlba_1_1Irlba.html">irlba::Irlba</a></div><div class="ttdoc">Run IRLBA on an input matrix.</div><div class="ttdef"><b>Definition:</b> irlba.hpp:24</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_a2960639080b5a1462784f7494d75f0b8"><div class="ttname"><a href="classirlba_1_1Irlba.html#a2960639080b5a1462784f7494d75f0b8">irlba::Irlba::set_number</a></div><div class="ttdeci">Irlba &amp; set_number(int n=5)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:58</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_ab1cef53f30ea1a4f2b9bb6aaf7748441"><div class="ttname"><a href="classirlba_1_1Irlba.html#ab1cef53f30ea1a4f2b9bb6aaf7748441">irlba::Irlba::set_work</a></div><div class="ttdeci">Irlba &amp; set_work(int w=7)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:84</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_aed2f746efbcddb9eeedcd8697144cbb4"><div class="ttname"><a href="classirlba_1_1Irlba.html#aed2f746efbcddb9eeedcd8697144cbb4">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, NORMSAMP &amp;norm, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:173</div></div>
-<div class="ttc" id="aclassirlba_1_1NormalSampler_html"><div class="ttname"><a href="classirlba_1_1NormalSampler.html">irlba::NormalSampler</a></div><div class="ttdoc">Sample from a normal distribution.</div><div class="ttdef"><b>Definition:</b> utils.hpp:55</div></div>
+<div class="line">runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#abdd598a963a134efdff8d484697ec9a9">run</a>(mat, <span class="keyword">false</span>, <span class="keyword">false</span>, norm, U, V, S);</div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html"><div class="ttname"><a href="classirlba_1_1Irlba.html">irlba::Irlba</a></div><div class="ttdoc">Run IRLBA on an input matrix.</div><div class="ttdef"><b>Definition:</b> irlba.hpp:26</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_a2960639080b5a1462784f7494d75f0b8"><div class="ttname"><a href="classirlba_1_1Irlba.html#a2960639080b5a1462784f7494d75f0b8">irlba::Irlba::set_number</a></div><div class="ttdeci">Irlba &amp; set_number(int n=5)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:61</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_ab1cef53f30ea1a4f2b9bb6aaf7748441"><div class="ttname"><a href="classirlba_1_1Irlba.html#ab1cef53f30ea1a4f2b9bb6aaf7748441">irlba::Irlba::set_work</a></div><div class="ttdeci">Irlba &amp; set_work(int w=7)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:100</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_abdd598a963a134efdff8d484697ec9a9"><div class="ttname"><a href="classirlba_1_1Irlba.html#abdd598a963a134efdff8d484697ec9a9">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD, Engine *eng=null_rng())</div><div class="ttdef"><b>Definition:</b> irlba.hpp:190</div></div>
 <div class="ttc" id="airlba_8hpp_html"><div class="ttname"><a href="irlba_8hpp.html">irlba.hpp</a></div></div>
 </div><!-- fragment --><p >To perform a PCA, compute the relevant vector of centering values (and optionally scaling values, if desired) and supply this to <code>run()</code>:</p>
 <div class="fragment"><div class="line">Eigen::VectorXd center = mat.colwise().sum();</div>
-<div class="line">runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#aed2f746efbcddb9eeedcd8697144cbb4">run</a>(mat, center, <span class="keyword">false</span>, norm, U, V, S);</div>
+<div class="line">runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#abdd598a963a134efdff8d484697ec9a9">run</a>(mat, center, <span class="keyword">false</span>, norm, U, V, S);</div>
 <div class="line">U *= S.asDiagonal();</div>
 </div><!-- fragment --><p >See the <a href="https://ltla.github.io/CppIrlba">reference documentation</a> for more details.</p>
 <h1>References</h1>

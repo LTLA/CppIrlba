@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['normalsampler_0',['NormalSampler',['../classirlba_1_1NormalSampler.html',1,'irlba']]]
+  ['orthogonalizevector_0',['OrthogonalizeVector',['../classirlba_1_1OrthogonalizeVector.html',1,'irlba']]]
 ];

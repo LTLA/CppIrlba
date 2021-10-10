@@ -1,9 +1,11 @@
 <map id="irlba/irlba.hpp" name="irlba/irlba.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="113,5,211,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="227,5,326,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,229,100,256"/>
-<area shape="rect" id="node3" href="$utils_8hpp_source.html" title=" " alt="" coords="168,155,239,181"/>
-<area shape="rect" id="node5" href="$lanczos_8hpp_source.html" title=" " alt="" coords="75,80,166,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="263,155,322,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="171,229,236,256"/>
-<area shape="rect" id="node7" title=" " alt="" coords="90,155,143,181"/>
+<area shape="rect" id="node3" href="$utils_8hpp_source.html" title=" " alt="" coords="116,155,187,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="315,229,380,256"/>
+<area shape="rect" id="node6" href="$lanczos_8hpp_source.html" title=" " alt="" coords="190,80,281,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="289,155,347,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="422,80,483,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="125,229,253,256"/>
+<area shape="rect" id="node8" title=" " alt="" coords="211,155,265,181"/>
 </map>

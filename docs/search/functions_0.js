@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['normalsampler_0',['NormalSampler',['../classirlba_1_1NormalSampler.html#af70dd849ed27d7190b2a2289ffb15489',1,'irlba::NormalSampler']]]
+  ['orthogonalizevector_0',['OrthogonalizeVector',['../classirlba_1_1OrthogonalizeVector.html#a785e5e6cf09122c7a7724310fb4a374d',1,'irlba::OrthogonalizeVector']]]
 ];
