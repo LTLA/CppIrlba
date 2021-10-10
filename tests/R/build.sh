@@ -5,19 +5,11 @@
 set -e
 set -u
 
-rm -f extern
-ln -s ../../extern 
-
-cat << EOF > CMakeLists.txt
-cmake_minimum_required(VERSION 3.14)
-
-project(irlba-tests)
-
-add_subdirectory(extern)
-EOF
-
-cmake -S . -B build
-cmake --build build
-
 rm -f Eigen
-ln -s build/_deps/eigen-src/Eigen .
+ln -s ../../build/_deps/eigen-src/Eigen .
+
+rm -f aarand
+ln -s ../../build/_deps/aarand-src/include/aarand .
+
+rm -f irlba
+ln -s ../../include/irlba .
