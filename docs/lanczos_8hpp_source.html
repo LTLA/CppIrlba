@@ -88,7 +88,7 @@ $(function() {
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    };</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classirlba_1_1LanczosBidiagonalization.html#af0ab346a06e95819dacb124d5827bebf">   33</a></span>    <a class="code hl_class" href="classirlba_1_1LanczosBidiagonalization.html">LanczosBidiagonalization</a>&amp; <a class="code hl_function" href="classirlba_1_1LanczosBidiagonalization.html#af0ab346a06e95819dacb124d5827bebf">set_epsilon</a>(<span class="keywordtype">double</span> e = Defaults::epsilon) {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        eps = e;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        epsilon = e;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
@@ -127,7 +127,7 @@ $(function() {
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> do_center = !std::is_same&lt;CENTER, bool&gt;::value;</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> do_scale = !std::is_same&lt;SCALE, bool&gt;::value;</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keyword">const</span> <span class="keywordtype">double</span> eps = (eps &lt; 0 ? std::pow(std::numeric_limits&lt;double&gt;::epsilon(), 0.8) : eps);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keyword">const</span> <span class="keywordtype">double</span> eps = (epsilon &lt; 0 ? std::pow(std::numeric_limits&lt;double&gt;::epsilon(), 0.8) : epsilon);</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordtype">int</span> work = W.cols();</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="keyword">auto</span>&amp; F = inter.F;</div>
@@ -183,7 +183,7 @@ $(function() {
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                S = W_next.norm();</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                <span class="keywordflow">if</span> (S &lt; eps) {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                    fill_with_random_normals(F, eng);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                    fill_with_random_normals(W_next, eng);</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                    orthogonalize_vector(W, W_next, j + 1, otmp);</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                    S = W_next.norm();</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                    W_next /= S;</div>
@@ -250,7 +250,7 @@ $(function() {
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    }</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <span class="keywordtype">double</span> eps = Defaults::epsilon;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <span class="keywordtype">double</span> epsilon = Defaults::epsilon;</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>};</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>}</div>
