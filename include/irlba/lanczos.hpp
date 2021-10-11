@@ -31,7 +31,7 @@ public:
      * @return A reference to the `LanczosBidiagonalization` instance.
      */
     LanczosBidiagonalization& set_epsilon(double e = Defaults::epsilon) {
-        eps = e;
+        epsilon = e;
         return *this;
     }
 
@@ -129,7 +129,7 @@ public:
         constexpr bool do_center = !std::is_same<CENTER, bool>::value;
         constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
 
-        const double eps = (eps < 0 ? std::pow(std::numeric_limits<double>::epsilon(), 0.8) : eps);
+        const double eps = (epsilon < 0 ? std::pow(std::numeric_limits<double>::epsilon(), 0.8) : epsilon);
 
         int work = W.cols();
         auto& F = inter.F;
@@ -185,7 +185,7 @@ public:
 
                 S = W_next.norm();
                 if (S < eps) {
-                    fill_with_random_normals(F, eng);
+                    fill_with_random_normals(W_next, eng);
                     orthogonalize_vector(W, W_next, j + 1, otmp);
                     S = W_next.norm();
                     W_next /= S;
@@ -252,7 +252,7 @@ private:
     }
 
 private:
-    double eps = Defaults::epsilon;
+    double epsilon = Defaults::epsilon;
 };
 
 }

@@ -16,6 +16,7 @@ add_executable(
     src/lanczos.cpp
     src/irlba.cpp
     src/sparse.cpp
+    src/invariant.cpp
 )
 
 target_link_libraries(
