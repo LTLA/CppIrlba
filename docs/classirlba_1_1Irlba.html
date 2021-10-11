@@ -259,7 +259,7 @@ template&lt;bool CENTER = false, bool SCALE = false, class M , class Engine  = s
 <p >If the smallest dimension of <code>mat</code> is below 6, this method falls back to performing an exact SVD.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">M</td><td>Matrix class that supports <code>cols()</code>, <code>rows()</code>, <code>*</code> and <code>adjoint()</code>. This is most typically a class from the <b>Eigen</b> matrix manipulation library. </td></tr>
+    <tr><td class="paramname">M</td><td>Matrix class that supports <code>cols()</code>, <code>rows()</code>, <code>*</code> and <code>adjoint()</code>. This is most typically a class from the <b>Eigen</b> matrix manipulation library. Other classes should have a <code>realize()</code> method that returns an <code>Eigen::MatrixXd</code>. </td></tr>
     <tr><td class="paramname">CENTER</td><td>Whether to center the columns so that the mean of each column's values is 0. </td></tr>
     <tr><td class="paramname">SCALE</td><td>Whether to scale the columns so that the squared sum of of each column's values (after centering, if <code>CENTER = true</code>) is 1. </td></tr>
     <tr><td class="paramname">Engine</td><td>A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.</td></tr>
