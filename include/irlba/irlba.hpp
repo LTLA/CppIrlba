@@ -160,6 +160,7 @@ public:
      * 
      * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
      * This is most typically a class from the **Eigen** matrix manipulation library.
+     * Other classes should have a `realize()` method that returns an `Eigen::MatrixXd`.
      * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
      * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
@@ -452,19 +453,27 @@ private:
         if constexpr(std::is_same<M, Eigen::MatrixXd>::value && !do_center && !do_scale) {
             svd.compute(mat);
         } else {
-            Eigen::MatrixXd adjusted(mat);
-
-            for (Eigen::Index i = 0; i < mat.cols(); ++i) {
-                if constexpr(do_center) {
-                    for (Eigen::Index j = 0; j < mat.rows(); ++j) {
-                        adjusted(j, i) -= center[i];
+            auto compute = [&](Eigen::MatrixXd& adjusted) -> void {
+                for (Eigen::Index i = 0; i < mat.cols(); ++i) {
+                    if constexpr(do_center) {
+                        for (Eigen::Index j = 0; j < mat.rows(); ++j) {
+                            adjusted(j, i) -= center[i];
+                        }
+                    }
+                    if constexpr(do_scale) {
+                        adjusted.col(i) /= scale[i];
                     }
                 }
-                if constexpr(do_scale) {
-                    adjusted.col(i) /= scale[i];
-                }
+                svd.compute(adjusted);
+            };
+
+            if constexpr(has_realize_method<M>::value) {
+                Eigen::MatrixXd adjusted = mat.realize();
+                compute(adjusted);
+            } else {
+                Eigen::MatrixXd adjusted(mat);
+                compute(adjusted);
             }
-            svd.compute(adjusted);
         }
 
         outD.resize(number);

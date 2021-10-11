@@ -3,6 +3,7 @@
 
 #include "Eigen/Dense"
 #include <random>
+#include <utility>
 #include "aarand/aarand.hpp"
 
 namespace irlba {
@@ -165,6 +166,22 @@ public:
  * Any RNG will do here, so we use the most common one.
  */
 constexpr std::mt19937_64* null_rng() { return NULL; }
+
+/**
+ * @cond
+ */
+template<class M, typename = int>
+struct has_realize_method {
+    static constexpr bool value = false;
+};
+
+template<class M>
+struct has_realize_method<M, decltype((void) std::declval<M>().realize(), 0)> {
+    static constexpr bool value = std::is_same<decltype(std::declval<M>().realize()), Eigen::MatrixXd>::value;
+};
+/**
+ * @endcond
+ */
 
 }
 

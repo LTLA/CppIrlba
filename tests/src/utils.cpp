@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "irlba/utils.hpp"
 #include "Eigen/Dense"
+#include "Eigen/Sparse"
 #include "NormalSampler.h"
 
 TEST(UtilsTest, Orthogonalize) {
@@ -90,6 +91,16 @@ TEST(UtilsTest, FillNormals) {
     for (auto v : second) {
         EXPECT_EQ(v, 0);
     }
+}
+
+struct dummy_class {
+    Eigen::MatrixXd realize() { return Eigen::MatrixXd(); }
+};
+
+TEST(UtilsTest, ConvertibleCheck) {
+    EXPECT_FALSE(irlba::has_realize_method<Eigen::MatrixXd>::value);
+    EXPECT_FALSE(irlba::has_realize_method<Eigen::SparseMatrix<double> >::value);
+    EXPECT_TRUE(irlba::has_realize_method<dummy_class>::value);
 }
 
 TEST(UtilsTest, NormalSampler) {
