@@ -13,8 +13,7 @@ jobs:
     - name: Get latest CMake
       uses: lukka/get-cmake@latest
 
-    - name: Configure the build with coverage
-      if: ${{ matrix.config.cov == true }}
+    - name: Configure the build 
       run: cmake -S . -B build -DBUILD_TESTING=OFF
 
     - name: Install packages
