@@ -51,8 +51,8 @@ TEST_F(SparseTester, Sparse) {
 
 TEST_F(SparseTester, CenterScale) {
     irlba::Irlba irb;
-    auto res = irb.set_number(8).set_work(7).run<true, true>(A);
-    auto res2 = irb.set_number(8).set_work(7).run<true, true>(B);
+    auto res = irb.set_number(8).set_work(7).run(A, true, true);
+    auto res2 = irb.set_number(8).set_work(7).run(B, true, true);
 
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.V, res2.V);

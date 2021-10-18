@@ -4,9 +4,14 @@
 #include "Eigen/Dense"
 #include "NormalSampler.h"
 
-class LanczosTester : public ::testing::Test {
+class LanczosTester : public ::testing::TestWithParam<std::tuple<int, int, int> > {
 protected:
-    void SetUp () {
+    template<class Param>
+    void assemble(Param param) {
+        nr = std::get<0>(param);
+        nc = std::get<1>(param);
+        work = std::get<2>(param);
+
         A = Eigen::MatrixXd(nr, nc);
         W = Eigen::MatrixXd(nr, work);
         V = Eigen::MatrixXd(nc, work);
@@ -26,16 +31,17 @@ protected:
         V.col(0) /= V.col(0).norm();
     }
 
-    size_t nr = 20, nc = 10, work = 7;
+    size_t nr, nc, work;
     Eigen::MatrixXd A, W, V, B;
 };
 
-TEST_F(LanczosTester, Basic) {
+TEST_P(LanczosTester, Basic) {
+    assemble(GetParam());
     irlba::LanczosBidiagonalization y;
 
     std::mt19937_64 eng(50);
     auto init = y.initialize(A);
-    y.run(A, W, V, B, false, false, eng, init);
+    y.run(A, W, V, B, eng, init);
 
     // Check that vectors in W are self-orthogonal.
     Eigen::MatrixXd Wcheck = W.adjoint() * W;
@@ -62,131 +68,34 @@ TEST_F(LanczosTester, Basic) {
     }
 }
 
-TEST_F(LanczosTester, Center) {
+TEST_P(LanczosTester, Restart) {
+    assemble(GetParam());
     irlba::LanczosBidiagonalization y;
 
-    NormalSampler norm(50);
-    Eigen::VectorXd center(A.cols());
-    for (auto& c : center) { c = norm(); }
-
-    Eigen::MatrixXd W2 = W;
-    Eigen::MatrixXd V2 = V;
-    Eigen::MatrixXd B2 = B;
+    int mid = work / 2;
+    Eigen::MatrixXd subW = W.leftCols(mid); 
+    Eigen::MatrixXd subV = V.leftCols(mid); 
+    Eigen::MatrixXd subB = B.topLeftCorner(mid,mid); 
     std::mt19937_64 eng(50);
     auto init = y.initialize(A);
-    y.run(A, W2, V2, B2, center, false, eng, init);
-
-    Eigen::MatrixXd Acopy = A;
-    for (size_t i = 0; i < A.cols(); ++i) {
-        for (size_t j = 0; j < A.rows(); ++j) {
-            Acopy(j, i) -= center(i);
-        }
-    }
-
-    Eigen::MatrixXd W3 = W;
-    Eigen::MatrixXd V3 = V;
-    Eigen::MatrixXd B3 = B;
-    std::mt19937_64 eng2(50);
-    auto init2 = y.initialize(A);
-    y.run(Acopy, W3, V3, B3, false, false, eng2, init2);
-
-    // Numerically equivalent values.
-    for (size_t i = 0; i < W2.cols(); ++i) {
-        for (size_t j = 0; j < W2.rows(); ++j) {
-            EXPECT_FLOAT_EQ(W2(j, i), W3(j, i));
-        }
-    }
-
-    for (size_t i = 0; i < V2.cols(); ++i) {
-        for (size_t j = 0; j < V2.rows(); ++j) {
-            EXPECT_FLOAT_EQ(V2(j, i), V3(j, i));
-        }
-    }
-
-    for (size_t i = 0; i < B2.cols(); ++i) {
-        for (size_t j = 0; j < B2.rows(); ++j) {
-            EXPECT_FLOAT_EQ(B2(j, i), B3(j, i));
-        }
-    }
-}
-
-TEST_F(LanczosTester, CenterAndScale) {
-    irlba::LanczosBidiagonalization y;
-
-    NormalSampler norm(50);
-    Eigen::VectorXd center(A.cols());
-    for (auto& c : center) { c = norm(); }
-    Eigen::VectorXd scale(A.cols());
-    for (auto& s : scale) { s = std::abs(norm() + 1); }
-
-    Eigen::MatrixXd W2 = W;
-    Eigen::MatrixXd V2 = V;
-    Eigen::MatrixXd B2 = B;
-    std::mt19937_64 eng(50);
-    auto init = y.initialize(A);
-    y.run(A, W2, V2, B2, center, scale, eng, init);
-
-    Eigen::MatrixXd Acopy = A;
-    for (size_t i = 0; i < A.cols(); ++i) {
-        for (size_t j = 0; j < A.rows(); ++j) {
-            Acopy(j, i) -= center(i);
-            Acopy(j, i) /= scale(i);
-        }
-    }
-
-    Eigen::MatrixXd W3 = W;
-    Eigen::MatrixXd V3 = V;
-    Eigen::MatrixXd B3 = B;
-    std::mt19937_64 eng2(50);
-    auto init2 = y.initialize(A);
-    y.run(Acopy, W3, V3, B3, false, false, eng2, init2);
-
-    // Numerically equivalent values.
-    for (size_t i = 0; i < W2.cols(); ++i) {
-        for (size_t j = 0; j < W2.rows(); ++j) {
-            EXPECT_FLOAT_EQ(W2(j, i), W3(j, i));
-        }
-    }
-
-    for (size_t i = 0; i < V2.cols(); ++i) {
-        for (size_t j = 0; j < V2.rows(); ++j) {
-            EXPECT_FLOAT_EQ(V2(j, i), V3(j, i));
-        }
-    }
-
-    for (size_t i = 0; i < B2.cols(); ++i) {
-        for (size_t j = 0; j < B2.rows(); ++j) {
-            EXPECT_FLOAT_EQ(B2(j, i), B3(j, i));
-        }
-    }
-}
-
-TEST_F(LanczosTester, Restart) {
-    irlba::LanczosBidiagonalization y;
-
-    Eigen::MatrixXd subW = W.leftCols(3); 
-    Eigen::MatrixXd subV = V.leftCols(3); 
-    Eigen::MatrixXd subB = B.topLeftCorner(3,3); 
-    std::mt19937_64 eng(50);
-    auto init = y.initialize(A);
-    y.run(A, subW, subV, subB, false, false, eng, init);
+    y.run(A, subW, subV, subB, eng, init);
 
     Eigen::MatrixXd copyW(nr, work);
-    copyW.leftCols(3) = subW;
+    copyW.leftCols(mid) = subW;
     Eigen::MatrixXd copyV(nc, work);
-    copyV.leftCols(3) = subV;
+    copyV.leftCols(mid) = subV;
     Eigen::MatrixXd copyB(work, work);
     copyB.setZero();
-    copyB.topLeftCorner(3,3) = subB;
-    copyV.col(3) = init.residuals() / init.residuals().norm();
-    y.run(A, copyW, copyV, copyB, false, false, eng, init, 3); //restarting from start = 3.
+    copyB.topLeftCorner(mid,mid) = subB;
+    copyV.col(mid) = init.residuals() / init.residuals().norm();
+    y.run(A, copyW, copyV, copyB, eng, init, mid); //restarting from start = mid.
 
     // Numerically equivalent to a full compuation... except for B, where the
     // restart loses one of the superdiagonal elements (which is normally 
     // filled in by the residual error in the IRLBA loop, see Equation 3.6).
     std::mt19937_64 eng2(50);
     auto init2 = y.initialize(A);
-    y.run(A, W, V, B, false, false, eng2, init2);
+    y.run(A, W, V, B, eng2, init2);
 
     for (size_t i = 0; i < copyW.cols(); ++i) {
         for (size_t j = 0; j < copyW.rows(); ++j) {
@@ -200,3 +109,13 @@ TEST_F(LanczosTester, Restart) {
         }
     }
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    LanczosTests,
+    LanczosTester,
+    ::testing::Combine(
+        ::testing::Values(10, 20, 30), // number of rows
+        ::testing::Values(10, 20, 30), // number of columns
+        ::testing::Values(3, 5, 7) // workspace
+    )
+);

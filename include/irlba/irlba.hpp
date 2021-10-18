@@ -149,23 +149,15 @@ public:
 
 public:
     /** 
-     * Run IRLBA on an input matrix to perform an approximate SVD.
+     * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
      *
-     * If `CENTER` (and optionally `SCALE`) are set to `true`, this can be used to perform an approximate PCA.
-     * Each column's values is centered, and optionally scaled, as part of the IRLBA calculations.
-     * Note that `SCALE = true` usually only makes sense if `CENTER = true`, where scaling is done by the sample deviation of each column.
-     * If `SCALE = true` but `CENTER = false`, we will scale by the square root of the mean squared value of each column.
-     *
-     * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
-     * 
-     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the **Eigen** matrix manipulation library.
-     * Other classes should have a `realize()` method that returns an `Eigen::MatrixXd`.
-     * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
-     * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
+     * @tparam M Matrix class, typically from the **Eigen** matrix manipulation library.
+     * However, other classes are also supported, see the other `run()` methods for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
+     * @param center Should the matrix be centered by column?
+     * @param scale Should the matrix be scaled to unit variance for each column?
      * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
@@ -181,73 +173,86 @@ public:
      *
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
+     *
+     * Centering is performed by subtracting each element of `center` from the corresponding column of `mat`.
+     * Scaling is performed by dividing each column of `mat` by the corresponding element of `scale` (after any centering has been applied).
+     * Note that `scale=true` requires `center=true` to guarantee unit variance along each column. 
+     * No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. 
      */
-    template<bool CENTER = false, bool SCALE = false, class M, class Engine = std::mt19937_64>
+    template<class M, class Engine = std::mt19937_64>
     std::pair<bool, int> run(
         const M& mat, 
+        bool center, 
+        bool scale, 
         Eigen::MatrixXd& outU, 
         Eigen::MatrixXd& outV, 
         Eigen::VectorXd& outD, 
         Engine* eng = null_rng(),
         Eigen::VectorXd* init = NULL) 
     {
-        Eigen::VectorXd center0, scale0;
+        if (scale || center) {
+            Eigen::VectorXd center0, scale0;
 
-        if constexpr(SCALE || CENTER) {
-            if constexpr(SCALE) {
-                assert(mat.rows() >= 2); // avoid div by zero.
-                scale0.resize(mat.cols());
-            }
-            if constexpr(CENTER) {
-                assert(mat.rows() >= 1);
+            if (center) {
+                if (mat.rows() < 1) {
+                    throw std::runtime_error("cannot center with no observations");    
+                }
                 center0.resize(mat.cols());
+            }
+
+            if (scale) {
+                if (mat.rows() < 2) {
+                    throw std::runtime_error("cannot scale with fewer than two observations");    
+                }
+                scale0.resize(mat.cols());
             }
 
             for (Eigen::Index i = 0; i < mat.cols(); ++i) {
                 double mean = 0;
-                if constexpr(CENTER) {
+                if (center) {
                     mean = mat.col(i).sum() / mat.rows();
                     center0[i] = mean;
                 }
-                if constexpr(SCALE) {
+                if (scale) {
                     Eigen::VectorXd current = mat.col(i); // force it to be a VectorXd, even if it's a sparse matrix.
                     double var = 0;
                     for (auto x : current) {
                         var += (x - mean)*(x - mean);
                     }
-                    scale0[i] = std::sqrt(var/(mat.rows() - 1));
+
+                    if (var) {
+                        scale0[i] = std::sqrt(var/(mat.rows() - 1));
+                    } else {
+                        scale0[i] = 1;
+                    }
                 }
             }
-        }
 
-        if constexpr(CENTER) {
-            if constexpr(SCALE) {
-                return run_internal(mat, center0, scale0, outU, outV, outD, eng, init);
+            if (center) {
+                CenteredWrapper<M> centered(&mat, &center0);
+                if (scale) {
+                    ScaledWrapper<decltype(centered)> centered_scaled(&centered, &scale0);
+                    run(centered_scaled, outU, outV, outD, eng, init);
+                } else {
+                    run(centered, outU, outV, outD, eng, init);
+                }
             } else {
-                return run_internal(mat, center0, false, outU, outV, outD, eng, init);
+                ScaledWrapper<M> scaled(&mat, &scale0);
+                run(scaled, outU, outV, outD, eng, init);
             }
         } else {
-            if constexpr(SCALE) {
-                return run_internal(mat, false, scale0, outU, outV, outD, eng, init);
-            } else {
-                return run_internal(mat, false, false, outU, outV, outD, eng, init);
-            }
+            run(mat, outU, outV, outD, eng, init);
         }
     }
 
     /** 
-     * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
+     * Run IRLBA on an input matrix to perform an approximate SVD.
      *
-     * Centering is performed by subtracting each element of `center` from the corresponding column of `mat`.
-     * Scaling is performed by dividing each column of `mat` by the corresponding element of `scale` (after any centering has been applied).
-     *
-     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the **Eigen** matrix manipulation library.
+     * @tparam M Matrix class, most typically from the **Eigen** matrix manipulation library.
+     * However, custom classes are also supported, see below for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] center A vector of length equal to the number of columns of `mat`.
-     * @param[in] scale A vector of length equal to the number of columns of `mat`, containing positive values.
      * @param[out] outU Output matrix where columns contain the first left singular vectors.
      * Dimensions are set automatically on output;
      * the number of columns is defined by `set_number()` and the number of rows is equal to the number of rows in `mat`.
@@ -264,47 +269,40 @@ public:
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      *
-     * @overload
+     * Custom classes can be used to define non-standard matrices that cannot be easily realized into the standard **Eigen** classes.
+     *
+     We expect:
+     * - A `rows()` method that returns the number of rows.
+     * - A `cols()` method that returns the number of columns.
+     * - A `*` method for matrix-vector multiplication.
+     *   This should accept an `Eigen::VectorXd` of length equal to the number of columns as the right-hand argument,
+     *   and return an `Eigen::VectorXd`-coercible object of length equal to the number of rows.
+     * - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
+     *   The method should accept an `Eigen::VectorXd` of length equal to the number of rows and return and return an `Eigen::VectorXd`-coercible object of length equal to the number of columns.
+     *
+     * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      */
     template<class Matrix, class Engine = std::mt19937_64>
     std::pair<bool, int> run(
         const Matrix& mat, 
-        const Eigen::VectorXd& center, 
-        const Eigen::VectorXd& scale, 
         Eigen::MatrixXd& outU, 
         Eigen::MatrixXd& outV, 
         Eigen::VectorXd& outD, 
         Engine* eng = null_rng(),
         Eigen::VectorXd* init = NULL) 
     {
-        return run_internal(mat, center, scale, outU, outV, outD, eng, init);
-    }
-
-private:
-    template<class M, class CENTER, class SCALE, class Engine>
-    std::pair<bool, int> run_internal(
-        const M& mat, 
-        const CENTER& center, 
-        const SCALE& scale, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
-        Engine* eng, 
-        Eigen::VectorXd* init) 
-    {
         if (eng == NULL) {
             std::mt19937_64 rng(seed);
-            return run_internal(mat, center, scale, rng, outU, outV, outD, init);
+            return run_internal(mat, rng, outU, outV, outD, init);
         } else {
-            return run_internal(mat, center, scale, *eng, outU, outV, outD, init);
+            return run_internal(mat, *eng, outU, outV, outD, init);
         }
     }
 
-    template<class M, class CENTER, class SCALE, class Engine>
+private:
+    template<class M, class Engine>
     std::pair<bool, int> run_internal(
         const M& mat, 
-        const CENTER& center, 
-        const SCALE& scale, 
         Engine& eng, 
         Eigen::MatrixXd& outU, 
         Eigen::MatrixXd& outV, 
@@ -318,7 +316,7 @@ private:
 
         // Falling back to an exact SVD for small matrices.
         if (smaller < 6) {
-            exact(mat, center, scale, outU, outV, outD);
+            exact(mat, outU, outV, outD);
             return std::make_pair(true, 0);
         }
 
@@ -355,7 +353,7 @@ private:
             // Technically, this is only a 'true' Lanczos bidiagonalization
             // when k = 0. All other times, we're just recycling the machinery,
             // see the text below Equation 3.11 in Baglama and Reichel.
-            lp.run(mat, W, V, B, center, scale, eng, lptmp, k);
+            lp.run(mat, W, V, B, eng, lptmp, k);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -444,35 +442,19 @@ private:
     }
 
 private:
-    template<class M, class CENTER, class SCALE> 
-    void exact(const M& mat, const CENTER& center, const SCALE& scale, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    template<class M>
+    void exact(const M& mat, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
-        constexpr bool do_center = !std::is_same<CENTER, bool>::value;
-        constexpr bool do_scale = !std::is_same<SCALE, bool>::value;
 
-        if constexpr(std::is_same<M, Eigen::MatrixXd>::value && !do_center && !do_scale) {
+        if constexpr(std::is_same<M, Eigen::MatrixXd>::value) {
             svd.compute(mat);
         } else {
-            auto compute = [&](Eigen::MatrixXd& adjusted) -> void {
-                for (Eigen::Index i = 0; i < mat.cols(); ++i) {
-                    if constexpr(do_center) {
-                        for (Eigen::Index j = 0; j < mat.rows(); ++j) {
-                            adjusted(j, i) -= center[i];
-                        }
-                    }
-                    if constexpr(do_scale) {
-                        adjusted.col(i) /= scale[i];
-                    }
-                }
-                svd.compute(adjusted);
-            };
-
             if constexpr(has_realize_method<M>::value) {
                 Eigen::MatrixXd adjusted = mat.realize();
-                compute(adjusted);
+                svd.compute(adjusted);
             } else {
                 Eigen::MatrixXd adjusted(mat);
-                compute(adjusted);
+                svd.compute(adjusted);
             }
         }
 
@@ -525,15 +507,15 @@ public:
     };
 
     /** 
-     * Run IRLBA on an input matrix to perform an approximate SVD, see the `run()` documentation for more details.
+     * Run IRLBA on an input matrix to perform an approximate SVD with centering and scaling.
      * 
-     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the **Eigen** matrix manipulation library.
-     * @tparam CENTER Whether to center the columns so that the mean of each column's values is 0.
-     * @tparam SCALE Whether to scale the columns so that the squared sum of of each column's values (after centering, if `CENTER = true`) is 1.
+     * @tparam M Matrix class, most typically from the **Eigen** matrix manipulation library.
+     * However, other classes are also supported, see the other `run()` methods for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
+     * @param center Should the matrix be centered by column?
+     * @param scale Should the matrix be scaled to unit variance for each column?
      * @param eng Pointer to an instance of a random number generator.
      * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
      * @param[in] init Pointer to a vector of length equal to the number of columns of `mat`,
@@ -541,41 +523,34 @@ public:
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
-    template<bool CENTER = false, bool SCALE = false, class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
+    template<class M, class Engine = std::mt19937_64>
+    Results run(const M& mat, bool center, bool scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
         Results output;
-        auto stats = run<CENTER, SCALE>(mat, output.U, output.V, output.D, eng, init);
+        auto stats = run(mat, center, scale, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
         output.iterations = stats.second;
         return output;
     }
 
     /** 
-     * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
-     * See the `run()` method for more details.
+     * Run IRLBA on an input matrix to perform an approximate SVD, see the `run()` method for more details.
      *
-     * @tparam M Matrix class that supports `cols()`, `rows()`, `*` and `adjoint()`.
-     * This is most typically a class from the **Eigen** matrix manipulation library.
+     * @tparam M Matrix class,  most typically from the **Eigen** matrix manipulation library.
+     * However, other classes are also supported, see the other `run()` methods for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
-     * @param[in] center A vector of length equal to the number of columns of `mat`.
-     * Each value is to be subtracted from the corresponding column of `mat`.
-     * @param[in] scale A vector of length equal to the number of columns of `mat`.
-     * Each value should be positive and is used to divide the corresponding column of `mat`.
      * @param eng Pointer to an instance of a random number generator.
      * If set to `NULL`, a Mersenne Twister is used internally with the seed defined by `set_seed()`. 
      * @param[in] init Pointer to a vector of length equal to the number of columns of `mat`,
      * containing the initial values of the first right singular vector.
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
-     *
-     * @overload
      */
     template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, const Eigen::VectorXd& center, const Eigen::VectorXd& scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
+    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
         Results output;
-        auto stats = run(mat, center, scale, output.U, output.V, output.D, eng, init);
+        auto stats = run(mat, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
         output.iterations = stats.second;
         return output;
