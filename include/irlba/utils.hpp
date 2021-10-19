@@ -171,6 +171,26 @@ constexpr std::mt19937_64* null_rng() { return NULL; }
  * @cond
  */
 template<class M, typename = int>
+struct has_multiply_method {
+    static constexpr bool value = false;
+};
+
+template<class M>
+struct has_multiply_method<M, decltype((void) (std::declval<M>() * std::declval<Eigen::VectorXd>()), 0)> {
+    static constexpr bool value = true;
+};
+
+template<class M, typename = int>
+struct has_adjoint_multiply_method {
+    static constexpr bool value = false;
+};
+
+template<class M>
+struct has_adjoint_multiply_method<M, decltype((void) (std::declval<M>().adjoint() * std::declval<Eigen::VectorXd>()), 0)> {
+    static constexpr bool value = true;
+};
+
+template<class M, typename = int>
 struct has_realize_method {
     static constexpr bool value = false;
 };

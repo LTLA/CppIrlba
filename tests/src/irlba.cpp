@@ -9,17 +9,6 @@
 #include "Eigen/Dense"
 #include <random>
 
-Eigen::MatrixXd create_random_matrix(size_t nr, size_t nc) {
-    Eigen::MatrixXd A(nr, nc);
-    NormalSampler norm(42); 
-    for (size_t i = 0; i < nc; ++i) {
-        for (size_t j = 0; j < nr; ++j) {
-            A(j, i) = norm();
-        }
-    }
-    return A;
-}
-
 TEST(IrlbaTest, Exact) {
     // For the test, the key is that rank + workspace > min(nr, nc), in which
     // case we can be pretty confident of getting a near-exact match of the
@@ -66,63 +55,88 @@ TEST_P(IrlbaTester, Basic) {
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-6);
 }
 
+std::vector<Eigen::MatrixXd> spawn_center_scale(const Eigen::MatrixXd& A) {
+    Eigen::MatrixXd centered = A, scaled = A, both = A;
+
+    for (Eigen::Index i = 0; i < A.cols(); ++i) {
+        double mean = A.col(i).sum() / A.rows();
+        double var1 = 0, var2 = 0;
+        for (Eigen::Index j = 0; j < A.rows(); ++j) {
+            double x = A(j, i);
+            centered(j, i) -= mean;
+            both(j, i) -= mean;
+            var1 += (x - mean)*(x - mean);
+            var2 += x * x;
+        }
+
+        both.col(i) /= std::sqrt(var1/(A.rows() - 1));
+        scaled.col(i) /= std::sqrt(var2/(A.rows() - 1));
+    }
+
+    return std::vector<Eigen::MatrixXd>{ centered, scaled, both };
+}
+
+
 TEST_P(IrlbaTester, CenterScale) {
     assemble(GetParam());
 
-    NormalSampler norm(42); 
-    Eigen::VectorXd center(A.cols());
-    for (auto& c : center) { c = norm(); }
-    Eigen::VectorXd scale(A.cols());
-    for (auto& s : scale) { s = std::abs(norm() + 1); }
+    // Computing references.
+    auto spawned = spawn_center_scale(A);
+    const auto& centered = spawned[0];
+    const auto& scaled = spawned[1];
+    const auto& both = spawned[2];
 
+    // Comparing to the observed calculation.
     irlba::Irlba irb;
-    auto res = irb.run(A, center, scale);
-
-    Eigen::MatrixXd copy = A;
-    for (size_t i = 0; i < A.cols(); ++i) {
-        for (size_t j = 0; j < A.rows(); ++j) {
-            copy(j, i) -= center(i);
-            copy(j, i) /= scale(i);
-        }
+    irb.set_number(rank);
+    auto ref = irb.run(A, true, true);
+    {
+        auto res = ref;
+        auto res2 = irb.run(both);
+        expect_equal_vectors(res.D, res2.D);
+        expect_equal_column_vectors<true>(res.U, res2.U);
+        expect_equal_column_vectors(res.V, res2.V);
+        for (size_t i = 0; i < res2.U.cols(); ++i) {
+            EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
+        }    
     }
 
-    auto res2 = irb.run(copy);
+    {
+        auto res = irb.run(A, true, false);
+        auto res2 = irb.run(centered);
+        expect_equal_vectors(res.D, res2.D);
+        expect_equal_column_vectors<true>(res.U, res2.U);
+        expect_equal_column_vectors(res.V, res2.V);
+        for (size_t i = 0; i < res2.U.cols(); ++i) {
+            EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
+        }    
+        EXPECT_NE(ref.D, res2.D);
+    }
 
-    expect_equal_vectors(res.D, res2.D);
-    expect_equal_column_vectors(res.U, res2.U);
-    expect_equal_column_vectors(res.V, res2.V);
+    {
+        auto res = irb.run(A, false, true);
+        auto res2 = irb.run(scaled);
+        expect_equal_vectors(res.D, res2.D);
+        expect_equal_column_vectors(res.U, res2.U);
+        expect_equal_column_vectors(res.V, res2.V);
+        EXPECT_NE(ref.D, res2.D);
+    }
 }
 
-TEST_P(IrlbaTester, CenterScaleAgain) {
-    assemble(GetParam());
+INSTANTIATE_TEST_SUITE_P(
+    IrlbaTest,
+    IrlbaTester,
+    ::testing::Combine(
+        ::testing::Values(20, 50, 100), // number of rows
+        ::testing::Values(20, 50, 100), // number of columns
+        ::testing::Values(2, 5, 10) // rank of interest
+    )
+);
+
+TEST(IrlbaTest, SmallExact) {
+    Eigen::MatrixXd small = create_random_matrix(10, 3);
 
     irlba::Irlba irb;
-    auto ref = irb.run(A);
-
-    auto res2 = irb.run<true>(A);
-    EXPECT_NE(ref.D, res2.D);
-    for (size_t i = 0; i < res2.U.cols(); ++i) {
-        EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
-    }    
-
-    auto res3 = irb.run<true, true>(A);
-    EXPECT_NE(ref.D, res3.D);
-    EXPECT_NE(res2.D, res3.D);
-    for (size_t i = 0; i < res3.U.cols(); ++i) {
-        EXPECT_TRUE(std::abs(res3.U.col(i).sum()) < 1e-8);
-    }    
-
-    auto res4 = irb.run<false, true>(A);
-    EXPECT_NE(ref.D, res4.D);
-    EXPECT_NE(res2.D, res4.D);
-    EXPECT_NE(res3.D, res4.D);
-}
-
-TEST_P(IrlbaTester, Exact) {
-    assemble(GetParam());
-
-    irlba::Irlba irb;
-    Eigen::MatrixXd small = A.leftCols(3);
     auto res = irb.set_number(2).run(small);
       
     Eigen::BDCSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
@@ -131,37 +145,53 @@ TEST_P(IrlbaTester, Exact) {
     EXPECT_EQ(svd.matrixV().leftCols(2), res.V);
 }
 
-TEST_P(IrlbaTester, ExactCenterScale) {
-    assemble(GetParam());
+TEST(IrlbaTest, SmallExactCenterScale) {
+    Eigen::MatrixXd small = create_random_matrix(10, 3);
 
-    Eigen::MatrixXd small = A.leftCols(3);
+    auto spawned = spawn_center_scale(small);
+    const auto& centered = spawned[0];
+    const auto& scaled = spawned[1];
+    const auto& both = spawned[2];
 
-    NormalSampler norm(50);
-    Eigen::VectorXd center(small.cols());
-    for (auto& c : center) { c = norm(); }
-    Eigen::VectorXd scale(small.cols());
-    for (auto& s : scale) { s = std::abs(norm() + 1); }
-
+    // Comparing to the observed calculation.
     irlba::Irlba irb;
-    auto res = irb.set_number(2).run(small, center, scale);
-
-    Eigen::MatrixXd copy = small;
-    for (size_t i = 0; i < small.cols(); ++i) {
-        for (size_t j = 0; j < small.rows(); ++j) {
-            copy(j, i) -= center(i);
-            copy(j, i) /= scale(i);
-        }
+    irb.set_number(2);
+    auto ref = irb.run(small, true, true);
+    {
+        auto res = ref;
+        auto res2 = irb.run(both);
+        expect_equal_vectors(res.D, res2.D);
+        expect_equal_column_vectors(res.U, res2.U);
+        expect_equal_column_vectors(res.V, res2.V);
+        for (size_t i = 0; i < res2.U.cols(); ++i) {
+            EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
+        }    
     }
 
-    auto res2 = irb.set_number(2).run(copy);
+    {
+        auto res = irb.run(small, true, false);
+        auto res2 = irb.run(centered);
+        expect_equal_vectors(res.D, res2.D);
+        expect_equal_column_vectors(res.U, res2.U);
+        expect_equal_column_vectors(res.V, res2.V);
+        for (size_t i = 0; i < res2.U.cols(); ++i) {
+            EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
+        }    
+        EXPECT_NE(ref.D, res2.D);
+    }
 
-    EXPECT_EQ(res.U, res2.U);
-    EXPECT_EQ(res.V, res2.V);
-    EXPECT_EQ(res.D, res2.D);
+    {
+        auto res = irb.run(small, false, true);
+        auto res2 = irb.run(scaled);
+        expect_equal_vectors(res.D, res2.D);
+        expect_equal_column_vectors(res.U, res2.U);
+        expect_equal_column_vectors(res.V, res2.V);
+        EXPECT_NE(ref.D, res2.D);
+    }
 }
 
-TEST_P(IrlbaTester, Fails) {
-    assemble(GetParam());
+TEST(IrlbaTester, Fails) {
+    Eigen::MatrixXd A = create_random_matrix(20, 10);
 
     irlba::Irlba irb;
 
@@ -183,12 +213,4 @@ TEST_P(IrlbaTester, Fails) {
     }
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    IrlbaTest,
-    IrlbaTester,
-    ::testing::Combine(
-        ::testing::Values(20, 50, 100), // number of rows
-        ::testing::Values(20, 50, 100), // number of columns
-        ::testing::Values(2, 5, 10) // rank of interest
-    )
-);
+
