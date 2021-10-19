@@ -61,7 +61,7 @@ struct Centered {
      * @return `out` is filled with the product of this matrix and `rhs`.
      */
     template<class Right>
-    void multiply(Right&& rhs, Eigen::VectorXd& out) const {
+    void multiply(const Right& rhs, Eigen::VectorXd& out) const {
         if constexpr(has_multiply_method<Matrix>::value) {
             out.noalias() = *mat * rhs;
         } else {
@@ -85,7 +85,7 @@ struct Centered {
      * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
      */
     template<class Right>
-    void adjoint_multiply(Right&& rhs, Eigen::VectorXd& out) const {
+    void adjoint_multiply(const Right& rhs, Eigen::VectorXd& out) const {
         if constexpr(has_adjoint_multiply_method<Matrix>::value) {
             out.noalias() = mat->adjoint() * rhs;
         } else {
@@ -163,7 +163,7 @@ struct Scaled {
      * @return `out` is filled with the product of this matrix and `rhs`.
      */
     template<class Right>
-    void multiply(Right&& rhs, Eigen::VectorXd& out) const {
+    void multiply(const Right& rhs, Eigen::VectorXd& out) const {
         if constexpr(has_multiply_method<Matrix>::value) {
             out.noalias() = *mat * rhs.cwiseQuotient(*scale);
         } else {
@@ -182,7 +182,7 @@ struct Scaled {
      * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
      */
     template<class Right>
-    void adjoint_multiply(Right&& rhs, Eigen::VectorXd& out) const {
+    void adjoint_multiply(const Right& rhs, Eigen::VectorXd& out) const {
         if constexpr(has_adjoint_multiply_method<Matrix>::value) {
             out.noalias() = mat->adjoint() * rhs;
         } else {
