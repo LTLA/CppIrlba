@@ -232,16 +232,16 @@ public:
                 Centered<M> centered(&mat, &center0);
                 if (scale) {
                     Scaled<decltype(centered)> centered_scaled(&centered, &scale0);
-                    run(centered_scaled, outU, outV, outD, eng, init);
+                    return run(centered_scaled, outU, outV, outD, eng, init);
                 } else {
-                    run(centered, outU, outV, outD, eng, init);
+                    return run(centered, outU, outV, outD, eng, init);
                 }
             } else {
                 Scaled<M> scaled(&mat, &scale0);
-                run(scaled, outU, outV, outD, eng, init);
+                return run(scaled, outU, outV, outD, eng, init);
             }
         } else {
-            run(mat, outU, outV, outD, eng, init);
+            return run(mat, outU, outV, outD, eng, init);
         }
     }
 
