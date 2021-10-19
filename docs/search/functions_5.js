@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['scaled_0',['Scaled',['../structirlba_1_1Scaled.html',1,'irlba::Scaled&lt; Matrix &gt;'],['../structirlba_1_1Scaled.html#a9611b6038bccab2a73e506b6e589a054',1,'irlba::Scaled::Scaled()']]],
+  ['scaled_0',['Scaled',['../structirlba_1_1Scaled.html#a9611b6038bccab2a73e506b6e589a054',1,'irlba::Scaled']]],
   ['set_5fconvergence_5ftolerance_1',['set_convergence_tolerance',['../classirlba_1_1Irlba.html#a9aa27d5a7891b6350b4d2da80b9b99d5',1,'irlba::Irlba']]],
   ['set_5fepsilon_2',['set_epsilon',['../classirlba_1_1LanczosBidiagonalization.html#af0ab346a06e95819dacb124d5827bebf',1,'irlba::LanczosBidiagonalization']]],
   ['set_5finvariant_5ftolerance_3',['set_invariant_tolerance',['../classirlba_1_1Irlba.html#a4ce4790f38031dfc6ac715f1aa3666e2',1,'irlba::Irlba']]],

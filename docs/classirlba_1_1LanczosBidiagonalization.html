@@ -95,20 +95,20 @@ Public Member Functions</h2></td></tr>
 template&lt;class M &gt; </td></tr>
 <tr class="memitem:a822af3a056f2f53fd6a96703cf5adfd2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>initialize</b> (const M &amp;mat)</td></tr>
 <tr class="separator:a822af3a056f2f53fd6a96703cf5adfd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a36e38176265b5e81adeb293cade7fc"><td class="memTemplParams" colspan="2">template&lt;class M , class CENTER , class SCALE , class Engine &gt; </td></tr>
-<tr class="memitem:a1a36e38176265b5e81adeb293cade7fc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a1a36e38176265b5e81adeb293cade7fc">run</a> (const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, const CENTER &amp;center, const SCALE &amp;scale, Engine &amp;eng, <a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a> &amp;inter, int start=0)</td></tr>
-<tr class="separator:a1a36e38176265b5e81adeb293cade7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb7c70dfda0bc5369513ef1f642d340"><td class="memTemplParams" colspan="2">template&lt;class M , class Engine &gt; </td></tr>
+<tr class="memitem:a8bb7c70dfda0bc5369513ef1f642d340"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#a8bb7c70dfda0bc5369513ef1f642d340">run</a> (const M &amp;mat, Eigen::MatrixXd &amp;W, Eigen::MatrixXd &amp;V, Eigen::MatrixXd &amp;B, Engine &amp;eng, <a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">Intermediates</a> &amp;inter, int start=0)</td></tr>
+<tr class="separator:a8bb7c70dfda0bc5369513ef1f642d340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Perform Lanczos bidiagonalization on an input matrix. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1a36e38176265b5e81adeb293cade7fc" name="a1a36e38176265b5e81adeb293cade7fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a36e38176265b5e81adeb293cade7fc">&#9670;&nbsp;</a></span>run()</h2>
+<a id="a8bb7c70dfda0bc5369513ef1f642d340" name="a8bb7c70dfda0bc5369513ef1f642d340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bb7c70dfda0bc5369513ef1f642d340">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
+template&lt;class M , class Engine &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -136,18 +136,6 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
           <td></td>
           <td class="paramtype">Eigen::MatrixXd &amp;&#160;</td>
           <td class="paramname"><em>B</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const CENTER &amp;&#160;</td>
-          <td class="paramname"><em>center</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const SCALE &amp;&#160;</td>
-          <td class="paramname"><em>scale</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -182,15 +170,7 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
 <p >Perform the Lanczos bidiagonalization on an input matrix, optionally with scaling and centering. This implements Algorithm 2.1 described by Baglama and Reichel (2005). Support is provided for centering and scaling without modifying <code>mat</code>. Protection against invariant subspaces is also implemented.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> library. We expect:<ul>
-<li>A <code>rows()</code> method that returns the number of rows.</li>
-<li>A <code>cols()</code> method that returns the number of columns.</li>
-<li>A <code>*</code> method for matrix-vector multiplication. This should accept an <code>Eigen::VectorXd</code> of length equal to the number of columns as the right-hand argument, and return an <code>Eigen::VectorXd</code>-coercible object of length equal to the number of rows.</li>
-<li>An <code>adjoint()</code> method that returns an instance of any class that has a <code>*</code> method for matrix-vector multiplication. The method should accept an <code>Eigen::VectorXd</code> of length equal to the number of rows and return and return an <code>Eigen::VectorXd</code>-coercible object of length equal to the number of columns. </li>
-</ul>
-</td></tr>
-    <tr><td class="paramname">CENTER</td><td>Either <code>Eigen::VectorXd</code> or <code>bool</code>. </td></tr>
-    <tr><td class="paramname">CENTER</td><td>Either <code>Eigen::VectorXd</code> or <code>bool</code>. </td></tr>
+    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> library. See the <code><a class="el" href="classirlba_1_1Irlba.html" title="Run IRLBA on an input matrix.">Irlba</a></code> documentation for a detailed description of the expected methods. </td></tr>
     <tr><td class="paramname">Engine</td><td>A functor that, when called with no arguments, returns a random integer from a discrete uniform distribution.</td></tr>
   </table>
   </dd>
@@ -201,8 +181,6 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
     <tr><td class="paramname">W</td><td>Output matrix with number of rows equal to <code>mat.rows()</code>. The size of the working subspace is defined from the number of columns. The first <code>start</code> columns should contain orthonormal column vectors with non-zero L2 norms. </td></tr>
     <tr><td class="paramname">V</td><td>Matrix with number of rows equal to <code>mat.cols()</code> and number of columns equal to <code>W.cols()</code>. The first <code>start + 1</code> columns should contain orthonormal column vectors with non-zero L2 norms. </td></tr>
     <tr><td class="paramname">B</td><td>Square matrix with number of rows and columns equal to the size of the working subspace. Number of values is defined by <code>set_number()</code>. </td></tr>
-    <tr><td class="paramname">center</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value is to be subtracted from the corresponding column of <code>mat</code>. Alternatively <code>false</code>, if no centering is to be performed. </td></tr>
-    <tr><td class="paramname">scale</td><td>A vector of length equal to the number of columns of <code>mat</code>. Each value should be positive and is used to divide the corresponding column of <code>mat</code>. </td></tr>
     <tr><td class="paramname">eng</td><td>An instance of a random number <code>Engine</code>. </td></tr>
     <tr><td class="paramname">inter</td><td>Collection of intermediate data structures generated by calling <code>initialize()</code> on <code>mat</code>. </td></tr>
     <tr><td class="paramname">start</td><td>The dimension from which to start the bidiagonalization.</td></tr>
@@ -236,7 +214,7 @@ template&lt;class M , class CENTER , class SCALE , class Engine &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Set the tolerance to use to define invariant subspaces. This is used as the lower bound for the L2 norm for the subspace vectors; below this bound, vectors are treated as all-zero and filled with random draws from a normal distribution.</p>
+<p >Set the tolerance to use to define invariant subspaces. This is used as the lower bound for the L2 norm for the subspace vectors; below this bound, vectors are treated as all-zero and are instead filled with random draws from a normal distribution.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">e</td><td>A positive number defining the tolerance. If negative, we instead use the machine epsilon to the power of 0.8 (the same value as the <b>irlba</b> R package).</td></tr>

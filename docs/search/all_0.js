@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['c_2b_2b_20library_20for_20irlba_0',['C++ library for IRLBA',['../index.html',1,'']]],
-  ['converged_1',['converged',['../structirlba_1_1Irlba_1_1Results.html#a6bf7cdbdef24df8f02d7e309ee7c7dcc',1,'irlba::Irlba::Results']]],
-  ['convergencetest_2',['ConvergenceTest',['../structirlba_1_1ConvergenceTest.html',1,'irlba']]]
+  ['adjoint_5fmultiply_0',['adjoint_multiply',['../structirlba_1_1Centered.html#a9296ea17bb1ff575731822c0b936bb3b',1,'irlba::Centered::adjoint_multiply()'],['../structirlba_1_1Scaled.html#ae475d9ac3e54e70c624d3c156ce14611',1,'irlba::Scaled::adjoint_multiply()']]]
 ];

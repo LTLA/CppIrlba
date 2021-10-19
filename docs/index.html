@@ -79,17 +79,17 @@ $(function() {
 <div class="line"><span class="comment">// optional; specify the number of singular vectors, workspace, etc.</span></div>
 <div class="line">runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#a64dcc77838d579950f7eb05243852743">set_number</a>(5).<a class="code hl_function" href="classirlba_1_1Irlba.html#a4ca6679e24ecfde03d952589d6654e0e">set_work</a>(20);</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> result = runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#a41a7f01fa4063c15ab7d39e121dfc797">run</a>(mat, <span class="keyword">false</span>, <span class="keyword">false</span>, U, V, S);</div>
+<div class="line"><span class="keyword">auto</span> result = runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#a521f6fa6a6fe80f8e9b09cece07f4a2b">run</a>(mat, <span class="keyword">false</span>, <span class="keyword">false</span>, U, V, S);</div>
 <div class="line">result.U; <span class="comment">// left singular vectors</span></div>
 <div class="line">result.V; <span class="comment">// right singular vectors</span></div>
 <div class="line">result.S; <span class="comment">// singular values</span></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html"><div class="ttname"><a href="classirlba_1_1Irlba.html">irlba::Irlba</a></div><div class="ttdoc">Run IRLBA on an input matrix.</div><div class="ttdef"><b>Definition:</b> irlba.hpp:28</div></div>
-<div class="ttc" id="aclassirlba_1_1Irlba_html_a41a7f01fa4063c15ab7d39e121dfc797"><div class="ttname"><a href="classirlba_1_1Irlba.html#a41a7f01fa4063c15ab7d39e121dfc797">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD, Engine *eng=null_rng(), Eigen::VectorXd *init=NULL)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:186</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a4ca6679e24ecfde03d952589d6654e0e"><div class="ttname"><a href="classirlba_1_1Irlba.html#a4ca6679e24ecfde03d952589d6654e0e">irlba::Irlba::set_work</a></div><div class="ttdeci">Irlba &amp; set_work(int w=Defaults::extra_work)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:109</div></div>
+<div class="ttc" id="aclassirlba_1_1Irlba_html_a521f6fa6a6fe80f8e9b09cece07f4a2b"><div class="ttname"><a href="classirlba_1_1Irlba.html#a521f6fa6a6fe80f8e9b09cece07f4a2b">irlba::Irlba::run</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; run(const M &amp;mat, bool center, bool scale, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD, Engine *eng=null_rng(), Eigen::VectorXd *init=NULL)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:183</div></div>
 <div class="ttc" id="aclassirlba_1_1Irlba_html_a64dcc77838d579950f7eb05243852743"><div class="ttname"><a href="classirlba_1_1Irlba.html#a64dcc77838d579950f7eb05243852743">irlba::Irlba::set_number</a></div><div class="ttdeci">Irlba &amp; set_number(int n=Defaults::number)</div><div class="ttdef"><b>Definition:</b> irlba.hpp:70</div></div>
 <div class="ttc" id="airlba_8hpp_html"><div class="ttname"><a href="irlba_8hpp.html">irlba.hpp</a></div></div>
 </div><!-- fragment --><p >To perform a PCA:</p>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> res = runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#a41a7f01fa4063c15ab7d39e121dfc797">run</a>(mat, <span class="keyword">true</span>, <span class="keyword">false</span>);</div>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> res = runner.<a class="code hl_function" href="classirlba_1_1Irlba.html#a521f6fa6a6fe80f8e9b09cece07f4a2b">run</a>(mat, <span class="keyword">true</span>, <span class="keyword">false</span>);</div>
 <div class="line">Eigen::MatrixXd components = res.U;</div>
 <div class="line">components *= res.S.asDiagonal();</div>
 </div><!-- fragment --><p >See the <a href="https://ltla.github.io/CppIrlba">reference documentation</a> for more details.</p>
