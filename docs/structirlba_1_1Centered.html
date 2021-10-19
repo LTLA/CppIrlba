@@ -88,12 +88,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac5fe8d8c706d670811c9d5e6c8bbf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b700301187ffe9d12e5b6ba818f071"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a25b700301187ffe9d12e5b6ba818f071">cols</a> () const</td></tr>
 <tr class="separator:a25b700301187ffe9d12e5b6ba818f071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f95cde076fde69b9dac77238fe77c5a"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
-<tr class="memitem:a1f95cde076fde69b9dac77238fe77c5a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a1f95cde076fde69b9dac77238fe77c5a">multiply</a> (Right &amp;&amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
-<tr class="separator:a1f95cde076fde69b9dac77238fe77c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9296ea17bb1ff575731822c0b936bb3b"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
-<tr class="memitem:a9296ea17bb1ff575731822c0b936bb3b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a9296ea17bb1ff575731822c0b936bb3b">adjoint_multiply</a> (Right &amp;&amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
-<tr class="separator:a9296ea17bb1ff575731822c0b936bb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67193ab497a4a860153bee60d0b741e2"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:a67193ab497a4a860153bee60d0b741e2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a67193ab497a4a860153bee60d0b741e2">multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
+<tr class="separator:a67193ab497a4a860153bee60d0b741e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#ab3c2e5047238c2cd88f16dc96eff9c45">adjoint_multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
+<tr class="separator:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a700df2782062b93e673b5055adcf3195"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a700df2782062b93e673b5055adcf3195">realize</a> () const</td></tr>
 <tr class="separator:a700df2782062b93e673b5055adcf3195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -154,8 +154,8 @@ template&lt;class Matrix &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9296ea17bb1ff575731822c0b936bb3b" name="a9296ea17bb1ff575731822c0b936bb3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9296ea17bb1ff575731822c0b936bb3b">&#9670;&nbsp;</a></span>adjoint_multiply()</h2>
+<a id="ab3c2e5047238c2cd88f16dc96eff9c45" name="ab3c2e5047238c2cd88f16dc96eff9c45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3c2e5047238c2cd88f16dc96eff9c45">&#9670;&nbsp;</a></span>adjoint_multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +170,7 @@ template&lt;class Right &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::adjoint_multiply </td>
           <td>(</td>
-          <td class="paramtype">Right &amp;&amp;&#160;</td>
+          <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
         </tr>
         <tr>
@@ -236,8 +236,8 @@ template&lt;class Matrix &gt; </div>
 
 </div>
 </div>
-<a id="a1f95cde076fde69b9dac77238fe77c5a" name="a1f95cde076fde69b9dac77238fe77c5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f95cde076fde69b9dac77238fe77c5a">&#9670;&nbsp;</a></span>multiply()</h2>
+<a id="a67193ab497a4a860153bee60d0b741e2" name="a67193ab497a4a860153bee60d0b741e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67193ab497a4a860153bee60d0b741e2">&#9670;&nbsp;</a></span>multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,7 +252,7 @@ template&lt;class Right &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::multiply </td>
           <td>(</td>
-          <td class="paramtype">Right &amp;&amp;&#160;</td>
+          <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
         </tr>
         <tr>
