@@ -9,17 +9,6 @@
 #include "Eigen/Dense"
 #include <random>
 
-Eigen::MatrixXd create_random_matrix(size_t nr, size_t nc) {
-    Eigen::MatrixXd A(nr, nc);
-    NormalSampler norm(42); 
-    for (size_t i = 0; i < nc; ++i) {
-        for (size_t j = 0; j < nr; ++j) {
-            A(j, i) = norm();
-        }
-    }
-    return A;
-}
-
 TEST(IrlbaTest, Exact) {
     // For the test, the key is that rank + workspace > min(nr, nc), in which
     // case we can be pretty confident of getting a near-exact match of the

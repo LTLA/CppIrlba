@@ -17,6 +17,7 @@ add_executable(
     src/irlba.cpp
     src/sparse.cpp
     src/invariant.cpp
+    src/wrappers.hpp
 )
 
 target_link_libraries(

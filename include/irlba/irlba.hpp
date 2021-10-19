@@ -229,15 +229,15 @@ public:
             }
 
             if (center) {
-                CenteredWrapper<M> centered(&mat, &center0);
+                Centered<M> centered(&mat, &center0);
                 if (scale) {
-                    ScaledWrapper<decltype(centered)> centered_scaled(&centered, &scale0);
+                    Scaled<decltype(centered)> centered_scaled(&centered, &scale0);
                     run(centered_scaled, outU, outV, outD, eng, init);
                 } else {
                     run(centered, outU, outV, outD, eng, init);
                 }
             } else {
-                ScaledWrapper<M> scaled(&mat, &scale0);
+                Scaled<M> scaled(&mat, &scale0);
                 run(scaled, outU, outV, outD, eng, init);
             }
         } else {
@@ -269,16 +269,25 @@ public:
      * @return A pair where the first entry indicates whether the algorithm converged,
      * and the second entry indicates the number of restart iterations performed.
      *
-     * Custom classes can be used to define non-standard matrices that cannot be easily realized into the standard **Eigen** classes.
-     *
-     We expect:
+     * Custom classes can be used to define modified matrices that cannot be efficiently realized into the standard **Eigen** classes.
+     * We expect:
      * - A `rows()` method that returns the number of rows.
      * - A `cols()` method that returns the number of columns.
-     * - A `*` method for matrix-vector multiplication.
-     *   This should accept an `Eigen::VectorXd` of length equal to the number of columns as the right-hand argument,
-     *   and return an `Eigen::VectorXd`-coercible object of length equal to the number of rows.
-     * - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
-     *   The method should accept an `Eigen::VectorXd` of length equal to the number of rows and return and return an `Eigen::VectorXd`-coercible object of length equal to the number of columns.
+     * - One of the following for matrix-vector multiplication:
+     *   - `multiply(rhs, out)`, which should compute the product of the matrix with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of columns;
+     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of rows.
+     *   - A `*` method where the right-hand side is an `Eigen::VectorXd` (or equivalent expression) of length equal to the number of columsn,
+     *     and returns an `Eigen::VectorXd`-equivalent of length equal to the number of rows.
+     * - One of the following for matrix transpose-vector multiplication:
+     *   - `adjoint_multiply(rhs, out)`, which should compute the product of the matrix transpose with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of rows;
+     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of columns.
+     *   - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
+     *     The method should accept an `Eigen::VectorXd`-equivalent of length equal to the number of rows,
+     *     and return an `Eigen::VectorXd`-equvialent of length equal to the number of columns.
+     * - A `realize()` method that returns an `Eigen::MatrixXd` object representing the modified matrix.
+     *   This can be omitted if an `Eigen::MatrixXd` can be copy-constructed from the class.
+     *
+     * See the `Centered` and `Scaled` classes for more details.
      *
      * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      */
