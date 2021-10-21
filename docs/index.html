@@ -93,6 +93,28 @@ $(function() {
 <div class="line">Eigen::MatrixXd components = res.U;</div>
 <div class="line">components *= res.S.asDiagonal();</div>
 </div><!-- fragment --><p >See the <a href="https://ltla.github.io/CppIrlba">reference documentation</a> for more details.</p>
+<h1>Building projects</h1>
+<p >If you're using CMake, you just need to add something like this to your <code>CMakeLists.txt</code>:</p>
+<div class="fragment"><div class="line">include(FetchContent)</div>
+<div class="line"> </div>
+<div class="line">FetchContent_Declare(</div>
+<div class="line">  irlba </div>
+<div class="line">  GIT_REPOSITORY https://github.com/LTLA/CppIrlba</div>
+<div class="line">  GIT_TAG master # or any version of interest</div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line">FetchContent_MakeAvailable(irlba)</div>
+</div><!-- fragment --><p >Then you can link to <b>irlba</b> to make the headers available during compilation:</p>
+<div class="fragment"><div class="line"># For executables:</div>
+<div class="line">target_link_libraries(myexe irlba)</div>
+<div class="line"> </div>
+<div class="line"># For libaries</div>
+<div class="line">target_link_libraries(mylib INTERFACE irlba)</div>
+</div><!-- fragment --><p >If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's <code>-I</code>. Note that this requires manual management of a few dependencies:</p>
+<ul>
+<li><a href="https://gitlab.com/libeigen/eigen"><b>Eigen</b></a>, for matrix manipulations.</li>
+<li><a href="https://github.com/LTLA/aarand"><b>aarand</b></a>, for system-agnostic random distribution functions.</li>
+</ul>
 <h1>References</h1>
 <p >Baglama, James, and Lothar Reichel (2005). Augmented implicitly restarted Lanczos bidiagonalization methods. <em>SIAM J. Sci. Comput.</em>, 27(1), 19-42. </p>
 </div></div><!-- PageDoc -->
