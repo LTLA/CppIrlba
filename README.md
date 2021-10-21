@@ -39,6 +39,38 @@ components *= res.S.asDiagonal();
 
 See the [reference documentation](https://ltla.github.io/CppIrlba) for more details.
 
+## Building projects
+
+If you're using CMake, you just need to add something like this to your `CMakeLists.txt`:
+
+```
+include(FetchContent)
+
+FetchContent_Declare(
+  irlba 
+  GIT_REPOSITORY https://github.com/LTLA/CppIrlba
+  GIT_TAG master # or any version of interest
+)
+
+FetchContent_MakeAvailable(irlba)
+```
+
+Then you can link to **irlba** to make the headers available during compilation:
+
+```
+# For executables:
+target_link_libraries(myexe irlba)
+
+# For libaries
+target_link_libraries(mylib INTERFACE irlba)
+```
+
+If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
+Note that this requires manual management of a few dependencies:
+
+- [**Eigen**](https://gitlab.com/libeigen/eigen), for matrix manipulations.
+- [**aarand**](https://github.com/LTLA/aarand), for system-agnostic random distribution functions.
+
 ## References
 
 Baglama, James, and Lothar Reichel (2005).
