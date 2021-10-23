@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iterations_0',['iterations',['../structirlba_1_1Irlba_1_1Results.html#a01a33644ef84e921f611699d5656f255',1,'irlba::Irlba::Results']]]
+  ['extra_5fwork_0',['extra_work',['../structirlba_1_1Irlba_1_1Defaults.html#a5bcbb0f825ebb62a2626de2399cb6e6a',1,'irlba::Irlba::Defaults']]]
 ];

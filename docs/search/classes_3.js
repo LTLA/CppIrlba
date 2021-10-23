@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['results_0',['Results',['../structirlba_1_1Irlba_1_1Results.html',1,'irlba::Irlba']]]
+  ['lanczosbidiagonalization_0',['LanczosBidiagonalization',['../classirlba_1_1LanczosBidiagonalization.html',1,'irlba']]]
 ];

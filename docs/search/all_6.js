@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['realize_0',['realize',['../structirlba_1_1Centered.html#a700df2782062b93e673b5055adcf3195',1,'irlba::Centered::realize()'],['../structirlba_1_1Scaled.html#ae4ef87991458b845f35f719ae662164f',1,'irlba::Scaled::realize()']]],
-  ['residuals_1',['residuals',['../structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#ab4ed13aa0a7ddb965691c0458b122ad3',1,'irlba::LanczosBidiagonalization::Intermediates']]],
-  ['results_2',['Results',['../structirlba_1_1Irlba_1_1Results.html',1,'irlba::Irlba']]],
-  ['rows_3',['rows',['../structirlba_1_1Centered.html#aac5fe8d8c706d670811c9d5e6c8bbf07',1,'irlba::Centered::rows()'],['../structirlba_1_1Scaled.html#a3761d433857f80dc429c8e0383b14afe',1,'irlba::Scaled::rows()']]],
-  ['run_4',['run',['../classirlba_1_1Irlba.html#a521f6fa6a6fe80f8e9b09cece07f4a2b',1,'irlba::Irlba::run(const M &amp;mat, bool center, bool scale, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD, Engine *eng=null_rng(), Eigen::VectorXd *init=NULL)'],['../classirlba_1_1Irlba.html#a71ce7fe07db3890628ff1256f3a60b55',1,'irlba::Irlba::run(const Matrix &amp;mat, Eigen::MatrixXd &amp;outU, Eigen::MatrixXd &amp;outV, Eigen::VectorXd &amp;outD, Engine *eng=null_rng(), Eigen::VectorXd *init=NULL)'],['../classirlba_1_1Irlba.html#a33b77470049eabfdb534dcd5c33374df',1,'irlba::Irlba::run(const M &amp;mat, bool center, bool scale, Engine *eng=null_rng(), Eigen::VectorXd *init=NULL)'],['../classirlba_1_1Irlba.html#a08d672d191ff478a97391749372cfde1',1,'irlba::Irlba::run(const M &amp;mat, Engine *eng=null_rng(), Eigen::VectorXd *init=NULL)'],['../classirlba_1_1LanczosBidiagonalization.html#a8bb7c70dfda0bc5369513ef1f642d340',1,'irlba::LanczosBidiagonalization::run()'],['../structirlba_1_1ConvergenceTest.html#ae1abfb50099701ca9c05e451109bbba3',1,'irlba::ConvergenceTest::run()']]]
+  ['lanczos_2ehpp_0',['lanczos.hpp',['../lanczos_8hpp.html',1,'']]],
+  ['lanczosbidiagonalization_1',['LanczosBidiagonalization',['../classirlba_1_1LanczosBidiagonalization.html',1,'irlba']]]
 ];

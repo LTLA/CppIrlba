@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['u_0',['U',['../structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207',1,'irlba::Irlba::Results']]]
+  ['null_5frng_0',['null_rng',['../utils_8hpp.html#a78ee106624de7aed4f8ff0cc4a414239',1,'irlba']]],
+  ['number_1',['number',['../structirlba_1_1Irlba_1_1Defaults.html#a59b268764fec872b4b8c64ee3a90e103',1,'irlba::Irlba::Defaults']]]
 ];

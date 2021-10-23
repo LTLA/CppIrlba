@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['intermediates_0',['Intermediates',['../structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html',1,'irlba::LanczosBidiagonalization']]],
-  ['irlba_1',['Irlba',['../classirlba_1_1Irlba.html',1,'irlba']]]
+  ['defaults_0',['Defaults',['../structirlba_1_1Irlba_1_1Defaults.html',1,'irlba::Irlba']]]
 ];

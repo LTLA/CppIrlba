@@ -73,15 +73,18 @@ $(function() {
   <div class="headertitle"><div class="title">wrappers.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;utils.hpp&quot;</code><br />
+
+<p>Wrapper classes for multiplication of modified matrices.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils.hpp</a>&quot;</code><br />
 <code>#include &quot;Eigen/Dense&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for wrappers.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="wrappers_8hpp__incl.png" border="0" usemap="#airlba_2wrappers_8hpp" alt=""/></div>
 <map name="airlba_2wrappers_8hpp" id="airlba_2wrappers_8hpp">
-<area shape="rect" title=" " alt="" coords="41,5,168,32"/>
-<area shape="rect" href="utils_8hpp_source.html" title=" " alt="" coords="121,80,192,107"/>
+<area shape="rect" title="Wrapper classes for multiplication of modified matrices." alt="" coords="41,5,168,32"/>
+<area shape="rect" href="utils_8hpp.html" title="Various utility functions." alt="" coords="121,80,192,107"/>
 <area shape="rect" title=" " alt="" coords="5,155,100,181"/>
 <area shape="rect" title=" " alt="" coords="124,155,189,181"/>
 <area shape="rect" title=" " alt="" coords="213,155,265,181"/>
@@ -93,9 +96,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="wrappers_8hpp__dep__incl.png" border="0" usemap="#airlba_2wrappers_8hppdep" alt=""/></div>
 <map name="airlba_2wrappers_8hppdep" id="airlba_2wrappers_8hppdep">
-<area shape="rect" title=" " alt="" coords="5,5,132,32"/>
-<area shape="rect" href="lanczos_8hpp_source.html" title=" " alt="" coords="9,80,128,107"/>
-<area shape="rect" href="irlba_8hpp.html" title=" " alt="" coords="19,155,118,181"/>
+<area shape="rect" title="Wrapper classes for multiplication of modified matrices." alt="" coords="5,5,132,32"/>
+<area shape="rect" href="lanczos_8hpp.html" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="9,80,128,107"/>
+<area shape="rect" href="irlba_8hpp.html" title="Implements the main user&#45;visible class for running IRLBA." alt="" coords="19,155,118,181"/>
 </map>
 </div>
 </div>
@@ -111,7 +114,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Wrapper classes for multiplication of modified matrices. The idea is to reproduce the product without actually modifying the underlying matrix, especially when the modification results in an unnecessary copy and/or loss of sparsity.</p>
+<div class="textblock"><p >Wrapper classes for multiplication of modified matrices. </p>
+<p >The idea is to compute the product of a modified matrix with a vector - but without actually modifying the underlying matrix. This is especially important when the modification results in an unnecessary copy and/or loss of sparsity. We achieve this effect by deferring the modification into the subspace defined by vector.</p>
 <p >An instance <code>mat</code> of a wrapper class should implement:</p>
 <ul>
 <li><code>mat.rows()</code>, returning the number of rows.</li>
