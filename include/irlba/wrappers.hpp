@@ -7,9 +7,11 @@
 /**
  * @file wrappers.hpp
  *
- * Wrapper classes for multiplication of modified matrices.
- * The idea is to reproduce the product without actually modifying the underlying matrix,
- * especially when the modification results in an unnecessary copy and/or loss of sparsity.
+ * @brief Wrapper classes for multiplication of modified matrices.
+ *
+ * The idea is to compute the product of a modified matrix with a vector - but without actually modifying the underlying matrix.
+ * This is especially important when the modification results in an unnecessary copy and/or loss of sparsity.
+ * We achieve this effect by deferring the modification into the subspace defined by vector.
  *
  * An instance `mat` of a wrapper class should implement:
  *

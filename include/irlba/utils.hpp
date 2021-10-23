@@ -6,6 +6,12 @@
 #include <utility>
 #include "aarand/aarand.hpp"
 
+/**
+ * @file utils.hpp
+ * 
+ * @brief Various utility functions.
+ */
+
 namespace irlba {
 
 /**

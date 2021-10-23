@@ -7,6 +7,12 @@
 #include <cmath>
 #include <limits>
 
+/**
+ * @file lanczos.hpp
+ *
+ * @brief Perform the Lanczos bidiagonalization iterations.
+ */
+
 namespace irlba {
 
 /**

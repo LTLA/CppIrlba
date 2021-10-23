@@ -13,7 +13,7 @@
 /**
  * @file irlba.hpp
  *
- * Implements the main user-visible class for running IRLBA.
+ * @brief Implements the main user-visible class for running IRLBA.
  */
 
 namespace irlba {
@@ -27,6 +27,9 @@ namespace irlba {
  */
 class Irlba {
 public:
+    /**
+     * @brief Default parameter values.
+     */
     struct Defaults {
         /**
          * See `set_number()` for more details.
