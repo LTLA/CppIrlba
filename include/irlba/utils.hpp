@@ -25,7 +25,8 @@ namespace irlba {
  * @return `vec` is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
  * This ensures that it is orthogonal to each column of `mat0`.
  */
-inline void orthogonalize_vector(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols, Eigen::VectorXd& tmp) {
+template<typename MatrixType, typename VectorType>
+inline void orthogonalize_vector(const MatrixType& mat, VectorType& vec, size_t ncols, VectorType& tmp) {
     tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
     vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
     return;
@@ -95,8 +96,11 @@ void fill_with_random_normals(Matrix& mat, int column, Engine& eng) {
 /**
  * @brief Test for IRLBA convergence.
  */
+template<typename VectorType>
 struct ConvergenceTest {
 public:
+    using Scalar = typename VectorType::Scalar;
+    using RealVectorType = Eigen::Vector<typename Eigen::NumTraits<Scalar>::Real, VectorType::RowsAtCompileTime>;
     struct Defaults {
         /**
          * See `set_tol()` for more details.
@@ -148,7 +152,7 @@ public:
      *
      * @return The number of singular values/vectors that have achieved convergence.
      */
-    int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals, const Eigen::VectorXd& last) {
+    int run(const RealVectorType& sv, const VectorType& residuals, const VectorType& last) {
         int counter = 0;
         double Smax = *std::max_element(sv.begin(), sv.end());
         double svtol_actual = (svtol >= 0 ? svtol : tol);
@@ -176,34 +180,34 @@ constexpr std::mt19937_64* null_rng() { return NULL; }
 /**
  * @cond
  */
-template<class M, typename = int>
+template<typename M, typename V, typename = int>
 struct has_multiply_method {
     static constexpr bool value = false;
 };
 
-template<class M>
-struct has_multiply_method<M, decltype((void) (std::declval<M>() * std::declval<Eigen::VectorXd>()), 0)> {
+template<typename M, typename V>
+struct has_multiply_method<M, V, decltype((void) (std::declval<M>() * std::declval<V>()), 0)> {
     static constexpr bool value = true;
 };
 
-template<class M, typename = int>
+template<typename M, typename V, typename = int>
 struct has_adjoint_multiply_method {
     static constexpr bool value = false;
 };
 
-template<class M>
-struct has_adjoint_multiply_method<M, decltype((void) (std::declval<M>().adjoint() * std::declval<Eigen::VectorXd>()), 0)> {
+template<typename M, typename V>
+struct has_adjoint_multiply_method<M, V, decltype((void) (std::declval<M>().adjoint() * std::declval<V>()), 0)> {
     static constexpr bool value = true;
 };
 
-template<class M, typename = int>
+template<class M, typename M2, typename = int>
 struct has_realize_method {
     static constexpr bool value = false;
 };
 
-template<class M>
-struct has_realize_method<M, decltype((void) std::declval<M>().realize(), 0)> {
-    static constexpr bool value = std::is_same<decltype(std::declval<M>().realize()), Eigen::MatrixXd>::value;
+template<class M, typename M2>
+struct has_realize_method<M, M2, decltype((void) std::declval<M>().realize(), 0)> {
+    static constexpr bool value = std::is_same<decltype(std::declval<M>().realize()), M2>::value;
 };
 /**
  * @endcond

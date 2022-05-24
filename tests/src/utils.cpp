@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "irlba/utils.hpp"
+#include "irlba/wrappers.hpp"
 #include "Eigen/Dense"
 #include "Eigen/Sparse"
 #include "NormalSampler.h"
@@ -98,9 +99,14 @@ struct dummy_class {
 };
 
 TEST(UtilsTest, ConvertibleCheck) {
-    EXPECT_FALSE(irlba::has_realize_method<Eigen::MatrixXd>::value);
-    EXPECT_FALSE(irlba::has_realize_method<Eigen::SparseMatrix<double> >::value);
-    EXPECT_TRUE(irlba::has_realize_method<dummy_class>::value);
+    bool const realize_xd_xd = irlba::has_realize_method<Eigen::MatrixXd, Eigen::MatrixXd>::value;
+    EXPECT_FALSE(realize_xd_xd);
+    bool const realize_sp_sp = irlba::has_realize_method<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>::value;
+    EXPECT_FALSE(realize_sp_sp);
+    bool const realize_dummy = irlba::has_realize_method<dummy_class, Eigen::MatrixXd>::value;
+    EXPECT_TRUE(realize_dummy);
+    bool const realize_scaled = irlba::has_realize_method<irlba::Scaled<Eigen::MatrixXd>, Eigen::MatrixXd>::value;
+    EXPECT_TRUE(realize_scaled);
 }
 
 TEST(UtilsTest, NormalSampler) {

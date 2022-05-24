@@ -18,8 +18,12 @@ namespace irlba {
 /**
  * @brief Perform Lanczos bidiagonalization on an input matrix.
  */
+template<typename MatrixType = Eigen::MatrixXd>
 class LanczosBidiagonalization {
 public:
+    using Scalar = typename MatrixType::Scalar;
+    using VectorType = Eigen::Vector<Scalar, MatrixType::RowsAtCompileTime>;
+    using RealVectorType = Eigen::Vector<typename Eigen::NumTraits<Scalar>::Real, MatrixType::RowsAtCompileTime>;
     struct Defaults {
         /**
          * See `set_epsilon()` for details.
@@ -60,16 +64,16 @@ public:
          *
          * @return Vector of residuals of length equal to the number of columns of `mat` in `run()`.
          */
-        const Eigen::VectorXd& residuals() const {
+        const VectorType& residuals() const {
             return F;
         }
 
         /**
          * @cond
          */
-        Eigen::VectorXd F; 
-        Eigen::VectorXd W_next;
-        Eigen::VectorXd orthog_tmp;
+        VectorType F; 
+        VectorType W_next;
+        VectorType orthog_tmp;
         /**
          * @endcond
          */
@@ -110,9 +114,9 @@ public:
     template<class M, class Engine>
     void run(
         const M& mat, 
-        Eigen::MatrixXd& W, 
-        Eigen::MatrixXd& V, 
-        Eigen::MatrixXd& B, 
+        MatrixType& W, 
+        MatrixType& V, 
+        MatrixType& B, 
         Engine& eng, 
         Intermediates& inter, 
         int start = 0) 
@@ -125,7 +129,7 @@ public:
         auto& otmp = inter.orthog_tmp;
 
         F = V.col(start);
-        if constexpr(has_multiply_method<M>::value) {
+        if constexpr(has_multiply_method<M, VectorType>::value) {
             W_next.noalias() = mat * F;
         } else {
             mat.multiply(F, W_next);
@@ -145,7 +149,7 @@ public:
 
         // The Lanczos iterations themselves.
         for (int j = start; j < work; ++j) {
-            if constexpr(has_adjoint_multiply_method<M>::value) {
+            if constexpr(has_adjoint_multiply_method<M, MatrixType>::value) {
                 F.noalias() = mat.adjoint() * W.col(j);
             } else {
                 mat.adjoint_multiply(W.col(j), F);
@@ -172,7 +176,7 @@ public:
                 B(j, j) = S;
                 B(j, j + 1) = R_F;
 
-                if constexpr(has_multiply_method<M>::value) {
+                if constexpr(has_multiply_method<M, VectorType>::value) {
                     W_next.noalias() = mat * F;
                 } else {
                     mat.multiply(F, W_next);

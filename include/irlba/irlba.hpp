@@ -25,8 +25,12 @@ namespace irlba {
  * This is heavily derived from the C code in the [**irlba** package](https://github.com/bwlewis/irlba),
  * with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.
  */
+template<typename MatrixType = Eigen::MatrixXd>
 class Irlba {
 public:
+    using Scalar = typename MatrixType::Scalar;
+    using VectorType = Eigen::Vector<Scalar, MatrixType::RowsAtCompileTime>;
+    using RealVectorType = Eigen::Vector<typename Eigen::NumTraits<Scalar>::Real, MatrixType::RowsAtCompileTime>;
     /**
      * @brief Default parameter values.
      */
@@ -52,14 +56,14 @@ public:
         static constexpr uint64_t seed = std::mt19937_64::default_seed;
     };
 private:
-    LanczosBidiagonalization lp;
+    LanczosBidiagonalization<MatrixType> lp;
 
     int number = Defaults::number; 
     int extra_work = Defaults::extra_work;
     int maxit = Defaults::maxit;
     uint64_t seed = Defaults::seed;
 
-    ConvergenceTest convtest;
+    ConvergenceTest<VectorType> convtest;
 
 public:
     /**
@@ -121,7 +125,7 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_invariant_tolerance(double e = LanczosBidiagonalization::Defaults::epsilon) {
+    Irlba& set_invariant_tolerance(double e = LanczosBidiagonalization<MatrixType>::Defaults::epsilon) {
          lp.set_epsilon(e);
          return *this;
     }
@@ -133,7 +137,7 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_convergence_tolerance(double t = ConvergenceTest::Defaults::tol) {
+    Irlba& set_convergence_tolerance(double t = ConvergenceTest<VectorType>::Defaults::tol) {
         convtest.set_tol(t);
         return *this;
     }
@@ -145,7 +149,7 @@ public:
      *
      * @return A reference to the `Irlba` instance.
      */
-    Irlba& set_singular_value_ratio_tolerance(double t = ConvergenceTest::Defaults::svtol) {
+    Irlba& set_singular_value_ratio_tolerance(double t = ConvergenceTest<VectorType>::Defaults::svtol) {
         convtest.set_svtol(t);
         return *this;
     }
@@ -187,14 +191,14 @@ public:
         const M& mat, 
         bool center, 
         bool scale, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
+        MatrixType& outU, 
+        MatrixType& outV, 
+        RealVectorType& outD, 
         Engine* eng = null_rng(),
-        Eigen::VectorXd* init = NULL) 
+        VectorType* init = NULL) 
     {
         if (scale || center) {
-            Eigen::VectorXd center0, scale0;
+            VectorType center0, scale0;
 
             if (center) {
                 if (mat.rows() < 1) {
@@ -211,14 +215,14 @@ public:
             }
 
             for (Eigen::Index i = 0; i < mat.cols(); ++i) {
-                double mean = 0;
+                Scalar mean = 0;
                 if (center) {
                     mean = mat.col(i).sum() / mat.rows();
                     center0[i] = mean;
                 }
                 if (scale) {
-                    Eigen::VectorXd current = mat.col(i); // force it to be a VectorXd, even if it's a sparse matrix.
-                    double var = 0;
+                    VectorType current = mat.col(i); // force it to be a VectorXd, even if it's a sparse matrix.
+                    Scalar var = 0;
                     for (auto x : current) {
                         var += (x - mean)*(x - mean);
                     }
@@ -232,7 +236,7 @@ public:
             }
 
             if (center) {
-                Centered<M> centered(&mat, &center0);
+                Centered<M, MatrixType, VectorType> centered(&mat, &center0);
                 if (scale) {
                     Scaled<decltype(centered)> centered_scaled(&centered, &scale0);
                     return run(centered_scaled, outU, outV, outD, eng, init);
@@ -240,7 +244,7 @@ public:
                     return run(centered, outU, outV, outD, eng, init);
                 }
             } else {
-                Scaled<M> scaled(&mat, &scale0);
+                Scaled<M, MatrixType, VectorType> scaled(&mat, &scale0);
                 return run(scaled, outU, outV, outD, eng, init);
             }
         } else {
@@ -277,31 +281,31 @@ public:
      * - A `rows()` method that returns the number of rows.
      * - A `cols()` method that returns the number of columns.
      * - One of the following for matrix-vector multiplication:
-     *   - `multiply(rhs, out)`, which should compute the product of the matrix with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of columns;
-     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of rows.
-     *   - A `*` method where the right-hand side is an `Eigen::VectorXd` (or equivalent expression) of length equal to the number of columsn,
-     *     and returns an `Eigen::VectorXd`-equivalent of length equal to the number of rows.
+     *   - `multiply(rhs, out)`, which should compute the product of the matrix with `rhs`, a `VectorType`-equivalent of length equal to the number of columns;
+     *     and stores the result in `out`, an `VectorType` of length equal to the number of rows.
+     *   - A `*` method where the right-hand side is an `VectorType` (or equivalent expression) of length equal to the number of columsn,
+     *     and returns an `VectorType`-equivalent of length equal to the number of rows.
      * - One of the following for matrix transpose-vector multiplication:
-     *   - `adjoint_multiply(rhs, out)`, which should compute the product of the matrix transpose with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of rows;
-     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of columns.
+     *   - `adjoint_multiply(rhs, out)`, which should compute the product of the matrix transpose with `rhs`, a `VectorType`-equivalent of length equal to the number of rows;
+     *     and stores the result in `out`, an `VectorType` of length equal to the number of columns.
      *   - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
-     *     The method should accept an `Eigen::VectorXd`-equivalent of length equal to the number of rows,
-     *     and return an `Eigen::VectorXd`-equvialent of length equal to the number of columns.
-     * - A `realize()` method that returns an `Eigen::MatrixXd` object representing the modified matrix.
-     *   This can be omitted if an `Eigen::MatrixXd` can be copy-constructed from the class.
+     *     The method should accept an `VectorType`-equivalent of length equal to the number of rows,
+     *     and return an `VectorType`-equvialent of length equal to the number of columns.
+     * - A `realize()` method that returns an `MatrixType` object representing the modified matrix.
+     *   This can be omitted if an `MatrixType` can be copy-constructed from the class.
      *
      * See the `Centered` and `Scaled` classes for more details.
      *
      * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      */
-    template<class Matrix, class Engine = std::mt19937_64>
+    template<class M, class Engine = std::mt19937_64>
     std::pair<bool, int> run(
-        const Matrix& mat, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
+        const M& mat, 
+        MatrixType& outU, 
+        MatrixType& outV, 
+        RealVectorType& outD, 
         Engine* eng = null_rng(),
-        Eigen::VectorXd* init = NULL) 
+        VectorType* init = NULL) 
     {
         if (eng == NULL) {
             std::mt19937_64 rng(seed);
@@ -316,10 +320,10 @@ private:
     std::pair<bool, int> run_internal(
         const M& mat, 
         Engine& eng, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
-        Eigen::VectorXd* init)
+        MatrixType& outU, 
+        MatrixType& outV, 
+        RealVectorType& outD, 
+        VectorType* init)
     {
         const int smaller = std::min(mat.rows(), mat.cols());
         if (number >= smaller) {
@@ -334,7 +338,7 @@ private:
 
         const int work = std::min(number + extra_work, smaller);
 
-        Eigen::MatrixXd V(mat.cols(), work);
+        MatrixType V(mat.cols(), work);
         if (init) {
             if (init->size() != V.rows()) {
                 throw std::runtime_error("initialization vector does not have expected number of rows");
@@ -347,19 +351,19 @@ private:
 
         bool converged = false;
         int iter = 0, k =0;
-        Eigen::JacobiSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
+        Eigen::JacobiSVD<MatrixType> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
         auto lptmp = lp.initialize(mat);
 
-        Eigen::MatrixXd W(mat.rows(), work);
-        Eigen::MatrixXd Wtmp(mat.rows(), work);
-        Eigen::MatrixXd Vtmp(mat.cols(), work);
+        MatrixType W(mat.rows(), work);
+        MatrixType Wtmp(mat.rows(), work);
+        MatrixType Vtmp(mat.cols(), work);
 
-        Eigen::MatrixXd B(work, work);
+        MatrixType B(work, work);
         B.setZero(work, work);
-        Eigen::VectorXd res(work);
-        Eigen::VectorXd F(mat.cols());
+        VectorType res(work);
+        VectorType F(mat.cols());
 
-        Eigen::VectorXd prevS(work);
+        VectorType prevS(work);
 
         for (; iter < maxit; ++iter) {
             // Technically, this is only a 'true' Lanczos bidiagonalization
@@ -379,7 +383,7 @@ private:
             const auto& BV = svd.matrixV();
 
             // Checking for convergence.
-            if (B(work-1, work-1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
+            if (B(work-1, work-1) == Scalar(0)) { // a.k.a. the final value of 'S' from the Lanczos iterations.
                 converged = true;
                 break;
             }
@@ -454,18 +458,18 @@ private:
     }
 
 private:
-    template<class M>
-    void exact(const M& mat, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
-        Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
+    template<typename M>
+    void exact(const M& mat, MatrixType& outU, MatrixType& outV, RealVectorType& outD) {
+        Eigen::BDCSVD<MatrixType> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
 
-        if constexpr(std::is_same<M, Eigen::MatrixXd>::value) {
+        if constexpr(std::is_same<M, MatrixType>::value) {
             svd.compute(mat);
         } else {
-            if constexpr(has_realize_method<M>::value) {
-                Eigen::MatrixXd adjusted = mat.realize();
+            if constexpr(has_realize_method<M, MatrixType>::value) {
+                MatrixType adjusted = mat.realize();
                 svd.compute(adjusted);
             } else {
-                Eigen::MatrixXd adjusted(mat);
+                MatrixType adjusted(mat);
                 svd.compute(adjusted);
             }
         }
@@ -492,20 +496,20 @@ public:
          * The number of rows in `U` is equal to the number of rows in the input matrix,
          * and the number of columns is equal to the number of requested vectors.
          */
-        Eigen::MatrixXd U;
+        MatrixType U;
 
         /**
          * The right singular vectors, stored as columns of `U`.
          * The number of rows in `U` is equal to the number of columns in the input matrix,
          * and the number of columns is equal to the number of requested vectors.
          */
-        Eigen::MatrixXd V;
+        MatrixType V;
 
         /**
          * The requested number of singular values, ordered by decreasing value.
          * These correspond to the vectors in `U` and `V`.
          */
-        Eigen::VectorXd D;
+        RealVectorType D;
 
         /**
          * Whether the algorithm converged.
@@ -536,7 +540,7 @@ public:
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
     template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, bool center, bool scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
+    Results run(const M& mat, bool center, bool scale, Engine* eng = null_rng(), VectorType* init = NULL) {
         Results output;
         auto stats = run(mat, center, scale, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
@@ -560,7 +564,7 @@ public:
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
     template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
+    Results run(const M& mat, Engine* eng = null_rng(), VectorType* init = NULL) {
         Results output;
         auto stats = run(mat, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
