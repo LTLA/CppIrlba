@@ -192,7 +192,7 @@ public:
         Eigen::VectorXd& outD, 
         Engine* eng = null_rng(),
         Eigen::VectorXd* init = NULL) 
-    {
+    const {
         if (scale || center) {
             Eigen::VectorXd center0, scale0;
 
@@ -302,7 +302,7 @@ public:
         Eigen::VectorXd& outD, 
         Engine* eng = null_rng(),
         Eigen::VectorXd* init = NULL) 
-    {
+    const {
         if (eng == NULL) {
             std::mt19937_64 rng(seed);
             return run_internal(mat, rng, outU, outV, outD, init);
@@ -320,7 +320,7 @@ private:
         Eigen::MatrixXd& outV, 
         Eigen::VectorXd& outD, 
         Eigen::VectorXd* init)
-    {
+    const {
         const int smaller = std::min(mat.rows(), mat.cols());
         if (number >= smaller) {
             throw std::runtime_error("requested number of singular values must be less than smaller matrix dimension");
@@ -348,6 +348,7 @@ private:
         bool converged = false;
         int iter = 0, k =0;
         Eigen::JacobiSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
+
         auto lptmp = lp.initialize(mat);
 
         Eigen::MatrixXd W(mat.rows(), work);
@@ -455,7 +456,7 @@ private:
 
 private:
     template<class M>
-    void exact(const M& mat, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
+    void exact(const M& mat, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) const {
         Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
 
         if constexpr(std::is_same<M, Eigen::MatrixXd>::value) {
@@ -536,7 +537,7 @@ public:
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
     template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, bool center, bool scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
+    Results run(const M& mat, bool center, bool scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) const {
         Results output;
         auto stats = run(mat, center, scale, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
@@ -560,7 +561,7 @@ public:
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
     template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) {
+    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) const {
         Results output;
         auto stats = run(mat, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;

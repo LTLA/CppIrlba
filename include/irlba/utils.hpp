@@ -148,7 +148,7 @@ public:
      *
      * @return The number of singular values/vectors that have achieved convergence.
      */
-    int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals, const Eigen::VectorXd& last) {
+    int run(const Eigen::VectorXd& sv, const Eigen::VectorXd& residuals, const Eigen::VectorXd& last) const {
         int counter = 0;
         double Smax = *std::max_element(sv.begin(), sv.end());
         double svtol_actual = (svtol >= 0 ? svtol : tol);

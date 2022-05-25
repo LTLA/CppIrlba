@@ -76,7 +76,7 @@ public:
     };
 
     template<class M>
-    Intermediates initialize(const M& mat) {
+    Intermediates initialize(const M& mat) const {
         return Intermediates(mat);
     }
 
@@ -116,7 +116,7 @@ public:
         Engine& eng, 
         Intermediates& inter, 
         int start = 0) 
-    {
+    const {
         const double eps = (epsilon < 0 ? std::pow(std::numeric_limits<double>::epsilon(), 0.8) : epsilon);
 
         int work = W.cols();
