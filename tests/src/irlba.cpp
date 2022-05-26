@@ -32,7 +32,7 @@ TEST(IrlbaComplexTest, Exact) {
     int rank = 5;
     auto A = create_random_complex_matrix(20, 10);
 
-    irlba::Irlba<Eigen::MatrixXcd> irb;
+    irlba::Irlba irb;
     auto res = irb.set_number(rank).run(A);
 
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);

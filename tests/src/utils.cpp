@@ -96,16 +96,17 @@ TEST(UtilsTest, FillNormals) {
 
 struct dummy_class {
     Eigen::MatrixXd realize() { return Eigen::MatrixXd(); }
+    typedef double Scalar;
 };
 
 TEST(UtilsTest, ConvertibleCheck) {
-    bool const realize_xd_xd = irlba::has_realize_method<Eigen::MatrixXd, Eigen::MatrixXd>::value;
+    bool const realize_xd_xd = irlba::has_realize_method<Eigen::MatrixXd>::value;
     EXPECT_FALSE(realize_xd_xd);
-    bool const realize_sp_sp = irlba::has_realize_method<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>::value;
+    bool const realize_sp_sp = irlba::has_realize_method<Eigen::SparseMatrix<double> >::value;
     EXPECT_FALSE(realize_sp_sp);
-    bool const realize_dummy = irlba::has_realize_method<dummy_class, Eigen::MatrixXd>::value;
+    bool const realize_dummy = irlba::has_realize_method<dummy_class>::value;
     EXPECT_TRUE(realize_dummy);
-    bool const realize_scaled = irlba::has_realize_method<irlba::Scaled<Eigen::MatrixXd>, Eigen::MatrixXd>::value;
+    bool const realize_scaled = irlba::has_realize_method<irlba::Scaled<Eigen::MatrixXd> >::value;
     EXPECT_TRUE(realize_scaled);
 }
 
