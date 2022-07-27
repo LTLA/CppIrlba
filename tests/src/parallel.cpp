@@ -4,7 +4,9 @@
 #include "irlba/irlba.hpp"
 #include "Eigen/Dense"
 #include <random>
+
 #include "compare.h"
+#include "NormalSampler.h"
 
 class ParallelSparseMatrixTestCore {
 protected:
@@ -88,16 +90,9 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
     EXPECT_TRUE(okay1);
     EXPECT_TRUE(okay2);
 
-    std::normal_distribution ndist;
-    std::mt19937_64 rng(nr * nc * 13);
-
     // Vector multiplies correctly.
     {
-        Eigen::VectorXd vec(nc);
-        for (auto& v : vec) {
-            v = ndist(rng);
-        }
-
+        auto vec = create_random_vector(nc, nr * nc * nt / 10);
         Eigen::VectorXd ref = control * vec;
 
         Eigen::VectorXd obs(nr);
@@ -111,11 +106,7 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
 
     // Adjoint multiplies correctly.
     {
-        Eigen::VectorXd vec(nr);
-        for (auto& v : vec) {
-            v = ndist(rng);
-        }
-
+        auto vec = create_random_vector(nr, nr * nc * nt / 20);
         Eigen::VectorXd ref = control.adjoint() * vec;
 
         Eigen::VectorXd obs(nc);
