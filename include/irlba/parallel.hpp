@@ -128,6 +128,7 @@ public:
     const PointerArray& get_pointers() const {
         return ptrs;
     }
+
 private:
     size_t primary_dim, secondary_dim;
     int nthreads;
@@ -136,7 +137,44 @@ private:
     PointerArray ptrs;
 
     typedef typename std::remove_const<typename std::remove_reference<decltype(indices[0])>::type>::type IndexType;
+
+public:
+    /**
+     * This should only be called if `nt > 1` in the constructor, otherwise it will not be initialized.
+     *
+     * @return Vector of length equal to the number of threads,
+     * specifying the first dimension along the primary extent (e.g., column for `column_major = true`) that each thread works on.
+     */
+    const std::vector<size_t>& get_primary_starts() const {
+        return primary_starts;
+    }
+
+    /**
+     * This should only be called if `nt > 1` in the constructor, otherwise it will not be initialized.
+     *
+     * @return Vector of length equal to the number of threads,
+     * specifying the one-past-the-last dimension along the primary extent (e.g., column for `column_major = true`) that each thread works on.
+     */
+    const std::vector<size_t>& get_primary_ends() const {
+        return primary_ends;
+    }
+
+    /**
+     * Type of the elements inside a `PointerArray`.
+     */
     typedef typename std::remove_const<typename std::remove_reference<decltype(ptrs[0])>::type>::type PointerType;
+
+    /**
+     * This should only be called if `nt > 1` in the constructor, otherwise it will not be initialized.
+     *
+     * @return Vector of length equal to the number of threads plus one.
+     * Each inner vector is of length equal to the size of the primary extent (e.g., number of columns for `column_major = true`).
+     * For thread `i`, the vectors `i` and `i + 1` define the ranges of non-zero elements assigned to that thread within each primary dimension.
+     * This is guaranteed to contain all and only non-zero elements with indices in a contiguous range of secondary dimensions.
+     */
+    const std::vector<std::vector<PointerType> >& get_secondary_nonzero_starts() const {
+        return secondary_nonzero_starts;
+    }
 
 private:
     std::vector<size_t> primary_starts, primary_ends;

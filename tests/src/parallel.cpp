@@ -66,6 +66,17 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
     EXPECT_EQ(A.rows(), nr);
     EXPECT_EQ(A.cols(), nc);
 
+    // Testing all getters.
+    EXPECT_EQ(A.get_indices().size(), indices.size());
+    EXPECT_EQ(A.get_values().size(), values.size());
+    EXPECT_EQ(A.get_pointers().size(), nc + 1);
+    if (nt > 1) {
+        EXPECT_EQ(A.get_primary_starts().size(), nt);
+        EXPECT_EQ(A.get_primary_ends().size(), nt);
+        EXPECT_EQ(A.get_secondary_nonzero_starts().size(), nt + 1);
+        EXPECT_EQ(A.get_secondary_nonzero_starts().front().size(), nc);
+    }
+
     irlba::ParallelSparseMatrix<false> A2(nc, nr, values, indices, nzeros, nt);
     EXPECT_EQ(A2.rows(), nc);
     EXPECT_EQ(A2.cols(), nr);
