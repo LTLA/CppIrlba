@@ -36,8 +36,19 @@ namespace irlba {
  *
  * @tparam column_major Whether the matrix should be in compressed sparse column format.
  * If `false`, this is assumed to be in row-major format.
+ * @tparam ValueArray Array class containing numeric values for the non-zero values.
+ * Should support a read-only `[]` operator.
+ * @tparam IndexArray Array class containing integer values for the indices of the non-zero values.
+ * Should support a read-only `[]` operator.
+ * @tparam PointerArray Array class containing integer values for the pointers to the row/column boundaries.
+ * Should support a read-only `[]` operator.
  */
-template<bool column_major = true>
+template<
+    bool column_major = true, 
+    class ValueArray = std::vector<double>, 
+    class IndexArray = std::vector<int>, 
+    class PointerArray = std::vector<size_t> 
+>
 class ParallelSparseMatrix {
 public:
     /**
@@ -99,7 +110,7 @@ public:
      * @return Non-zero elements in compressed sparse row/column format.
      * This is equivalent to `x` in the constructor.
      */
-    const std::vector<double>& get_values() const {
+    const ValueArray& get_values() const {
         return values;
     }
 
@@ -107,37 +118,40 @@ public:
      * @return Indices of non-zero elements, equivalent to `i` in the constructor.
      * These are row or column indices for compressed sparse row or column format, respectively, depending on `column_major`.
      */
-    const std::vector<int>& get_indices() const {
+    const IndexArray& get_indices() const {
         return indices;
     }
 
     /**
      * @return Pointers to the start of each row or column, equivalent to `p` in the constructor.
      */
-    const std::vector<size_t>& get_pointers() const {
+    const PointerArray& get_pointers() const {
         return ptrs;
     }
 private:
     size_t primary_dim, secondary_dim;
     int nthreads;
-    std::vector<double> values;
-    std::vector<int> indices;
-    std::vector<size_t> ptrs;
+    ValueArray values;
+    IndexArray indices;
+    PointerArray ptrs;
+
+    typedef typename std::remove_const<typename std::remove_reference<decltype(indices[0])>::type>::type IndexType;
+    typedef typename std::remove_const<typename std::remove_reference<decltype(ptrs[0])>::type>::type PointerType;
 
 private:
     std::vector<size_t> primary_starts, primary_ends;
-    std::vector<std::vector<size_t> > secondary_nonzero_starts;
+    std::vector<std::vector<PointerType> > secondary_nonzero_starts;
 
     void fragment_threads() {
-        double total_nzeros = ptrs.back();
-        size_t per_thread = std::ceil(total_nzeros / nthreads);
+        auto total_nzeros = ptrs[primary_dim]; // last element - not using back() to avoid an extra requirement on PointerArray.
+        PointerType per_thread = std::ceil(static_cast<double>(total_nzeros) / nthreads);
         
         // Splitting columns across threads so each thread processes the same number of nonzero elements.
         primary_starts.resize(nthreads);
         primary_ends.resize(nthreads);
         {
             size_t primary_counter = 0;
-            size_t sofar = per_thread;
+            PointerType sofar = per_thread;
             for (int t = 0; t < nthreads; ++t) {
                 primary_starts[t] = primary_counter;
                 while (primary_counter < primary_dim && ptrs[primary_counter + 1] <= sofar) {
@@ -149,20 +163,19 @@ private:
         }
 
         // Splitting rows across threads so each thread processes the same number of nonzero elements.
-        secondary_nonzero_starts.resize(nthreads + 1, std::vector<size_t>(primary_dim));
+        secondary_nonzero_starts.resize(nthreads + 1, std::vector<PointerType>(primary_dim));
         {
-            std::vector<size_t> secondary_nonzeros(secondary_dim);
-            for (auto i_ : indices) {
-                ++(secondary_nonzeros[i_]);
+            std::vector<PointerType> secondary_nonzeros(secondary_dim);
+            for (PointerType i = 0; i < total_nzeros; ++i) { // don't using range for loop to avoid an extra requirement on IndexArray.
+                ++(secondary_nonzeros[indices[i]]);
             }
             
-            std::vector<size_t> secondary_starts(nthreads), secondary_ends(nthreads);
-            size_t secondary_counter = 0;
-            size_t sofar = per_thread;
-            size_t cum_rows = 0;
+            std::vector<IndexType> secondary_ends(nthreads);
+            IndexType secondary_counter = 0;
+            PointerType sofar = per_thread;
+            PointerType cum_rows = 0;
 
             for (int t = 0; t < nthreads; ++t) {
-                secondary_starts[t] = secondary_counter;
                 while (secondary_counter < secondary_dim && cum_rows <= sofar) {
                     cum_rows += secondary_nonzeros[secondary_counter];
                     ++secondary_counter;
@@ -172,10 +185,10 @@ private:
             }
 
             for (size_t c = 0; c < primary_dim; ++c) {
-                size_t primary_start = ptrs[c], primary_end = ptrs[c + 1];
+                auto primary_start = ptrs[c], primary_end = ptrs[c + 1];
                 secondary_nonzero_starts[0][c] = primary_start;
 
-                size_t s = primary_start;
+                auto s = primary_start;
                 for (int thread = 0; thread < nthreads; ++thread) {
                     while (s < primary_end && indices[s] < secondary_ends[thread]) { 
                         ++s; 
@@ -205,8 +218,8 @@ private:
         for (int t = first; t < last; ++t) {
 #endif
 
-            const auto& starts = secondary_nonzero_starts[t];
-            const auto& ends = secondary_nonzero_starts[t + 1];
+            auto starts = secondary_nonzero_starts[t];
+            auto ends = secondary_nonzero_starts[t + 1];
             for (size_t c = 0; c < primary_dim; ++c) {
                 column_sum_product(starts[c], ends[c], rhs.coeff(c), output);
             }
@@ -221,8 +234,8 @@ private:
         return;
     }
 
-    void column_sum_product(size_t start, size_t end, double val, Eigen::VectorXd& output) const {
-        for (size_t s = start; s < end; ++s) {
+    void column_sum_product(PointerType start, PointerType end, double val, Eigen::VectorXd& output) const {
+        for (PointerType s = start; s < end; ++s) {
             output.coeffRef(indices[s]) += values[s] * val;
         }
     }
@@ -263,9 +276,9 @@ private:
 
     template<class Right>
     double column_dot_product(size_t c, const Right& rhs) const {
-        size_t primary_start = ptrs[c], primary_end = ptrs[c + 1];
+        PointerType primary_start = ptrs[c], primary_end = ptrs[c + 1];
         double dot = 0;
-        for (size_t s = primary_start; s < primary_end; ++s) {
+        for (PointerType s = primary_start; s < primary_end; ++s) {
             dot += values[s] * rhs.coeff(indices[s]);
         }
         return dot;
