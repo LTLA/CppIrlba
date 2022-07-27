@@ -22,6 +22,18 @@ namespace irlba {
 /**
  * @brief Sparse matrix with customizable parallelization.
  *
+ * This provides an alternative to `Eigen::SparseMatrix` for parallelized multiplication of compressed sparse matrices.
+ * Unlike Eigen, this implementation is able to parallelize when the multiplication does not align well with the storage layout,
+ * e.g., multiplication of a compressed sparse column matrix by a dense vector on the right hand side.
+ * On construction, it also pre-allocates the rows and/or columns to each thread, aiming to balance the number of non-zero elements that each thread needs to process.
+ * All subsequent multiplications can then use these allocations, which is useful for cases like `Irlba` where the cost of pre-allocation is abrogated by repeated multiplication calls.
+ *
+ * Some cursory testing indicates that the performance of this implementation is comparable to Eigen for OpenMP-based parallelization.
+ * However, the real purpose of this class is to support custom parallelization schemes in cases where OpenMP is not available.
+ * This is achieved by defining the `CUSTOM_PARALLEL` or `IRLBA_CUSTOM_PARALLEL` macros to the names of functions implementing a custom scheme.
+ * Any such function should accept three arguments - the number of jobs, a lambda that accepts a start and end index on the job range, and the number of workers.
+ * It should then distribute the jobs across workers by calling the lambda on any combination of non-verlapping intervals that covers the entire job range.
+ *
  * @tparam column_major Whether the matrix should be in compressed sparse column format.
  * If `false`, this is assumed to be in row-major format.
  */
