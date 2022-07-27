@@ -18,6 +18,7 @@ add_executable(
     src/sparse.cpp
     src/invariant.cpp
     src/wrappers.cpp
+    src/parallel.cpp
 )
 
 target_link_libraries(

@@ -1,0 +1,329 @@
+#ifndef IRLBA_PARALLEL_HPP
+#define IRLBA_PARALLEL_HPP
+
+#include "utils.hpp"
+#include <vector>
+#include "Eigen/Dense"
+
+#ifndef IRLBA_CUSTOM_PARALLEL
+#ifdef CUSTOM_PARALLEL
+#define IRLBA_CUSTOM_PARALLEL CUSTOM_PARALLEL
+#endif
+#endif
+
+/**
+ * @file parallel.hpp
+ *
+ * @brief Sparse matrix class with parallelized multiplication.
+ */
+
+namespace irlba {
+
+/**
+ * @brief Sparse matrix with customizable parallelization.
+ *
+ * @tparam column_major Whether the matrix should be in compressed sparse column format.
+ * If `false`, this is assumed to be in row-major format.
+ */
+template<bool column_major = true>
+class ParallelSparseMatrix {
+public:
+    /**
+     * Default constructor.
+     * This object cannot be used for any operations.
+     */
+    ParallelSparseMatrix() {}
+
+    /**
+     * @param nr Number of rows.
+     * @param nc Number of columns.
+     * @param x Values of non-zero elements.
+     * @param i Indices of non-zero elements.
+     * Each entry corresponds to a value in `x`, so `i` should be an array of length equal to `x`.
+     * If `column_major = true`, `i` should contain row indices; otherwise it should contain column indices.
+     * @param p Pointers to the start of each column (if `column_major = true`) or row (otherwise).
+     * This should be an ordered array of length equal to the number of columns or rows plus 1.
+     * @param nt Number of threads to be used for multiplication.
+     *
+     * `x`, `i` and `p` represent the typical components of a compressed sparse column/row matrix.
+     * Thus, entries in `i` should be sorted within each column/row, where the boundaries between columns/rows are defined by `p`.
+     */
+    ParallelSparseMatrix(size_t nr, size_t nc, std::vector<double> x, std::vector<int> i, std::vector<size_t> p, int nt) : 
+        primary_dim(column_major ? nc : nr), 
+        secondary_dim(column_major ? nr : nc), 
+        nthreads(nt), 
+        values(std::move(x)), 
+        indices(std::move(i)), 
+        ptrs(std::move(p)) 
+    {
+        if (nthreads > 1) {
+            fragment_threads();
+        }
+    }
+
+    /**
+     * @return Number of rows in the matrix.
+     */
+    auto rows() const { 
+        if constexpr(column_major) {
+            return secondary_dim;
+        } else {
+            return primary_dim;
+        }
+    }
+
+    /**
+     * @return Number of columns in the matrix.
+     */
+    auto cols() const { 
+        if constexpr(column_major) {
+            return primary_dim;
+        } else {
+            return secondary_dim;
+        }
+    }
+
+    /**
+     * @return Non-zero elements in compressed sparse row/column format.
+     * This is equivalent to `x` in the constructor.
+     */
+    const std::vector<double>& get_values() const {
+        return values;
+    }
+
+    /**
+     * @return Indices of non-zero elements, equivalent to `i` in the constructor.
+     * These are row or column indices for compressed sparse row or column format, respectively, depending on `column_major`.
+     */
+    const std::vector<int>& get_indices() const {
+        return indices;
+    }
+
+    /**
+     * @return Pointers to the start of each row or column, equivalent to `p` in the constructor.
+     */
+    const std::vector<size_t>& get_pointers() const {
+        return ptrs;
+    }
+private:
+    size_t primary_dim, secondary_dim;
+    int nthreads;
+    std::vector<double> values;
+    std::vector<int> indices;
+    std::vector<size_t> ptrs;
+
+private:
+    std::vector<size_t> primary_starts, primary_ends;
+    std::vector<std::vector<size_t> > secondary_nonzero_starts;
+
+    void fragment_threads() {
+        double total_nzeros = ptrs.back();
+        size_t per_thread = std::ceil(total_nzeros / nthreads);
+        
+        // Splitting columns across threads so each thread processes the same number of nonzero elements.
+        primary_starts.resize(nthreads);
+        primary_ends.resize(nthreads);
+        {
+            size_t primary_counter = 0;
+            size_t sofar = per_thread;
+            for (int t = 0; t < nthreads; ++t) {
+                primary_starts[t] = primary_counter;
+                while (primary_counter < primary_dim && ptrs[primary_counter + 1] <= sofar) {
+                    ++primary_counter;
+                }
+                primary_ends[t] = primary_counter;
+                sofar += per_thread;
+            }
+        }
+
+        // Splitting rows across threads so each thread processes the same number of nonzero elements.
+        secondary_nonzero_starts.resize(nthreads + 1, std::vector<size_t>(primary_dim));
+        {
+            std::vector<size_t> secondary_nonzeros(secondary_dim);
+            for (auto i_ : indices) {
+                ++(secondary_nonzeros[i_]);
+            }
+            
+            std::vector<size_t> secondary_starts(nthreads), secondary_ends(nthreads);
+            size_t secondary_counter = 0;
+            size_t sofar = per_thread;
+            size_t cum_rows = 0;
+
+            for (int t = 0; t < nthreads; ++t) {
+                secondary_starts[t] = secondary_counter;
+                while (secondary_counter < secondary_dim && cum_rows <= sofar) {
+                    cum_rows += secondary_nonzeros[secondary_counter];
+                    ++secondary_counter;
+                }
+                secondary_ends[t] = secondary_counter;
+                sofar += per_thread;
+            }
+
+            for (size_t c = 0; c < primary_dim; ++c) {
+                size_t primary_start = ptrs[c], primary_end = ptrs[c + 1];
+                secondary_nonzero_starts[0][c] = primary_start;
+
+                size_t s = primary_start;
+                for (int thread = 0; thread < nthreads; ++thread) {
+                    while (s < primary_end && indices[s] < secondary_ends[thread]) { 
+                        ++s; 
+                    }
+                    secondary_nonzero_starts[thread + 1][c] = s;
+                }
+            }
+        }
+    }
+
+private:
+    template<class Right>
+    void indirect_multiply(const Right& rhs, Eigen::VectorXd& output) const {
+        output.setZero();
+        if (nthreads == 1) {
+            for (size_t c = 0; c < primary_dim; ++c) {
+                column_sum_product(ptrs[c], ptrs[c + 1], rhs.coeff(c), output); 
+            }
+            return;
+        }
+
+#ifndef IRLBA_CUSTOM_PARALLEL
+        #pragma omp parallel for num_threads(nthreads)
+        for (int t = 0; t < nthreads; ++t) {
+#else
+        IRLBA_CUSTOM_PARALLEL(nthreads, [&](int first, int last) -> void {
+        for (int t = first; t < last; ++t) {
+#endif
+
+            const auto& starts = secondary_nonzero_starts[t];
+            const auto& ends = secondary_nonzero_starts[t + 1];
+            for (size_t c = 0; c < primary_dim; ++c) {
+                column_sum_product(starts[c], ends[c], rhs.coeff(c), output);
+            }
+
+#ifndef IRLBA_CUSTOM_PARALLEL
+        }
+#else
+        }
+        }, nthreads);
+#endif
+
+        return;
+    }
+
+    void column_sum_product(size_t start, size_t end, double val, Eigen::VectorXd& output) const {
+        for (size_t s = start; s < end; ++s) {
+            output.coeffRef(indices[s]) += values[s] * val;
+        }
+    }
+
+private:
+    template<class Right>
+    void direct_multiply(const Right& rhs, Eigen::VectorXd& output) const {
+        if (nthreads == 1) {
+            for (size_t c = 0; c < primary_dim; ++c) {
+                output.coeffRef(c) = column_dot_product(c, rhs);
+            }
+            return;
+        }
+
+#ifndef IRLBA_CUSTOM_PARALLEL
+        #pragma omp parallel for num_threads(nthreads)
+        for (int t = 0; t < nthreads; ++t) {
+#else
+        IRLBA_CUSTOM_PARALLEL(nthreads, [&](int first, int last) -> void {
+        for (int t = first; t < last; ++t) {
+#endif
+
+            auto curstart = primary_starts[t];
+            auto curend = primary_ends[t];
+            for (size_t c = curstart; c < curend; ++c) {
+                output.coeffRef(c) = column_dot_product(c, rhs);
+            }
+
+#ifndef IRLBA_CUSTOM_PARALLEL
+        }
+#else
+        }
+        }, nthreads);
+#endif
+
+        return;
+    }
+
+    template<class Right>
+    double column_dot_product(size_t c, const Right& rhs) const {
+        size_t primary_start = ptrs[c], primary_end = ptrs[c + 1];
+        double dot = 0;
+        for (size_t s = primary_start; s < primary_end; ++s) {
+            dot += values[s] * rhs.coeff(indices[s]);
+        }
+        return dot;
+    }
+
+public:
+    /**
+     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+     *
+     * @param[in] rhs The right-hand side of the matrix product.
+     * This should be a vector or have only one column.
+     * @param[out] out The output vector to store the matrix product.
+     * 
+     * @return `out` is filled with the product of this matrix and `rhs`.
+     */
+    template<class Right>
+    void multiply(const Right& rhs, Eigen::VectorXd& output) const {
+        if constexpr(column_major) {
+            indirect_multiply(rhs, output);
+        } else {
+            direct_multiply(rhs, output);
+        }
+    }
+
+    /**
+     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+     *
+     * @param[in] rhs The right-hand side of the matrix product.
+     * This should be a vector or have only one column.
+     * @param[out] out The output vector to store the matrix product.
+     * 
+     * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
+     */
+    template<class Right>
+    void adjoint_multiply(const Right& rhs, Eigen::VectorXd& output) const {
+        if constexpr(column_major) {
+            direct_multiply(rhs, output);
+        } else {
+            indirect_multiply(rhs, output);
+        }
+    }
+
+public:
+    /**
+     * @return A dense copy of the sparse matrix data.
+     */
+    Eigen::MatrixXd realize() const {
+        Eigen::MatrixXd output(rows(), cols());
+        output.setZero();
+
+        if constexpr(column_major) {
+            for (size_t c = 0; c < cols(); ++c) {
+                size_t col_start = ptrs[c], col_end = ptrs[c + 1];
+                for (size_t s = col_start; s < col_end; ++s) {
+                    output.coeffRef(indices[s], c) = values[s];
+                }
+            }
+        } else {
+            for (size_t r = 0; r < rows(); ++r) {
+                size_t row_start = ptrs[r], row_end = ptrs[r + 1];
+                for (size_t s = row_start; s < row_end; ++s) {
+                    output.coeffRef(r, indices[s]) = values[s];
+                }
+            }
+        }
+
+        return output;
+    }
+};
+
+}
+
+#endif
