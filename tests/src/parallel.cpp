@@ -1,5 +1,10 @@
 #include <gtest/gtest.h>
 
+#ifdef TEST_CUSTOM_PARALLEL
+// This must be done before including irlba.
+#include "custom_parallel.h"
+#endif
+
 #include "irlba/parallel.hpp"
 #include "irlba/irlba.hpp"
 #include "Eigen/Dense"
