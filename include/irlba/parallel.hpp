@@ -203,9 +203,15 @@ private:
     template<class Right>
     void indirect_multiply(const Right& rhs, Eigen::VectorXd& output) const {
         output.setZero();
+
         if (nthreads == 1) {
             for (size_t c = 0; c < primary_dim; ++c) {
-                column_sum_product(ptrs[c], ptrs[c + 1], rhs.coeff(c), output); 
+                auto start = ptrs[c];
+                auto end = ptrs[c + 1];
+                auto val = rhs.coeff(c);
+                for (PointerType s = start; s < end; ++s) {
+                    output.coeffRef(indices[s]) += values[s] * val;
+                }
             }
             return;
         }
@@ -221,7 +227,12 @@ private:
             auto starts = secondary_nonzero_starts[t];
             auto ends = secondary_nonzero_starts[t + 1];
             for (size_t c = 0; c < primary_dim; ++c) {
-                column_sum_product(starts[c], ends[c], rhs.coeff(c), output);
+                auto start = starts[c];
+                auto end = ends[c];
+                auto val = rhs.coeff(c);
+                for (PointerType s = start; s < end; ++s) {
+                    output.coeffRef(indices[s]) += values[s] * val;
+                }
             }
 
 #ifndef IRLBA_CUSTOM_PARALLEL
@@ -232,12 +243,6 @@ private:
 #endif
 
         return;
-    }
-
-    void column_sum_product(PointerType start, PointerType end, double val, Eigen::VectorXd& output) const {
-        for (PointerType s = start; s < end; ++s) {
-            output.coeffRef(indices[s]) += values[s] * val;
-        }
     }
 
 private:
