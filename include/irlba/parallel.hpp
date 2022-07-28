@@ -5,12 +5,6 @@
 #include <vector>
 #include "Eigen/Dense"
 
-#ifndef IRLBA_CUSTOM_PARALLEL
-#ifdef CUSTOM_PARALLEL
-#define IRLBA_CUSTOM_PARALLEL CUSTOM_PARALLEL
-#endif
-#endif
-
 /**
  * @file parallel.hpp
  *
@@ -30,9 +24,10 @@ namespace irlba {
  *
  * Some cursory testing indicates that the performance of this implementation is comparable to Eigen for OpenMP-based parallelization.
  * However, the real purpose of this class is to support custom parallelization schemes in cases where OpenMP is not available.
- * This is achieved by defining the `CUSTOM_PARALLEL` or `IRLBA_CUSTOM_PARALLEL` macros to the names of functions implementing a custom scheme.
- * Any such function should accept three arguments - the number of jobs, a lambda that accepts a start and end index on the job range, and the number of workers.
- * It should then distribute the jobs across workers by calling the lambda on any combination of non-verlapping intervals that covers the entire job range.
+ * This is achieved by defining `IRLBA_CUSTOM_PARALLEL` macro to the name of a function implementing a custom scheme.
+ * Such a function should accept two arguments - an integer specifying the number of threads, and a lambda that accepts a thread number.
+ * It should then loop over the number of threads and launch one job for each thread via the lambda.
+ * Once all threads are complete, the function should return.
  *
  * @tparam column_major Whether the matrix should be in compressed sparse column format.
  * If `false`, this is assumed to be in row-major format.
@@ -272,8 +267,7 @@ private:
         #pragma omp parallel for num_threads(nthreads)
         for (int t = 0; t < nthreads; ++t) {
 #else
-        IRLBA_CUSTOM_PARALLEL(nthreads, [&](int first, int last) -> void {
-        for (int t = first; t < last; ++t) {
+        IRLBA_CUSTOM_PARALLEL(nthreads, [&](int t) -> void {
 #endif
 
             auto starts = secondary_nonzero_starts[t];
@@ -290,8 +284,7 @@ private:
 #ifndef IRLBA_CUSTOM_PARALLEL
         }
 #else
-        }
-        }, nthreads);
+        });
 #endif
 
         return;
@@ -325,8 +318,7 @@ private:
         #pragma omp parallel for num_threads(nthreads)
         for (int t = 0; t < nthreads; ++t) {
 #else
-        IRLBA_CUSTOM_PARALLEL(nthreads, [&](int first, int last) -> void {
-        for (int t = first; t < last; ++t) {
+        IRLBA_CUSTOM_PARALLEL(nthreads, [&](int t) -> void {
 #endif
 
             auto curstart = primary_starts[t];
@@ -338,8 +330,7 @@ private:
 #ifndef IRLBA_CUSTOM_PARALLEL
         }
 #else
-        }
-        }, nthreads);
+        });
 #endif
 
         return;
@@ -427,8 +418,8 @@ public:
  * Creating an instance of this class will call `Eigen::setNbThreads()` to control the number of available OpenMP threads in Eigen operations.
  * Destruction will then reset the number of available threads to its prior value.
  *
- * If OpenMP is available and `IRLBA_CUSTOM_PARALLEL` or `CUSTOM_PARALLEL` is set, Eigen is restricted to just one thread when an instance of this class is created.
- * This is done to avoid OpenMP parallelization when a custom parallelization scheme has been specified.
+ * If OpenMP is available and `IRLBA_CUSTOM_PARALLEL`, Eigen is restricted to just one thread when an instance of this class is created.
+ * This is done to avoid using OpenMP when a custom parallelization scheme has already been specified.
  *
  * If OpenMP is not available, this class has no effect.
  */ 

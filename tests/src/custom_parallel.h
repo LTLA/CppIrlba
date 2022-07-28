@@ -6,20 +6,11 @@
 #include <thread>
 
 template<class Function>
-void parallelize(size_t n, Function f, size_t nthreads) {
-    size_t jobs_per_worker = std::ceil(static_cast<double>(n) / nthreads);
-    size_t start = 0;
+void parallelize(size_t nthreads, Function f) {
     std::vector<std::thread> jobs;
-    
     for (size_t w = 0; w < nthreads; ++w) {
-        size_t end = std::min(n, start + jobs_per_worker);
-        if (start >= end) {
-            break;
-        }
-        jobs.emplace_back(f, start, end);
-        start += jobs_per_worker;
+        jobs.emplace_back(f, w);
     }
-
     for (auto& job : jobs) {
         job.join();
     }
