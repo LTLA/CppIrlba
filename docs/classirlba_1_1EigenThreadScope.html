@@ -88,7 +88,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Restrict the number of available threads for Eigen. </p>
 <p >Creating an instance of this class will call <code>Eigen::setNbThreads()</code> to control the number of available OpenMP threads in Eigen operations. Destruction will then reset the number of available threads to its prior value.</p>
-<p >If OpenMP is available and <code>IRLBA_CUSTOM_PARALLEL</code> or <code>CUSTOM_PARALLEL</code> is set, Eigen is restricted to just one thread when an instance of this class is created. This is done to avoid OpenMP parallelization when a custom parallelization scheme has been specified.</p>
+<p >If OpenMP is available and <code>IRLBA_CUSTOM_PARALLEL</code>, Eigen is restricted to just one thread when an instance of this class is created. This is done to avoid using OpenMP when a custom parallelization scheme has already been specified.</p>
 <p >If OpenMP is not available, this class has no effect. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8fdbc24d92c1e6610c8d5785bc575804" name="a8fdbc24d92c1e6610c8d5785bc575804"></a>
