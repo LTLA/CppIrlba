@@ -420,6 +420,64 @@ public:
     }
 };
 
+/**
+ * @brief Restrict the number of available threads for Eigen.
+ *
+ * @details
+ * Creating an instance of this class will call `Eigen::setNbThreads()` to control the number of available OpenMP threads in Eigen operations.
+ * Destruction will then reset the number of available threads to its prior value.
+ *
+ * If OpenMP is available and `IRLBA_CUSTOM_PARALLEL` or `CUSTOM_PARALLEL` is set, Eigen is restricted to just one thread when an instance of this class is created.
+ * This is done to avoid OpenMP parallelization when a custom parallelization scheme has been specified.
+ *
+ * If OpenMP is not available, this class has no effect.
+ */ 
+class EigenThreadScope {
+public:
+#ifdef _OPENMP
+    /**
+     * @cond
+     */
+    EigenThreadScope(int n) : previous(Eigen::nbThreads()) {
+#ifndef IRLBA_CUSTOM_PARALLEL
+        Eigen::setNbThreads(n);
+#else
+        Eigen::setNbThreads(1);
+#endif
+    }
+    /**
+     * @endcond
+     */
+#else
+    /**
+     * @param n Number of threads to be used by Eigen.
+     */
+    EigenThreadScope(int n) {}
+#endif
+
+    /**
+     * @cond
+     */
+    EigenThreadScope(const EigenThreadScope&) = delete;
+    EigenThreadScope(EigenThreadScope&&) = delete;
+    EigenThreadScope& operator=(const EigenThreadScope&) = delete;
+    EigenThreadScope& operator=(EigenThreadScope&&) = delete;
+
+    ~EigenThreadScope() { 
+#ifdef _OPENMP
+        Eigen::setNbThreads(previous);
+#endif
+    }
+    /**
+     * @endcond
+     */
+private:
+    int previous;
+};
+
+
+
+
 }
 
 #endif

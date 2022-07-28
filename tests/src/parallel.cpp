@@ -61,6 +61,7 @@ class ParallelSparseMatrixTest : public ::testing::TestWithParam<std::tuple<int,
 TEST_P(ParallelSparseMatrixTest, Basic) {
     auto param = GetParam();
     assemble(param);
+    irlba::EigenThreadScope tscope(nt);
 
     irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, nt);
     EXPECT_EQ(A.rows(), nr);
@@ -167,6 +168,7 @@ TEST_P(ParallelSparseMatrixIrlbaTest, Basic) {
     auto param = GetParam();
     assemble(param);
     irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, nt);
+    irlba::EigenThreadScope tscope(nt);
     irlba::Irlba irb;
 
     // Raw.
