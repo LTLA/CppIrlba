@@ -240,6 +240,20 @@ private:
 private:
     template<class Right>
     void indirect_multiply(const Right& rhs, Eigen::VectorXd& output) const {
+        if constexpr(has_data_method<Right>::value) {
+            // If it has a .data() method, the data values are already computed
+            // and sitting in memory, so we just use that directly.
+            indirect_multiply_internal(rhs, output);
+        } else {
+            // Otherwise, it is presumably an expression that involves some work
+            // to get the values. We realize it into a VectorXd to ensure that 
+            // it is not repeatedly evaluated on each access to 'rhs'.
+            indirect_multiply_internal(Eigen::VectorXd(rhs), output);
+        }
+    }
+
+    template<class Right>
+    void indirect_multiply_internal(const Right& rhs, Eigen::VectorXd& output) const {
         output.setZero();
 
         if (nthreads == 1) {
@@ -286,6 +300,20 @@ private:
 private:
     template<class Right>
     void direct_multiply(const Right& rhs, Eigen::VectorXd& output) const {
+        if constexpr(has_data_method<Right>::value) {
+            // If it has a .data() method, the data values are already computed
+            // and sitting in memory, so we just use that directly.
+            direct_multiply_internal(rhs, output);
+        } else {
+            // Otherwise, it is presumably an expression that involves some work
+            // to get the values. We realize it into a VectorXd to ensure that 
+            // it is not repeatedly evaluated on each access to 'rhs'.
+            direct_multiply_internal(Eigen::VectorXd(rhs), output);
+        }
+    }
+
+    template<class Right>
+    void direct_multiply_internal(const Right& rhs, Eigen::VectorXd& output) const {
         if (nthreads == 1) {
             for (size_t c = 0; c < primary_dim; ++c) {
                 output.coeffRef(c) = column_dot_product(c, rhs);

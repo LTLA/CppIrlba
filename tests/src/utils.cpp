@@ -103,6 +103,17 @@ TEST(UtilsTest, ConvertibleCheck) {
     EXPECT_TRUE(irlba::has_realize_method<dummy_class>::value);
 }
 
+TEST(UtilsTest, DataCheck) {
+    Eigen::VectorXd one(10), two(10);
+    EXPECT_TRUE(irlba::has_data_method<decltype(one)>::value);
+    EXPECT_FALSE(irlba::has_data_method<decltype(one.cwiseProduct(two))>::value);
+    EXPECT_FALSE(irlba::has_data_method<decltype(one + two)>::value);
+
+    Eigen::MatrixXd mat(5, 10);
+    EXPECT_TRUE(irlba::has_data_method<decltype(mat.col(0))>::value);
+    EXPECT_FALSE(irlba::has_data_method<decltype(mat * one)>::value);
+}
+
 TEST(UtilsTest, NormalSampler) {
     NormalSampler norm(10);
 

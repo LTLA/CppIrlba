@@ -205,6 +205,16 @@ template<class M>
 struct has_realize_method<M, decltype((void) std::declval<M>().realize(), 0)> {
     static constexpr bool value = std::is_same<decltype(std::declval<M>().realize()), Eigen::MatrixXd>::value;
 };
+
+template<class M, typename = int>
+struct has_data_method {
+    static constexpr bool value = false;
+};
+
+template<class M>
+struct has_data_method<M, decltype((void) (std::declval<M>().data()), 0)> {
+    static constexpr bool value = true;
+};
 /**
  * @endcond
  */

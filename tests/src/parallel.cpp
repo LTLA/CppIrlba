@@ -118,6 +118,14 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         Eigen::VectorXd obs2(nr);
         A2.adjoint_multiply(vec, obs2);
         expect_equal_vectors(ref, obs2);
+
+        // Works on expressions.
+        {
+            auto expr = vec * 2;
+            ref = control * expr;
+            A.multiply(expr, obs);
+            expect_equal_vectors(ref, obs, 0);
+        }
     }
 
     // Adjoint multiplies correctly.
@@ -132,6 +140,14 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         Eigen::VectorXd obs2(nc);
         A2.multiply(vec, obs2);
         expect_equal_vectors(ref, obs2);
+
+        // Works on expressions.
+        {
+            auto expr = vec * 2;
+            ref = control.adjoint() * expr;
+            A.adjoint_multiply(expr, obs);
+            expect_equal_vectors(ref, obs);
+        }
     }
 }
 
