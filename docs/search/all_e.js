@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['wrappers_2ehpp_0',['wrappers.hpp',['../wrappers_8hpp.html',1,'']]]
+  ['u_0',['U',['../structirlba_1_1Irlba_1_1Results.html#a2812e34506e7779d176132d3a80e7207',1,'irlba::Irlba::Results']]],
+  ['utils_2ehpp_1',['utils.hpp',['../utils_8hpp.html',1,'']]]
 ];

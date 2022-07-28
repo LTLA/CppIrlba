@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scaled_0',['Scaled',['../structirlba_1_1Scaled.html',1,'irlba']]]
+  ['results_0',['Results',['../structirlba_1_1Irlba_1_1Results.html',1,'irlba::Irlba']]]
 ];
