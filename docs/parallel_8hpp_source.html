@@ -254,8 +254,8 @@ $(function() {
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        IRLBA_CUSTOM_PARALLEL(nthreads, [&amp;](<span class="keywordtype">int</span> t) -&gt; <span class="keywordtype">void</span> {</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="keyword">auto</span> starts = secondary_nonzero_starts[t];</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            <span class="keyword">auto</span> ends = secondary_nonzero_starts[t + 1];</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; starts = secondary_nonzero_starts[t];</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; ends = secondary_nonzero_starts[t + 1];</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> c = 0; c &lt; primary_dim; ++c) {</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                <span class="keyword">auto</span> start = starts[c];</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                <span class="keyword">auto</span> end = ends[c];</div>
