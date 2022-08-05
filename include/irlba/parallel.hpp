@@ -270,8 +270,8 @@ private:
         IRLBA_CUSTOM_PARALLEL(nthreads, [&](int t) -> void {
 #endif
 
-            auto starts = secondary_nonzero_starts[t];
-            auto ends = secondary_nonzero_starts[t + 1];
+            const auto& starts = secondary_nonzero_starts[t];
+            const auto& ends = secondary_nonzero_starts[t + 1];
             for (size_t c = 0; c < primary_dim; ++c) {
                 auto start = starts[c];
                 auto end = ends[c];
