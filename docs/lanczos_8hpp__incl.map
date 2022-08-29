@@ -1,11 +1,11 @@
 <map id="irlba/lanczos.hpp" name="irlba/lanczos.hpp">
-<area shape="rect" id="node1" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="157,5,276,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,229,100,256"/>
-<area shape="rect" id="node3" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="165,155,236,181"/>
-<area shape="rect" id="node7" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="81,80,179,107"/>
-<area shape="rect" id="node8" title=" " alt="" coords="254,80,313,107"/>
-<area shape="rect" id="node9" title=" " alt="" coords="337,80,390,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="124,229,189,256"/>
-<area shape="rect" id="node5" title=" " alt="" coords="213,229,265,256"/>
-<area shape="rect" id="node6" title=" " alt="" coords="290,229,418,256"/>
+<area shape="rect" id="node1" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="157,5,276,31"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,225,100,251"/>
+<area shape="rect" id="node3" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="165,152,236,177"/>
+<area shape="rect" id="node7" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="81,79,179,104"/>
+<area shape="rect" id="node8" title=" " alt="" coords="254,79,313,104"/>
+<area shape="rect" id="node9" title=" " alt="" coords="337,79,390,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="124,225,189,251"/>
+<area shape="rect" id="node5" title=" " alt="" coords="213,225,265,251"/>
+<area shape="rect" id="node6" title=" " alt="" coords="290,225,418,251"/>
 </map>

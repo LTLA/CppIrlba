@@ -1,7 +1,7 @@
 <map id="irlba/utils.hpp" name="irlba/utils.hpp">
-<area shape="rect" id="node1" title="Various utility functions." alt="" coords="55,5,153,32"/>
-<area shape="rect" id="node2" href="$irlba_8hpp.html" title="Implements the main user&#45;visible class for running IRLBA." alt="" coords="5,229,104,256"/>
-<area shape="rect" id="node3" href="$lanczos_8hpp.html" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="45,155,163,181"/>
-<area shape="rect" id="node4" href="$parallel_8hpp.html" title="Sparse matrix class with parallelized multiplication." alt="" coords="95,80,209,107"/>
-<area shape="rect" id="node5" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="234,80,361,107"/>
+<area shape="rect" id="node1" title="Various utility functions." alt="" coords="55,5,153,31"/>
+<area shape="rect" id="node2" href="$irlba_8hpp.html" title="Implements the main user&#45;visible class for running IRLBA." alt="" coords="5,225,104,251"/>
+<area shape="rect" id="node3" href="$lanczos_8hpp.html" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="45,152,163,177"/>
+<area shape="rect" id="node4" href="$parallel_8hpp.html" title="Sparse matrix class with parallelized multiplication." alt="" coords="95,79,209,104"/>
+<area shape="rect" id="node5" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="234,79,361,104"/>
 </map>
