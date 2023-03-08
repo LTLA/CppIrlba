@@ -115,10 +115,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3655d7b32bcf208492cb318466236499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28af81bacc8e5911a36a0676aefd2907"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ac54daf205fe2ed9ae391eb9920a59423">PointerType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a28af81bacc8e5911a36a0676aefd2907">get_secondary_nonzero_starts</a> () const</td></tr>
 <tr class="separator:a28af81bacc8e5911a36a0676aefd2907"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cb14f1c2da335f65674a3e2397879f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a8cb14f1c2da335f65674a3e2397879f8">multiply</a> (const Eigen::VectorXd &amp;rhs, Eigen::VectorXd &amp;output) const</td></tr>
-<tr class="separator:a8cb14f1c2da335f65674a3e2397879f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3deb36478f083e0f6fb22cfc3804589"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ae3deb36478f083e0f6fb22cfc3804589">adjoint_multiply</a> (const Eigen::VectorXd &amp;rhs, Eigen::VectorXd &amp;output) const</td></tr>
-<tr class="separator:ae3deb36478f083e0f6fb22cfc3804589"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91a402f8f0507bc2dedc08646237946"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:ab91a402f8f0507bc2dedc08646237946"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ab91a402f8f0507bc2dedc08646237946">multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;output) const</td></tr>
+<tr class="separator:ab91a402f8f0507bc2dedc08646237946"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f5cea64990dd38806d2a2fded9b4847"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:a9f5cea64990dd38806d2a2fded9b4847"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a9f5cea64990dd38806d2a2fded9b4847">adjoint_multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;output) const</td></tr>
+<tr class="separator:a9f5cea64990dd38806d2a2fded9b4847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf133aa882213086e986d614b602f43"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a8bf133aa882213086e986d614b602f43">realize</a> () const</td></tr>
 <tr class="separator:a8bf133aa882213086e986d614b602f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -258,13 +260,15 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae3deb36478f083e0f6fb22cfc3804589" name="ae3deb36478f083e0f6fb22cfc3804589"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3deb36478f083e0f6fb22cfc3804589">&#9670;&#160;</a></span>adjoint_multiply()</h2>
+<a id="a9f5cea64990dd38806d2a2fded9b4847" name="a9f5cea64990dd38806d2a2fded9b4847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f5cea64990dd38806d2a2fded9b4847">&#9670;&#160;</a></span>adjoint_multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&gt;, class IndexArray  = std::vector&lt;int&gt;, class PointerArray  = std::vector&lt;size_t&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;class Right &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -272,7 +276,7 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
         <tr>
           <td class="memname">void <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; column_major, ValueArray, IndexArray, PointerArray &gt;::adjoint_multiply </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
         </tr>
         <tr>
@@ -293,6 +297,12 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Right</td><td>An <code>Eigen::VectorXd</code> or equivalent expression.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
@@ -503,13 +513,15 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
 
 </div>
 </div>
-<a id="a8cb14f1c2da335f65674a3e2397879f8" name="a8cb14f1c2da335f65674a3e2397879f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cb14f1c2da335f65674a3e2397879f8">&#9670;&#160;</a></span>multiply()</h2>
+<a id="ab91a402f8f0507bc2dedc08646237946" name="ab91a402f8f0507bc2dedc08646237946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab91a402f8f0507bc2dedc08646237946">&#9670;&#160;</a></span>multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&gt;, class IndexArray  = std::vector&lt;int&gt;, class PointerArray  = std::vector&lt;size_t&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;class Right &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -517,7 +529,7 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
         <tr>
           <td class="memname">void <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; column_major, ValueArray, IndexArray, PointerArray &gt;::multiply </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
         </tr>
         <tr>
@@ -538,9 +550,15 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Right</td><td>An <code>Eigen::VectorXd</code> or equivalent expression.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>

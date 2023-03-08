@@ -127,11 +127,10 @@ Classes</h2></td></tr>
 <ul>
 <li><code>mat.rows()</code>, returning the number of rows.</li>
 <li><code>mat.cols()</code>, returning the number of columns.</li>
-<li><code>mat.multiply(rhs, out)</code>, which computes the matrix product <code>mat * rhs</code> and stores it in <code>out</code>. <code>rhs</code> should be an <code>Eigen::VectorXd</code> (or an expression equivalent, via templating) while <code>out</code> should be a <code>Eigen::VectorXd</code>.</li>
-<li><code>mat.adjoint_multiply(rhs, out)</code>, which computes the matrix product <code>mat.adjoint() * rhs</code> and stores it in <code>out</code>. <code>rhs</code> should be an <code>Eigen::VectorXd</code> (or an expression equivalent, via templating) while <code>out</code> should be a <code>Eigen::VectorXd</code>.</li>
-<li><code>mat.realize()</code>, which returns an <code>Eigen::MatrixXd</code> containing the matrix with all modifications applied.</li>
+<li><code>mat.multiply(rhs, out)</code>, which computes the matrix product <code>mat * rhs</code> and stores it in <code>out</code>. <code>rhs</code> should be an <code>Eigen::VectorXd</code> (or an expression equivalent) while <code>out</code> should be a <code>Eigen::VectorXd</code>.</li>
+<li><code>mat.adjoint_multiply(rhs, out)</code>, which computes the matrix product <code>mat.adjoint() * rhs</code> and stores it in <code>out</code>. <code>rhs</code> should be an <code>Eigen::VectorXd</code> (or an expression equivalent) while <code>out</code> should be a <code>Eigen::VectorXd</code>.</li>
+<li><code>mat.realize()</code>, which returns an <code>Eigen::MatrixXd</code> containing the matrix with all modifications applied. </li>
 </ul>
-<p>Templating for <code>rhs</code> is only recommended if the method's only task is to forward <code>rhs</code> to another method, typically the multiplication method for the underlying matrix. Otherwise, it is best to only accept <code>Eigen::VectorXd</code> objects (or <code>const</code> references thereof) for <code>rhs</code>, forcing realization of expressions to avoid redundant evaluation upon repeated uses. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

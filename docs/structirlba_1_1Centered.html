@@ -95,10 +95,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac5fe8d8c706d670811c9d5e6c8bbf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b700301187ffe9d12e5b6ba818f071"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a25b700301187ffe9d12e5b6ba818f071">cols</a> () const</td></tr>
 <tr class="separator:a25b700301187ffe9d12e5b6ba818f071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe5bd834324321267768912585ea390f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#afe5bd834324321267768912585ea390f">multiply</a> (const Eigen::VectorXd &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
-<tr class="separator:afe5bd834324321267768912585ea390f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5db4afecc5a56040bf096a444b533949"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a5db4afecc5a56040bf096a444b533949">adjoint_multiply</a> (const Eigen::VectorXd &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
-<tr class="separator:a5db4afecc5a56040bf096a444b533949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67193ab497a4a860153bee60d0b741e2"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:a67193ab497a4a860153bee60d0b741e2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a67193ab497a4a860153bee60d0b741e2">multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
+<tr class="separator:a67193ab497a4a860153bee60d0b741e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#ab3c2e5047238c2cd88f16dc96eff9c45">adjoint_multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
+<tr class="separator:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a700df2782062b93e673b5055adcf3195"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a700df2782062b93e673b5055adcf3195">realize</a> () const</td></tr>
 <tr class="separator:a700df2782062b93e673b5055adcf3195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -159,13 +161,15 @@ template&lt;class Matrix &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5db4afecc5a56040bf096a444b533949" name="a5db4afecc5a56040bf096a444b533949"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5db4afecc5a56040bf096a444b533949">&#9670;&#160;</a></span>adjoint_multiply()</h2>
+<a id="ab3c2e5047238c2cd88f16dc96eff9c45" name="ab3c2e5047238c2cd88f16dc96eff9c45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3c2e5047238c2cd88f16dc96eff9c45">&#9670;&#160;</a></span>adjoint_multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class Matrix &gt; </div>
+<div class="memtemplate">
+template&lt;class Right &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -173,7 +177,7 @@ template&lt;class Matrix &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::adjoint_multiply </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
         </tr>
         <tr>
@@ -194,9 +198,15 @@ template&lt;class Matrix &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Right</td><td>An <code>Eigen::VectorXd</code> or equivalent expression.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>
@@ -233,13 +243,15 @@ template&lt;class Matrix &gt; </div>
 
 </div>
 </div>
-<a id="afe5bd834324321267768912585ea390f" name="afe5bd834324321267768912585ea390f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe5bd834324321267768912585ea390f">&#9670;&#160;</a></span>multiply()</h2>
+<a id="a67193ab497a4a860153bee60d0b741e2" name="a67193ab497a4a860153bee60d0b741e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67193ab497a4a860153bee60d0b741e2">&#9670;&#160;</a></span>multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class Matrix &gt; </div>
+<div class="memtemplate">
+template&lt;class Right &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -247,7 +259,7 @@ template&lt;class Matrix &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::multiply </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
         </tr>
         <tr>
@@ -268,9 +280,15 @@ template&lt;class Matrix &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Right</td><td>An <code>Eigen::VectorXd</code> or equivalent expression.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>
