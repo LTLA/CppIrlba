@@ -509,12 +509,12 @@ public:
         Eigen::VectorXd D;
 
         /**
-         * Whether the algorithm converged.
+         * The number of restart iterations performed.
          */
         int iterations;
 
         /**
-         * The number of restart iterations performed.
+         * Whether the algorithm converged.
          */
         bool converged;
     };

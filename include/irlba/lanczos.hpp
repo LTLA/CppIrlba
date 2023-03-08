@@ -131,14 +131,14 @@ public:
             mat.multiply(F, W_next);
         }
 
-        // If start = 0, we assume that it's already normalized, see argument description for 'V'.
+        // If start = 0, there's nothing to orthogonalize against.
         if (start) {
             orthogonalize_vector(W, W_next, start, otmp);
         }
 
         double S = W_next.norm();
         if (S < eps) {
-            throw -4;
+            throw std::runtime_error("starting vector near the null space of the input matrix");
         }
         W_next /= S;
         W.col(start) = W_next;
