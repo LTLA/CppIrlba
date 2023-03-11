@@ -45,39 +45,43 @@ public:
 public:
     /**
      * @brief Intermediate data structures to avoid repeated allocations.
+     *
+     * @tparam Scalar Scalar type for the intermediate results.
      */
+    template<class Scalar>
     struct Intermediates {
-        /**
-         * @tparam M Matrix class, most typically from the **Eigen** library.
-         *
-         * @param mat Instance of a matrix class `M`.
-         */
-        template<class M>
-        Intermediates(const M& mat) : F(mat.cols()), W_next(mat.rows()), orthog_tmp(mat.cols()) {}
-
         /**
          * Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).
          *
          * @return Vector of residuals of length equal to the number of columns of `mat` in `run()`.
          */
-        const Eigen::VectorXd& residuals() const {
+        const VectorOf<Scalar>& residuals() const {
             return F;
         }
 
         /**
          * @cond
          */
-        Eigen::VectorXd F; 
-        Eigen::VectorXd W_next;
-        Eigen::VectorXd orthog_tmp;
+        Intermediates(size_t nrow, size_t ncol) : F(ncol), W_next(nrow), orthog_tmp(ncol) {}
+
+        VectorOf<Scalar> F; 
+        VectorOf<Scalar> W_next;
+        VectorOf<Scalar> orthog_tmp;
         /**
          * @endcond
          */
     };
 
-    template<class M>
-    Intermediates initialize(const M& mat) const {
-        return Intermediates(mat);
+    /**
+     * @param mat Input matrix.
+     *
+     * @return An `Intermediates` instance with appropriately allocated vectors.
+     *
+     * @tparam Input Input matrix class.
+     */
+    template<class Input>
+    Intermediates<typename Input::Scalar> initialize(const Input& mat) const {
+        return Intermediates<typename Input::Scalar>(mat.rows(), mat.cols());
     }
 
 public:
@@ -87,7 +91,7 @@ public:
      * Support is provided for centering and scaling without modifying `mat`.
      * Protection against invariant subspaces is also implemented.
      *
-     * @tparam M Matrix class, most typically from the **Eigen** library.
+     * @tparam Input Input matrix class, most typically from the **Eigen** library.
      * See the `Irlba` documentation for a detailed description of the expected methods.
      * @tparam Engine A functor that, when called with no arguments, returns a random integer from a discrete uniform distribution.
      *
@@ -107,16 +111,18 @@ public:
      * `W` is filled with orthonormal vectors, as is `V`.
      * `B` is filled with upper diagonal entries.
      */
-    template<class M, class Engine>
+    template<class Input, class Engine>
     void run(
-        const M& mat, 
-        Eigen::MatrixXd& W, 
-        Eigen::MatrixXd& V, 
-        Eigen::MatrixXd& B, 
+        const Input& mat, 
+        MatrixOf<typename Input::Scalar>& W, 
+        MatrixOf<typename Input::Scalar>& V, 
+        MatrixOf<typename Input::Scalar>& B, 
         Engine& eng, 
-        Intermediates& inter, 
+        Intermediates<typename Input::Scalar>& inter, 
         int start = 0) 
     const {
+        typedef MatrixOf<typename Input::Scalar> Matrix;
+        typedef VectorOf<typename Input::Scalar> Vector;
         const double eps = (epsilon < 0 ? std::pow(std::numeric_limits<double>::epsilon(), 0.8) : epsilon);
 
         int work = W.cols();
@@ -125,7 +131,7 @@ public:
         auto& otmp = inter.orthog_tmp;
 
         F = V.col(start);
-        if constexpr(has_multiply_method<M>::value) {
+        if constexpr(has_multiply_method<Input, Vector>::value) {
             W_next.noalias() = mat * F;
         } else {
             mat.multiply(F, W_next);
@@ -145,7 +151,7 @@ public:
 
         // The Lanczos iterations themselves.
         for (int j = start; j < work; ++j) {
-            if constexpr(has_adjoint_multiply_method<M>::value) {
+            if constexpr(has_adjoint_multiply_method<Input, Matrix>::value) {
                 F.noalias() = mat.adjoint() * W.col(j);
             } else {
                 mat.adjoint_multiply(W.col(j), F);
@@ -172,7 +178,7 @@ public:
                 B(j, j) = S;
                 B(j, j + 1) = R_F;
 
-                if constexpr(has_multiply_method<M>::value) {
+                if constexpr(has_multiply_method<Input, Vector>::value) {
                     W_next.noalias() = mat * F;
                 } else {
                     mat.multiply(F, W_next);

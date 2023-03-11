@@ -17,14 +17,14 @@ TEST(WrapperTest, Centering) {
         auto C = create_random_vector(10, 1234);
         Eigen::VectorXd output(20);
         centered.multiply(C, output);
-        expect_equal_matrix(ref * C, output);
+        expect_equal_matrix<Eigen::MatrixXd>(ref * C, output);
     }
 
     {
         auto C = create_random_vector(20, 1234);
         Eigen::VectorXd output(10);
         centered.adjoint_multiply(C, output);
-        expect_equal_matrix(ref.adjoint() * C, output);
+        expect_equal_matrix<Eigen::MatrixXd>(ref.adjoint() * C, output);
     }
 }
 
@@ -41,13 +41,13 @@ TEST(WrapperTest, Scaling) {
         auto C = create_random_vector(10, 1234);
         Eigen::VectorXd output(20);
         centered.multiply(C, output);
-        expect_equal_matrix(ref * C, output);
+        expect_equal_matrix<Eigen::MatrixXd>(ref * C, output);
     }
 
     {
         auto C = create_random_vector(20, 1234);
         Eigen::VectorXd output(10);
         centered.adjoint_multiply(C, output);
-        expect_equal_matrix(ref.adjoint() * C, output);
+        expect_equal_matrix<Eigen::MatrixXd>(ref.adjoint() * C, output);
     }
 }

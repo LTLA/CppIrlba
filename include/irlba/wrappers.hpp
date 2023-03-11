@@ -17,11 +17,12 @@
  *
  * - `mat.rows()`, returning the number of rows.
  * - `mat.cols()`, returning the number of columns.
+ * - a `Scalar` typedef, returning the type of scalar in the modified matrix.
  * - `mat.multiply(rhs, out)`, which computes the matrix product `mat * rhs` and stores it in `out`.
- * `rhs` should be an `Eigen::VectorXd` (or an expression equivalent) while `out` should be a `Eigen::VectorXd`.
+ * `rhs` and `out` should be `Eigen::Vector<Scalar, Eigen::Dynamic>` instances; alternatively, `rhs` may also be an expression equivalent.
  * - `mat.adjoint_multiply(rhs, out)`, which computes the matrix product `mat.adjoint() * rhs` and stores it in `out`.
- * `rhs` should be an `Eigen::VectorXd` (or an expression equivalent) while `out` should be a `Eigen::VectorXd`.
- * - `mat.realize()`, which returns an `Eigen::MatrixXd` containing the matrix with all modifications applied.
+ * `rhs` and `out` should be `Eigen::Vector<Scalar, Eigen::Dynamic>` instances; alternatively, `rhs` may also be an expression equivalent.
+ * - `mat.realize()`, which returns an `Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>` object containing the matrix with all modifications applied.
  */
 
 namespace irlba {
@@ -29,19 +30,24 @@ namespace irlba {
 /**
  * @brief Wrapper for a centered matrix.
  *
- * @tparam Matrix An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
+ * @tparam Input An **Eigen** `Matrix` class, or a wrapper around such a class.
  * 
  * This modification involves centering all columns, i.e., subtracting the mean of each column from the values of that column.
  * Naively doing such an operation would involve loss of sparsity, which we avoid by deferring the subtraction into the subspace defined by `rhs`.
  */
-template<class Matrix>
+template<typename Input>
 struct Centered {
+    /**
+     * Type of scalar in the centered matrix.
+     */
+    typedef typename Input::Scalar Scalar;
+
     /**
      * @param m Underlying matrix to be column-centered.
      * @param c Vector of length equal to the number of columns of `m`,
      * containing the value to subtract from each column.
      */
-    Centered(const Matrix* m, const Eigen::VectorXd* c) : mat(m), center(c) {}
+    Centered(const Input* m, const Eigen::Vector<Scalar, Eigen::Dynamic>* c) : mat(m), center(c) {}
 
     /**
      * @return Number of rows in the matrix.
@@ -54,7 +60,7 @@ struct Centered {
     auto cols() const { return mat->cols(); }
 
     /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+     * @tparam Right An Eigen `Vector` class or equivalent expression.
      *
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
@@ -63,8 +69,8 @@ struct Centered {
      * @return `out` is filled with the product of this matrix and `rhs`.
      */
     template<class Right>
-    void multiply(const Right& rhs, Eigen::VectorXd& out) const {
-        if constexpr(has_multiply_method<Matrix>::value) {
+    void multiply(const Right& rhs, Eigen::Vector<Scalar, Eigen::Dynamic>& out) const {
+        if constexpr(has_multiply_method<Input, Right>::value) {
             out.noalias() = *mat * rhs;
         } else {
             mat->multiply(rhs, out);
@@ -78,7 +84,7 @@ struct Centered {
     }
 
     /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+     * @tparam Right An Eigen `Vector` class or equivalent expression.
      *
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
@@ -87,8 +93,8 @@ struct Centered {
      * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
      */
     template<class Right>
-    void adjoint_multiply(const Right& rhs, Eigen::VectorXd& out) const {
-        if constexpr(has_adjoint_multiply_method<Matrix>::value) {
+    void adjoint_multiply(const Right& rhs, Eigen::Vector<Scalar, Eigen::Dynamic>& out) const {
+        if constexpr(has_adjoint_multiply_method<Input, Right>::value) {
             out.noalias() = mat->adjoint() * rhs;
         } else {
             mat->adjoint_multiply(rhs, out);
@@ -103,8 +109,8 @@ struct Centered {
      * @return A realized version of the centered matrix,
      * where the centering has been explicitly applied.
      */
-    Eigen::MatrixXd realize() const {
-        auto subtractor = [&](Eigen::MatrixXd& m) -> void {
+    Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> realize() const {
+        auto subtractor = [&](auto& m) -> void {
             for (Eigen::Index c = 0; c < m.cols(); ++c) {
                 for (Eigen::Index r = 0; r < m.rows(); ++r) {
                     m(r, c) -= (*center)[c];
@@ -112,38 +118,43 @@ struct Centered {
             }
         };
 
-        if constexpr(has_realize_method<Matrix>::value) {
-            Eigen::MatrixXd output = mat->realize();
+        if constexpr(has_realize_method<Input>::value) {
+            auto output = mat->realize(); // Scalars are the same, so the output should also be the same type of Eigen matrix.
             subtractor(output);
             return output;
         } else {
-            Eigen::MatrixXd output(*mat);
+            Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> output(*mat);
             subtractor(output);
             return output;
         }
     }
 
 private:
-    const Matrix* mat;
-    const Eigen::VectorXd* center;
+    const Input* mat;
+    const Eigen::Vector<Scalar, Eigen::Dynamic>* center;
 };
 
 /**
  * @brief Wrapper for a scaled matrix.
  *
- * @tparam Matrix An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
+ * @tparam Input An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
  * 
  * This modification involves scaling all columns, i.e., dividing the values of each column by the standard deviation of that column to achieve unit variance.
  * Naively doing such an operation would involve a copy of the matrix, which we avoid by deferring the scaling into the subspace defined by `rhs`.
  */
-template<class Matrix>
+template<typename Input>
 struct Scaled {
+    /**
+     * Type of scalar in the centered matrix.
+     */
+    typedef typename Input::Scalar Scalar;
+
     /**
      * @param m Underlying matrix to be column-scaled.
      * @param s Vector of length equal to the number of columns of `m`,
      * containing the value to scale each column.
      */
-    Scaled(const Matrix* m, const Eigen::VectorXd* s) : mat(m), scale(s) {}
+    Scaled(const Input* m, const Eigen::Vector<Scalar, Eigen::Dynamic>* s) : mat(m), scale(s) {}
 
     /**
      * @return Number of rows in the matrix.
@@ -156,7 +167,7 @@ struct Scaled {
     auto cols() const { return mat->cols(); }
 
     /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+     * @tparam Right An Eigen `Vector` or equivalent expression.
      *
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
@@ -165,8 +176,8 @@ struct Scaled {
      * @return `out` is filled with the product of this matrix and `rhs`.
      */
     template<class Right>
-    void multiply(const Right& rhs, Eigen::VectorXd& out) const {
-        if constexpr(has_multiply_method<Matrix>::value) {
+    void multiply(const Right& rhs, Eigen::Vector<Scalar, Eigen::Dynamic>& out) const {
+        if constexpr(has_multiply_method<Input, Right>::value) {
             out.noalias() = *mat * rhs.cwiseQuotient(*scale);
         } else {
             mat->multiply(rhs.cwiseQuotient(*scale), out);
@@ -175,7 +186,7 @@ struct Scaled {
     }
 
     /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+     * @tparam Right An Eigen `Vector` or equivalent expression.
      *
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
@@ -184,8 +195,8 @@ struct Scaled {
      * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
      */
     template<class Right>
-    void adjoint_multiply(const Right& rhs, Eigen::VectorXd& out) const {
-        if constexpr(has_adjoint_multiply_method<Matrix>::value) {
+    void adjoint_multiply(const Right& rhs, Eigen::Vector<Scalar, Eigen::Dynamic>& out) const {
+        if constexpr(has_adjoint_multiply_method<Input, Right>::value) {
             out.noalias() = mat->adjoint() * rhs;
         } else {
             mat->adjoint_multiply(rhs, out);
@@ -198,8 +209,8 @@ struct Scaled {
      * @return A realized version of the scaled matrix,
      * where the scaling has been explicitly applied.
      */
-    Eigen::MatrixXd realize() const {
-        auto scaler = [&](Eigen::MatrixXd& m) -> void {
+    Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> realize() const {
+        auto scaler = [&](auto& m) -> void {
             for (Eigen::Index c = 0; c < m.cols(); ++c) {
                 for (Eigen::Index r = 0; r < m.rows(); ++r) {
                     m(r, c) /= (*scale)[c];
@@ -207,20 +218,20 @@ struct Scaled {
             }
         };
 
-        if constexpr(has_realize_method<Matrix>::value) {
-            Eigen::MatrixXd output = mat->realize();
+        if constexpr(has_realize_method<Input>::value) {
+            auto output = mat->realize(); // Scalars are the same, so the output should also be the same type of Eigen matrix.
             scaler(output);
             return output;
         } else {
-            Eigen::MatrixXd output(*mat);
+            Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> output(*mat);
             scaler(output);
             return output;
         }
     }
 
 private:
-    const Matrix* mat;
-    const Eigen::VectorXd* scale;
+    const Input* mat;
+    const Eigen::Vector<Scalar, Eigen::Dynamic>* scale;
 };
 
 }

@@ -25,6 +25,22 @@ TEST(IrlbaTest, Exact) {
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-8);
 }
 
+TEST(IrlbaComplexTest, Exact) {
+    // For the test, the key is that rank + workspace > min(nr, nc), in which
+    // case we can be pretty confident of getting a near-exact match of the
+    // true SVD. Otherwise it's more approximate and the test is weaker.
+    int rank = 5;
+    auto A = create_random_complex_matrix(20, 10);
+
+    irlba::Irlba irb;
+    auto res = irb.set_number(rank).run(A);
+
+    Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-8);
+    expect_equal_column_vectors(res.U, svd.matrixU().leftCols(rank), 1e-8);
+    expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-8);
+}
+
 class IrlbaTester : public ::testing::TestWithParam<std::tuple<int, int, int> > {
 protected:
     template<class Param>

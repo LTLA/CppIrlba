@@ -154,7 +154,7 @@ public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
      *
-     * @tparam M Matrix class, typically from the **Eigen** matrix manipulation library.
+     * @tparam Input Matrix class, typically from the **Eigen** matrix manipulation library.
      * However, other classes are also supported, see the other `run()` methods for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
@@ -182,19 +182,22 @@ public:
      * Note that `scale=true` requires `center=true` to guarantee unit variance along each column. 
      * No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. 
      */
-    template<class M, class Engine = std::mt19937_64>
+    template<class Input, class Engine = std::mt19937_64>
     std::pair<bool, int> run(
-        const M& mat, 
+        const Input& mat, 
         bool center, 
         bool scale, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
+        MatrixOf<typename Input::Scalar>& outU, 
+        MatrixOf<typename Input::Scalar>& outV, 
+        RealVectorOf<typename Input::Scalar>& outD, 
         Engine* eng = null_rng(),
-        Eigen::VectorXd* init = NULL) 
+        VectorOf<typename Input::Scalar>* init = NULL) 
     const {
+        typedef VectorOf<typename Input::Scalar> Vector;
+        typedef typename Input::Scalar Scalar;
+
         if (scale || center) {
-            Eigen::VectorXd center0, scale0;
+            Vector center0, scale0;
 
             if (center) {
                 if (mat.rows() < 1) {
@@ -211,14 +214,14 @@ public:
             }
 
             for (Eigen::Index i = 0; i < mat.cols(); ++i) {
-                double mean = 0;
+                Scalar mean = 0;
                 if (center) {
                     mean = mat.col(i).sum() / mat.rows();
                     center0[i] = mean;
                 }
                 if (scale) {
-                    Eigen::VectorXd current = mat.col(i); // force it to be a VectorXd, even if it's a sparse matrix.
-                    double var = 0;
+                    Vector current = mat.col(i); // force the column to be a Vector, even if it's coming from a sparse matrix.
+                    Scalar var = 0;
                     for (auto x : current) {
                         var += (x - mean)*(x - mean);
                     }
@@ -232,7 +235,7 @@ public:
             }
 
             if (center) {
-                Centered<M> centered(&mat, &center0);
+                Centered<Input> centered(&mat, &center0);
                 if (scale) {
                     Scaled<decltype(centered)> centered_scaled(&centered, &scale0);
                     return run(centered_scaled, outU, outV, outD, eng, init);
@@ -240,7 +243,7 @@ public:
                     return run(centered, outU, outV, outD, eng, init);
                 }
             } else {
-                Scaled<M> scaled(&mat, &scale0);
+                Scaled<Input> scaled(&mat, &scale0);
                 return run(scaled, outU, outV, outD, eng, init);
             }
         } else {
@@ -251,8 +254,8 @@ public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD.
      *
-     * @tparam M Matrix class, most typically from the **Eigen** matrix manipulation library.
-     * However, custom classes are also supported, see below for details.
+     * @tparam Input Matrix class, typically from the **Eigen** matrix manipulation library.
+     * However, other classes are also supported, see below for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
@@ -277,31 +280,31 @@ public:
      * - A `rows()` method that returns the number of rows.
      * - A `cols()` method that returns the number of columns.
      * - One of the following for matrix-vector multiplication:
-     *   - `multiply(rhs, out)`, which should compute the product of the matrix with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of columns;
-     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of rows.
-     *   - A `*` method where the right-hand side is an `Eigen::VectorXd` (or equivalent expression) of length equal to the number of columsn,
-     *     and returns an `Eigen::VectorXd`-equivalent of length equal to the number of rows.
+     *   - `multiply(rhs, out)`, which should compute the product of the matrix with `rhs`, a `Vector`-equivalent of length equal to the number of columns;
+     *     and stores the result in `out`, an `Vector` of length equal to the number of rows.
+     *   - A `*` method where the right-hand side is an `Vector` (or equivalent expression) of length equal to the number of columsn,
+     *     and returns an `Vector`-equivalent of length equal to the number of rows.
      * - One of the following for matrix transpose-vector multiplication:
-     *   - `adjoint_multiply(rhs, out)`, which should compute the product of the matrix transpose with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of rows;
-     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of columns.
+     *   - `adjoint_multiply(rhs, out)`, which should compute the product of the matrix transpose with `rhs`, a `Vector`-equivalent of length equal to the number of rows;
+     *     and stores the result in `out`, an `Vector` of length equal to the number of columns.
      *   - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
-     *     The method should accept an `Eigen::VectorXd`-equivalent of length equal to the number of rows,
-     *     and return an `Eigen::VectorXd`-equvialent of length equal to the number of columns.
-     * - A `realize()` method that returns an `Eigen::MatrixXd` object representing the modified matrix.
-     *   This can be omitted if an `Eigen::MatrixXd` can be copy-constructed from the class.
+     *     The method should accept an `Vector`-equivalent of length equal to the number of rows,
+     *     and return an `Vector`-equvialent of length equal to the number of columns.
+     * - A `realize()` method that returns an `MatrixOf<typename Input::Scalar>` object representing the modified matrix.
+     *   This can be omitted if an `MatrixOf<typename Input::Scalar>` can be copy-constructed from the class.
      *
      * See the `Centered` and `Scaled` classes for more details.
      *
      * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      */
-    template<class Matrix, class Engine = std::mt19937_64>
+    template<class Input, class Engine = std::mt19937_64>
     std::pair<bool, int> run(
-        const Matrix& mat, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
+        const Input& mat, 
+        MatrixOf<typename Input::Scalar>& outU, 
+        MatrixOf<typename Input::Scalar>& outV, 
+        RealVectorOf<typename Input::Scalar>& outD, 
         Engine* eng = null_rng(),
-        Eigen::VectorXd* init = NULL) 
+        VectorOf<typename Input::Scalar>* init = NULL) 
     const {
         if (eng == NULL) {
             std::mt19937_64 rng(seed);
@@ -312,15 +315,19 @@ public:
     }
 
 private:
-    template<class M, class Engine>
+    template<class Input, class Engine>
     std::pair<bool, int> run_internal(
-        const M& mat, 
+        const Input& mat, 
         Engine& eng, 
-        Eigen::MatrixXd& outU, 
-        Eigen::MatrixXd& outV, 
-        Eigen::VectorXd& outD, 
-        Eigen::VectorXd* init)
+        MatrixOf<typename Input::Scalar>& outU, 
+        MatrixOf<typename Input::Scalar>& outV, 
+        RealVectorOf<typename Input::Scalar>& outD, 
+        VectorOf<typename Input::Scalar>* init)
     const {
+        typedef MatrixOf<typename Input::Scalar> Matrix;
+        typedef VectorOf<typename Input::Scalar> Vector;
+        typedef RealVectorOf<typename Input::Scalar> RealVector;
+
         const int smaller = std::min(mat.rows(), mat.cols());
         if (number >= smaller) {
             throw std::runtime_error("requested number of singular values must be less than smaller matrix dimension");
@@ -334,7 +341,7 @@ private:
 
         const int work = std::min(number + extra_work, smaller);
 
-        Eigen::MatrixXd V(mat.cols(), work);
+        Matrix V(mat.cols(), work);
         if (init) {
             if (init->size() != V.rows()) {
                 throw std::runtime_error("initialization vector does not have expected number of rows");
@@ -347,20 +354,20 @@ private:
 
         bool converged = false;
         int iter = 0, k =0;
-        Eigen::JacobiSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
+        Eigen::JacobiSVD<Matrix> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
 
         auto lptmp = lp.initialize(mat);
 
-        Eigen::MatrixXd W(mat.rows(), work);
-        Eigen::MatrixXd Wtmp(mat.rows(), work);
-        Eigen::MatrixXd Vtmp(mat.cols(), work);
+        Matrix W(mat.rows(), work);
+        Matrix Wtmp(mat.rows(), work);
+        Matrix Vtmp(mat.cols(), work);
 
-        Eigen::MatrixXd B(work, work);
+        Matrix B(work, work);
         B.setZero(work, work);
-        Eigen::VectorXd res(work);
-        Eigen::VectorXd F(mat.cols());
+        Vector res(work);
+        Vector F(mat.cols());
 
-        Eigen::VectorXd prevS(work);
+        RealVector prevS(work);
 
         for (; iter < maxit; ++iter) {
             // Technically, this is only a 'true' Lanczos bidiagonalization
@@ -380,7 +387,9 @@ private:
             const auto& BV = svd.matrixV();
 
             // Checking for convergence.
-            if (B(work-1, work-1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
+            // Bottom-left element of B is the final value of 'S' from the Lanczos iterations.
+            // Note that this still works for complex numbers, as 0+0i == 0.0.
+            if (B(work-1, work-1) == 0.0) { 
                 converged = true;
                 break;
             }
@@ -455,20 +464,19 @@ private:
     }
 
 private:
-    template<class M>
-    void exact(const M& mat, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) const {
-        Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
+    template<class Input>
+    void exact(const Input& mat, MatrixOf<typename Input::Scalar>& outU, MatrixOf<typename Input::Scalar>& outV, RealVectorOf<typename Input::Scalar>& outD) const {
+        typedef MatrixOf<typename Input::Scalar> Matrix;
+        Eigen::BDCSVD<Matrix> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
 
-        if constexpr(std::is_same<M, Eigen::MatrixXd>::value) {
+        if constexpr(has_realize_method<Input>::value) {
+            Matrix adjusted = mat.realize();
+            svd.compute(adjusted);
+        } else if constexpr(std::is_same<Matrix, Input>::value) {
             svd.compute(mat);
         } else {
-            if constexpr(has_realize_method<M>::value) {
-                Eigen::MatrixXd adjusted = mat.realize();
-                svd.compute(adjusted);
-            } else {
-                Eigen::MatrixXd adjusted(mat);
-                svd.compute(adjusted);
-            }
+            Matrix adjusted(mat);
+            svd.compute(adjusted);
         }
 
         outD.resize(number);
@@ -486,27 +494,30 @@ private:
 public:
     /**
      * Result of the IRLBA-based decomposition.
+     *
+     * @tparam Scalar Scalar type for the left/right singular vectors.
      */
+    template<class Scalar>
     struct Results {
         /**
          * The left singular vectors, stored as columns of `U`.
          * The number of rows in `U` is equal to the number of rows in the input matrix,
          * and the number of columns is equal to the number of requested vectors.
          */
-        Eigen::MatrixXd U;
+        MatrixOf<Scalar> U;
 
         /**
          * The right singular vectors, stored as columns of `U`.
          * The number of rows in `U` is equal to the number of columns in the input matrix,
          * and the number of columns is equal to the number of requested vectors.
          */
-        Eigen::MatrixXd V;
+        MatrixOf<Scalar> V;
 
         /**
          * The requested number of singular values, ordered by decreasing value.
          * These correspond to the vectors in `U` and `V`.
          */
-        Eigen::VectorXd D;
+        RealVectorOf<Scalar> D;
 
         /**
          * The number of restart iterations performed.
@@ -522,7 +533,7 @@ public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD with centering and scaling.
      * 
-     * @tparam M Matrix class, most typically from the **Eigen** matrix manipulation library.
+     * @tparam Input Matrix class, typically from the **Eigen** matrix manipulation library.
      * However, other classes are also supported, see the other `run()` methods for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
@@ -536,9 +547,9 @@ public:
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
-    template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, bool center, bool scale, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) const {
-        Results output;
+    template<class Input, class Engine = std::mt19937_64>
+    Results<typename Input::Scalar> run(const Input& mat, bool center, bool scale, Engine* eng = null_rng(), VectorOf<typename Input::Scalar>* init = NULL) {
+        Results<typename Input::Scalar> output;
         auto stats = run(mat, center, scale, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
         output.iterations = stats.second;
@@ -548,7 +559,7 @@ public:
     /** 
      * Run IRLBA on an input matrix to perform an approximate SVD, see the `run()` method for more details.
      *
-     * @tparam M Matrix class,  most typically from the **Eigen** matrix manipulation library.
+     * @tparam Input Matrix class, typically from the **Eigen** matrix manipulation library.
      * However, other classes are also supported, see the other `run()` methods for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
@@ -560,9 +571,9 @@ public:
      *
      * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
      */
-    template<class M, class Engine = std::mt19937_64>
-    Results run(const M& mat, Engine* eng = null_rng(), Eigen::VectorXd* init = NULL) const {
-        Results output;
+    template<class Input, class Engine = std::mt19937_64>
+    Results<typename Input::Scalar> run(const Input& mat, Engine* eng = null_rng(), VectorOf<typename Input::Scalar>* init = NULL) {
+        Results<typename Input::Scalar> output;
         auto stats = run(mat, output.U, output.V, output.D, eng, init);
         output.converged = stats.first;
         output.iterations = stats.second;
