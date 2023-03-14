@@ -76,6 +76,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structirlba_1_1Centered-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">irlba::Centered&lt; Matrix &gt; Struct Template Reference</div></div>
@@ -87,6 +88,13 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="wrappers_8hpp_source.html">wrappers.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aa86585b7bae6f19ae08d9a4baebc84fa"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="wrappers_8hpp.html#a06d0182fc36d37483e1c4731b966cf16">WrappedWorkspace</a>&lt; Matrix &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa">Workspace</a></td></tr>
+<tr class="separator:aa86585b7bae6f19ae08d9a4baebc84fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b2ec774d429f0f00baaea0c413d087"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="wrappers_8hpp.html#abf539bafcd5bf49b8106fa00b7cf61a3">WrappedAdjointWorkspace</a>&lt; Matrix &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a13b2ec774d429f0f00baaea0c413d087">AdjointWorkspace</a></td></tr>
+<tr class="separator:a13b2ec774d429f0f00baaea0c413d087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e835ea0c77cc6eb75d5a257ae53eba8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a8e835ea0c77cc6eb75d5a257ae53eba8">Centered</a> (const Matrix *m, const Eigen::VectorXd *c)</td></tr>
@@ -95,12 +103,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac5fe8d8c706d670811c9d5e6c8bbf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b700301187ffe9d12e5b6ba818f071"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a25b700301187ffe9d12e5b6ba818f071">cols</a> () const</td></tr>
 <tr class="separator:a25b700301187ffe9d12e5b6ba818f071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67193ab497a4a860153bee60d0b741e2"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
-<tr class="memitem:a67193ab497a4a860153bee60d0b741e2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a67193ab497a4a860153bee60d0b741e2">multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
-<tr class="separator:a67193ab497a4a860153bee60d0b741e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
-<tr class="memitem:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#ab3c2e5047238c2cd88f16dc96eff9c45">adjoint_multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;out) const</td></tr>
-<tr class="separator:ab3c2e5047238c2cd88f16dc96eff9c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55b851d87fb995a2a04d3a07e69121ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa">Workspace</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a55b851d87fb995a2a04d3a07e69121ee">workspace</a> () const</td></tr>
+<tr class="separator:a55b851d87fb995a2a04d3a07e69121ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9cf9e63720540cdbe1cc880663f8c41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Centered.html#a13b2ec774d429f0f00baaea0c413d087">AdjointWorkspace</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#ae9cf9e63720540cdbe1cc880663f8c41">adjoint_workspace</a> () const</td></tr>
+<tr class="separator:ae9cf9e63720540cdbe1cc880663f8c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8210b60275f835adc8fed1f204012d9f"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:a8210b60275f835adc8fed1f204012d9f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f">multiply</a> (const Right &amp;rhs, <a class="el" href="structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa">Workspace</a> &amp;work, Eigen::VectorXd &amp;out) const</td></tr>
+<tr class="separator:a8210b60275f835adc8fed1f204012d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aff4cb0fd5911af49db22ec71eacac7"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:a5aff4cb0fd5911af49db22ec71eacac7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a5aff4cb0fd5911af49db22ec71eacac7">adjoint_multiply</a> (const Right &amp;rhs, <a class="el" href="structirlba_1_1Centered.html#a13b2ec774d429f0f00baaea0c413d087">AdjointWorkspace</a> &amp;work, Eigen::VectorXd &amp;out) const</td></tr>
+<tr class="separator:a5aff4cb0fd5911af49db22ec71eacac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a700df2782062b93e673b5055adcf3195"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Centered.html#a700df2782062b93e673b5055adcf3195">realize</a> () const</td></tr>
 <tr class="separator:a700df2782062b93e673b5055adcf3195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -114,7 +126,42 @@ struct irlba::Centered&lt; Matrix &gt;</div><p>Wrapper for a centered matrix. </
   </dd>
 </dl>
 <p>This modification involves centering all columns, i.e., subtracting the mean of each column from the values of that column. Naively doing such an operation would involve loss of sparsity, which we avoid by deferring the subtraction into the subspace defined by <code>rhs</code>. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a13b2ec774d429f0f00baaea0c413d087" name="a13b2ec774d429f0f00baaea0c413d087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b2ec774d429f0f00baaea0c413d087">&#9670;&#160;</a></span>AdjointWorkspace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="wrappers_8hpp.html#abf539bafcd5bf49b8106fa00b7cf61a3">WrappedAdjointWorkspace</a>&lt;Matrix&gt; <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::AdjointWorkspace</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Workspace type for <code><a class="el" href="structirlba_1_1Centered.html#a5aff4cb0fd5911af49db22ec71eacac7">adjoint_multiply()</a></code>. Currently, this is just an alias for the adjoint workspace type of the underlying matrix. </p>
+
+</div>
+</div>
+<a id="aa86585b7bae6f19ae08d9a4baebc84fa" name="aa86585b7bae6f19ae08d9a4baebc84fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa86585b7bae6f19ae08d9a4baebc84fa">&#9670;&#160;</a></span>Workspace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="wrappers_8hpp.html#a06d0182fc36d37483e1c4731b966cf16">WrappedWorkspace</a>&lt;Matrix&gt; <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::Workspace</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Workspace type for <code><a class="el" href="structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f">multiply()</a></code>. Currently, this is just an alias for the workspace type of the underlying matrix. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8e835ea0c77cc6eb75d5a257ae53eba8" name="a8e835ea0c77cc6eb75d5a257ae53eba8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e835ea0c77cc6eb75d5a257ae53eba8">&#9670;&#160;</a></span>Centered()</h2>
 
@@ -161,8 +208,8 @@ template&lt;class Matrix &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab3c2e5047238c2cd88f16dc96eff9c45" name="ab3c2e5047238c2cd88f16dc96eff9c45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3c2e5047238c2cd88f16dc96eff9c45">&#9670;&#160;</a></span>adjoint_multiply()</h2>
+<a id="a5aff4cb0fd5911af49db22ec71eacac7" name="a5aff4cb0fd5911af49db22ec71eacac7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aff4cb0fd5911af49db22ec71eacac7">&#9670;&#160;</a></span>adjoint_multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,6 +226,12 @@ template&lt;class Right &gt; </div>
           <td>(</td>
           <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structirlba_1_1Centered.html#a13b2ec774d429f0f00baaea0c413d087">AdjointWorkspace</a> &amp;&#160;</td>
+          <td class="paramname"><em>work</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -206,12 +259,41 @@ template&lt;class Right &gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">work</td><td>The return value of <code><a class="el" href="structirlba_1_1Centered.html#ae9cf9e63720540cdbe1cc880663f8c41">adjoint_workspace()</a></code>. This can be reused across multiple <code><a class="el" href="structirlba_1_1Centered.html#a5aff4cb0fd5911af49db22ec71eacac7">adjoint_multiply()</a></code> calls. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>out</code> is filled with the product of the transpose of this matrix and <code>rhs</code>. </dd></dl>
+
+</div>
+</div>
+<a id="ae9cf9e63720540cdbe1cc880663f8c41" name="ae9cf9e63720540cdbe1cc880663f8c41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9cf9e63720540cdbe1cc880663f8c41">&#9670;&#160;</a></span>adjoint_workspace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structirlba_1_1Centered.html#a13b2ec774d429f0f00baaea0c413d087">AdjointWorkspace</a> <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::adjoint_workspace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Workspace for use in <code><a class="el" href="structirlba_1_1Centered.html#a5aff4cb0fd5911af49db22ec71eacac7">adjoint_multiply()</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -243,8 +325,8 @@ template&lt;class Matrix &gt; </div>
 
 </div>
 </div>
-<a id="a67193ab497a4a860153bee60d0b741e2" name="a67193ab497a4a860153bee60d0b741e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67193ab497a4a860153bee60d0b741e2">&#9670;&#160;</a></span>multiply()</h2>
+<a id="a8210b60275f835adc8fed1f204012d9f" name="a8210b60275f835adc8fed1f204012d9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8210b60275f835adc8fed1f204012d9f">&#9670;&#160;</a></span>multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,6 +343,12 @@ template&lt;class Right &gt; </div>
           <td>(</td>
           <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa">Workspace</a> &amp;&#160;</td>
+          <td class="paramname"><em>work</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -288,7 +376,8 @@ template&lt;class Right &gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">work</td><td>The return value of <code><a class="el" href="structirlba_1_1Centered.html#a55b851d87fb995a2a04d3a07e69121ee">workspace()</a></code>. This can be reused across multiple <code><a class="el" href="structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f">multiply()</a></code> calls. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>
@@ -350,6 +439,34 @@ template&lt;class Matrix &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Number of rows in the matrix. </dd></dl>
+
+</div>
+</div>
+<a id="a55b851d87fb995a2a04d3a07e69121ee" name="a55b851d87fb995a2a04d3a07e69121ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55b851d87fb995a2a04d3a07e69121ee">&#9670;&#160;</a></span>workspace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa">Workspace</a> <a class="el" href="structirlba_1_1Centered.html">irlba::Centered</a>&lt; Matrix &gt;::workspace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Workspace for use in <code><a class="el" href="structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f">multiply()</a></code>. </dd></dl>
 
 </div>
 </div>

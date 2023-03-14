@@ -92,6 +92,10 @@ $(function() {
 Public Types</h2></td></tr>
 <tr class="memitem:ac54daf205fe2ed9ae391eb9920a59423"><td class="memItemLeft" align="right" valign="top">typedef std::remove_const&lt; typenamestd::remove_reference&lt; decltype(ptrs[0])&gt;::type &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ac54daf205fe2ed9ae391eb9920a59423">PointerType</a></td></tr>
 <tr class="separator:ac54daf205fe2ed9ae391eb9920a59423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace0a9677ba2415af992719ef0ff88ef5"><td class="memItemLeft" align="right" valign="top">typedef bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ace0a9677ba2415af992719ef0ff88ef5">Workspace</a></td></tr>
+<tr class="separator:ace0a9677ba2415af992719ef0ff88ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bb0c5f91e0839013a9b21e4c7f43c58"><td class="memItemLeft" align="right" valign="top">typedef bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a3bb0c5f91e0839013a9b21e4c7f43c58">AdjointWorkspace</a></td></tr>
+<tr class="separator:a3bb0c5f91e0839013a9b21e4c7f43c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -115,12 +119,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3655d7b32bcf208492cb318466236499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28af81bacc8e5911a36a0676aefd2907"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ac54daf205fe2ed9ae391eb9920a59423">PointerType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a28af81bacc8e5911a36a0676aefd2907">get_secondary_nonzero_starts</a> () const</td></tr>
 <tr class="separator:a28af81bacc8e5911a36a0676aefd2907"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab91a402f8f0507bc2dedc08646237946"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
-<tr class="memitem:ab91a402f8f0507bc2dedc08646237946"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ab91a402f8f0507bc2dedc08646237946">multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;output) const</td></tr>
-<tr class="separator:ab91a402f8f0507bc2dedc08646237946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f5cea64990dd38806d2a2fded9b4847"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
-<tr class="memitem:a9f5cea64990dd38806d2a2fded9b4847"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a9f5cea64990dd38806d2a2fded9b4847">adjoint_multiply</a> (const Right &amp;rhs, Eigen::VectorXd &amp;output) const</td></tr>
-<tr class="separator:a9f5cea64990dd38806d2a2fded9b4847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aede6b0baadeb52d351c25ab9f24da3dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aede6b0baadeb52d351c25ab9f24da3dd">workspace</a> () const</td></tr>
+<tr class="separator:aede6b0baadeb52d351c25ab9f24da3dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae35f9d60c227dded2504eebe460d2404"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ae35f9d60c227dded2504eebe460d2404">adjoint_workspace</a> () const</td></tr>
+<tr class="separator:ae35f9d60c227dded2504eebe460d2404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6427498919e64e4614a1ccf2f5129e44"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:a6427498919e64e4614a1ccf2f5129e44"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a6427498919e64e4614a1ccf2f5129e44">multiply</a> (const Right &amp;rhs, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ace0a9677ba2415af992719ef0ff88ef5">Workspace</a> &amp;work, Eigen::VectorXd &amp;output) const</td></tr>
+<tr class="separator:a6427498919e64e4614a1ccf2f5129e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2fd9d0ab3fa3acde0b15de3ac28163"><td class="memTemplParams" colspan="2">template&lt;class Right &gt; </td></tr>
+<tr class="memitem:ada2fd9d0ab3fa3acde0b15de3ac28163"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ada2fd9d0ab3fa3acde0b15de3ac28163">adjoint_multiply</a> (const Right &amp;rhs, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a3bb0c5f91e0839013a9b21e4c7f43c58">AdjointWorkspace</a> &amp;work, Eigen::VectorXd &amp;output) const</td></tr>
+<tr class="separator:ada2fd9d0ab3fa3acde0b15de3ac28163"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf133aa882213086e986d614b602f43"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a8bf133aa882213086e986d614b602f43">realize</a> () const</td></tr>
 <tr class="separator:a8bf133aa882213086e986d614b602f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -139,6 +147,23 @@ class irlba::ParallelSparseMatrix&lt; column_major, ValueArray, IndexArray, Poin
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a3bb0c5f91e0839013a9b21e4c7f43c58" name="a3bb0c5f91e0839013a9b21e4c7f43c58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bb0c5f91e0839013a9b21e4c7f43c58">&#9670;&#160;</a></span>AdjointWorkspace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&gt;, class IndexArray  = std::vector&lt;int&gt;, class PointerArray  = std::vector&lt;size_t&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef bool <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; column_major, ValueArray, IndexArray, PointerArray &gt;::AdjointWorkspace</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Workspace type for <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ada2fd9d0ab3fa3acde0b15de3ac28163">adjoint_multiply()</a></code>. Currently this is a placeholder. </p>
+
+</div>
+</div>
 <a id="ac54daf205fe2ed9ae391eb9920a59423" name="ac54daf205fe2ed9ae391eb9920a59423"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac54daf205fe2ed9ae391eb9920a59423">&#9670;&#160;</a></span>PointerType</h2>
 
@@ -153,6 +178,23 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
       </table>
 </div><div class="memdoc">
 <p>Type of the elements inside a <code>PointerArray</code>. </p>
+
+</div>
+</div>
+<a id="ace0a9677ba2415af992719ef0ff88ef5" name="ace0a9677ba2415af992719ef0ff88ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace0a9677ba2415af992719ef0ff88ef5">&#9670;&#160;</a></span>Workspace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&gt;, class IndexArray  = std::vector&lt;int&gt;, class PointerArray  = std::vector&lt;size_t&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef bool <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; column_major, ValueArray, IndexArray, PointerArray &gt;::Workspace</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Workspace type for <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a6427498919e64e4614a1ccf2f5129e44">multiply()</a></code>. Currently this is a placeholder. </p>
 
 </div>
 </div>
@@ -260,8 +302,8 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9f5cea64990dd38806d2a2fded9b4847" name="a9f5cea64990dd38806d2a2fded9b4847"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f5cea64990dd38806d2a2fded9b4847">&#9670;&#160;</a></span>adjoint_multiply()</h2>
+<a id="ada2fd9d0ab3fa3acde0b15de3ac28163" name="ada2fd9d0ab3fa3acde0b15de3ac28163"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2fd9d0ab3fa3acde0b15de3ac28163">&#9670;&#160;</a></span>adjoint_multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,6 +320,12 @@ template&lt;class Right &gt; </div>
           <td>(</td>
           <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a3bb0c5f91e0839013a9b21e4c7f43c58">AdjointWorkspace</a> &amp;&#160;</td>
+          <td class="paramname"><em>work</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -306,11 +354,40 @@ template&lt;class Right &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">work</td><td>The return value of <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ae35f9d60c227dded2504eebe460d2404">adjoint_workspace()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>out</code> is filled with the product of the transpose of this matrix and <code>rhs</code>. </dd></dl>
+
+</div>
+</div>
+<a id="ae35f9d60c227dded2504eebe460d2404" name="ae35f9d60c227dded2504eebe460d2404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae35f9d60c227dded2504eebe460d2404">&#9670;&#160;</a></span>adjoint_workspace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&gt;, class IndexArray  = std::vector&lt;int&gt;, class PointerArray  = std::vector&lt;size_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; column_major, ValueArray, IndexArray, PointerArray &gt;::adjoint_workspace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Workspace for use in <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ada2fd9d0ab3fa3acde0b15de3ac28163">adjoint_multiply()</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -513,8 +590,8 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
 
 </div>
 </div>
-<a id="ab91a402f8f0507bc2dedc08646237946" name="ab91a402f8f0507bc2dedc08646237946"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab91a402f8f0507bc2dedc08646237946">&#9670;&#160;</a></span>multiply()</h2>
+<a id="a6427498919e64e4614a1ccf2f5129e44" name="a6427498919e64e4614a1ccf2f5129e44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6427498919e64e4614a1ccf2f5129e44">&#9670;&#160;</a></span>multiply()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -531,6 +608,12 @@ template&lt;class Right &gt; </div>
           <td>(</td>
           <td class="paramtype">const Right &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ace0a9677ba2415af992719ef0ff88ef5">Workspace</a> &amp;&#160;</td>
+          <td class="paramname"><em>work</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -559,6 +642,7 @@ template&lt;class Right &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">work</td><td>The return value of <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aede6b0baadeb52d351c25ab9f24da3dd">workspace()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
   </table>
   </dd>
@@ -620,6 +704,34 @@ template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Number of rows in the matrix. </dd></dl>
+
+</div>
+</div>
+<a id="aede6b0baadeb52d351c25ab9f24da3dd" name="aede6b0baadeb52d351c25ab9f24da3dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aede6b0baadeb52d351c25ab9f24da3dd">&#9670;&#160;</a></span>workspace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool column_major = true, class ValueArray  = std::vector&lt;double&gt;, class IndexArray  = std::vector&lt;int&gt;, class PointerArray  = std::vector&lt;size_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; column_major, ValueArray, IndexArray, PointerArray &gt;::workspace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Workspace for use in <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a6427498919e64e4614a1ccf2f5129e44">multiply()</a></code>. </dd></dl>
 
 </div>
 </div>

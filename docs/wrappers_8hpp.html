@@ -76,7 +76,9 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">wrappers.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -119,6 +121,27 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Scaled.html">irlba::Scaled&lt; Matrix &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for a scaled matrix.  <a href="structirlba_1_1Scaled.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Scaled_1_1Workspace.html">irlba::Scaled&lt; Matrix &gt;::Workspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Scaled_1_1Workspace.html" title="Workspace type for multiply().">Workspace</a> type for <code><a class="el" href="structirlba_1_1Scaled.html#ae6aad1514b9002960a79f00a03297c6d">multiply()</a></code>.  <a href="structirlba_1_1Scaled_1_1Workspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a06d0182fc36d37483e1c4731b966cf16"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a06d0182fc36d37483e1c4731b966cf16"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="wrappers_8hpp.html#a06d0182fc36d37483e1c4731b966cf16">irlba::WrappedWorkspace</a> = typename WrappedWorkspaceInternal&lt; Matrix &gt;::type</td></tr>
+<tr class="separator:a06d0182fc36d37483e1c4731b966cf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf539bafcd5bf49b8106fa00b7cf61a3"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:abf539bafcd5bf49b8106fa00b7cf61a3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="wrappers_8hpp.html#abf539bafcd5bf49b8106fa00b7cf61a3">irlba::WrappedAdjointWorkspace</a> = typename WrappedAdjointWorkspaceInternal&lt; Matrix &gt;::type</td></tr>
+<tr class="separator:abf539bafcd5bf49b8106fa00b7cf61a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:afb93f4e9565318e79782c847fbebe16b"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:afb93f4e9565318e79782c847fbebe16b"><td class="memTemplItemLeft" align="right" valign="top">WrappedWorkspace&lt; Matrix &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="wrappers_8hpp.html#afb93f4e9565318e79782c847fbebe16b">irlba::wrapped_workspace</a> (const Matrix *mat)</td></tr>
+<tr class="separator:afb93f4e9565318e79782c847fbebe16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2afbaa693ad02acc03ee74a3ea084630"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:a2afbaa693ad02acc03ee74a3ea084630"><td class="memTemplItemLeft" align="right" valign="top">WrappedAdjointWorkspace&lt; Matrix &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="wrappers_8hpp.html#a2afbaa693ad02acc03ee74a3ea084630">irlba::wrapped_adjoint_workspace</a> (const Matrix *mat)</td></tr>
+<tr class="separator:a2afbaa693ad02acc03ee74a3ea084630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Wrapper classes for multiplication of modified matrices. </p>
@@ -127,11 +150,128 @@ Classes</h2></td></tr>
 <ul>
 <li><code>mat.rows()</code>, returning the number of rows.</li>
 <li><code>mat.cols()</code>, returning the number of columns.</li>
-<li><code>mat.multiply(rhs, out)</code>, which computes the matrix product <code>mat * rhs</code> and stores it in <code>out</code>. <code>rhs</code> should be an <code>Eigen::VectorXd</code> (or an expression equivalent) while <code>out</code> should be a <code>Eigen::VectorXd</code>.</li>
-<li><code>mat.adjoint_multiply(rhs, out)</code>, which computes the matrix product <code>mat.adjoint() * rhs</code> and stores it in <code>out</code>. <code>rhs</code> should be an <code>Eigen::VectorXd</code> (or an expression equivalent) while <code>out</code> should be a <code>Eigen::VectorXd</code>.</li>
-<li><code>mat.realize()</code>, which returns an <code>Eigen::MatrixXd</code> containing the matrix with all modifications applied. </li>
+<li><code>mat.workspace()</code>, returning an instance of a workspace class for multiplication.</li>
+<li><code>mat.adjoint_workspace()</code>, returning an instance of a workspace class for adjoint multiplication.</li>
+<li><code>mat.multiply(rhs, work, out)</code>, which computes the matrix product <code>mat * rhs</code> and stores it in <code>out</code> - see <code><a class="el" href="structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f">irlba::Centered::multiply()</a></code> for the typical signature. <code>rhs</code> should be a const reference to an <code>Eigen::VectorXd</code> (or an expression equivalent, via templating) while <code>out</code> should be a non-const reference to a <code>Eigen::VectorXd</code>. <code>work</code> should be the return value of <code>mat.workspace()</code> and is passed in as a non-const reference.</li>
+<li><code>mat.adjoint_multiply(rhs, work, out)</code>, which computes the matrix product <code>mat.adjoint() * rhs</code> and stores it in <code>out</code> - see <code><a class="el" href="structirlba_1_1Centered.html#a5aff4cb0fd5911af49db22ec71eacac7">irlba::Centered::adjoint_multiply()</a></code> for the typical signature. <code>rhs</code> should be a const reference to an <code>Eigen::VectorXd</code> (or an expression equivalent, via templating) while <code>out</code> should be a non-const reference to a <code>Eigen::VectorXd</code>. <code>work</code> should be the return value of <code>mat.adjoint_workspace()</code> and is passed in as a non-const reference.</li>
+<li><code>mat.realize()</code>, which returns an <code>Eigen::MatrixXd</code> containing the matrix with all modifications applied.</li>
 </ul>
-</div></div><!-- contents -->
+<p>The workspace class is used to allocate space for intermediate results across multiple calls to <code>multiply()</code>. This class should contain a member of type <code>WrappedWorkspace&lt;M&gt;</code>, where <code>M</code> is the type of the underlying matrix; this member can be initialized by calling the <code>wrapped_workspace()</code> function on the underlying matrix. If a wrapper does not have any intermediate results, it can just return <code>WrappedWorkspace&lt;M&gt;</code> directly. The same logic applies to <code>adjoint_multiply()</code> using the <code>AdjointWrappedWorkspace</code> template class and <code>wrapped_adjoint_workspace()</code>. </p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="abf539bafcd5bf49b8106fa00b7cf61a3" name="abf539bafcd5bf49b8106fa00b7cf61a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf539bafcd5bf49b8106fa00b7cf61a3">&#9670;&#160;</a></span>WrappedAdjointWorkspace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="wrappers_8hpp.html#abf539bafcd5bf49b8106fa00b7cf61a3">irlba::WrappedAdjointWorkspace</a> = typedef typename WrappedAdjointWorkspaceInternal&lt;Matrix&gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Matrix</td><td>Type of the underlying matrix in the wrapper.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This type is equivalent to the adjoint workspace class of <code>Matrix</code>, or a placeholder boolean if <code>Matrix</code> is an Eigen class. </p>
+
+</div>
+</div>
+<a id="a06d0182fc36d37483e1c4731b966cf16" name="a06d0182fc36d37483e1c4731b966cf16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06d0182fc36d37483e1c4731b966cf16">&#9670;&#160;</a></span>WrappedWorkspace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="wrappers_8hpp.html#a06d0182fc36d37483e1c4731b966cf16">irlba::WrappedWorkspace</a> = typedef typename WrappedWorkspaceInternal&lt;Matrix&gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Matrix</td><td>Type of the underlying matrix in the wrapper.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This type is equivalent to the workspace class of <code>Matrix</code>, or a placeholder boolean if <code>Matrix</code> is an Eigen class. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a2afbaa693ad02acc03ee74a3ea084630" name="a2afbaa693ad02acc03ee74a3ea084630"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2afbaa693ad02acc03ee74a3ea084630">&#9670;&#160;</a></span>wrapped_adjoint_workspace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">WrappedAdjointWorkspace&lt; Matrix &gt; irlba::wrapped_adjoint_workspace </td>
+          <td>(</td>
+          <td class="paramtype">const Matrix *&#160;</td>
+          <td class="paramname"><em>mat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Matrix</td><td>Type of the underlying matrix in the wrapper. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mat</td><td>Pointer to the wrapped matrix instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The adjoint workspace of <code>mat</code>, or <code>false</code> if <code>Matrix</code> is an <b>Eigen</b> class. </dd></dl>
+
+</div>
+</div>
+<a id="afb93f4e9565318e79782c847fbebe16b" name="afb93f4e9565318e79782c847fbebe16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb93f4e9565318e79782c847fbebe16b">&#9670;&#160;</a></span>wrapped_workspace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">WrappedWorkspace&lt; Matrix &gt; irlba::wrapped_workspace </td>
+          <td>(</td>
+          <td class="paramtype">const Matrix *&#160;</td>
+          <td class="paramname"><em>mat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Matrix</td><td>Type of the underlying matrix in the wrapper. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mat</td><td>Pointer to the wrapped matrix instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The workspace of <code>mat</code>, or <code>false</code> if <code>Matrix</code> is an <b>Eigen</b> class. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

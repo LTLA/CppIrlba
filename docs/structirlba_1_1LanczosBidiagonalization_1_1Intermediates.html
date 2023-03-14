@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>irlba: irlba::LanczosBidiagonalization::Intermediates Struct Reference</title>
+<title>irlba: irlba::LanczosBidiagonalization::Intermediates&lt; M &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -78,28 +78,34 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">irlba::LanczosBidiagonalization::Intermediates Struct Reference</div></div>
+  <div class="headertitle"><div class="title">irlba::LanczosBidiagonalization::Intermediates&lt; M &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Intermediate data structures to avoid repeated allocations.  
+<p>Intermediate data structures to avoid repeated allocations on <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#afa4c8158fdb9ffeeb94f431b368299e8">run()</a></code>.  
  <a href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="lanczos_8hpp_source.html">lanczos.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa4ab4f7eeb1ab670021fce26f6dcbdd3"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
-<tr class="memitem:aa4ab4f7eeb1ab670021fce26f6dcbdd3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#aa4ab4f7eeb1ab670021fce26f6dcbdd3">Intermediates</a> (const M &amp;mat)</td></tr>
-<tr class="separator:aa4ab4f7eeb1ab670021fce26f6dcbdd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4ed13aa0a7ddb965691c0458b122ad3"><td class="memItemLeft" align="right" valign="top">const Eigen::VectorXd &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#ab4ed13aa0a7ddb965691c0458b122ad3">residuals</a> () const</td></tr>
-<tr class="separator:ab4ed13aa0a7ddb965691c0458b122ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad662926e9e48469758274bc757bf7491"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#ad662926e9e48469758274bc757bf7491">Intermediates</a> (const M &amp;mat)</td></tr>
+<tr class="separator:ad662926e9e48469758274bc757bf7491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36658e352fd1e441444d79deac5d9d73"><td class="memItemLeft" align="right" valign="top">const Eigen::VectorXd &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html#a36658e352fd1e441444d79deac5d9d73">residuals</a> () const</td></tr>
+<tr class="separator:a36658e352fd1e441444d79deac5d9d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Intermediate data structures to avoid repeated allocations. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class M&gt;<br />
+struct irlba::LanczosBidiagonalization::Intermediates&lt; M &gt;</div><p>Intermediate data structures to avoid repeated allocations on <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#afa4c8158fdb9ffeeb94f431b368299e8">run()</a></code>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">M</td><td>Some kind of matrix class, either from the <b>Eigen</b> library or one of <b>irlba</b>'s wrappers. </td></tr>
+  </table>
+  </dd>
+</dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa4ab4f7eeb1ab670021fce26f6dcbdd3" name="aa4ab4f7eeb1ab670021fce26f6dcbdd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4ab4f7eeb1ab670021fce26f6dcbdd3">&#9670;&#160;</a></span>Intermediates()</h2>
+<a id="ad662926e9e48469758274bc757bf7491" name="ad662926e9e48469758274bc757bf7491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad662926e9e48469758274bc757bf7491">&#9670;&#160;</a></span>Intermediates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -110,7 +116,7 @@ template&lt;class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">irlba::LanczosBidiagonalization::Intermediates::Intermediates </td>
+          <td class="memname"><a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">irlba::LanczosBidiagonalization::Intermediates</a>&lt; M &gt;::Intermediates </td>
           <td>(</td>
           <td class="paramtype">const M &amp;&#160;</td>
           <td class="paramname"><em>mat</em></td><td>)</td>
@@ -123,12 +129,6 @@ template&lt;class M &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> library.</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mat</td><td>Instance of a matrix class <code>M</code>. </td></tr>
@@ -139,17 +139,19 @@ template&lt;class M &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab4ed13aa0a7ddb965691c0458b122ad3" name="ab4ed13aa0a7ddb965691c0458b122ad3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4ed13aa0a7ddb965691c0458b122ad3">&#9670;&#160;</a></span>residuals()</h2>
+<a id="a36658e352fd1e441444d79deac5d9d73" name="a36658e352fd1e441444d79deac5d9d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36658e352fd1e441444d79deac5d9d73">&#9670;&#160;</a></span>residuals()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const Eigen::VectorXd &amp; irlba::LanczosBidiagonalization::Intermediates::residuals </td>
+          <td class="memname">const Eigen::VectorXd &amp; <a class="el" href="structirlba_1_1LanczosBidiagonalization_1_1Intermediates.html">irlba::LanczosBidiagonalization::Intermediates</a>&lt; M &gt;::residuals </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -162,7 +164,7 @@ template&lt;class M &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).</p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of residuals of length equal to the number of columns of <code>mat</code> in <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#aa08c3a92efc68313283a964456c377cc">run()</a></code>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of residuals of length equal to the number of columns of <code>mat</code> in <code><a class="el" href="classirlba_1_1LanczosBidiagonalization.html#afa4c8158fdb9ffeeb94f431b368299e8">run()</a></code>. </dd></dl>
 
 </div>
 </div>
