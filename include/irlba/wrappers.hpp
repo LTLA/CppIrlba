@@ -148,6 +148,20 @@ void wrapped_adjoint_multiply(const Matrix* mat, const Right& rhs, WrappedAdjoin
 }
 
 /**
+ * @tparam Matrix Type of the wrapped matrix.
+ * @param[in] mat Pointer to the wrapped matrix instance.
+ * @return A dense **Eigen** matrix containing the realized contents of `mat`.
+ */
+template<class Matrix>
+Eigen::MatrixXd wrapped_realize(const Matrix* mat) {
+    if constexpr(has_realize_method<Matrix>::value) {
+        return mat->realize();
+    } else {
+        return Eigen::MatrixXd(*mat);
+    }
+}
+
+/**
  * @brief Wrapper for a centered matrix.
  *
  * @tparam Matrix An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
@@ -243,23 +257,13 @@ public:
      * where the centering has been explicitly applied.
      */
     Eigen::MatrixXd realize() const {
-        auto subtractor = [&](Eigen::MatrixXd& m) -> void {
-            for (Eigen::Index c = 0; c < m.cols(); ++c) {
-                for (Eigen::Index r = 0; r < m.rows(); ++r) {
-                    m(r, c) -= (*center)[c];
-                }
+        Eigen::MatrixXd output = wrapped_realize(mat);
+        for (Eigen::Index c = 0; c < output.cols(); ++c) {
+            for (Eigen::Index r = 0; r < output.rows(); ++r) {
+                output(r, c) -= (*center)[c];
             }
-        };
-
-        if constexpr(has_realize_method<Matrix>::value) {
-            Eigen::MatrixXd output = mat->realize();
-            subtractor(output);
-            return output;
-        } else {
-            Eigen::MatrixXd output(*mat);
-            subtractor(output);
-            return output;
         }
+        return output;
     }
 
 private:
@@ -374,23 +378,13 @@ public:
      * where the scaling has been explicitly applied.
      */
     Eigen::MatrixXd realize() const {
-        auto scaler = [&](Eigen::MatrixXd& m) -> void {
-            for (Eigen::Index c = 0; c < m.cols(); ++c) {
-                for (Eigen::Index r = 0; r < m.rows(); ++r) {
-                    m(r, c) /= (*scale)[c];
-                }
+        Eigen::MatrixXd output = wrapped_realize(mat);
+        for (Eigen::Index c = 0; c < output.cols(); ++c) {
+            for (Eigen::Index r = 0; r < output.rows(); ++r) {
+                output(r, c) /= (*scale)[c];
             }
-        };
-
-        if constexpr(has_realize_method<Matrix>::value) {
-            Eigen::MatrixXd output = mat->realize();
-            scaler(output);
-            return output;
-        } else {
-            Eigen::MatrixXd output(*mat);
-            scaler(output);
-            return output;
         }
+        return output;
     }
 
 private:
