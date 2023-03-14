@@ -44,16 +44,22 @@ public:
 
 public:
     /**
-     * @brief Intermediate data structures to avoid repeated allocations.
+     * @tparam M Some kind of matrix class, either from the **Eigen** library or one of **irlba**'s wrappers.
+     *
+     * @brief Intermediate data structures to avoid repeated allocations on `run()`. 
      */
+    template<class M>
     struct Intermediates {
         /**
-         * @tparam M Matrix class, most typically from the **Eigen** library.
-         *
          * @param mat Instance of a matrix class `M`.
          */
-        template<class M>
-        Intermediates(const M& mat) : F(mat.cols()), W_next(mat.rows()), orthog_tmp(mat.cols()) {}
+        Intermediates(const M& mat) : 
+            F(mat.cols()), 
+            W_next(mat.rows()), 
+            orthog_tmp(mat.cols()), 
+            work(wrapped_workspace(&mat)),
+            awork(wrapped_adjoint_workspace(&mat)) 
+        {}
 
         /**
          * Obtain the residual vector, see algorithm 2.1 of Baglama and Reichel (2005).
@@ -70,13 +76,19 @@ public:
         Eigen::VectorXd F; 
         Eigen::VectorXd W_next;
         Eigen::VectorXd orthog_tmp;
+        WrappedWorkspace<M> work;
+        WrappedAdjointWorkspace<M> awork;
         /**
          * @endcond
          */
     };
 
+    /**
+     * @tparam M Some matrix class, either from the **Eigen** library or one of **irlba**'s wrappers.
+     * @return An `Intermediates` object for subsequent calls to `run()` on `mat`.
+     */
     template<class M>
-    Intermediates initialize(const M& mat) const {
+    Intermediates<M> initialize(const M& mat) const {
         return Intermediates(mat);
     }
 
@@ -114,7 +126,7 @@ public:
         Eigen::MatrixXd& V, 
         Eigen::MatrixXd& B, 
         Engine& eng, 
-        Intermediates& inter, 
+        Intermediates<M>& inter, 
         int start = 0) 
     const {
         const double eps = (epsilon < 0 ? std::pow(std::numeric_limits<double>::epsilon(), 0.8) : epsilon);
@@ -128,7 +140,7 @@ public:
         if constexpr(has_multiply_method<M>::value) {
             W_next.noalias() = mat * F;
         } else {
-            mat.multiply(F, W_next);
+            mat.multiply(F, inter.work, W_next);
         }
 
         // If start = 0, there's nothing to orthogonalize against.
@@ -148,7 +160,7 @@ public:
             if constexpr(has_adjoint_multiply_method<M>::value) {
                 F.noalias() = mat.adjoint() * W.col(j);
             } else {
-                mat.adjoint_multiply(W.col(j), F);
+                mat.adjoint_multiply(W.col(j), inter.awork, F);
             }
 
             F -= S * V.col(j); // equivalent to daxpy.
@@ -175,7 +187,7 @@ public:
                 if constexpr(has_multiply_method<M>::value) {
                     W_next.noalias() = mat * F;
                 } else {
-                    mat.multiply(F, W_next);
+                    mat.multiply(F, inter.work, W_next);
                 }
 
                 // Full re-orthogonalization, using the left-most 'j +  1' columns of W.
