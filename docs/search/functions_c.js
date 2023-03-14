@@ -4,5 +4,6 @@ var searchData=
   ['wrapped_5fadjoint_5fmultiply_1',['wrapped_adjoint_multiply',['../namespaceirlba.html#adb3751dd2a2de0754fe92d25a658b45c',1,'irlba']]],
   ['wrapped_5fadjoint_5fworkspace_2',['wrapped_adjoint_workspace',['../namespaceirlba.html#a2afbaa693ad02acc03ee74a3ea084630',1,'irlba']]],
   ['wrapped_5fmultiply_3',['wrapped_multiply',['../namespaceirlba.html#a944729e08e958d309cce1d66761e88c6',1,'irlba']]],
-  ['wrapped_5fworkspace_4',['wrapped_workspace',['../namespaceirlba.html#afb93f4e9565318e79782c847fbebe16b',1,'irlba']]]
+  ['wrapped_5frealize_4',['wrapped_realize',['../namespaceirlba.html#aa5b2aa0b925ead702a50c11eeb63cba5',1,'irlba']]],
+  ['wrapped_5fworkspace_5',['wrapped_workspace',['../namespaceirlba.html#afb93f4e9565318e79782c847fbebe16b',1,'irlba']]]
 ];

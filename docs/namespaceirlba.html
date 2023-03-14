@@ -139,6 +139,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adb3751dd2a2de0754fe92d25a658b45c"><td class="memTemplParams" colspan="2">template&lt;class Matrix , class Right &gt; </td></tr>
 <tr class="memitem:adb3751dd2a2de0754fe92d25a658b45c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#adb3751dd2a2de0754fe92d25a658b45c">wrapped_adjoint_multiply</a> (const Matrix *mat, const Right &amp;rhs, <a class="el" href="namespaceirlba.html#abf539bafcd5bf49b8106fa00b7cf61a3">WrappedAdjointWorkspace</a>&lt; Matrix &gt; &amp;work, Eigen::VectorXd &amp;out)</td></tr>
 <tr class="separator:adb3751dd2a2de0754fe92d25a658b45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5b2aa0b925ead702a50c11eeb63cba5"><td class="memTemplParams" colspan="2">template&lt;class Matrix &gt; </td></tr>
+<tr class="memitem:aa5b2aa0b925ead702a50c11eeb63cba5"><td class="memTemplItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#aa5b2aa0b925ead702a50c11eeb63cba5">wrapped_realize</a> (const Matrix *mat)</td></tr>
+<tr class="separator:aa5b2aa0b925ead702a50c11eeb63cba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements the IRLBA algorithm for approximate SVD. </p>
@@ -518,6 +521,39 @@ template&lt;class Matrix , class Right &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa5b2aa0b925ead702a50c11eeb63cba5" name="aa5b2aa0b925ead702a50c11eeb63cba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5b2aa0b925ead702a50c11eeb63cba5">&#9670;&#160;</a></span>wrapped_realize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::MatrixXd irlba::wrapped_realize </td>
+          <td>(</td>
+          <td class="paramtype">const Matrix *&#160;</td>
+          <td class="paramname"><em>mat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Matrix</td><td>Type of the wrapped matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mat</td><td>Pointer to the wrapped matrix instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A dense <b>Eigen</b> matrix containing the realized contents of <code>mat</code>. </dd></dl>
 
 </div>
 </div>
