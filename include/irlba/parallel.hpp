@@ -235,20 +235,6 @@ private:
 private:
     template<class Right>
     void indirect_multiply(const Right& rhs, Eigen::VectorXd& output) const {
-        if constexpr(has_data_method<Right>::value) {
-            // If it has a .data() method, the data values are already computed
-            // and sitting in memory, so we just use that directly.
-            indirect_multiply_internal(rhs, output);
-        } else {
-            // Otherwise, it is presumably an expression that involves some work
-            // to get the values. We realize it into a VectorXd to ensure that 
-            // it is not repeatedly evaluated on each access to 'rhs'.
-            indirect_multiply_internal(Eigen::VectorXd(rhs), output);
-        }
-    }
-
-    template<class Right>
-    void indirect_multiply_internal(const Right& rhs, Eigen::VectorXd& output) const {
         output.setZero();
 
         if (nthreads == 1) {
@@ -293,20 +279,6 @@ private:
 private:
     template<class Right>
     void direct_multiply(const Right& rhs, Eigen::VectorXd& output) const {
-        if constexpr(has_data_method<Right>::value) {
-            // If it has a .data() method, the data values are already computed
-            // and sitting in memory, so we just use that directly.
-            direct_multiply_internal(rhs, output);
-        } else {
-            // Otherwise, it is presumably an expression that involves some work
-            // to get the values. We realize it into a VectorXd to ensure that 
-            // it is not repeatedly evaluated on each access to 'rhs'.
-            direct_multiply_internal(Eigen::VectorXd(rhs), output);
-        }
-    }
-
-    template<class Right>
-    void direct_multiply_internal(const Right& rhs, Eigen::VectorXd& output) const {
         if (nthreads == 1) {
             for (size_t c = 0; c < primary_dim; ++c) {
                 output.coeffRef(c) = column_dot_product(c, rhs);
@@ -348,16 +320,44 @@ private:
 
 public:
     /**
+     * Workspace type for `multiply()`.
+     * Currently this is a placeholder.
+     */
+    typedef bool Workspace;
+
+    /**
+     * @return Workspace for use in `multiply()`.
+     */
+    bool workspace() const {
+        return false;
+    }
+
+    /**
+     * Workspace type for `adjoint_multiply()`.
+     * Currently this is a placeholder.
+     */
+    typedef bool AdjointWorkspace;
+
+    /**
+     * @return Workspace for use in `adjoint_multiply()`.
+     */
+    bool adjoint_workspace() const {
+        return false;
+    }
+
+public:
+    /**
      * @tparam Right An `Eigen::VectorXd` or equivalent expression.
      *
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
+     * @param work The return value of `workspace()`.
      * @param[out] out The output vector to store the matrix product.
      * 
      * @return `out` is filled with the product of this matrix and `rhs`.
      */
     template<class Right>
-    void multiply(const Right& rhs, Eigen::VectorXd& output) const {
+    void multiply(const Right& rhs, Workspace& work, Eigen::VectorXd& output) const {
         if constexpr(column_major) {
             indirect_multiply(rhs, output);
         } else {
@@ -370,12 +370,13 @@ public:
      *
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
+     * @param work The return value of `adjoint_workspace()`.
      * @param[out] out The output vector to store the matrix product.
      * 
      * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
      */
     template<class Right>
-    void adjoint_multiply(const Right& rhs, Eigen::VectorXd& output) const {
+    void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& output) const {
         if constexpr(column_major) {
             direct_multiply(rhs, output);
         } else {

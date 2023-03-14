@@ -113,18 +113,20 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         Eigen::VectorXd ref = control * vec;
 
         Eigen::VectorXd obs(nr);
-        A.multiply(vec, obs);
+        auto work = A.workspace();
+        A.multiply(vec, work, obs);
         expect_equal_vectors(ref, obs, 0);
 
         Eigen::VectorXd obs2(nr);
-        A2.adjoint_multiply(vec, obs2);
+        auto awork2 = A2.adjoint_workspace();
+        A2.adjoint_multiply(vec, awork2, obs2);
         expect_equal_vectors(ref, obs2);
 
         // Works on expressions.
         {
             auto expr = vec * 2;
             ref = control * expr;
-            A.multiply(expr, obs);
+            A.multiply(expr, work, obs);
             expect_equal_vectors(ref, obs, 0);
         }
     }
@@ -135,18 +137,20 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         Eigen::VectorXd ref = control.adjoint() * vec;
 
         Eigen::VectorXd obs(nc);
-        A.adjoint_multiply(vec, obs);
+        auto awork = A.adjoint_workspace();
+        A.adjoint_multiply(vec, awork, obs);
         expect_equal_vectors(ref, obs);
 
         Eigen::VectorXd obs2(nc);
-        A2.multiply(vec, obs2);
+        auto work2 = A2.workspace();
+        A2.multiply(vec, work2, obs2);
         expect_equal_vectors(ref, obs2);
 
         // Works on expressions.
         {
             auto expr = vec * 2;
             ref = control.adjoint() * expr;
-            A.adjoint_multiply(expr, obs);
+            A.adjoint_multiply(expr, awork, obs);
             expect_equal_vectors(ref, obs);
         }
     }
