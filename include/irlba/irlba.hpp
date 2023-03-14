@@ -16,6 +16,9 @@
  * @brief Implements the main user-visible class for running IRLBA.
  */
 
+/**
+ * @brief Implements the IRLBA algorithm for approximate SVD.
+ */
 namespace irlba {
 
 /**
@@ -89,10 +92,9 @@ public:
     }
 
     /**
-     * Set the maximum number of restart iterations.
-     * In most cases, convergence will occur before reaching this limit.
+     * Set the seed for the creation of random vectors, primarily during initialization of the IRLBA algorithm.
      *
-     * @param m Maximum number of iterations.
+     * @param s Seed value.
      *
      * @return A reference to the `Irlba` instance.
      */
@@ -485,7 +487,7 @@ private:
 
 public:
     /**
-     * Result of the IRLBA-based decomposition.
+     * @brief Result of the IRLBA-based decomposition.
      */
     struct Results {
         /**

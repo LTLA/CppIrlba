@@ -352,9 +352,8 @@ public:
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
      * @param work The return value of `workspace()`.
-     * @param[out] out The output vector to store the matrix product.
-     * 
-     * @return `out` is filled with the product of this matrix and `rhs`.
+     * @param[out] output The output vector to store the matrix product.
+     * This is filled with the product of this matrix and `rhs`.
      */
     template<class Right>
     void multiply(const Right& rhs, Workspace& work, Eigen::VectorXd& output) const {
@@ -371,9 +370,8 @@ public:
      * @param[in] rhs The right-hand side of the matrix product.
      * This should be a vector or have only one column.
      * @param work The return value of `adjoint_workspace()`.
-     * @param[out] out The output vector to store the matrix product.
-     * 
-     * @return `out` is filled with the product of the transpose of this matrix and `rhs`.
+     * @param[out] output The output vector to store the matrix product.
+     * This is filled with the product of the transpose of this matrix and `rhs`.
      */
     template<class Right>
     void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& output) const {

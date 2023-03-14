@@ -18,12 +18,11 @@ namespace irlba {
  * Orthogonalize a vector against a set of orthonormal column vectors. 
  *
  * @param mat A matrix where the left-most `ncols` columns are orthonormal vectors.
- * @param vec The vector of interest, of length equal to the number of rows in `mat`.
+ * @param[in, out] vec The vector of interest, of length equal to the number of rows in `mat`.
+ * On output, this is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
+ * This ensures that it is orthogonal to each column of `mat0`.
  * @param tmp A vector of length equal to `mat.cols()`, used to store intermediate matrix products.
  * @param ncols Number of left-most columns of `mat` to use.
- *
- * @return `vec` is modified to contain `vec - mat0 * t(mat0) * vec`, where `mat0` is defined as the first `ncols` columns of `mat`.
- * This ensures that it is orthogonal to each column of `mat0`.
  */
 inline void orthogonalize_vector(const Eigen::MatrixXd& mat, Eigen::VectorXd& vec, size_t ncols, Eigen::VectorXd& tmp) {
     tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
@@ -34,13 +33,12 @@ inline void orthogonalize_vector(const Eigen::MatrixXd& mat, Eigen::VectorXd& ve
 /** 
  * Fill an **Eigen** vector with random normals via **aarand**.
  *
- * @param Vec Any **Eigen** vector class or equivalent proxy object.
- * @param Engine A (pseudo-)random number generator class that returns a random number when called with no arguments.
+ * @tparam Vec Any **Eigen** vector class or equivalent proxy object.
+ * @tparam Engine A (pseudo-)random number generator class that returns a random number when called with no arguments.
  *
- * @param vec Instance of a `Vec` class.
+ * @param[out] vec Instance of a `Vec` class.
+ * This is filled with random draws from a standard normal distribution.
  * @param eng Instance of an `Engine` class.
- *
- * @return `vec` is filled with random draws from a standard normal distribution.
  */
 template<class Vec, class Engine>
 void fill_with_random_normals(Vec& vec, Engine& eng) {
@@ -77,13 +75,13 @@ struct ColumnVectorProxy {
 /** 
  * Fill a column of an **Eigen** matrix with random normals via **aarand**.
  *
- * @param Matrix Any **Eigen** matrix class or equivalent proxy object.
- * @param Engine A (pseudo-)random number generator class that returns a random number when called with no arguments.
+ * @tparam Matrix Any **Eigen** matrix class or equivalent proxy object.
+ * @tparam Engine A (pseudo-)random number generator class that returns a random number when called with no arguments.
  *
  * @param mat Instance of a `Matrix` class.
+ * The `column` column of this matrix is filled with random draws from a standard normal distribution.
+ * @param column Column of `mat` to be filled.
  * @param eng Instance of an `Engine` class.
- *
- * @return The `column` column of `mat` is filled with random draws from a standard normal distribution.
  */
 template<class Matrix, class Engine>
 void fill_with_random_normals(Matrix& mat, int column, Engine& eng) {
@@ -145,6 +143,7 @@ public:
      *
      * @param sv Vector of singular values.
      * @param residuals Vector of residuals for each singular value/vector.
+     * @param last Vector of singular values from the previous iteration. 
      *
      * @return The number of singular values/vectors that have achieved convergence.
      */
