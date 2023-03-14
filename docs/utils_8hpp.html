@@ -77,6 +77,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">utils.hpp File Reference</div></div>
 </div><!--header-->
@@ -121,197 +122,28 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test for IRLBA convergence.  <a href="structirlba_1_1ConvergenceTest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceirlba"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html">irlba</a></td></tr>
+<tr class="memdesc:namespaceirlba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements the IRLBA algorithm for approximate SVD. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a053025d68a48c68183e36ec5d1e0b950"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8hpp.html#a053025d68a48c68183e36ec5d1e0b950">irlba::orthogonalize_vector</a> (const Eigen::MatrixXd &amp;mat, Eigen::VectorXd &amp;vec, size_t ncols, Eigen::VectorXd &amp;tmp)</td></tr>
+<tr class="memitem:a053025d68a48c68183e36ec5d1e0b950"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a053025d68a48c68183e36ec5d1e0b950">irlba::orthogonalize_vector</a> (const Eigen::MatrixXd &amp;mat, Eigen::VectorXd &amp;vec, size_t ncols, Eigen::VectorXd &amp;tmp)</td></tr>
 <tr class="separator:a053025d68a48c68183e36ec5d1e0b950"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac455bdeaab9538bd047eac59b457c995"><td class="memTemplParams" colspan="2">template&lt;class Vec , class Engine &gt; </td></tr>
-<tr class="memitem:ac455bdeaab9538bd047eac59b457c995"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utils_8hpp.html#ac455bdeaab9538bd047eac59b457c995">irlba::fill_with_random_normals</a> (Vec &amp;vec, Engine &amp;eng)</td></tr>
+<tr class="memitem:ac455bdeaab9538bd047eac59b457c995"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#ac455bdeaab9538bd047eac59b457c995">irlba::fill_with_random_normals</a> (Vec &amp;vec, Engine &amp;eng)</td></tr>
 <tr class="separator:ac455bdeaab9538bd047eac59b457c995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae515cba62286a7e0bb2c9346b4d54cb5"><td class="memTemplParams" colspan="2">template&lt;class Matrix , class Engine &gt; </td></tr>
-<tr class="memitem:ae515cba62286a7e0bb2c9346b4d54cb5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utils_8hpp.html#ae515cba62286a7e0bb2c9346b4d54cb5">irlba::fill_with_random_normals</a> (Matrix &amp;mat, int column, Engine &amp;eng)</td></tr>
+<tr class="memitem:ae515cba62286a7e0bb2c9346b4d54cb5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#ae515cba62286a7e0bb2c9346b4d54cb5">irlba::fill_with_random_normals</a> (Matrix &amp;mat, int column, Engine &amp;eng)</td></tr>
 <tr class="separator:ae515cba62286a7e0bb2c9346b4d54cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ee106624de7aed4f8ff0cc4a414239"><td class="memItemLeft" align="right" valign="top">constexpr std::mt19937_64 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8hpp.html#a78ee106624de7aed4f8ff0cc4a414239">irlba::null_rng</a> ()</td></tr>
+<tr class="memitem:a78ee106624de7aed4f8ff0cc4a414239"><td class="memItemLeft" align="right" valign="top">constexpr std::mt19937_64 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a78ee106624de7aed4f8ff0cc4a414239">irlba::null_rng</a> ()</td></tr>
 <tr class="separator:a78ee106624de7aed4f8ff0cc4a414239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Various utility functions. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="ae515cba62286a7e0bb2c9346b4d54cb5" name="ae515cba62286a7e0bb2c9346b4d54cb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae515cba62286a7e0bb2c9346b4d54cb5">&#9670;&#160;</a></span>fill_with_random_normals() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Matrix , class Engine &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void irlba::fill_with_random_normals </td>
-          <td>(</td>
-          <td class="paramtype">Matrix &amp;&#160;</td>
-          <td class="paramname"><em>mat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>column</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Engine &amp;&#160;</td>
-          <td class="paramname"><em>eng</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Fill a column of an <b>Eigen</b> matrix with random normals via <b>aarand</b>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Matrix</td><td>Any <b>Eigen</b> matrix class or equivalent proxy object. </td></tr>
-    <tr><td class="paramname">Engine</td><td>A (pseudo-)random number generator class that returns a random number when called with no arguments.</td></tr>
-    <tr><td class="paramname">mat</td><td>Instance of a <code>Matrix</code> class. </td></tr>
-    <tr><td class="paramname">eng</td><td>Instance of an <code>Engine</code> class.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The <code>column</code> column of <code>mat</code> is filled with random draws from a standard normal distribution. </dd></dl>
-
-</div>
-</div>
-<a id="ac455bdeaab9538bd047eac59b457c995" name="ac455bdeaab9538bd047eac59b457c995"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac455bdeaab9538bd047eac59b457c995">&#9670;&#160;</a></span>fill_with_random_normals() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Vec , class Engine &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void irlba::fill_with_random_normals </td>
-          <td>(</td>
-          <td class="paramtype">Vec &amp;&#160;</td>
-          <td class="paramname"><em>vec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Engine &amp;&#160;</td>
-          <td class="paramname"><em>eng</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Fill an <b>Eigen</b> vector with random normals via <b>aarand</b>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Vec</td><td>Any <b>Eigen</b> vector class or equivalent proxy object. </td></tr>
-    <tr><td class="paramname">Engine</td><td>A (pseudo-)random number generator class that returns a random number when called with no arguments.</td></tr>
-    <tr><td class="paramname">vec</td><td>Instance of a <code>Vec</code> class. </td></tr>
-    <tr><td class="paramname">eng</td><td>Instance of an <code>Engine</code> class.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>vec</code> is filled with random draws from a standard normal distribution. </dd></dl>
-
-</div>
-</div>
-<a id="a78ee106624de7aed4f8ff0cc4a414239" name="a78ee106624de7aed4f8ff0cc4a414239"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78ee106624de7aed4f8ff0cc4a414239">&#9670;&#160;</a></span>null_rng()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr std::mt19937_64 * irlba::null_rng </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Utility function to generate a default <code>NULL</code> argument for the random number generator input.</p>
-<dl class="section return"><dt>Returns</dt><dd>A null pointer to an RNG. Any RNG will do here, so we use the most common one. </dd></dl>
-
-</div>
-</div>
-<a id="a053025d68a48c68183e36ec5d1e0b950" name="a053025d68a48c68183e36ec5d1e0b950"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a053025d68a48c68183e36ec5d1e0b950">&#9670;&#160;</a></span>orthogonalize_vector()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void irlba::orthogonalize_vector </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
-          <td class="paramname"><em>mat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>vec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>ncols</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>tmp</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Orthogonalize a vector against a set of orthonormal column vectors.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mat</td><td>A matrix where the left-most <code>ncols</code> columns are orthonormal vectors. </td></tr>
-    <tr><td class="paramname">vec</td><td>The vector of interest, of length equal to the number of rows in <code>mat</code>. </td></tr>
-    <tr><td class="paramname">tmp</td><td>A vector of length equal to <code>mat.cols()</code>, used to store intermediate matrix products. </td></tr>
-    <tr><td class="paramname">ncols</td><td>Number of left-most columns of <code>mat</code> to use.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>vec</code> is modified to contain <code>vec - mat0 * t(mat0) * vec</code>, where <code>mat0</code> is defined as the first <code>ncols</code> columns of <code>mat</code>. This ensures that it is orthogonal to each column of <code>mat0</code>. </dd></dl>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

@@ -71,7 +71,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>irlba</b></li><li class="navelem"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">ParallelSparseMatrix</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceirlba.html">irlba</a></li><li class="navelem"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">ParallelSparseMatrix</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -355,11 +355,10 @@ template&lt;class Right &gt; </div>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">work</td><td>The return value of <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ae35f9d60c227dded2504eebe460d2404">adjoint_workspace()</a></code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">output</td><td>The output vector to store the matrix product. This is filled with the product of the transpose of this matrix and <code>rhs</code>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>out</code> is filled with the product of the transpose of this matrix and <code>rhs</code>. </dd></dl>
 
 </div>
 </div>
@@ -643,11 +642,10 @@ template&lt;class Right &gt; </div>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. This should be a vector or have only one column. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">work</td><td>The return value of <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aede6b0baadeb52d351c25ab9f24da3dd">workspace()</a></code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">output</td><td>The output vector to store the matrix product. This is filled with the product of this matrix and <code>rhs</code>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>out</code> is filled with the product of this matrix and <code>rhs</code>. </dd></dl>
 
 </div>
 </div>
