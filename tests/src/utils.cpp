@@ -101,6 +101,11 @@ TEST(UtilsTest, ConvertibleCheck) {
     EXPECT_FALSE(irlba::has_realize_method<Eigen::MatrixXd>::value);
     EXPECT_FALSE(irlba::has_realize_method<Eigen::SparseMatrix<double> >::value);
     EXPECT_TRUE(irlba::has_realize_method<dummy_class>::value);
+
+    EXPECT_TRUE(irlba::has_multiply_method<Eigen::MatrixXd>::value);
+    EXPECT_TRUE(irlba::has_adjoint_multiply_method<Eigen::MatrixXd>::value);
+    EXPECT_TRUE(irlba::has_multiply_method<Eigen::SparseMatrix<double> >::value);
+    EXPECT_TRUE(irlba::has_adjoint_multiply_method<Eigen::SparseMatrix<double> >::value);
 }
 
 TEST(UtilsTest, NormalSampler) {

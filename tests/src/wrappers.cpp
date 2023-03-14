@@ -13,6 +13,10 @@ TEST(WrapperTest, Centering) {
     EXPECT_EQ(centered.cols(), A.cols());
     auto ref = centered.realize();
 
+    EXPECT_FALSE(irlba::has_multiply_method<decltype(centered)>::value);
+    EXPECT_FALSE(irlba::has_adjoint_multiply_method<decltype(centered)>::value);
+    EXPECT_TRUE(irlba::has_realize_method<decltype(centered)>::value);
+
     {
         auto C = create_random_vector(10, 1234);
         Eigen::VectorXd expected = ref * C;
@@ -58,6 +62,10 @@ TEST(WrapperTest, Scaling) {
     EXPECT_EQ(scaled.rows(), A.rows());
     EXPECT_EQ(scaled.cols(), A.cols());
     auto ref = scaled.realize();
+
+    EXPECT_FALSE(irlba::has_multiply_method<decltype(scaled)>::value);
+    EXPECT_FALSE(irlba::has_adjoint_multiply_method<decltype(scaled)>::value);
+    EXPECT_TRUE(irlba::has_realize_method<decltype(scaled)>::value);
 
     {
         auto C = create_random_vector(10, 1234);
