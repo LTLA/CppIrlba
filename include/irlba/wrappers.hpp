@@ -19,10 +19,10 @@
  * - `mat.cols()`, returning the number of columns.
  * - `mat.workspace()`, returning an instance of a workspace class for multiplication.
  * - `mat.adjoint_workspace()`, returning an instance of a workspace class for adjoint multiplication.
- * - `mat.multiply(rhs, work, out)`, which computes the matrix product `mat * rhs` and stores it in `out` - see `Centered::multiply()` for the typical signature.
+ * - `mat.multiply(rhs, work, out)`, which computes the matrix product `mat * rhs` and stores it in `out` - see `irlba::Centered::multiply()` for the typical signature.
  * `rhs` should be a const reference to an `Eigen::VectorXd` (or an expression equivalent, via templating) while `out` should be a non-const reference to a `Eigen::VectorXd`.
  * `work` should be the return value of `mat.workspace()` and is passed in as a non-const reference.
- * - `mat.adjoint_multiply(rhs, work, out)`, which computes the matrix product `mat.adjoint() * rhs` and stores it in `out` - see `Centered::adjoint_multiply()` for the typical signature.
+ * - `mat.adjoint_multiply(rhs, work, out)`, which computes the matrix product `mat.adjoint() * rhs` and stores it in `out` - see `irlba::Centered::adjoint_multiply()` for the typical signature.
  * `rhs` should be a const reference to an `Eigen::VectorXd` (or an expression equivalent, via templating) while `out` should be a non-const reference to a `Eigen::VectorXd`.
  * `work` should be the return value of `mat.adjoint_workspace()` and is passed in as a non-const reference.
  * - `mat.realize()`, which returns an `Eigen::MatrixXd` containing the matrix with all modifications applied.
@@ -136,6 +136,7 @@ struct Centered {
 public:
     /**
      * Workspace type for `multiply()`.
+     * Currently, this is just an alias for the workspace type of the underlying matrix.
      */
     typedef WrappedWorkspace<Matrix> Workspace;
 
@@ -148,6 +149,7 @@ public:
 
     /**
      * Workspace type for `adjoint_multiply()`.
+     * Currently, this is just an alias for the adjoint workspace type of the underlying matrix.
      */
     typedef WrappedAdjointWorkspace<Matrix> AdjointWorkspace;
 
@@ -265,7 +267,7 @@ struct Scaled {
 
 public:
     /**
-     * Workspace type for `multiply()`.
+     * @brief Workspace type for `multiply()`.
      */
     struct Workspace {
         /**
@@ -288,6 +290,7 @@ public:
 
     /**
      * Workspace type for `adjoint_multiply()`.
+     * Currently, this is just an alias for the adjoint workspace type of the underlying matrix.
      */
     typedef WrappedAdjointWorkspace<Matrix> AdjointWorkspace;
 
