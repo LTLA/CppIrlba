@@ -214,7 +214,12 @@ public:
      */
     template<class Right>
     void multiply(const Right& rhs, Workspace& work, Eigen::VectorXd& out) const {
-        wrapped_multiply(mat, rhs, work, out);
+        if constexpr(has_multiply_method<Matrix>::value) {
+            out.noalias() = *mat * rhs;
+        } else {
+            mat->multiply(rhs, work, out);
+        }
+
         double beta = rhs.dot(*center);
         for (auto& o : out) {
             o -= beta;
@@ -234,7 +239,12 @@ public:
      */
     template<class Right>
     void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& out) const {
-        wrapped_adjoint_multiply(mat, rhs, work, out);
+        if constexpr(has_adjoint_multiply_method<Matrix>::value) {
+            out.noalias() = mat->adjoint() * rhs;
+        } else {
+            mat->adjoint_multiply(rhs, work, out);
+        }
+
         double beta = rhs.sum();
         out -= beta * (*center);
         return;
@@ -345,8 +355,17 @@ public:
      */
     template<class Right>
     void multiply(const Right& rhs, Workspace& work, Eigen::VectorXd& out) const {
+        // We store the result here, because the underlying matrix's multiply()
+        // might need to access rhs/scale multiple times, especially if it's
+        // parallelized. Better to pay the cost of accessing a separate memory
+        // space than computing the quotient repeatedly.
         work.product = rhs.cwiseQuotient(*scale);
-        wrapped_multiply(mat, work.product, work.child, out);
+
+        if constexpr(has_multiply_method<Matrix>::value) {
+            out.noalias() = *mat * work.product;
+        } else {
+            mat->multiply(work.product, work.child, out);
+        }
         return;
     }
 
@@ -363,7 +382,12 @@ public:
      */
     template<class Right>
     void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& out) const {
-        wrapped_adjoint_multiply(mat, rhs, work, out);
+        if constexpr(has_adjoint_multiply_method<Matrix>::value) {
+            out.noalias() = mat->adjoint() * rhs;
+        } else {
+            mat->adjoint_multiply(rhs, work, out);
+        }
+
         out.noalias() = out.cwiseQuotient(*scale);
         return;
     }

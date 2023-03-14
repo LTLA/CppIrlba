@@ -24,11 +24,6 @@ TEST(WrapperTest, Centering) {
         Eigen::VectorXd output(20);
         centered.multiply(C, wrk, output);
         expect_equal_matrix(expected, output);
-
-        // Checking that the wrapper method works.
-        output.setZero();
-        irlba::wrapped_multiply(&centered, C, wrk, output);
-        expect_equal_matrix(expected, output);
     }
 
     {
@@ -41,11 +36,6 @@ TEST(WrapperTest, Centering) {
 
         Eigen::VectorXd output(10);
         centered.adjoint_multiply(C, wrk, output);
-        expect_equal_matrix(expected, output);
-
-        // Checking that the wrapper method works.
-        output.setZero();
-        irlba::wrapped_adjoint_multiply(&centered, C, wrk, output);
         expect_equal_matrix(expected, output);
     }
 }
@@ -70,11 +60,6 @@ TEST(WrapperTest, Scaling) {
         Eigen::VectorXd output(20);
         scaled.multiply(C, wrk, output);
         expect_equal_matrix(expected, output);
-
-        // Checking that the wrapper method works.
-        output.setZero();
-        irlba::wrapped_multiply(&scaled, C, wrk, output);
-        expect_equal_matrix(expected, output);
     }
 
     {
@@ -87,11 +72,6 @@ TEST(WrapperTest, Scaling) {
 
         Eigen::VectorXd output(10);
         scaled.adjoint_multiply(C, wrk, output);
-        expect_equal_matrix(expected, output);
-
-        // Checking that the wrapper method works.
-        output.setZero();
-        irlba::wrapped_adjoint_multiply(&scaled, C, wrk, output);
         expect_equal_matrix(expected, output);
     }
 }
