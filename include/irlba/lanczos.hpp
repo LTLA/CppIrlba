@@ -137,11 +137,7 @@ public:
         auto& otmp = inter.orthog_tmp;
 
         F = V.col(start);
-        if constexpr(has_multiply_method<M>::value) {
-            W_next.noalias() = mat * F;
-        } else {
-            mat.multiply(F, inter.work, W_next);
-        }
+        wrapped_multiply(&mat, F, inter.work, W_next); // i.e., W_next = mat * F;
 
         // If start = 0, there's nothing to orthogonalize against.
         if (start) {
@@ -157,11 +153,7 @@ public:
 
         // The Lanczos iterations themselves.
         for (int j = start; j < work; ++j) {
-            if constexpr(has_adjoint_multiply_method<M>::value) {
-                F.noalias() = mat.adjoint() * W.col(j);
-            } else {
-                mat.adjoint_multiply(W.col(j), inter.awork, F);
-            }
+            wrapped_adjoint_multiply(&mat, W.col(j), inter.awork, F); // i.e., F = mat.adjoint() * W.col(j);
 
             F -= S * V.col(j); // equivalent to daxpy.
             orthogonalize_vector(V, F, j + 1, otmp);
@@ -184,11 +176,7 @@ public:
                 B(j, j) = S;
                 B(j, j + 1) = R_F;
 
-                if constexpr(has_multiply_method<M>::value) {
-                    W_next.noalias() = mat * F;
-                } else {
-                    mat.multiply(F, inter.work, W_next);
-                }
+                wrapped_multiply(&mat, F, inter.work, W_next); // i.e., W_next = mat * F;
 
                 // Full re-orthogonalization, using the left-most 'j +  1' columns of W.
                 // Recall that W_next will be the 'j + 2'-th column, i.e., W.col(j + 1) in

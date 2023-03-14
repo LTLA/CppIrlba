@@ -32,6 +32,9 @@
  * this member can be initialized by calling the `wrapped_workspace()` function on the underlying matrix.
  * If a wrapper does not have any intermediate results, it can just return `WrappedWorkspace<M>` directly.
  * The same logic applies to `adjoint_multiply()` using the `AdjointWrappedWorkspace` template class and `wrapped_adjoint_workspace()`.
+ *
+ * Implementations of the `multiply()` and `adjoint_multiply()` methods may use the `wrapped_multiply()` and `wrapped_adjoint_multiply()` functions.
+ * This will handle the differences in the calls between **Eigen** matrices and **irlba** wrappers.
  */
 
 namespace irlba {
@@ -107,6 +110,46 @@ WrappedAdjointWorkspace<Matrix> wrapped_adjoint_workspace(const Matrix* mat) {
 }
 
 /**
+ * @tparam Matrix Type of the wrapped matrix.
+ * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+ *
+ * @param[in] mat Pointer to the wrapped matrix instance.
+ * @param[in] rhs The right-hand side of the matrix product.
+ * @param work The return value of `wrapped_workspace()` on `mat`.
+ * @param[out] out The output vector to store the matrix product.
+ * 
+ * @return `out` is filled with the product of this matrix and `rhs`.
+ */
+template<class Matrix, class Right>
+void wrapped_multiply(const Matrix* mat, const Right& rhs, WrappedWorkspace<Matrix>& work, Eigen::VectorXd& out) {
+    if constexpr(has_multiply_method<Matrix>::value) {
+        out.noalias() = *mat * rhs;
+    } else {
+        mat->multiply(rhs, work, out);
+    }
+}
+
+/**
+ * @tparam Matrix Type of the wrapped matrix.
+ * @tparam Right An `Eigen::VectorXd` or equivalent expression.
+ *
+ * @param[in] mat Poitner to the wrapped matrix instance.
+ * @param[in] rhs The right-hand side of the matrix product.
+ * @param work The return value of `wrapped_adjoint_workspace()` on `mat`.
+ * @param[out] out The output vector to store the matrix product.
+ * 
+ * @return `out` is filled with the product of this matrix and `rhs`.
+ */
+template<class Matrix, class Right>
+void wrapped_adjoint_multiply(const Matrix* mat, const Right& rhs, WrappedAdjointWorkspace<Matrix>& work, Eigen::VectorXd& out) {
+    if constexpr(has_adjoint_multiply_method<Matrix>::value) {
+        out.noalias() = mat->adjoint() * rhs;
+    } else {
+        mat->adjoint_multiply(rhs, work, out);
+    }
+}
+
+/**
  * @brief Wrapper for a centered matrix.
  *
  * @tparam Matrix An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
@@ -173,12 +216,7 @@ public:
      */
     template<class Right>
     void multiply(const Right& rhs, Workspace& work, Eigen::VectorXd& out) const {
-        if constexpr(has_multiply_method<Matrix>::value) {
-            out.noalias() = *mat * rhs;
-        } else {
-            mat->multiply(rhs, work, out);
-        }
-
+        wrapped_multiply(mat, rhs, work, out);
         double beta = rhs.dot(*center);
         for (auto& o : out) {
             o -= beta;
@@ -198,12 +236,7 @@ public:
      */
     template<class Right>
     void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& out) const {
-        if constexpr(has_adjoint_multiply_method<Matrix>::value) {
-            out.noalias() = mat->adjoint() * rhs;
-        } else {
-            mat->adjoint_multiply(rhs, work, out);
-        }
-
+        wrapped_adjoint_multiply(mat, rhs, work, out);
         double beta = rhs.sum();
         out -= beta * (*center);
         return;
@@ -320,12 +353,7 @@ public:
         // parallelized. Better to pay the cost of accessing a separate memory
         // space than computing the quotient repeatedly.
         work.product = rhs.cwiseQuotient(*scale);
-
-        if constexpr(has_multiply_method<Matrix>::value) {
-            out.noalias() = *mat * work.product;
-        } else {
-            mat->multiply(work.product, work.child, out);
-        }
+        wrapped_multiply(mat, work.product, work.child, out);
         return;
     }
 
@@ -342,12 +370,7 @@ public:
      */
     template<class Right>
     void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& out) const {
-        if constexpr(has_adjoint_multiply_method<Matrix>::value) {
-            out.noalias() = mat->adjoint() * rhs;
-        } else {
-            mat->adjoint_multiply(rhs, work, out);
-        }
-
+        wrapped_adjoint_multiply(mat, rhs, work, out);
         out.noalias() = out.cwiseQuotient(*scale);
         return;
     }
