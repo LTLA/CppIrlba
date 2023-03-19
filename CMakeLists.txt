@@ -8,6 +8,15 @@ project(irlba
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# Library
+add_library(irlba INTERFACE)
+add_library(ltla::irlba ALIAS irlba)
+
+target_include_directories(irlba INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ltla>)
+target_compile_features(irlba INTERFACE cxx_std_17)
+
 # Dependencies
 option(IRLBA_FETCH_EXTERN "" ON)
 if(IRLBA_FETCH_EXTERN)
@@ -17,14 +26,6 @@ else()
     find_package(ltla_aarand CONFIG REQUIRED)
 endif()
 
-# Library
-add_library(irlba INTERFACE)
-add_library(ltla::irlba ALIAS irlba)
-
-target_include_directories(irlba INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ltla>)
-target_compile_features(irlba INTERFACE cxx_std_17)
 target_link_libraries(irlba INTERFACE Eigen3::Eigen ltla::aarand)
 
 # Tests
