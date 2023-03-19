@@ -41,9 +41,11 @@ See the [reference documentation](https://ltla.github.io/CppIrlba) for more deta
 
 ## Building projects
 
+### CMake with `FetchContent`
+
 If you're using CMake, you just need to add something like this to your `CMakeLists.txt`:
 
-```
+```cmake
 include(FetchContent)
 
 FetchContent_Declare(
@@ -57,13 +59,32 @@ FetchContent_MakeAvailable(irlba)
 
 Then you can link to **irlba** to make the headers available during compilation:
 
-```
+```cmake
 # For executables:
-target_link_libraries(myexe irlba)
+target_link_libraries(myexe ltla::irlba)
 
 # For libaries
-target_link_libraries(mylib INTERFACE irlba)
+target_link_libraries(mylib INTERFACE ltla::irlba)
 ```
+
+### CMake with `find_package()`
+
+```cmake
+find_package(ltla_irlba CONFIG REQUIRED)
+target_link_libraries(mylib INTERFACE ltla::irlba)
+```
+
+To install the library use:
+
+```sh
+mkdir build && cd build
+cmake .. -DIRLBA_TESTS=OFF
+cmake --build . --target install
+```
+
+If you want to install the dependencies [**Eigen**](https://gitlab.com/libeigen/eigen) and [**aarand**](https://github.com/LTLA/aarand) manually use `-DIRLBA_FETCH_EXTERN=OFF`.
+
+### Manual
 
 If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
 Note that this requires manual management of a few dependencies:

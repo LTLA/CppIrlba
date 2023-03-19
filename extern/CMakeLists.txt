@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(eigen)
 FetchContent_Declare(
   aarand
   GIT_REPOSITORY https://github.com/LTLA/aarand
-  GIT_TAG bd06e0d52e59e35f0456a870746a959da4bc7cb3
+  GIT_TAG 84d48b65d49ce8b844398f11aff3015b86e17197
 )
 
 FetchContent_MakeAvailable(aarand)
