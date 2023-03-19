@@ -41,9 +41,11 @@ See the [reference documentation](https://ltla.github.io/CppIrlba) for more deta
 
 ## Building projects
 
+### CMake with `FetchContent`
+
 If you're using CMake, you just need to add something like this to your `CMakeLists.txt`:
 
-```
+```cmake
 include(FetchContent)
 
 FetchContent_Declare(
@@ -57,19 +59,42 @@ FetchContent_MakeAvailable(irlba)
 
 Then you can link to **irlba** to make the headers available during compilation:
 
-```
+```cmake
 # For executables:
-target_link_libraries(myexe irlba)
+target_link_libraries(myexe ltla::irlba)
 
 # For libaries
-target_link_libraries(mylib INTERFACE irlba)
+target_link_libraries(mylib INTERFACE ltla::irlba)
 ```
+
+### CMake with `find_package()`
+
+```cmake
+find_package(ltla_irlba CONFIG REQUIRED)
+target_link_libraries(mylib INTERFACE ltla::irlba)
+```
+
+To install the library use:
+
+```sh
+mkdir build && cd build
+cmake .. -DIRLBA_TESTS=OFF
+cmake --build . --target install
+```
+
+By default, this will use `FetchContent` to fetch all external dependencies.
+If you want to install them manually, use `-DPOWERIT_FETCH_EXTERN=OFF`.
+See the commit hashes in [`extern/CMakeLists.txt`](extern/CMakeLists.txt) to find compatible versions of each dependency.
+
+### Manual
 
 If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
 Note that this requires manual management of a few dependencies:
 
 - [**Eigen**](https://gitlab.com/libeigen/eigen), for matrix manipulations.
 - [**aarand**](https://github.com/LTLA/aarand), for system-agnostic random distribution functions.
+
+See [`extern/CMakeLists.txt`](extern/CMakeLists.txt) for more details.
 
 ## References
 
