@@ -82,7 +82,9 @@ cmake .. -DIRLBA_TESTS=OFF
 cmake --build . --target install
 ```
 
-If you want to install the dependencies [**Eigen**](https://gitlab.com/libeigen/eigen) and [**aarand**](https://github.com/LTLA/aarand) manually use `-DIRLBA_FETCH_EXTERN=OFF`.
+By default, this will use `FetchContent` to fetch all external dependencies.
+If you want to install them manually, use `-DPOWERIT_FETCH_EXTERN=OFF`.
+See the commit hashes in [`extern/CMakeLists.txt`](extern/CMakeLists.txt) to find compatible versions of each dependency.
 
 ### Manual
 
@@ -91,6 +93,8 @@ Note that this requires manual management of a few dependencies:
 
 - [**Eigen**](https://gitlab.com/libeigen/eigen), for matrix manipulations.
 - [**aarand**](https://github.com/LTLA/aarand), for system-agnostic random distribution functions.
+
+See [`extern/CMakeLists.txt`](extern/CMakeLists.txt) for more details.
 
 ## References
 
