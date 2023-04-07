@@ -157,7 +157,7 @@ public:
      * Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.
      *
      * @tparam M Matrix class, typically from the **Eigen** matrix manipulation library.
-     * However, other classes are also supported, see the other `run()` methods for details.
+     * However, other classes are also supported, see `wrappers.hpp` for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
@@ -275,24 +275,7 @@ public:
      * and the second entry indicates the number of restart iterations performed.
      *
      * Custom classes can be used to define modified matrices that cannot be efficiently realized into the standard **Eigen** classes.
-     * We expect:
-     * - A `rows()` method that returns the number of rows.
-     * - A `cols()` method that returns the number of columns.
-     * - One of the following for matrix-vector multiplication:
-     *   - `multiply(rhs, out)`, which should compute the product of the matrix with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of columns;
-     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of rows.
-     *   - A `*` method where the right-hand side is an `Eigen::VectorXd` (or equivalent expression) of length equal to the number of columsn,
-     *     and returns an `Eigen::VectorXd`-equivalent of length equal to the number of rows.
-     * - One of the following for matrix transpose-vector multiplication:
-     *   - `adjoint_multiply(rhs, out)`, which should compute the product of the matrix transpose with `rhs`, a `Eigen::VectorXd`-equivalent of length equal to the number of rows;
-     *     and stores the result in `out`, an `Eigen::VectorXd` of length equal to the number of columns.
-     *   - An `adjoint()` method that returns an instance of any class that has a `*` method for matrix-vector multiplication.
-     *     The method should accept an `Eigen::VectorXd`-equivalent of length equal to the number of rows,
-     *     and return an `Eigen::VectorXd`-equvialent of length equal to the number of columns.
-     * - A `realize()` method that returns an `Eigen::MatrixXd` object representing the modified matrix.
-     *   This can be omitted if an `Eigen::MatrixXd` can be copy-constructed from the class.
-     *
-     * See the `Centered` and `Scaled` classes for more details.
+     * See the `wrappers.hpp` file for more details, along with the `Centered` and `Scaled` classes.
      *
      * If the smallest dimension of `mat` is below 6, this method falls back to performing an exact SVD.
      */
@@ -525,7 +508,7 @@ public:
      * Run IRLBA on an input matrix to perform an approximate SVD with centering and scaling.
      * 
      * @tparam M Matrix class, most typically from the **Eigen** matrix manipulation library.
-     * However, other classes are also supported, see the other `run()` methods for details.
+     * However, other classes are also supported, see `wrappers.hpp` for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
@@ -551,7 +534,7 @@ public:
      * Run IRLBA on an input matrix to perform an approximate SVD, see the `run()` method for more details.
      *
      * @tparam M Matrix class,  most typically from the **Eigen** matrix manipulation library.
-     * However, other classes are also supported, see the other `run()` methods for details.
+     * However, other classes are also supported, see `wrappers.hpp` for details.
      * @tparam Engine A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.
      *
      * @param[in] mat Input matrix.
