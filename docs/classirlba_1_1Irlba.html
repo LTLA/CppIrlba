@@ -204,7 +204,7 @@ template&lt;class M , class Engine  = std::mt19937_64&gt; </div>
 <p>Run IRLBA on an input matrix to perform an approximate SVD, with arbitrary centering and scaling operations.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">M</td><td>Matrix class, typically from the <b>Eigen</b> matrix manipulation library. However, other classes are also supported, see the other <code><a class="el" href="classirlba_1_1Irlba.html#a6359f74f323409fdb21a4ba3df9f41d8">run()</a></code> methods for details. </td></tr>
+    <tr><td class="paramname">M</td><td>Matrix class, typically from the <b>Eigen</b> matrix manipulation library. However, other classes are also supported, see <code><a class="el" href="wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices.">wrappers.hpp</a></code> for details. </td></tr>
     <tr><td class="paramname">Engine</td><td>A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.</td></tr>
   </table>
   </dd>
@@ -283,7 +283,7 @@ template&lt;class M , class Engine  = std::mt19937_64&gt; </div>
 <p>Run IRLBA on an input matrix to perform an approximate SVD with centering and scaling.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> matrix manipulation library. However, other classes are also supported, see the other <code><a class="el" href="classirlba_1_1Irlba.html#a6359f74f323409fdb21a4ba3df9f41d8">run()</a></code> methods for details. </td></tr>
+    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> matrix manipulation library. However, other classes are also supported, see <code><a class="el" href="wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices.">wrappers.hpp</a></code> for details. </td></tr>
     <tr><td class="paramname">Engine</td><td>A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.</td></tr>
   </table>
   </dd>
@@ -346,7 +346,7 @@ template&lt;class M , class Engine  = std::mt19937_64&gt; </div>
 <p>Run IRLBA on an input matrix to perform an approximate SVD, see the <code><a class="el" href="classirlba_1_1Irlba.html#a6359f74f323409fdb21a4ba3df9f41d8">run()</a></code> method for more details.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> matrix manipulation library. However, other classes are also supported, see the other <code><a class="el" href="classirlba_1_1Irlba.html#a6359f74f323409fdb21a4ba3df9f41d8">run()</a></code> methods for details. </td></tr>
+    <tr><td class="paramname">M</td><td>Matrix class, most typically from the <b>Eigen</b> matrix manipulation library. However, other classes are also supported, see <code><a class="el" href="wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices.">wrappers.hpp</a></code> for details. </td></tr>
     <tr><td class="paramname">Engine</td><td>A (pseudo-)random number generator class, returning a randomly sampled value when called as a functor with no arguments.</td></tr>
   </table>
   </dd>
@@ -442,22 +442,7 @@ template&lt;class Matrix , class Engine  = std::mt19937_64&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed.</dd></dl>
-<p>Custom classes can be used to define modified matrices that cannot be efficiently realized into the standard <b>Eigen</b> classes. We expect:</p><ul>
-<li>A <code>rows()</code> method that returns the number of rows.</li>
-<li>A <code>cols()</code> method that returns the number of columns.</li>
-<li>One of the following for matrix-vector multiplication:<ul>
-<li><code>multiply(rhs, out)</code>, which should compute the product of the matrix with <code>rhs</code>, a <code>Eigen::VectorXd</code>-equivalent of length equal to the number of columns; and stores the result in <code>out</code>, an <code>Eigen::VectorXd</code> of length equal to the number of rows.</li>
-<li>A <code>*</code> method where the right-hand side is an <code>Eigen::VectorXd</code> (or equivalent expression) of length equal to the number of columsn, and returns an <code>Eigen::VectorXd</code>-equivalent of length equal to the number of rows.</li>
-</ul>
-</li>
-<li>One of the following for matrix transpose-vector multiplication:<ul>
-<li><code>adjoint_multiply(rhs, out)</code>, which should compute the product of the matrix transpose with <code>rhs</code>, a <code>Eigen::VectorXd</code>-equivalent of length equal to the number of rows; and stores the result in <code>out</code>, an <code>Eigen::VectorXd</code> of length equal to the number of columns.</li>
-<li>An <code>adjoint()</code> method that returns an instance of any class that has a <code>*</code> method for matrix-vector multiplication. The method should accept an <code>Eigen::VectorXd</code>-equivalent of length equal to the number of rows, and return an <code>Eigen::VectorXd</code>-equvialent of length equal to the number of columns.</li>
-</ul>
-</li>
-<li>A <code>realize()</code> method that returns an <code>Eigen::MatrixXd</code> object representing the modified matrix. This can be omitted if an <code>Eigen::MatrixXd</code> can be copy-constructed from the class.</li>
-</ul>
-<p>See the <code><a class="el" href="structirlba_1_1Centered.html" title="Wrapper for a centered matrix.">Centered</a></code> and <code><a class="el" href="structirlba_1_1Scaled.html" title="Wrapper for a scaled matrix.">Scaled</a></code> classes for more details.</p>
+<p>Custom classes can be used to define modified matrices that cannot be efficiently realized into the standard <b>Eigen</b> classes. See the <code><a class="el" href="wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices.">wrappers.hpp</a></code> file for more details, along with the <code><a class="el" href="structirlba_1_1Centered.html" title="Wrapper for a centered matrix.">Centered</a></code> and <code><a class="el" href="structirlba_1_1Scaled.html" title="Wrapper for a scaled matrix.">Scaled</a></code> classes.</p>
 <p>If the smallest dimension of <code>mat</code> is below 6, this method falls back to performing an exact SVD. </p>
 
 </div>
