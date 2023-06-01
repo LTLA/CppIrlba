@@ -307,8 +307,8 @@ private:
         Eigen::VectorXd* init)
     const {
         const int smaller = std::min(mat.rows(), mat.cols());
-        if (number >= smaller) {
-            throw std::runtime_error("requested number of singular values must be less than smaller matrix dimension");
+        if (number > smaller) {
+            throw std::runtime_error("requested number of singular values must be less than or equal to smaller matrix dimension");
         }
 
         // Falling back to an exact SVD for small matrices.
