@@ -306,29 +306,30 @@ public:
     /**
      * @cond
      */
+    template<template<class> class Wrapper_>
     struct BufferedWorkspace {
-        BufferedWorkspace(size_t n, WrappedWorkspace<Matrix_> c) : buffer(n), child(std::move(c)) {}
+        BufferedWorkspace(size_t n, Wrapper_<Matrix_> c) : buffer(n), child(std::move(c)) {}
         Eigen::VectorXd buffer;
-        WrappedWorkspace<Matrix_> child;
+        Wrapper_<Matrix_> child;
     };
 
-    typedef typename std::conditional<column_, BufferedWorkspace, WrappedWorkspace<Matrix_> >::type Workspace;
+    typedef typename std::conditional<column_, BufferedWorkspace<WrappedWorkspace>, WrappedWorkspace<Matrix_> >::type Workspace;
 
     Workspace workspace() const {
         if constexpr(column_) {
-            return BufferedWorkspace(mat->cols(), wrapped_workspace(mat));
+            return BufferedWorkspace<WrappedWorkspace>(mat->cols(), wrapped_workspace(mat));
         } else {
             return wrapped_workspace(mat);
         }
     }
 
-    typedef typename std::conditional<column_, WrappedAdjointWorkspace<Matrix_>, BufferedWorkspace>::type AdjointWorkspace;
+    typedef typename std::conditional<column_, WrappedAdjointWorkspace<Matrix_>, BufferedWorkspace<WrappedAdjointWorkspace> >::type AdjointWorkspace;
 
     AdjointWorkspace adjoint_workspace() const {
         if constexpr(column_) {
             return wrapped_adjoint_workspace(mat);
         } else {
-            return BufferedWorkspace(mat->rows(), wrapped_adjoint_workspace(mat));
+            return BufferedWorkspace<WrappedAdjointWorkspace>(mat->rows(), wrapped_adjoint_workspace(mat));
         }
     }
     /**
