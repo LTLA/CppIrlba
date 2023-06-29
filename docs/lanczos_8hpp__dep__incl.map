@@ -1,4 +1,5 @@
 <map id="irlba/lanczos.hpp" name="irlba/lanczos.hpp">
-<area shape="rect" id="node1" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="5,5,124,31"/>
-<area shape="rect" id="node2" href="$irlba_8hpp.html" title="Implements the main user&#45;visible class for running IRLBA." alt="" coords="15,79,114,104"/>
+<area shape="rect" id="Node000001" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="5,5,123,31"/>
+<area shape="rect" id="Node000002" href="$irlba_8hpp.html" title="Implements the main user&#45;visible class for running IRLBA." alt="" coords="15,79,113,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,46,67,79,61,79,61,46"/>
 </map>

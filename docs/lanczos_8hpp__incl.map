@@ -1,11 +1,22 @@
 <map id="irlba/lanczos.hpp" name="irlba/lanczos.hpp">
-<area shape="rect" id="node1" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="157,5,276,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,225,100,251"/>
-<area shape="rect" id="node3" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="165,152,236,177"/>
-<area shape="rect" id="node7" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="81,79,179,104"/>
-<area shape="rect" id="node8" title=" " alt="" coords="254,79,313,104"/>
-<area shape="rect" id="node9" title=" " alt="" coords="337,79,390,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="124,225,189,251"/>
-<area shape="rect" id="node5" title=" " alt="" coords="213,225,265,251"/>
-<area shape="rect" id="node6" title=" " alt="" coords="290,225,418,251"/>
+<area shape="rect" id="Node000001" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="158,5,275,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,226,100,252"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,31,110,48,89,62,71,81,55,112,48,148,47,182,50,212,45,212,42,182,43,147,50,111,66,77,85,58,108,44,156,26"/>
+<area shape="rect" id="Node000003" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="165,153,234,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,32,205,138,200,137,212,31"/>
+<area shape="rect" id="Node000007" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="81,79,179,105"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="203,34,157,72,154,67,200,29"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="255,79,312,105"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="229,29,264,66,260,70,226,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="336,79,388,105"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="242,29,325,70,323,75,240,34"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="175,181,92,222,89,217,173,176"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="124,226,189,252"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="194,180,173,215,169,212,190,177"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="212,226,264,252"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="208,177,227,212,222,214,203,180"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="288,226,415,252"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="226,176,313,217,311,222,224,181"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="126,106,68,214,63,212,121,104"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="143,103,179,140,175,144,139,107"/>
 </map>
