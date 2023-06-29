@@ -274,121 +274,144 @@ private:
 /**
  * @brief Wrapper for a scaled matrix.
  *
- * @tparam Matrix An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
+ * @tparam Matrix_ The underlying **Eigen** matrix class - or alternatively, a wrapper class around such a class.
+ * @tparam column_ Whether to scale the columns.
+ * If `false`, scaling is applied to the rows instead.
+ * @tparam divide_ Whether to divide by the supplied scaling factors.
  * 
- * This modification involves scaling all columns, i.e., dividing the values of each column by the standard deviation of that column to achieve unit variance.
+ * This modification involves scaling all rows or columns, i.e., multiplying or dividing the values of each row/column by some arbitrary value.
+ * For example, we can use this to divide each column by the standard deviation to achieve unit variance in principal components analyses.
  * Naively doing such an operation would involve a copy of the matrix, which we avoid by deferring the scaling into the subspace defined by `rhs`.
  */
-template<class Matrix>
+template<class Matrix_, bool column_ = true, bool divide_ = true>
 struct Scaled {
     /**
-     * @param m Underlying matrix to be column-scaled.
-     * @param s Vector of length equal to the number of columns of `m`,
-     * containing the value to scale each column.
+     * @param m Underlying matrix to be column-scaled (if `column_ = true`) or row-scaled (otherwise).
+     * @param s Vector of length equal to the number of columns (if `column_ = true`) or rows (otherwise) of `m`,
+     * containing the scaling factor to divide (if `divide_ = true`) or multiply (otherwise) to each column/row.
      */
-    Scaled(const Matrix* m, const Eigen::VectorXd* s) : mat(m), scale(s) {}
+    Scaled(const Matrix_* m, const Eigen::VectorXd* s) : mat(m), scale(s) {}
 
     /**
-     * @return Number of rows in the matrix.
+     * @cond
      */
     auto rows() const { return mat->rows(); }
 
-    /**
-     * @return Number of columns in the matrix.
-     */
     auto cols() const { return mat->cols(); }
+    /**
+     * @endcond
+     */
 
 public:
     /**
-     * @brief Workspace type for `multiply()`.
+     * @cond
      */
-    struct Workspace {
-        /**
-         * @cond
-         */
-        Workspace(size_t n, WrappedWorkspace<Matrix> c) : product(n), child(std::move(c)) {}
-        Eigen::VectorXd product;
-        WrappedWorkspace<Matrix> child;
-        /**
-         * @endcond
-         */
+    struct BufferedWorkspace {
+        BufferedWorkspace(size_t n, WrappedWorkspace<Matrix_> c) : buffer(n), child(std::move(c)) {}
+        Eigen::VectorXd buffer;
+        WrappedWorkspace<Matrix_> child;
     };
 
-    /**
-     * @return Workspace for use in `multiply()`.
-     */
+    typedef typename std::conditional<column_, BufferedWorkspace, WrappedWorkspace<Matrix_> >::type Workspace;
+
     Workspace workspace() const {
-        return Workspace(mat->cols(), wrapped_workspace(mat));
+        if constexpr(column_) {
+            return BufferedWorkspace(mat->cols(), wrapped_workspace(mat));
+        } else {
+            return wrapped_workspace(mat);
+        }
     }
 
-    /**
-     * Workspace type for `adjoint_multiply()`.
-     * Currently, this is just an alias for the adjoint workspace type of the underlying matrix.
-     */
-    typedef WrappedAdjointWorkspace<Matrix> AdjointWorkspace;
+    typedef typename std::conditional<column_, WrappedAdjointWorkspace<Matrix_>, BufferedWorkspace>::type AdjointWorkspace;
 
-    /**
-     * @return Workspace for use in `adjoint_multiply()`.
-     */
     AdjointWorkspace adjoint_workspace() const {
-        return wrapped_adjoint_workspace(mat);
+        if constexpr(column_) {
+            return wrapped_adjoint_workspace(mat);
+        } else {
+            return BufferedWorkspace(mat->rows(), wrapped_adjoint_workspace(mat));
+        }
     }
+    /**
+     * @endcond
+     */
 
 public:
     /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
-     *
-     * @param[in] rhs The right-hand side of the matrix product.
-     * This should be a vector or have only one column.
-     * @param work The return value of `workspace()`.
-     * This can be reused across multiple `multiply()` calls.
-     * @param[out] out The output vector to store the matrix product.
-     * This is filled with the product of this matrix and `rhs`.
+     * @cond
      */
-    template<class Right>
-    void multiply(const Right& rhs, Workspace& work, Eigen::VectorXd& out) const {
-        // We store the result here, because the underlying matrix's multiply()
-        // might need to access rhs/scale multiple times, especially if it's
-        // parallelized. Better to pay the cost of accessing a separate memory
-        // space than computing the quotient repeatedly.
-        work.product = rhs.cwiseQuotient(*scale);
-        wrapped_multiply(mat, work.product, work.child, out);
-        return;
-    }
+    template<class Right_>
+    void multiply(const Right_& rhs, Workspace& work, Eigen::VectorXd& out) const {
+        if constexpr(column_) {
+            if constexpr(divide_) {
+                // We store the result here, because the underlying matrix's multiply()
+                // might need to access rhs/scale multiple times, especially if it's
+                // parallelized. Better to pay the cost of accessing a separate memory
+                // space than computing the quotient repeatedly.
+                work.buffer = rhs.cwiseQuotient(*scale);
+            } else {
+                work.buffer = rhs.cwiseProduct(*scale);
+            }
+            wrapped_multiply(mat, work.buffer, work.child, out);
 
-    /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
-     *
-     * @param[in] rhs The right-hand side of the matrix product.
-     * This should be a vector or have only one column.
-     * @param work The return value of `adjoint_workspace()`.
-     * This can be reused across multiple `adjoint_multiply()` calls.
-     * @param[out] out The output vector to store the matrix product.
-     * This is filled with the product of the transpose of this matrix and `rhs`.
-     */
-    template<class Right>
-    void adjoint_multiply(const Right& rhs, AdjointWorkspace& work, Eigen::VectorXd& out) const {
-        wrapped_adjoint_multiply(mat, rhs, work, out);
-        out.noalias() = out.cwiseQuotient(*scale);
-        return;
-    }
-
-    /**
-     * @return A realized version of the scaled matrix,
-     * where the scaling has been explicitly applied.
-     */
-    Eigen::MatrixXd realize() const {
-        Eigen::MatrixXd output = wrapped_realize(mat);
-        for (Eigen::Index c = 0; c < output.cols(); ++c) {
-            for (Eigen::Index r = 0; r < output.rows(); ++r) {
-                output(r, c) /= (*scale)[c];
+        } else {
+            wrapped_multiply(mat, rhs, work, out);
+            if constexpr(divide_) {
+                out.array() /= scale->array();
+            } else {
+                out.array() *= scale->array();
             }
         }
-        return output;
     }
 
+    template<class Right_>
+    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, Eigen::VectorXd& out) const {
+        if constexpr(column_) {
+            wrapped_adjoint_multiply(mat, rhs, work, out);
+            if constexpr(divide_) {
+                out.array() /= scale->array();
+            } else {
+                out.array() *= scale->array();
+            }
+
+        } else {
+            if constexpr(divide_) {
+                work.buffer = rhs.cwiseQuotient(*scale);
+            } else {
+                work.buffer = rhs.cwiseProduct(*scale);
+            }
+            wrapped_adjoint_multiply(mat, work.buffer, work.child, out);
+        }
+    }
+
+    Eigen::MatrixXd realize() const {
+        Eigen::MatrixXd output = wrapped_realize(mat);
+
+        for (Eigen::Index c = 0; c < output.cols(); ++c) {
+            for (Eigen::Index r = 0; r < output.rows(); ++r) {
+                if constexpr(column_) {
+                    if constexpr(divide_) {
+                        output(r, c) /= (*scale)[c];
+                    } else {
+                        output(r, c) *= (*scale)[c];
+                    }
+                } else {
+                    if constexpr(divide_) {
+                        output(r, c) /= (*scale)[r];
+                    } else {
+                        output(r, c) *= (*scale)[r];
+                    }
+                }
+            }
+        }
+
+        return output;
+    }
+    /**
+     * @endcond
+     */
+
 private:
-    const Matrix* mat;
+    const Matrix_* mat;
     const Eigen::VectorXd* scale;
 };
 
