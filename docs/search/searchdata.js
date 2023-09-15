@@ -7,7 +7,7 @@ var indexSectionsWithContent =
   4: "acefgimnoprsw",
   5: "cdeimnsuv",
   6: "apw",
-  7: "c"
+  7: "cfil"
 };
 
 var indexSectionNames =
