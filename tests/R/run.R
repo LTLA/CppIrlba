@@ -31,8 +31,8 @@ test_that("simple", {
     expect_equal(ref$s, out$d)
 
     # Another one, just for good measure. 
-    ref <- irlba::irlba(mat, nv=10, work=15, v=rev(v))
-    out <- run_irlba(mat, rev(v), number=10, work=5)
+    ref <- irlba::irlba(mat, nv=9, work=14, v=rev(v))
+    out <- run_irlba(mat, rev(v), number=9, work=5)
 
     compare(ref$u, out$U)
     compare(ref$v, out$V)
