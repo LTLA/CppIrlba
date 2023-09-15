@@ -14,7 +14,7 @@ TEST(IrlbaTest, CompareToExact) {
     // case we can be pretty confident of getting a near-exact match of the
     // true SVD. Otherwise it's more approximate and the test is weaker.
     int rank = 5;
-    auto A = create_random_matrix(50, 20);
+    auto A = create_random_matrix(20, 10);
 
     irlba::Irlba irb;
     auto res = irb.set_number(rank).run(A);
