@@ -9,7 +9,7 @@
 #include "Eigen/Dense"
 #include <random>
 
-TEST(IrlbaTest, Exact) {
+TEST(IrlbaTest, CompareToExact) {
     // For the test, the key is that rank + workspace > min(nr, nc), in which
     // case we can be pretty confident of getting a near-exact match of the
     // true SVD. Otherwise it's more approximate and the test is weaker.
@@ -138,11 +138,29 @@ TEST(IrlbaTest, SmallExact) {
 
     irlba::Irlba irb;
     auto res = irb.set_number(2).run(small);
-      
+
     Eigen::BDCSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
     EXPECT_EQ(svd.singularValues().head(2), res.D);
     EXPECT_EQ(svd.matrixU().leftCols(2), res.U);
     EXPECT_EQ(svd.matrixV().leftCols(2), res.V);
+}
+
+TEST(IrlbaTest, LargeExact) {
+    Eigen::MatrixXd mat = create_random_matrix(20, 50);
+
+    irlba::Irlba irb;
+    auto res = irb.set_number(15).run(mat);
+
+    Eigen::BDCSVD svd(mat, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    EXPECT_EQ(svd.singularValues().head(15), res.D);
+    EXPECT_EQ(svd.matrixU().leftCols(15), res.U);
+    EXPECT_EQ(svd.matrixV().leftCols(15), res.V);
+
+    // Works with the maximum number.
+    auto res2 = irb.set_number(20).run(mat);
+    EXPECT_EQ(svd.singularValues(), res2.D);
+    EXPECT_EQ(svd.matrixU(), res2.U);
+    EXPECT_EQ(svd.matrixV(), res2.V);
 }
 
 TEST(IrlbaTest, SmallExactCenterScale) {
@@ -200,7 +218,15 @@ TEST(IrlbaTester, Fails) {
         irb.set_number(100).run(A);
     } catch (const std::exception& e) {
         std::string message(e.what());
-        EXPECT_EQ(message.find("requested"), 0);
+        EXPECT_TRUE(message.find("cannot be greater than") != std::string::npos);
+    }
+
+    // Requested number of SVs > smaller dimension of the matrix.
+    try {
+        irb.set_exact_for_large_number(false).set_number(10).run(A);
+    } catch (const std::exception& e) {
+        std::string message(e.what());
+        EXPECT_TRUE(message.find("must be less than") != std::string::npos);
     }
 
     // Initialization vector is not of the right length.
