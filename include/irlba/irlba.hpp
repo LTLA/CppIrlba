@@ -50,6 +50,16 @@ public:
         static constexpr int maxit = 1000;
 
         /**
+         * See `set_exact_for_small_matrix()` for more details.
+         */
+        static constexpr bool exact_for_small_matrix = true;
+
+        /**
+         * See `set_exact_for_large_number()` for more details.
+         */
+        static constexpr bool exact_for_large_number = true;
+
+        /**
          * See `set_seed()` for more details.
          */
         static constexpr uint64_t seed = std::mt19937_64::default_seed;
@@ -61,6 +71,9 @@ private:
     int extra_work = Defaults::extra_work;
     int maxit = Defaults::maxit;
     uint64_t seed = Defaults::seed;
+
+    bool exact_for_small_matrix = Defaults::exact_for_small_matrix;
+    bool exact_for_large_number = Defaults::exact_for_large_number;
 
     ConvergenceTest convtest;
 
@@ -149,6 +162,28 @@ public:
      */
     Irlba& set_singular_value_ratio_tolerance(double t = ConvergenceTest::Defaults::svtol) {
         convtest.set_svtol(t);
+        return *this;
+    }
+
+    /**
+     * @param s Whether to perform an exact SVD if the matrix is too small (fewer than 6 elements in any dimension).
+     * This is more efficient and avoids inaccuracies from an insufficient workspace.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_exact_for_small_matrix(bool s = Defaults::exact_for_small_matrix) {
+        exact_for_small_matrix = s;
+        return *this;
+    }
+
+    /**
+     * @param s Whether to perform an exact SVD if the requested number of singular values is too large (greater than or equal to half the smaller matrix dimension).
+     * This is more efficient and avoids inaccuracies from an insufficient workspace.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_exact_for_large_number(bool s = Defaults::exact_for_large_number) {
+        exact_for_large_number = s;
         return *this;
     }
 
@@ -307,12 +342,15 @@ private:
         Eigen::VectorXd* init)
     const {
         const int smaller = std::min(mat.rows(), mat.cols());
-        if (number >= smaller) {
-            throw std::runtime_error("requested number of singular values must be less than smaller matrix dimension");
+        if (number > smaller) {
+            throw std::runtime_error("requested number of singular values cannot be greater than the smaller matrix dimension");
+        } else if (number == smaller && !exact_for_large_number) {
+            throw std::runtime_error("requested number of singular values must be less than the smaller matrix dimension");
         }
 
-        // Falling back to an exact SVD for small matrices.
-        if (smaller < 6) {
+        // Falling back to an exact SVD for small matrices or if the requested number is too large 
+        // (not enough of a workspace). Hey, I don't make the rules.
+        if ((exact_for_small_matrix && smaller < 6) || (exact_for_large_number && number * 2 >= smaller)) {
             exact(mat, outU, outV, outD);
             return std::make_pair(true, 0);
         }
