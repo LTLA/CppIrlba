@@ -218,7 +218,7 @@ TEST(IrlbaTester, Fails) {
         irb.set_number(100).run(A);
     } catch (const std::exception& e) {
         std::string message(e.what());
-        EXPECT_TRUE(message.find("must be greater than") != std::string::npos);
+        EXPECT_TRUE(message.find("cannot be greater than") != std::string::npos);
     }
 
     // Requested number of SVs > smaller dimension of the matrix.
