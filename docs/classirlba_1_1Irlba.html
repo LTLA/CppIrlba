@@ -117,6 +117,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ade92590314a777c7a476511516d4af5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea4381224b805c16c3108f6685ae0c17" id="r_aea4381224b805c16c3108f6685ae0c17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#aea4381224b805c16c3108f6685ae0c17">set_exact_for_large_number</a> (<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">bool</a> <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">s</a>=<a class="el" href="structirlba_1_1Irlba_1_1Defaults.html#a922562b3c2203e40daf4769b58aacb79">Defaults::exact_for_large_number</a>)</td></tr>
 <tr class="separator:aea4381224b805c16c3108f6685ae0c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9edaa4e7ca430c6ad6e6f31755e29e3e" id="r_a9edaa4e7ca430c6ad6e6f31755e29e3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#a9edaa4e7ca430c6ad6e6f31755e29e3e">set_cap_number</a> (<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">bool</a> <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">c</a>=<a class="el" href="structirlba_1_1Irlba_1_1Defaults.html#afc6a52eec01e7c1d0234d67f5e65428e">Defaults::cap_number</a>)</td></tr>
+<tr class="separator:a9edaa4e7ca430c6ad6e6f31755e29e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6359f74f323409fdb21a4ba3df9f41d8" id="r_a6359f74f323409fdb21a4ba3df9f41d8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">class</a> <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">M</a> , <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">class</a> <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">Engine</a>  = std::mt19937_64&gt; </td></tr>
 <tr class="memitem:a6359f74f323409fdb21a4ba3df9f41d8"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">bool</a>, <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">int</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classirlba_1_1Irlba.html#a6359f74f323409fdb21a4ba3df9f41d8">run</a> (<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">const</a> <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">M</a> &amp;mat, <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">bool</a> center, <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">bool</a> scale, Eigen::MatrixXd &amp;<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">outU</a>, Eigen::MatrixXd &amp;<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">outV</a>, Eigen::VectorXd &amp;<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">outD</a>, <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">Engine</a> *<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">eng</a>=<a class="el" href="namespaceirlba.html#a78ee106624de7aed4f8ff0cc4a414239">null_rng</a>(), Eigen::VectorXd *<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">init</a>=<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">NULL</a>) <a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">const</a></td></tr>
 <tr class="separator:a6359f74f323409fdb21a4ba3df9f41d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -448,6 +450,39 @@ template&lt;<a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b96
 <dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed.</dd></dl>
 <p>Custom classes can be used to define modified matrices that cannot be efficiently realized into the standard <b>Eigen</b> classes. See the <code><a class="el" href="wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices.">wrappers.hpp</a></code> file for more details, along with the <code><a class="el" href="structirlba_1_1Centered.html" title="Wrapper for a centered matrix.">Centered</a></code> and <code><a class="el" href="structirlba_1_1Scaled.html" title="Wrapper for a scaled matrix.">Scaled</a></code> classes.</p>
 <p>If the smallest dimension of <code>mat</code> is below 6, this method falls back to performing an exact SVD. </p>
+
+</div>
+</div>
+<a id="a9edaa4e7ca430c6ad6e6f31755e29e3e" name="a9edaa4e7ca430c6ad6e6f31755e29e3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9edaa4e7ca430c6ad6e6f31755e29e3e">&#9670;&#160;</a></span>set_cap_number()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classirlba_1_1Irlba.html">Irlba</a> &amp; irlba::Irlba::set_cap_number </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16">bool</a>&#160;</td>
+          <td class="paramname"><em>c</em> = <code><a class="el" href="structirlba_1_1Irlba_1_1Defaults.html#afc6a52eec01e7c1d0234d67f5e65428e">Defaults::cap_number</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>Whether to cap the requested number of singular values to the smaller dimension of the input matrix. If false, an error is thrown instead.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the <code><a class="el" href="classirlba_1_1Irlba.html" title="Run IRLBA on an input matrix.">Irlba</a></code> instance. </dd></dl>
 
 </div>
 </div>
