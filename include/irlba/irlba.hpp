@@ -60,6 +60,11 @@ public:
         static constexpr bool exact_for_large_number = true;
 
         /**
+         * See `set_cap_number() for more details.
+         */
+        static constexpr bool cap_number = false;
+
+        /**
          * See `set_seed()` for more details.
          */
         static constexpr uint64_t seed = std::mt19937_64::default_seed;
@@ -67,13 +72,14 @@ public:
 private:
     LanczosBidiagonalization lp;
 
-    int number = Defaults::number; 
+    int number_ = Defaults::number; 
     int extra_work = Defaults::extra_work;
     int maxit = Defaults::maxit;
     uint64_t seed = Defaults::seed;
 
     bool exact_for_small_matrix = Defaults::exact_for_small_matrix;
     bool exact_for_large_number = Defaults::exact_for_large_number;
+    bool cap_number = Defaults::cap_number;
 
     ConvergenceTest convtest;
 
@@ -87,7 +93,7 @@ public:
      * @return A reference to the `Irlba` instance.
      */
     Irlba& set_number(int n = Defaults::number) {
-        number = n;
+        number_ = n;
         return *this;
     }
 
@@ -184,6 +190,17 @@ public:
      */
     Irlba& set_exact_for_large_number(bool s = Defaults::exact_for_large_number) {
         exact_for_large_number = s;
+        return *this;
+    }
+
+    /**
+     * @param c Whether to cap the requested number of singular values to the smaller dimension of the input matrix.
+     * If false, an error is thrown instead.
+     *
+     * @return A reference to the `Irlba` instance.
+     */
+    Irlba& set_cap_number(bool c = Defaults::cap_number) {
+        cap_number = c;
         return *this;
     }
 
@@ -342,20 +359,25 @@ private:
         Eigen::VectorXd* init)
     const {
         const int smaller = std::min(mat.rows(), mat.cols());
-        if (number > smaller) {
-            throw std::runtime_error("requested number of singular values cannot be greater than the smaller matrix dimension");
-        } else if (number == smaller && !exact_for_large_number) {
-            throw std::runtime_error("requested number of singular values must be less than the smaller matrix dimension");
+        int requested_number = number_;
+        if (requested_number > smaller) {
+            if (cap_number) {
+                requested_number = smaller;
+            } else {
+                throw std::runtime_error("requested number of singular values cannot be greater than the smaller matrix dimension");
+            }
+        } else if (requested_number == smaller && !exact_for_large_number) {
+            throw std::runtime_error("requested number of singular values must be less than the smaller matrix dimension for IRLBA iterations");
         }
 
         // Falling back to an exact SVD for small matrices or if the requested number is too large 
         // (not enough of a workspace). Hey, I don't make the rules.
-        if ((exact_for_small_matrix && smaller < 6) || (exact_for_large_number && number * 2 >= smaller)) {
-            exact(mat, outU, outV, outD);
+        if ((exact_for_small_matrix && smaller < 6) || (exact_for_large_number && requested_number * 2 >= smaller)) {
+            exact(mat, requested_number, outU, outV, outD);
             return std::make_pair(true, 0);
         }
 
-        const int work = std::min(number + extra_work, smaller);
+        const int work = std::min(requested_number + extra_work, smaller);
 
         Eigen::MatrixXd V(mat.cols(), work);
         if (init) {
@@ -419,7 +441,7 @@ private:
             int n_converged = 0;
             if (iter > 0) {
                 n_converged = convtest.run(BS, res, prevS);
-                if (n_converged >= number) {
+                if (n_converged >= requested_number) {
                     converged = true;
                     break;
                 }
@@ -428,8 +450,8 @@ private:
 
             // Setting 'k'. This looks kinda weird, but this is deliberate,
             // see the text below Algorithm 3.1 of Baglama and Reichel.
-            if (n_converged + number > k) {
-                k = n_converged + number;
+            if (n_converged + requested_number > k) {
+                k = n_converged + requested_number;
             }
             if (k > work - 3) {
                 k = work - 3;
@@ -465,21 +487,21 @@ private:
 
         // See Equation 2.11 of Baglama and Reichel for how to get from B's
         // singular triplets to mat's singular triplets.
-        outD.resize(number);
-        outD = svd.singularValues().head(number);
+        outD.resize(requested_number);
+        outD = svd.singularValues().head(requested_number);
 
-        outU.resize(mat.rows(), number);
-        outU.noalias() = W * svd.matrixU().leftCols(number);
+        outU.resize(mat.rows(), requested_number);
+        outU.noalias() = W * svd.matrixU().leftCols(requested_number);
 
-        outV.resize(mat.cols(), number);
-        outV.noalias() = V * svd.matrixV().leftCols(number);
+        outV.resize(mat.cols(), requested_number);
+        outV.noalias() = V * svd.matrixV().leftCols(requested_number);
 
         return std::make_pair(converged, iter + 1);
     }
 
 private:
     template<class M>
-    void exact(const M& mat, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) const {
+    static void exact(const M& mat, int requested_number, Eigen::MatrixXd& outU, Eigen::MatrixXd& outV, Eigen::VectorXd& outD) {
         Eigen::BDCSVD<Eigen::MatrixXd> svd(mat.rows(), mat.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
 
         if constexpr(std::is_same<M, Eigen::MatrixXd>::value) {
@@ -494,14 +516,14 @@ private:
             }
         }
 
-        outD.resize(number);
-        outD = svd.singularValues().head(number);
+        outD.resize(requested_number);
+        outD = svd.singularValues().head(requested_number);
 
-        outU.resize(mat.rows(), number);
-        outU = svd.matrixU().leftCols(number);
+        outU.resize(mat.rows(), requested_number);
+        outU = svd.matrixU().leftCols(requested_number);
 
-        outV.resize(mat.cols(), number);
-        outV = svd.matrixV().leftCols(number);
+        outV.resize(mat.cols(), requested_number);
+        outV = svd.matrixV().leftCols(requested_number);
 
         return;
     }

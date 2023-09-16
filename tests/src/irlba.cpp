@@ -161,6 +161,13 @@ TEST(IrlbaTest, LargeExact) {
     EXPECT_EQ(svd.singularValues(), res2.D);
     EXPECT_EQ(svd.matrixU(), res2.U);
     EXPECT_EQ(svd.matrixV(), res2.V);
+
+    // Works past the maximum number.
+    irb.set_cap_number(true);
+    auto res3 = irb.set_number(50).run(mat);
+    EXPECT_EQ(svd.singularValues(), res3.D);
+    EXPECT_EQ(svd.matrixU(), res3.U);
+    EXPECT_EQ(svd.matrixV(), res3.V);
 }
 
 TEST(IrlbaTest, SmallExactCenterScale) {
