@@ -176,6 +176,7 @@ public:
                 B(j, j + 1) = R_F;
 
                 wrapped_multiply(&mat, F, inter.work, W_next); // i.e., W_next = mat * F;
+                W_next -= R_F * W.col(j); // equivalent to daxpy.
 
                 // Full re-orthogonalization, using the left-most 'j +  1' columns of W.
                 // Recall that W_next will be the 'j + 2'-th column, i.e., W.col(j + 1) in
