@@ -136,42 +136,6 @@ public:
     }
 
     /**
-     * See `LanczosBidiagonalization::set_epsilon()` for details.
-     *
-     * @param e Epsilon value.
-     *
-     * @return A reference to the `Irlba` instance.
-     */
-    Irlba& set_invariant_tolerance(double e = LanczosBidiagonalization::Defaults::epsilon) {
-         lp.set_epsilon(e);
-         return *this;
-    }
-
-    /**
-     * See `ConvergenceTest::set_tol()` for details.
-     *
-     * @param t Positive tolerance value.
-     *
-     * @return A reference to the `Irlba` instance.
-     */
-    Irlba& set_convergence_tolerance(double t = ConvergenceTest::Defaults::tol) {
-        convtest.set_tol(t);
-        return *this;
-    }
-
-    /**
-     * See `ConvergenceTest::set_svtol()` for details.
-     *
-     * @param t Positive tolerance value, or -1.
-     *
-     * @return A reference to the `Irlba` instance.
-     */
-    Irlba& set_singular_value_ratio_tolerance(double t = ConvergenceTest::Defaults::svtol) {
-        convtest.set_svtol(t);
-        return *this;
-    }
-
-    /**
      * @param s Whether to perform an exact SVD if the matrix is too small (fewer than 6 elements in any dimension).
      * This is more efficient and avoids inaccuracies from an insufficient workspace.
      *
@@ -391,10 +355,11 @@ private:
         V.col(0) /= V.col(0).norm();
 
         bool converged = false;
-        int iter = 0, k =0;
+        int iter = 0;
+        Eigen::Index k = 0;
         Eigen::JacobiSVD<Eigen::MatrixXd> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
 
-        auto lptmp = lp.initialize(mat);
+        LanczosWorkspace<EigenVector_, Matrix_> lptmp(mat);
 
         Eigen::MatrixXd W(mat.rows(), work);
         Eigen::MatrixXd Wtmp(mat.rows(), work);
@@ -406,12 +371,15 @@ private:
         Eigen::VectorXd F(mat.cols());
 
         Eigen::VectorXd prevS(work);
+        double svtol = options.singular_value_ratio_tolerance;
+        double tol = options.convergence_tolerance;
+        double svtol_actual = (svtol >= 0 ? svtol : tol);
 
         for (; iter < maxit; ++iter) {
             // Technically, this is only a 'true' Lanczos bidiagonalization
             // when k = 0. All other times, we're just recycling the machinery,
             // see the text below Equation 3.11 in Baglama and Reichel.
-            lp.run(mat, W, V, B, eng, lptmp, k);
+            run_lanczos_bidiagonalization(mat, W, V, B, eng, lptmp, k, options);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -425,22 +393,32 @@ private:
             const auto& BV = svd.matrixV();
 
             // Checking for convergence.
-            if (B(work-1, work-1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
+            if (B(work - 1, work - 1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
                 converged = true;
                 break;
             }
 
-            F = lptmp.residuals();
+            const auto& F = lptmp.F; // i.e., the residuals, see algorithm 2.1 of Baglama and Reichel.
             double R_F = F.norm();
-            F /= R_F;
 
             // Computes the convergence criterion defined in on the LHS of Equation 2.13 of Baglama and Riechel.
             // We expose it here as we will be re-using the same values to update B, see below.
             res = R_F * BU.row(work - 1);
 
-            int n_converged = 0;
+            Eigen::Index n_converged = 0;
             if (iter > 0) {
-                n_converged = convtest.run(BS, res, prevS);
+                double Smax = *std::max_element(BS.begin(), BS.end());
+                double threshold = Smax * tol;
+
+                for (Eigen::Index j = 0; j < work; ++j) {
+                    if (std::abs(res[j]) <= threshold) {
+                        double ratio = std::abs(BS[j] - prevS[j]) / BS[j];
+                        if (ratio <= svtol_actual) {
+                            ++n_converged;
+                        }
+                    }
+                }
+
                 if (n_converged >= requested_number) {
                     converged = true;
                     break;
@@ -464,12 +442,12 @@ private:
             Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
             V.leftCols(k) = Vtmp.leftCols(k);
 
-            V.col(k) = F; // See Equation 3.2 of Baglama and Reichel, where our 'V' is
-                          // their 'P', and our 'F' is their 'p_{m+1}' (2.2).
-                          // 'F' was orthogonal to the old 'V' and it so it
-                          // should still be orthogonal to the new left-most
-                          // columns of 'V'; the input expectations of 'lp'
-                          // are still met.
+            // See Equation 3.2 of Baglama and Reichel, where our 'V' is their
+            // 'P', and our 'F / R_F' is their 'p_{m+1}' (Equation 2.2).  'F'
+            // was orthogonal to the old 'V' and it so it should still be
+            // orthogonal to the new left-most columns of 'V'; the input
+            // expectations of the lanczos bidiagonalization are still met.
+            V.col(k) = F / R_F; 
 
             Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);
             W.leftCols(k) = Wtmp.leftCols(k);
@@ -477,11 +455,11 @@ private:
             B.setZero(work, work);
             for (int l = 0; l < k; ++l) {
                 B(l, l) = BS[l];
-                B(l, k) = res[l]; // this looks weird but is deliberate, see
-                                  // Equation 3.6 of Baglama and Reichel.
-                                  // By happy coincidence, this is the same
-                                  // value used to determine convergence in
-                                  // 2.13, so we can just re-use it.
+
+                // This assignment looks weird but is deliberate, see Equation
+                // 3.6 of Baglama and Reichel. Happily, this is the same value
+                // used to determine convergence in 2.13, so we just re-use it.
+                B(l, k) = res[l]; 
             }
         }
 
