@@ -1,6 +1,8 @@
 #ifndef IRLBA_OPTIONS_HPP
 #define IRLBA_OPTIONS_HPP
 
+#include <cstdint>
+
 /**
  * @file Options.hpp
  * @brief Options for IRLBA.
@@ -33,6 +35,41 @@ struct Options {
      * If -1, the value in `Options::convergence_tolerance` is used.
      */
     double singular_value_ratio_tolerance = -1; 
+
+    /**
+     * Number of extra dimensions to define the working subspace.
+     * Larger values can speed up convergence at the cost of increased memory usage.
+     */
+    int extra_work = 7;
+
+    /**
+     * Maximum number of restart iterations.
+     * Larger values improve the chance of convergence.
+     */
+    int maxit = 1000;
+
+    /**
+     * Whether to perform an exact SVD if the matrix is too small (fewer than 6 elements in any dimension).
+     * This is more efficient and avoids inaccuracies from an insufficient workspace.
+     */
+    bool exact_for_small_matrix = true;
+
+    /**
+     * Whether to perform an exact SVD if the requested number of singular values is too large (greater than or equal to half the smaller matrix dimension).
+     * This is more efficient and avoids inaccuracies from an insufficient workspace.
+     */
+    bool exact_for_large_number = true;
+
+    /**
+     * Whether to automatically cap the requested number of singular values to the smaller dimension of the input matrix.
+     * If false, an error is thrown instead.
+     */
+    bool cap_number = false;
+
+    /**
+     * Seed for the creation of random vectors, primarily during initialization of the IRLBA algorithm.
+     */
+    uint64_t seed = std::mt19937_64::default_seed;
 };
 
 }
