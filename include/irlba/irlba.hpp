@@ -398,11 +398,14 @@ private:
                 break;
             }
 
-            const auto& F = lptmp.F; // i.e., the residuals, see algorithm 2.1 of Baglama and Reichel.
+            const auto& F = lptmp.F; // i.e., the residuals, see Algorithm 2.1 of Baglama and Reichel.
             double R_F = F.norm();
 
-            // Computes the convergence criterion defined in on the LHS of Equation 2.13 of Baglama and Riechel.
-            // We expose it here as we will be re-using the same values to update B, see below.
+            // Computes the convergence criterion defined in on the LHS of
+            // Equation 2.13 of Baglama and Riechel. (e_m is literally the unit
+            // vector along the m-th dimension, so it ends up just being the
+            // m-th row of the U matrix.) We expose it here as we will be
+            // re-using the same values to update B, see below.
             res = R_F * BU.row(work - 1);
 
             Eigen::Index n_converged = 0;
@@ -428,6 +431,11 @@ private:
 
             // Setting 'k'. This looks kinda weird, but this is deliberate,
             // see the text below Algorithm 3.1 of Baglama and Reichel.
+            //
+            // - Our n_converged is their k'.
+            // - Our requested_number is their k.
+            // - Our work is their m.
+            // - Our k is their k + k''.
             if (n_converged + requested_number > k) {
                 k = n_converged + requested_number;
             }
@@ -438,15 +446,15 @@ private:
                 k = 1;
             }
 
-            // Updating B, W and V.
             Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
             V.leftCols(k) = Vtmp.leftCols(k);
 
             // See Equation 3.2 of Baglama and Reichel, where our 'V' is their
             // 'P', and our 'F / R_F' is their 'p_{m+1}' (Equation 2.2).  'F'
-            // was orthogonal to the old 'V' and it so it should still be
+            // was orthogonal to the old 'V' and so it should still be
             // orthogonal to the new left-most columns of 'V'; the input
-            // expectations of the lanczos bidiagonalization are still met.
+            // expectations of the Lanczos bidiagonalization are still met, so
+            // V is ok to use in the next run_lanczos_bidiagonalization().
             V.col(k) = F / R_F; 
 
             Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);
@@ -459,6 +467,9 @@ private:
                 // This assignment looks weird but is deliberate, see Equation
                 // 3.6 of Baglama and Reichel. Happily, this is the same value
                 // used to determine convergence in 2.13, so we just re-use it.
+                // (See the equation just above Equation 3.5; I think they 
+                // misplaced a tilde on the final 'u', given no other 'u' has
+                // a B_m superscript as well as a tilde.)
                 B(l, k) = res[l]; 
             }
         }
