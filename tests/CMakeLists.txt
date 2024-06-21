@@ -21,7 +21,7 @@ add_executable(
 #    src/irlba.cpp
 #    src/sparse.cpp
 #    src/invariant.cpp
-#    src/wrappers.cpp
+    src/wrappers.cpp
 #    src/parallel.cpp
 )
 
