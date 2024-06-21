@@ -6,35 +6,7 @@
 
 /**
  * @file wrappers.hpp
- *
  * @brief Wrapper classes for multiplication of modified matrices.
- *
- * The idea is to compute the product of a modified matrix with a vector - but without actually modifying the underlying matrix.
- * This is especially important when the modification results in an unnecessary copy and/or loss of sparsity.
- * We achieve this effect by deferring the modification into the subspace defined by vector.
- *
- * An instance `mat` of a wrapper class should implement:
- *
- * - `mat.rows()`, returning the number of rows.
- * - `mat.cols()`, returning the number of columns.
- * - `mat.workspace()`, returning an instance of a workspace class for multiplication.
- * - `mat.adjoint_workspace()`, returning an instance of a workspace class for adjoint multiplication.
- * - `mat.multiply(rhs, work, out)`, which computes the matrix product `mat * rhs` and stores it in `out` - see `irlba::Centered::multiply()` for the typical signature.
- * `rhs` should be a const reference to an `Eigen::VectorXd` (or an expression equivalent, via templating) while `out` should be a non-const reference to a `Eigen::Vector` of floats.
- * `work` should be the return value of `mat.workspace()` and is passed in as a non-const reference.
- * - `mat.adjoint_multiply(rhs, work, out)`, which computes the matrix product `mat.adjoint() * rhs` and stores it in `out` - see `irlba::Centered::adjoint_multiply()` for the typical signature.
- * `rhs` should be a const reference to an `Eigen::VectorXd` (or an expression equivalent, via templating) while `out` should be a non-const reference to a `Eigen::Vector` of floats.
- * `work` should be the return value of `mat.adjoint_workspace()` and is passed in as a non-const reference.
- * - `mat.realize()`, which returns an `Eigen::MatrixXd` containing the matrix with all modifications applied.
- *
- * The workspace class is used to allocate space for intermediate results across multiple calls to `multiply()`.
- * This class should contain a member of type `WrappedWorkspace<M>`, where `M` is the type of the underlying matrix;
- * this member can be initialized by calling the `wrapped_workspace()` function on the underlying matrix.
- * If a wrapper does not have any intermediate results, it can just return `WrappedWorkspace<M>` directly.
- * The same logic applies to `adjoint_multiply()` using the `AdjointWrappedWorkspace` template class and `wrapped_adjoint_workspace()`.
- *
- * Implementations of the `multiply()` and `adjoint_multiply()` methods may use the `wrapped_multiply()` and `wrapped_adjoint_multiply()` functions.
- * This will handle the differences in the calls between **Eigen** matrices and **irlba** wrappers.
  */
 
 namespace irlba {
@@ -111,7 +83,7 @@ WrappedAdjointWorkspace<Matrix_> wrapped_adjoint_workspace(const Matrix_* mat) {
 
 /**
  * @tparam Matrix_ Type of the wrapped matrix.
- * @tparam Right__ An `Eigen::Vector` or equivalent expression.
+ * @tparam Right_ An `Eigen::Vector` or equivalent expression.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class.
  *
  * @param[in] mat Pointer to the wrapped matrix instance.
