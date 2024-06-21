@@ -37,11 +37,11 @@ protected:
 
 TEST_P(LanczosTester, Basic) {
     assemble(GetParam());
-    irlba::LanczosBidiagonalization y;
 
+    irlba::Options opt;
     std::mt19937_64 eng(50);
-    auto init = y.initialize(A);
-    y.run(A, W, V, B, eng, init);
+    irlba::LanczosWorkspace<Eigen::VectorXd, Eigen::MatrixXd> init(A);
+    irlba::run_lanczos_bidiagonalization(A, W, V, B, eng, init, 0, opt);
 
     // Check that vectors in W are self-orthogonal.
     Eigen::MatrixXd Wcheck = W.adjoint() * W;
@@ -70,16 +70,19 @@ TEST_P(LanczosTester, Basic) {
 
 TEST_P(LanczosTester, Restart) {
     assemble(GetParam());
-    irlba::LanczosBidiagonalization y;
 
+    irlba::Options opt;
+    std::mt19937_64 eng(50);
+    irlba::LanczosWorkspace<Eigen::VectorXd, Eigen::MatrixXd> init(A);
+
+    // Computing the bidiagonlization for the first half of the working dimensions.
     int mid = work / 2;
     Eigen::MatrixXd subW = W.leftCols(mid); 
     Eigen::MatrixXd subV = V.leftCols(mid); 
     Eigen::MatrixXd subB = B.topLeftCorner(mid,mid); 
-    std::mt19937_64 eng(50);
-    auto init = y.initialize(A);
-    y.run(A, subW, subV, subB, eng, init);
+    irlba::run_lanczos_bidiagonalization(A, subW, subV, subB, eng, init, 0, opt);
 
+    // Restarting the bidiagonlization for the second half.
     Eigen::MatrixXd copyW(nr, work);
     copyW.leftCols(mid) = subW;
     Eigen::MatrixXd copyV(nc, work);
@@ -87,15 +90,15 @@ TEST_P(LanczosTester, Restart) {
     Eigen::MatrixXd copyB(work, work);
     copyB.setZero();
     copyB.topLeftCorner(mid,mid) = subB;
-    copyV.col(mid) = init.residuals() / init.residuals().norm();
-    y.run(A, copyW, copyV, copyB, eng, init, mid); //restarting from start = mid.
+    copyV.col(mid) = init.F / init.F.norm();
+    irlba::run_lanczos_bidiagonalization(A, copyW, copyV, copyB, eng, init, mid, opt); //restarting from start = mid.
 
     // Numerically equivalent to a full compuation... except for B, where the
     // restart loses one of the superdiagonal elements (which is normally 
     // filled in by the residual error in the IRLBA loop, see Equation 3.6).
     std::mt19937_64 eng2(50);
-    auto init2 = y.initialize(A);
-    y.run(A, W, V, B, eng2, init2);
+    irlba::LanczosWorkspace<Eigen::VectorXd, Eigen::MatrixXd> init2(A);
+    irlba::run_lanczos_bidiagonalization(A, W, V, B, eng, init2, 0, opt);
 
     for (size_t i = 0; i < copyW.cols(); ++i) {
         for (size_t j = 0; j < copyW.rows(); ++j) {

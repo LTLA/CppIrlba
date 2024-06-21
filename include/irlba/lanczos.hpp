@@ -4,6 +4,7 @@
 #include "Eigen/Dense"
 #include "utils.hpp"
 #include "wrappers.hpp"
+#include "Options.hpp"
 #include <cmath>
 #include <limits>
 
@@ -41,7 +42,7 @@ public:
  * On output, B is filled with upper diagonal entries, starting from the `start`-th row/column.
  */
 template<class Matrix_, class EigenMatrix_, class EigenVector_, class Engine_>
-void run_lancsoz_bidiagonalization(
+void run_lanczos_bidiagonalization(
     const Matrix_& mat, 
     EigenMatrix_& W, 
     EigenMatrix_& V, 
@@ -50,9 +51,10 @@ void run_lancsoz_bidiagonalization(
     LanczosWorkspace<EigenVector_, Matrix_>& inter, 
     Eigen::Index start, 
     const Options& options) 
-const {
-    double raw_eps = options.invariant_subspace_tolerance;
-    double eps = (raw_eps < 0 ? std::pow(std::numeric_limits<typename EigenMatrix_::type>::epsilon(), 0.8) : raw_eps);
+{
+    typedef typename EigenMatrix_::Scalar Float;
+    Float raw_eps = options.invariant_subspace_tolerance;
+    Float eps = (raw_eps < 0 ? std::pow(std::numeric_limits<Float>::epsilon(), 0.8) : raw_eps);
 
     Eigen::Index work = W.cols();
     auto& F = inter.F;
@@ -67,7 +69,7 @@ const {
         orthogonalize_vector(W, W_next, start, otmp);
     }
 
-    double S = W_next.norm();
+    Float S = W_next.norm();
     if (S < eps) {
         throw std::runtime_error("starting vector near the null space of the input matrix");
     }
@@ -75,14 +77,14 @@ const {
     W.col(start) = W_next;
 
     // The Lanczos iterations themselves, see algorithm 2.1 of Baglama and Reichel.
-    for (int j = start; j < work; ++j) {
+    for (Eigen::Index j = start; j < work; ++j) {
         wrapped_adjoint_multiply(&mat, W.col(j), inter.awork, F); // i.e., F = mat.adjoint() * W.col(j);
 
         F -= S * V.col(j); // equivalent to daxpy.
         orthogonalize_vector(V, F, j + 1, otmp);
 
         if (j + 1 < work) {
-            double R_F = F.norm();
+            Float R_F = F.norm();
 
             if (R_F < eps) {
                 fill_with_random_normals(F, eng);

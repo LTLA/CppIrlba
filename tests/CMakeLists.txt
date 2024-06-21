@@ -18,11 +18,11 @@ add_executable(
     libtest 
     src/utils.cpp
     src/lanczos.cpp
-    src/irlba.cpp
-    src/sparse.cpp
-    src/invariant.cpp
-    src/wrappers.cpp
-    src/parallel.cpp
+#    src/irlba.cpp
+#    src/sparse.cpp
+#    src/invariant.cpp
+#    src/wrappers.cpp
+#    src/parallel.cpp
 )
 
 target_link_libraries(
