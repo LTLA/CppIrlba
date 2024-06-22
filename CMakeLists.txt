@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14...3.25)
 
 project(irlba
-    VERSION 1.0.0
+    VERSION 2.0.0
     DESCRIPTION "C++ port of the IRLBA algorithm"
     LANGUAGES CXX)
 
