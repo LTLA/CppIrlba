@@ -15,37 +15,29 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu Latest GCC, OpenMP enabled", 
-            os: ubuntu-latest,
-            omp: true
-          }
-        - {
             name: "Ubuntu Latest GCC, coverage enabled", 
             os: ubuntu-latest,
             cov: true
           }
         - {
             name: "macOS Latest Clang", 
-            os: macos-latest
+            os: macos-latest,
+            cov: false
           }
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
     - name: Get latest CMake
       uses: lukka/get-cmake@latest
 
     - name: Configure the build
-      if: ${{ ! matrix.config.cov && ! matrix.config.omp }}
+      if: ${{ ! matrix.config.cov }}
       run: cmake -S . -B build
 
     - name: Configure the build with coverage
       if: ${{ matrix.config.cov }}
       run: cmake -S . -B build -DCODE_COVERAGE=ON
-
-    - name: Configure the build with OpenMP
-      if: ${{ matrix.config.omp }}
-      run: cmake -S . -B build -DUSE_OPENMP=ON
 
     - name: Run the build
       run: cmake --build build
@@ -63,6 +55,8 @@ jobs:
 
     - name: Upload to Codecov
       if: ${{ matrix.config.cov }}
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
       with:
         directory: build/tests/CMakeFiles/libtest.dir/src/
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

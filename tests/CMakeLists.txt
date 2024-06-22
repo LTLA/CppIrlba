@@ -32,6 +32,17 @@ target_link_libraries(
     irlba
 )
 
+set(CODE_COVERAGE "Enable coverage testing" OFF)
+set(DO_CODE_COVERAGE OFF)
+if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(DO_CODE_COVERAGE ON)
+    target_compile_options(libtest PRIVATE -O0 -g --coverage)
+    target_link_options(libtest PRIVATE --coverage)
+endif()
+
+include(GoogleTest)
+gtest_discover_tests(libtest)
+
 # Check that the custom parallelization schemes are properly set up.
 add_executable(
     custom_parallel
@@ -46,20 +57,32 @@ target_link_libraries(
     irlba
 )
 
-set(USE_OPENMP OFF CACHE BOOL "Compile with OpenMP support")
-if (USE_OPENMP)
-    find_package(OpenMP)
-    target_link_libraries(libtest OpenMP::OpenMP_CXX)
-endif()
-
-set(CODE_COVERAGE "Enable coverage testing" OFF)
-if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(libtest PRIVATE -O0 -g --coverage)
+if(DO_CODE_COVERAGE)
     target_compile_options(custom_parallel PRIVATE -O0 -g --coverage)
-    target_link_options(libtest PRIVATE --coverage)
     target_link_options(custom_parallel PRIVATE --coverage)
 endif()
 
-include(GoogleTest)
-gtest_discover_tests(libtest)
 gtest_discover_tests(custom_parallel)
+
+# Check that OpenMP works as expected.
+find_package(OpenMP)
+if (OpenMP_FOUND)
+    add_executable(
+        omptest 
+        src/parallel.cpp
+    )
+
+    target_link_libraries(
+        omptest
+        gtest_main
+        irlba
+    )
+
+    target_link_libraries(omptest OpenMP::OpenMP_CXX)
+    gtest_discover_tests(omptest)
+
+    if(DO_CODE_COVERAGE)
+        target_compile_options(omptest PRIVATE -O0 -g --coverage)
+        target_link_options(omptest PRIVATE --coverage)
+    endif()
+endif()
