@@ -63,7 +63,7 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
     assemble(param);
     irlba::EigenThreadScope tscope(nt);
 
-    irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, nt);
+    irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, true, nt);
     EXPECT_EQ(A.rows(), nr);
     EXPECT_EQ(A.cols(), nc);
 
@@ -78,13 +78,13 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         EXPECT_EQ(A.get_secondary_nonzero_starts().front().size(), nc);
     }
 
-    irlba::ParallelSparseMatrix<false> A2(nc, nr, values, indices, nzeros, nt);
+    irlba::ParallelSparseMatrix A2(nc, nr, values, indices, nzeros, false, nt);
     EXPECT_EQ(A2.rows(), nc);
     EXPECT_EQ(A2.cols(), nr);
 
     // Realizes correctly.
-    auto realized = A.realize();
-    auto realized2 = A2.realize();
+    auto realized = A.template realize<Eigen::MatrixXd>();
+    auto realized2 = A2.template realize<Eigen::MatrixXd>();
     realized2.adjointInPlace();
     bool okay1 = true, okay2 = true;
 
@@ -171,14 +171,14 @@ class ParallelSparseMatrixIrlbaTest : public ::testing::TestWithParam<std::tuple
 TEST_P(ParallelSparseMatrixIrlbaTest, Basic) {
     auto param = GetParam();
     assemble(param);
-    irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, nt);
+    irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, true, nt);
     irlba::EigenThreadScope tscope(nt);
-    irlba::Irlba irb;
+    irlba::Options opt;
 
     // Raw.
     {
-        auto ref = irb.run(control);
-        auto obs = irb.run(A);
+        auto ref = irlba::compute(control, 5, opt);
+        auto obs = irlba::compute(A, 5, opt);
         expect_equal_vectors(ref.D, obs.D);
         expect_equal_column_vectors(ref.U, obs.U);
         expect_equal_column_vectors(ref.V, obs.V);
@@ -193,8 +193,8 @@ TEST_P(ParallelSparseMatrixIrlbaTest, Basic) {
 
     // Centered.
     {
-        auto ref = irb.run(irlba::Centered(&control, &rando));
-        auto obs = irb.run(irlba::Centered(&A, &rando));
+        auto ref = irlba::compute(irlba::Centered(control, rando), 5, opt);
+        auto obs = irlba::compute(irlba::Centered(A, rando), 5, opt);
         expect_equal_vectors(ref.D, obs.D);
         expect_equal_column_vectors(ref.U, obs.U);
         expect_equal_column_vectors(ref.V, obs.V);
@@ -202,8 +202,8 @@ TEST_P(ParallelSparseMatrixIrlbaTest, Basic) {
 
     // Scaled.
     {
-        auto ref = irb.run(irlba::Scaled(&control, &rando));
-        auto obs = irb.run(irlba::Scaled(&A, &rando));
+        auto ref = irlba::compute(irlba::make_Scaled<true>(control, rando, false), 5, opt);
+        auto obs = irlba::compute(irlba::make_Scaled<true>(A, rando, false), 5, opt);
         expect_equal_vectors(ref.D, obs.D);
         expect_equal_column_vectors(ref.U, obs.U);
         expect_equal_column_vectors(ref.V, obs.V);
@@ -219,5 +219,3 @@ INSTANTIATE_TEST_SUITE_P(
         ::testing::Values(1, 3) // number of threads
     )
 );
-
-

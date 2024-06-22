@@ -21,6 +21,7 @@ add_executable(
     src/irlba.cpp
     src/sparse.cpp
     src/invariant.cpp
+    src/MockMatrix.cpp
     src/wrappers.cpp
     src/parallel.cpp
 )

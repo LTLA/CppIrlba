@@ -40,9 +40,10 @@ protected:
 };
 
 TEST_F(SparseTester, Sparse) {
-    irlba::Irlba irb;
-    auto res = irb.set_number(8).set_work(7).run(A);
-    auto res2 = irb.set_number(8).set_work(7).run(B);
+    irlba::Options opt;
+    opt.extra_work = 7;
+    auto res = irlba::compute(A, 8, opt);
+    auto res2 = irlba::compute(B, 8, opt);
 
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.U, res2.U);
@@ -50,9 +51,10 @@ TEST_F(SparseTester, Sparse) {
 }
 
 TEST_F(SparseTester, CenterScale) {
-    irlba::Irlba irb;
-    auto res = irb.set_number(8).set_work(7).run(A, true, true);
-    auto res2 = irb.set_number(8).set_work(7).run(B, true, true);
+    irlba::Options opt;
+    opt.extra_work = 7;
+    auto res = irlba::compute(A, true, true, 8, opt);
+    auto res2 = irlba::compute(B, true, true, 8, opt);
 
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.V, res2.V);
@@ -69,8 +71,9 @@ TEST_F(SparseTester, CenterScale) {
 }
 
 TEST_F(SparseTester, SparseToReference) {
-    irlba::Irlba irb;
-    auto res = irb.set_number(13).set_work(20).run(B);
+    irlba::Options opt;
+    opt.extra_work = 20;
+    auto res = irlba::compute(B, 13, opt);
 
     // Bumping up the tolerance as later SV's tend to be a bit more variable.
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);

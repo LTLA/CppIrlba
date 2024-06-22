@@ -16,8 +16,9 @@ TEST(IrlbaTest, CompareToExact) {
     int rank = 5;
     auto A = create_random_matrix(20, 10);
 
-    irlba::Irlba irb;
-    auto res = irb.set_number(rank).run(A);
+    irlba::Options opt;
+    opt.exact_for_large_number = false;
+    auto res = irlba::compute(A, 5, opt);
 
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-8);
@@ -42,9 +43,8 @@ protected:
 TEST_P(IrlbaTester, Basic) {
     assemble(GetParam());
 
-    irlba::Irlba irb;
-    auto res = irb.set_number(rank).run(A);
-
+    irlba::Options opt;
+    auto res = irlba::compute(A, rank, opt);
     ASSERT_EQ(res.V.cols(), rank);
     ASSERT_EQ(res.U.cols(), rank);
     ASSERT_EQ(res.D.size(), rank);
@@ -53,6 +53,12 @@ TEST_P(IrlbaTester, Basic) {
     // the singular values don't converge enough for an exact comparison.
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-6);
+
+    // Also works with some custom initialization.
+    auto init = create_random_vector(A.cols(), 1239);
+    opt.initial = &init;
+    auto res2 = irlba::compute(A, rank, opt);
+    expect_equal_vectors(res.D, res2.D, 1e-6);
 }
 
 std::vector<Eigen::MatrixXd> spawn_center_scale(const Eigen::MatrixXd& A) {
@@ -87,12 +93,12 @@ TEST_P(IrlbaTester, CenterScale) {
     const auto& both = spawned[2];
 
     // Comparing to the observed calculation.
-    irlba::Irlba irb;
-    irb.set_number(rank);
-    auto ref = irb.run(A, true, true);
+    irlba::Options opt;
+    auto ref = irlba::compute(A, true, true, rank, opt);
+
     {
         auto res = ref;
-        auto res2 = irb.run(both);
+        auto res2 = irlba::compute(both, rank, opt);
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors<true>(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
@@ -102,8 +108,8 @@ TEST_P(IrlbaTester, CenterScale) {
     }
 
     {
-        auto res = irb.run(A, true, false);
-        auto res2 = irb.run(centered);
+        auto res = irlba::compute(A, true, false, rank, opt);
+        auto res2 = irlba::compute(centered, rank, opt);
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors<true>(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
@@ -114,8 +120,8 @@ TEST_P(IrlbaTester, CenterScale) {
     }
 
     {
-        auto res = irb.run(A, false, true);
-        auto res2 = irb.run(scaled);
+        auto res = irlba::compute(A, false, true, rank, opt);
+        auto res2 = irlba::compute(scaled, rank, opt);
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
@@ -136,8 +142,7 @@ INSTANTIATE_TEST_SUITE_P(
 TEST(IrlbaTest, SmallExact) {
     Eigen::MatrixXd small = create_random_matrix(10, 3);
 
-    irlba::Irlba irb;
-    auto res = irb.set_number(2).run(small);
+    auto res = irlba::compute(small, 2, irlba::Options());
 
     Eigen::BDCSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
     EXPECT_EQ(svd.singularValues().head(2), res.D);
@@ -148,8 +153,8 @@ TEST(IrlbaTest, SmallExact) {
 TEST(IrlbaTest, LargeExact) {
     Eigen::MatrixXd mat = create_random_matrix(20, 50);
 
-    irlba::Irlba irb;
-    auto res = irb.set_number(15).run(mat);
+    irlba::Options opt;
+    auto res = irlba::compute(mat, 15, opt);
 
     Eigen::BDCSVD svd(mat, Eigen::ComputeThinU | Eigen::ComputeThinV);
     EXPECT_EQ(svd.singularValues().head(15), res.D);
@@ -157,14 +162,14 @@ TEST(IrlbaTest, LargeExact) {
     EXPECT_EQ(svd.matrixV().leftCols(15), res.V);
 
     // Works with the maximum number.
-    auto res2 = irb.set_number(20).run(mat);
+    auto res2 = irlba::compute(mat, 20, opt);
     EXPECT_EQ(svd.singularValues(), res2.D);
     EXPECT_EQ(svd.matrixU(), res2.U);
     EXPECT_EQ(svd.matrixV(), res2.V);
 
     // Works past the maximum number.
-    irb.set_cap_number(true);
-    auto res3 = irb.set_number(50).run(mat);
+    opt.cap_number = true;
+    auto res3 = irlba::compute(mat, 50, opt);
     EXPECT_EQ(svd.singularValues(), res3.D);
     EXPECT_EQ(svd.matrixU(), res3.U);
     EXPECT_EQ(svd.matrixV(), res3.V);
@@ -179,12 +184,12 @@ TEST(IrlbaTest, SmallExactCenterScale) {
     const auto& both = spawned[2];
 
     // Comparing to the observed calculation.
-    irlba::Irlba irb;
-    irb.set_number(2);
-    auto ref = irb.run(small, true, true);
+    irlba::Options opt;
+    auto ref = irlba::compute(small, true, true, 2, opt);
+
     {
         auto res = ref;
-        auto res2 = irb.run(both);
+        auto res2 = irlba::compute(both, 2, opt);
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
@@ -194,8 +199,8 @@ TEST(IrlbaTest, SmallExactCenterScale) {
     }
 
     {
-        auto res = irb.run(small, true, false);
-        auto res2 = irb.run(centered);
+        auto res = irlba::compute(small, true, false, 2, opt);
+        auto res2 = irlba::compute(centered, 2, opt);
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
@@ -206,8 +211,8 @@ TEST(IrlbaTest, SmallExactCenterScale) {
     }
 
     {
-        auto res = irb.run(small, false, true);
-        auto res2 = irb.run(scaled);
+        auto res = irlba::compute(small, false, true, 2, opt);
+        auto res2 = irlba::compute(scaled, 2, opt);
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
@@ -218,11 +223,9 @@ TEST(IrlbaTest, SmallExactCenterScale) {
 TEST(IrlbaTester, Fails) {
     Eigen::MatrixXd A = create_random_matrix(20, 10);
 
-    irlba::Irlba irb;
-
     // Requested number of SVs > smaller dimension of the matrix.
     try {
-        irb.set_number(100).run(A);
+        irlba::compute(A, 100, irlba::Options());
     } catch (const std::exception& e) {
         std::string message(e.what());
         EXPECT_TRUE(message.find("cannot be greater than") != std::string::npos);
@@ -230,7 +233,9 @@ TEST(IrlbaTester, Fails) {
 
     // Requested number of SVs > smaller dimension of the matrix.
     try {
-        irb.set_exact_for_large_number(false).set_number(10).run(A);
+        irlba::Options opt;
+        opt.exact_for_large_number = false;
+        irlba::compute(A, 10, opt);
     } catch (const std::exception& e) {
         std::string message(e.what());
         EXPECT_TRUE(message.find("must be less than") != std::string::npos);
@@ -239,7 +244,9 @@ TEST(IrlbaTester, Fails) {
     // Initialization vector is not of the right length.
     Eigen::VectorXd init(1);
     try {
-        irb.set_number(5).run(A, irlba::null_rng(), &init);
+        irlba::Options opt;
+        opt.initial = &init;
+        irlba::compute(A, 5, opt);
     } catch (const std::exception& e) {
         std::string message(e.what());
         EXPECT_EQ(message.find("initialization"), 0);

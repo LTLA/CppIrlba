@@ -18,12 +18,13 @@ Using this library is as simple as including the header file in your source code
 ```cpp
 #include "irlba/irlba.hpp"
 
-irlba::Irlba runner;
+irlba::Options opt;
+// optional; specify the workspace, etc.
+opt.extra_work = 20;
+opt.max_iterations = 50;
 
-// optional; specify the number of singular vectors, workspace, etc.
-runner.set_number(5).set_work(20);
-
-auto result = runner.run(mat, false, false, U, V, S);
+// Get the first 5 singular triplets:
+auto result = irlba::compute(mat, 5, opt);
 result.U; // left singular vectors
 result.V; // right singular vectors
 result.S; // singular values
@@ -32,7 +33,8 @@ result.S; // singular values
 To perform a PCA:
 
 ```cpp
-auto res = runner.run(mat, true, false);
+// Get the first 5 principal components without scaling:
+auto res = irlba::compute(mat, true, false, 5, opt);
 Eigen::MatrixXd components = res.U;
 components *= res.S.asDiagonal();
 ```
