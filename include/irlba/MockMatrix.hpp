@@ -92,7 +92,7 @@ public:
      * depending on what is most convenient for defining the associated `Workspace`.
      */
     template<class Right_, class EigenVector_>
-    void multiply(const Right_& rhs, Workspace& work, EigenVector_& out) const {
+    void multiply(const Right_& rhs, [[maybe_unused]] Workspace& work, EigenVector_& out) const {
         out.noalias() = my_x * rhs; 
     }
 
@@ -112,7 +112,7 @@ public:
      * depending on what is most convenient for defining the associated `AdjointWorkspace`.
      */
     template<class Right_, class EigenVector_>
-    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& out) const {
+    void adjoint_multiply(const Right_& rhs, [[maybe_unused]] AdjointWorkspace& work, EigenVector_& out) const {
         out.noalias() = my_x.adjoint() * rhs;
     }
 

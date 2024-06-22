@@ -32,6 +32,8 @@ target_link_libraries(
     irlba
 )
 
+target_compile_options(libtest PRIVATE -Wall -Wpedantic -Wextra)
+
 set(CODE_COVERAGE "Enable coverage testing" OFF)
 set(DO_CODE_COVERAGE OFF)
 if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -50,6 +52,7 @@ add_executable(
 )
 
 target_compile_definitions(custom_parallel PRIVATE TEST_CUSTOM_PARALLEL)
+target_compile_options(custom_parallel PRIVATE -Wall -Wpedantic -Wextra)
 
 target_link_libraries(
     custom_parallel
@@ -78,6 +81,7 @@ if (OpenMP_FOUND)
         irlba
     )
 
+    target_compile_options(omptest PRIVATE -Wall -Wpedantic -Wextra)
     target_link_libraries(omptest OpenMP::OpenMP_CXX)
     gtest_discover_tests(omptest)
 

@@ -143,14 +143,14 @@ TEST_P(LanczosTester, Restart) {
     irlba::internal::LanczosWorkspace<Eigen::VectorXd, Eigen::MatrixXd> init2(A);
     irlba::internal::run_lanczos_bidiagonalization(A, W, V, B, eng, init2, 0, opt);
 
-    for (size_t i = 0; i < copyW.cols(); ++i) {
-        for (size_t j = 0; j < copyW.rows(); ++j) {
+    for (Eigen::Index i = 0; i < copyW.cols(); ++i) {
+        for (Eigen::Index j = 0; j < copyW.rows(); ++j) {
             EXPECT_FLOAT_EQ(copyW(j, i), W(j, i));
         }
     }
 
-    for (size_t i = 0; i < copyV.cols(); ++i) {
-        for (size_t j = 0; j < copyV.rows(); ++j) {
+    for (Eigen::Index i = 0; i < copyV.cols(); ++i) {
+        for (Eigen::Index j = 0; j < copyV.rows(); ++j) {
             EXPECT_FLOAT_EQ(copyV(j, i), V(j, i));
         }
     }

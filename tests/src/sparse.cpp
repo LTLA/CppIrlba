@@ -60,8 +60,8 @@ TEST_F(SparseTester, CenterScale) {
     expect_equal_column_vectors(res.V, res2.V);
 
     // Don't compare U, as this will always be zero.
-    for (size_t i = 0; i < res.U.cols(); ++i) {
-        for (size_t j = 0; j < res.U.rows(); ++j) {
+    for (Eigen::Index i = 0; i < res.U.cols(); ++i) {
+        for (Eigen::Index j = 0; j < res.U.rows(); ++j) {
             double labs = std::abs(res.U(j, i));
             double rabs = std::abs(res2.U(j, i));
             EXPECT_TRUE(same_same(labs, rabs, 1e-8));

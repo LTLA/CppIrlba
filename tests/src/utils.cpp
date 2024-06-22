@@ -30,7 +30,7 @@ TEST(UtilsTest, FillNormals) {
     }
     
     std::sort(test.begin(), test.end());
-    for (size_t v = 1; v < test.size(); ++v) {
+    for (Eigen::Index v = 1; v < test.size(); ++v) {
         EXPECT_NE(test[v], test[v-1]);
     }
 
@@ -44,7 +44,7 @@ TEST(UtilsTest, FillNormals) {
     }
 
     std::sort(test2.begin(), test2.end());
-    for (size_t v = 1; v < test2.size(); ++v) {
+    for (Eigen::Index v = 1; v < test2.size(); ++v) {
         EXPECT_NE(test2[v], test2[v-1]);
     }
 

@@ -45,7 +45,7 @@ TEST_P(InvariantTester, SingularCheck) {
     // Comparing the sum of squared singular values to the Frobenius norm;
     // they should be the same.
     double total_var = 0;
-    for (size_t r = 0; r < res.D.size(); ++r) {
+    for (Eigen::Index r = 0; r < res.D.size(); ++r) {
         total_var += res.D[r] * res.D[r];
     }
 
@@ -71,8 +71,8 @@ TEST_P(InvariantTester, Recovery) {
     ASSERT_EQ(recovered.rows(), A.rows());
     ASSERT_EQ(recovered.cols(), A.cols());
 
-    for (size_t c = 0; c < A.cols(); ++c) {
-        for (size_t r = 0; r < A.rows(); ++r) {
+    for (Eigen::Index c = 0; c < A.cols(); ++c) {
+        for (Eigen::Index r = 0; r < A.rows(); ++r) {
             same_same(recovered(r, c), A(r, c), 1e-8);
         }
     }

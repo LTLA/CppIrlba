@@ -190,7 +190,7 @@ private:
         my_primary_starts.resize(my_nthreads);
         my_primary_ends.resize(my_nthreads);
         {
-            size_t primary_counter = 0;
+            Eigen::Index primary_counter = 0;
             PointerType sofar = per_thread;
             for (int t = 0; t < my_nthreads; ++t) {
                 my_primary_starts[t] = primary_counter;
@@ -224,7 +224,7 @@ private:
                 sofar += per_thread;
             }
 
-            for (size_t c = 0; c < my_primary_dim; ++c) {
+            for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
                 auto primary_start = my_ptrs[c], primary_end = my_ptrs[c + 1];
                 my_secondary_nonzero_starts[0][c] = primary_start;
 
@@ -245,7 +245,7 @@ private:
         output.setZero();
 
         if (my_nthreads == 1) {
-            for (size_t c = 0; c < my_primary_dim; ++c) {
+            for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
                 auto start = my_ptrs[c];
                 auto end = my_ptrs[c + 1];
                 auto val = rhs.coeff(c);
@@ -267,7 +267,7 @@ private:
 
             const auto& starts = my_secondary_nonzero_starts[t];
             const auto& ends = my_secondary_nonzero_starts[t + 1];
-            for (size_t c = 0; c < my_primary_dim; ++c) {
+            for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
                 auto start = starts[c];
                 auto end = ends[c];
                 auto val = rhs.coeff(c);
@@ -288,7 +288,7 @@ private:
     template<class Right_, class EigenVector_>
     void direct_multiply(const Right_& rhs, EigenVector_& output) const {
         if (my_nthreads == 1) {
-            for (size_t c = 0; c < my_primary_dim; ++c) {
+            for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
                 output.coeffRef(c) = column_dot_product<typename EigenVector_::Scalar>(c, rhs);
             }
             return;
@@ -347,7 +347,7 @@ public:
 
 public:
     template<class Right_, class EigenVector_>
-    void multiply(const Right_& rhs, Workspace& work, EigenVector_& output) const {
+    void multiply(const Right_& rhs, [[maybe_unused]] Workspace& work, EigenVector_& output) const {
         if (my_column_major) {
             indirect_multiply(rhs, output);
         } else {
@@ -356,7 +356,7 @@ public:
     }
 
     template<class Right_, class EigenVector_>
-    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& output) const {
+    void adjoint_multiply(const Right_& rhs, [[maybe_unused]] AdjointWorkspace& work, EigenVector_& output) const {
         if (my_column_major) {
             direct_multiply(rhs, output);
         } else {
@@ -372,16 +372,16 @@ public:
         output.setZero();
 
         if (my_column_major) {
-            for (size_t c = 0; c < nc; ++c) {
-                size_t col_start = my_ptrs[c], col_end = my_ptrs[c + 1];
-                for (size_t s = col_start; s < col_end; ++s) {
+            for (Eigen::Index c = 0; c < nc; ++c) {
+                PointerType col_start = my_ptrs[c], col_end = my_ptrs[c + 1];
+                for (PointerType s = col_start; s < col_end; ++s) {
                     output.coeffRef(my_indices[s], c) = my_values[s];
                 }
             }
         } else {
-            for (size_t r = 0; r < nr; ++r) {
-                size_t row_start = my_ptrs[r], row_end = my_ptrs[r + 1];
-                for (size_t s = row_start; s < row_end; ++s) {
+            for (Eigen::Index r = 0; r < nr; ++r) {
+                PointerType row_start = my_ptrs[r], row_end = my_ptrs[r + 1];
+                for (PointerType s = row_start; s < row_end; ++s) {
                     output.coeffRef(r, my_indices[s]) = my_values[s];
                 }
             }
@@ -411,7 +411,7 @@ public:
     /**
      * @param n Number of threads to be used by Eigen.
      */
-    EigenThreadScope(int n) 
+    EigenThreadScope([[maybe_unused]] int n) 
 #ifdef _OPENMP
         : my_previous(Eigen::nbThreads()) {
 #ifndef IRLBA_CUSTOM_PARALLEL

@@ -102,7 +102,7 @@ TEST_P(IrlbaTester, CenterScale) {
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors<true>(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
-        for (size_t i = 0; i < res2.U.cols(); ++i) {
+        for (Eigen::Index i = 0; i < res2.U.cols(); ++i) {
             EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
         }    
     }
@@ -113,7 +113,7 @@ TEST_P(IrlbaTester, CenterScale) {
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors<true>(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
-        for (size_t i = 0; i < res2.U.cols(); ++i) {
+        for (Eigen::Index i = 0; i < res2.U.cols(); ++i) {
             EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
         }    
         EXPECT_NE(ref.D, res2.D);
@@ -193,7 +193,7 @@ TEST(IrlbaTest, SmallExactCenterScale) {
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
-        for (size_t i = 0; i < res2.U.cols(); ++i) {
+        for (Eigen::Index i = 0; i < res2.U.cols(); ++i) {
             EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
         }    
     }
@@ -204,7 +204,7 @@ TEST(IrlbaTest, SmallExactCenterScale) {
         expect_equal_vectors(res.D, res2.D);
         expect_equal_column_vectors(res.U, res2.U);
         expect_equal_column_vectors(res.V, res2.V);
-        for (size_t i = 0; i < res2.U.cols(); ++i) {
+        for (Eigen::Index i = 0; i < res2.U.cols(); ++i) {
             EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
         }    
         EXPECT_NE(ref.D, res2.D);

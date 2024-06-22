@@ -13,8 +13,8 @@ void expect_equal_column_vectors(const Eigen::MatrixXd& left, const Eigen::Matri
     ASSERT_EQ(left.cols(), right.cols());
     ASSERT_EQ(left.rows(), right.rows());
 
-    for (size_t i = 0; i < left.cols(); ++i) {
-        for (size_t j = 0; j < left.rows(); ++j) {
+    for (Eigen::Index i = 0; i < left.cols(); ++i) {
+        for (Eigen::Index j = 0; j < left.rows(); ++j) {
             EXPECT_TRUE(same_same(std::abs(left(j, i)), std::abs(right(j, i)), tol));
         }
 
@@ -33,8 +33,8 @@ void expect_equal_column_vectors(const Eigen::MatrixXd& left, const Eigen::Matri
 inline void expect_equal_matrix(const Eigen::MatrixXd& left, const Eigen::MatrixXd& right, double tol=1e-8) {
     ASSERT_EQ(left.cols(), right.cols());
     ASSERT_EQ(left.rows(), right.rows());
-    for (size_t i = 0; i < left.cols(); ++i) {
-        for (size_t j = 0; j < left.rows(); ++j) {
+    for (Eigen::Index i = 0; i < left.cols(); ++i) {
+        for (Eigen::Index j = 0; j < left.rows(); ++j) {
             EXPECT_TRUE(same_same(left(j, i), right(j, i), tol));
         }
     }
@@ -42,7 +42,7 @@ inline void expect_equal_matrix(const Eigen::MatrixXd& left, const Eigen::Matrix
 
 inline void expect_equal_vectors(const Eigen::VectorXd& left, const Eigen::VectorXd& right, double tol=1e-8) {
     ASSERT_EQ(left.size(), right.size());
-    for (size_t i = 0; i < left.size(); ++i) {
+    for (Eigen::Index i = 0; i < left.size(); ++i) {
         EXPECT_TRUE(same_same(left[i], right[i], tol));
     }
     return;
