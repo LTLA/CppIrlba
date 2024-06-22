@@ -22,8 +22,8 @@ option(IRLBA_FETCH_EXTERN "Automatically fetch CppIrlba's dependencies." ON)
 if(IRLBA_FETCH_EXTERN)
     add_subdirectory(extern)
 else()
-    find_package(Eigen3 CONFIG REQUIRED)
-    find_package(ltla_aarand CONFIG REQUIRED)
+    find_package(Eigen3 3.4.0 CONFIG REQUIRED)
+    find_package(ltla_aarand 1.0.0 CONFIG REQUIRED)
 endif()
 
 target_link_libraries(irlba INTERFACE Eigen3::Eigen ltla::aarand)
@@ -57,5 +57,10 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/ltla_irlbaConfig.cmake"
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_irlba)
 
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/ltla_irlbaConfigVersion.cmake"
+    COMPATIBILITY SameMajorVersion)
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ltla_irlbaConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ltla_irlbaConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_irlba)
