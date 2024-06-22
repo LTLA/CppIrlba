@@ -258,7 +258,7 @@ private:
 
 #ifndef IRLBA_CUSTOM_PARALLEL
 #ifdef _OPENMP
-        #pragma omp parallel for num_threads(nthreads)
+        #pragma omp parallel for num_threads(my_nthreads)
 #endif
         for (int t = 0; t < my_nthreads; ++t) {
 #else
@@ -296,7 +296,7 @@ private:
 
 #ifndef IRLBA_CUSTOM_PARALLEL
 #ifdef _OPENMP
-        #pragma omp parallel for num_threads(nthreads)
+        #pragma omp parallel for num_threads(my_nthreads)
 #endif
         for (int t = 0; t < my_nthreads; ++t) {
 #else
