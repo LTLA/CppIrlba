@@ -79,6 +79,11 @@ public:
      * This can be reused across multiple `multiply()` calls.
      * @param[out] out The output vector to store the matrix product.
      * This is filled with the product of this matrix and `rhs`.
+     *
+     * This method will be called without any explicit template arguments, 
+     * so implementations do not need to use the same number/order of template parameters. 
+     * `EigenVector_` may also be a template parameter of the class rather than the method,
+     * depending on what is most convenient for defining the associated `Workspace`.
      */
     template<class Right_, class EigenVector_>
     void multiply(const Right_& rhs, Workspace& work, EigenVector_& out) const {
@@ -94,9 +99,14 @@ public:
      * This can be reused across multiple `adjoint_multiply()` calls.
      * @param[out] out The output vector to store the matrix product.
      * This is filled with the product of the transpose of this matrix and `rhs`.
+     *
+     * This method will be called without any explicit template arguments, 
+     * so implementations do not need to use the same number/order of template parameters. 
+     * `EigenVector_` may also be a template parameter of the class rather than the method.
+     * depending on what is most convenient for defining the associated `AdjointWorkspace`.
      */
-    template<class Right_, class EigenVector2_>
-    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector2_& out) const {
+    template<class Right_, class EigenVector_>
+    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& out) const {
         out.noalias() = my_x.adjoint() * rhs;
     }
 
@@ -105,9 +115,9 @@ public:
      * @return A realized version of the centered matrix,
      * where the centering has been explicitly applied.
      */
-    template<class EigenMatrix_ = Eigen::MatrixXd>
+    template<class EigenMatrix_>
     EigenMatrix_ realize() const {
-        return wrapped_realize<EigenMatrix_>(mat);
+        return EigenMatrix_(my_x);
     }
 };
 

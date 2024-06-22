@@ -10,14 +10,22 @@
 
 namespace irlba {
 
+namespace internal {
+
+template<class EigenMatrix_, class EigenVector_>
+void orthogonalize_vector(const EigenMatrix_& mat, EigenVector_& vec, size_t ncols, EigenVector_& tmp) {
+    tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
+    vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
+}
+
 template<class EigenVector_, class Matrix_>
 struct LanczosWorkspace {
     LanczosWorkspace(const Matrix_& mat) : 
         F(mat.cols()), 
         W_next(mat.rows()), 
         orthog_tmp(mat.cols()), 
-        work(wrapped_workspace(&mat)),
-        awork(wrapped_adjoint_workspace(&mat)) 
+        work(wrapped_workspace(mat)),
+        awork(wrapped_adjoint_workspace(mat))
     {}
 
 public:
@@ -62,7 +70,7 @@ void run_lanczos_bidiagonalization(
     auto& otmp = inter.orthog_tmp;
 
     F = V.col(start);
-    wrapped_multiply(&mat, F, inter.work, W_next); // i.e., W_next = mat * F;
+    wrapped_multiply(mat, F, inter.work, W_next); // i.e., W_next = mat * F;
 
     // If start = 0, there's nothing to orthogonalize against.
     if (start) {
@@ -78,7 +86,7 @@ void run_lanczos_bidiagonalization(
 
     // The Lanczos iterations themselves, see algorithm 2.1 of Baglama and Reichel.
     for (Eigen::Index j = start; j < work; ++j) {
-        wrapped_adjoint_multiply(&mat, W.col(j), inter.awork, F); // i.e., F = mat.adjoint() * W.col(j);
+        wrapped_adjoint_multiply(mat, W.col(j), inter.awork, F); // i.e., F = mat.adjoint() * W.col(j);
 
         F -= S * V.col(j); // equivalent to daxpy.
         orthogonalize_vector(V, F, j + 1, otmp);
@@ -100,7 +108,7 @@ void run_lanczos_bidiagonalization(
             B(j, j) = S;
             B(j, j + 1) = R_F;
 
-            wrapped_multiply(&mat, F, inter.work, W_next); // i.e., W_next = mat * F;
+            wrapped_multiply(mat, F, inter.work, W_next); // i.e., W_next = mat * F;
             W_next -= R_F * W.col(j); // equivalent to daxpy.
 
             // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
@@ -128,6 +136,8 @@ void run_lanczos_bidiagonalization(
             B(j, j) = S;
         }
     }
+}
+
 }
 
 }

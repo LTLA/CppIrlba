@@ -3,6 +3,7 @@
 
 #include "utils.hpp"
 #include "Eigen/Dense"
+#include <type_traits>
 
 /**
  * @file wrappers.hpp
@@ -11,282 +12,300 @@
 
 namespace irlba {
 
+// This painful setup for the workspaces is because std::conditional requires
+// both options to be valid types, so we can't just make a conditional to
+// extract Matrix_::(Adjoint)Workspace for non-Eigen matrices (as this won't be
+// valid for Eigen matrices that lack the typedef).
+
+/**
+ * @brief Get the type of workspace for `wrapped_multiply()`.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface.
+ */
+template<class Matrix_, typename = int>
+struct get_workspace {
+    /**
+     * Alias for the workspace type.
+     */
+    typedef typename Matrix_::Workspace type;
+};
+
+/**
+ * @brief Get the type of workspace for `wrapped_multiply()`.
+ * @tparam Matrix_ A floating-point `Eigen::Matrix` class.
+ * This is detected based on the presence of an `Index` typedef.
+ */
+template<class Matrix_>
+struct get_workspace<Matrix_, decltype((void) std::declval<typename Matrix_::Index>(), 0)> {
+    /**
+     * Placeholder boolean.
+     */
+    typedef bool type;
+};
+
+/**
+ * Type of workspace for `wrapped_multiply()`.
+ * This can be used to satisfy the `MockMatrix::Workspace` interface,
+ * either directly or as a component of a larger workspace class.
+ *
+ * @tparam Matrix_ A floating-point `Eigen::Matrix` class, or a class satisfying the `MockMatrix` interface.
+ */
+template<class Matrix_>
+using WrappedWorkspace = typename get_workspace<Matrix_>::type;
+
+/**
+ * @tparam Matrix_ A floating-point `Eigen::Matrix` class, or a class satisfying the `MockMatrix` interface.
+ * @param matrix Instance of a matrix.
+ * @return Workspace to use in `multiply()`.
+ */
+template<class Matrix_>
+WrappedWorkspace<Matrix_> wrapped_workspace(const Matrix_& matrix) {
+    if constexpr(std::is_same<WrappedWorkspace<Matrix_>, bool>::value) {
+        return false;
+    } else {
+        return matrix.workspace();
+    }
+}
+
+/**
+ * @brief Get the type of workspace for `wrapped_adjoint_multiply()`.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface.
+ */
+template<class Matrix_, typename = int>
+struct get_adjoint_workspace {
+    /**
+     * Alias for the workspace type.
+     */
+    typedef typename Matrix_::AdjointWorkspace type;
+};
+
+/**
+ * @brief Get the type of workspace for `wrapped_adjoint_multiply()`.
+ * @tparam Matrix_ A floating-point `Eigen::Matrix` class.
+ * This is detected based on the presence of an `Index` typedef.
+ */
+template<class Matrix_>
+struct get_adjoint_workspace<Matrix_, decltype((void) std::declval<typename Matrix_::Index>(), 0)> {
+    /**
+     * Placeholder boolean.
+     */
+    typedef bool type;
+};
+
+/**
+ * Type of workspace for `wrapped_adjoint_multiply()`.
+ * This can be used to satisfy the `MockMatrix::AdjointWorkspace` interface,
+ * either directly or as a component of a larger workspace class.
+ *
+ * @tparam Matrix_ A floating-point `Eigen::Matrix` class, or a class satisfying the `MockMatrix` interface.
+ */
+template<class Matrix_>
+using WrappedAdjointWorkspace = typename get_adjoint_workspace<Matrix_>::type;
+
+/**
+ * @tparam Matrix_ A floating-point `Eigen::Matrix` class, or a class satisfying the `MockMatrix` interface.
+ * @param matrix Instance of a matrix.
+ * @return Workspace to use in `adjoint_multiply()`.
+ */
+template<class Matrix_>
+WrappedAdjointWorkspace<Matrix_> wrapped_adjoint_workspace(const Matrix_& matrix) {
+    if constexpr(std::is_same<WrappedAdjointWorkspace<Matrix_>, bool>::value) {
+        return false;
+    } else {
+        return matrix.adjoint_workspace();
+    }
+}
+
 /**
  * @cond
  */
+namespace internal {
+
 template<class Matrix_, typename = int>
-struct WrappedWorkspaceInternal {
-    typedef bool type;
+struct is_eigen {
+    static constexpr bool value = false;
 };
 
 template<class Matrix_>
-struct WrappedWorkspaceInternal<Matrix_, decltype((void) std::declval<Matrix_>().workspace(), 0)> {
-    typedef decltype(std::declval<Matrix_>().workspace()) type;
+struct is_eigen<Matrix_, decltype((void) std::declval<typename Matrix_::Index>(), 0)> {
+    static constexpr bool value = true;
 };
 
-template<class Matrix_, typename = int>
-struct WrappedAdjointWorkspaceInternal {
-    typedef bool type;
-};
-
-template<class Matrix_>
-struct WrappedAdjointWorkspaceInternal<Matrix_, decltype((void) std::declval<Matrix_>().adjoint_workspace(), 0)> {
-    typedef decltype(std::declval<Matrix_>().adjoint_workspace()) type;
-};
+}
 /**
  * @endcond
  */
 
 /**
- * @tparam Matrix_ Type of the underlying matrix in the wrapper.
- *
- * This type is equivalent to the workspace class of `Matrix_`, or a placeholder boolean if `Matrix_` is an Eigen class.
- */
-template<class Matrix_>
-using WrappedWorkspace = typename WrappedWorkspaceInternal<Matrix_>::type;
-
-/**
- * @tparam Matrix_ Type of the underlying matrix in the wrapper.
- *
- * This type is equivalent to the adjoint workspace class of `Matrix_`, or a placeholder boolean if `Matrix_` is an Eigen class.
- */
-template<class Matrix_>
-using WrappedAdjointWorkspace = typename WrappedAdjointWorkspaceInternal<Matrix_>::type;
-
-/**
- * @tparam Matrix_ Type of the underlying matrix in the wrapper.
- * @param mat Pointer to the wrapped matrix instance.
- * @return The workspace of `mat`, or `false` if `Matrix_` is an **Eigen** class.
- */
-template<class Matrix_>
-WrappedWorkspace<Matrix_> wrapped_workspace(const Matrix_* mat) {
-    if constexpr(has_multiply_method<Matrix_>::value) { // using this as a proxy for whether it's an Eigen matrix or not.
-        return false;
-    } else {
-        return mat->workspace();
-    }
-}
-
-/**
- * @tparam Matrix_ Type of the underlying matrix in the wrapper.
- * @param mat Pointer to the wrapped matrix instance.
- * @return The adjoint workspace of `mat`, or `false` if `Matrix_` is an **Eigen** class.
- */
-template<class Matrix_>
-WrappedAdjointWorkspace<Matrix_> wrapped_adjoint_workspace(const Matrix_* mat) {
-    if constexpr(has_adjoint_multiply_method<Matrix_>::value) {
-        return false;
-    } else {
-        return mat->adjoint_workspace();
-    }
-}
-
-/**
- * @tparam Matrix_ Type of the wrapped matrix.
- * @tparam Right_ An `Eigen::Vector` or equivalent expression.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `EigenMatrix`.
+ * @tparam Right_ A floating-point `Eigen::Vector` or equivalent expression.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class.
  *
- * @param[in] mat Pointer to the wrapped matrix instance.
+ * @param[in] matrix Pointer to the wrapped matrix instance.
  * @param[in] rhs The right-hand side of the matrix product.
- * @param work The return value of `wrapped_workspace()` on `mat`.
+ * @param work Workspace for the matrix multiplication.
  * @param[out] out The output vector to store the matrix product.
  * This is filled with the product of this matrix and `rhs`.
  */
 template<class Matrix_, class Right_, class EigenVector_>
-void wrapped_multiply(const Matrix_* mat, const Right_& rhs, WrappedWorkspace<Matrix_>& work, EigenVector_& out) {
-    if constexpr(has_multiply_method<Matrix_>::value) {
-        out.noalias() = *mat * rhs;
+void wrapped_multiply(const Matrix_& matrix, const Right_& rhs, WrappedWorkspace<Matrix_>& work, EigenVector_& out) {
+    if constexpr(internal::is_eigen<Matrix_>::value) {
+        out.noalias() = matrix * rhs;
     } else {
-        mat->multiply(rhs, work, out);
+        matrix.multiply(rhs, work, out);
     }
 }
 
 /**
- * @tparam Matrix_ Type of the wrapped matrix.
- * @tparam Right_ An `Eigen::Vector` or equivalent expression.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `EigenMatrix`.
+ * @tparam Right_ A floating-point `Eigen::Vector` or equivalent expression.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class
  *
- * @param[in] mat Poitner to the wrapped matrix instance.
+ * @param[in] mat Pointer to the wrapped matrix instance.
  * @param[in] rhs The right-hand side of the matrix product.
- * @param work The return value of `wrapped_adjoint_workspace()` on `mat`.
+ * @param work Workspace for the adjoint matrix multiplication.
  * @param[out] out The output vector to store the matrix product.
  * This is filled with the product of this matrix and `rhs`.
  */
 template<class Matrix_, class Right_, class EigenVector_>
-void wrapped_adjoint_multiply(const Matrix_* mat, const Right_& rhs, WrappedAdjointWorkspace<Matrix_>& work, EigenVector_& out) {
-    if constexpr(has_adjoint_multiply_method<Matrix_>::value) {
-        out.noalias() = mat->adjoint() * rhs;
+void wrapped_adjoint_multiply(const Matrix_& matrix, const Right_& rhs, WrappedAdjointWorkspace<Matrix_>& work, EigenVector_& out) {
+    if constexpr(internal::is_eigen<Matrix_>::value) {
+        out.noalias() = matrix.adjoint() * rhs;
     } else {
-        mat->adjoint_multiply(rhs, work, out);
+        matrix.adjoint_multiply(rhs, work, out);
     }
 }
 
 /**
- * @tparam EigenMatrix_ Type of the output `Eigen::Matrix` of floats.
- * @tparam Matrix_ Type of the wrapped matrix.
- * @param[in] mat Pointer to the wrapped matrix instance.
+ * @tparam EigenMatrix_ A floating-point `Eigen::Matrix`.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @param[in] matrix Pointer to the wrapped matrix instance.
  * @return A dense **Eigen** matrix containing the realized contents of `mat`.
  */
-template<class EigenMatrix_ = Eigen::MatrixXd, class Matrix_>
-EigenMatrix_ wrapped_realize(const Matrix_* mat) {
-    if constexpr(has_realize_method<Matrix_>::value) {
-        return mat->realize();
+template<class EigenMatrix_, class Matrix_>
+EigenMatrix_ wrapped_realize(const Matrix_& matrix) {
+    if constexpr(internal::is_eigen<Matrix_>::value) {
+        return EigenMatrix_(matrix);
     } else {
-        return EigenMatrix_(*mat);
+        return matrix.realize();
     }
 }
 
 /**
  * @brief Wrapper for a centered matrix.
  *
- * @tparam Matrix_ An **Eigen** matrix class - or alternatively, a wrapper class around such a class.
- * @tparam EigenVector_ An `Eigen::Vector` class.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the column centers and matrix-vector product.
  * 
  * This modification involves centering all columns, i.e., subtracting the mean of each column from the values of that column.
  * Naively doing such an operation would involve loss of sparsity, which we avoid by deferring the subtraction into the subspace defined by `rhs`.
  */
-template<class Matrix_, class EigenVector_ = Eigen::VectorXd>
-struct Centered {
+template<class Matrix_, class EigenVector_>
+class Centered {
+public:
     /**
-     * @param m Underlying matrix to be column-centered.
-     * @param c Vector of length equal to the number of columns of `m`,
+     * @param matrix Matrix to be column-centered.
+     * @param center Vector of length equal to the number of columns of `matrix`,
      * containing the value to subtract from each column.
      */
-    Centered(const Matrix_* m, const EigenVector_* c) : mat(m), center(c) {}
+    Centered(const Matrix_& matrix, const EigenVector_& center) : my_matrix(matrix), my_center(center) {}
 
     /**
-     * @return Number of rows in the matrix.
+     * @cond
      */
-    Eigen::Index rows() const { return mat->rows(); }
+public:
+    Eigen::Index rows() const { return my_matrix.rows(); }
 
-    /**
-     * @return Number of columns in the matrix.
-     */
-    Eigen::Index cols() const { return mat->cols(); }
+    Eigen::Index cols() const { return my_matrix.cols(); }
 
 public:
-    /**
-     * Workspace type for `multiply()`.
-     * Currently, this is just an alias for the workspace type of the underlying matrix.
-     */
     typedef WrappedWorkspace<Matrix_> Workspace;
 
-    /**
-     * @return Workspace for use in `multiply()`.
-     */
     Workspace workspace() const {
-        return wrapped_workspace(mat);
+        return wrapped_workspace(my_matrix);
     }
 
-    /**
-     * Workspace type for `adjoint_multiply()`.
-     * Currently, this is just an alias for the adjoint workspace type of the underlying matrix.
-     */
     typedef WrappedAdjointWorkspace<Matrix_> AdjointWorkspace;
 
-    /**
-     * @return Workspace for use in `adjoint_multiply()`.
-     */
     AdjointWorkspace adjoint_workspace() const {
-        return wrapped_adjoint_workspace(mat);
+        return wrapped_adjoint_workspace(my_matrix);
     }
 
 public:
-    /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
-     *
-     * @param[in] rhs The right-hand side of the matrix product.
-     * @param work The return value of `workspace()`.
-     * This can be reused across multiple `multiply()` calls.
-     * @param[out] out The output vector to store the matrix product.
-     * This is filled with the product of this matrix and `rhs`.
-     */
-    template<class Right_, class EigenVector2_>
-    void multiply(const Right_& rhs, Workspace& work, EigenVector2_& out) const {
-        wrapped_multiply(mat, rhs, work, out);
-        auto beta = rhs.dot(*center);
+    template<class Right_>
+    void multiply(const Right_& rhs, Workspace& work, EigenVector_& out) const {
+        wrapped_multiply(my_matrix, rhs, work, out);
+        auto beta = rhs.dot(my_center);
         for (auto& o : out) {
             o -= beta;
         }
         return;
     }
 
-    /**
-     * @tparam Right An `Eigen::VectorXd` or equivalent expression.
-     *
-     * @param[in] rhs The right-hand side of the matrix product.
-     * @param work The return value of `adjoint_workspace()`.
-     * This can be reused across multiple `adjoint_multiply()` calls.
-     * @param[out] out The output vector to store the matrix product.
-     * This is filled with the product of the transpose of this matrix and `rhs`.
-     */
-    template<class Right_, class EigenVector2_>
-    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector2_& out) const {
-        wrapped_adjoint_multiply(mat, rhs, work, out);
+    template<class Right_>
+    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& out) const {
+        wrapped_adjoint_multiply(my_matrix, rhs, work, out);
         auto beta = rhs.sum();
-        out -= beta * (*center);
+        out -= beta * (my_center);
         return;
     }
 
-    /**
-     * @return A realized version of the centered matrix,
-     * where the centering has been explicitly applied.
-     */
-    template<class EigenMatrix_ = Eigen::MatrixXd>
+    template<class EigenMatrix_>
     Eigen::MatrixXd realize() const {
-        auto output = wrapped_realize<EigenMatrix_>(mat);
-        for (Eigen::Index c = 0; c < output.cols(); ++c) {
-            for (Eigen::Index r = 0; r < output.rows(); ++r) {
-                output(r, c) -= (*center)[c];
+        auto output = wrapped_realize<EigenMatrix_>(my_matrix);
+        auto nc = output.cols(), nr = output.rows();
+        for (Eigen::Index c = 0; c < nc; ++c) {
+            for (Eigen::Index r = 0; r < nr; ++r) {
+                output(r, c) -= my_center[c];
             }
         }
         return output;
     }
+    /**
+     * @endcond
+     */
 
 private:
-    const Matrix_* mat;
-    const EigenVector_* center;
+    const Matrix_& my_matrix;
+    const EigenVector_& my_center;
 };
 
 /**
  * @brief Wrapper for a scaled matrix.
  *
- * @tparam Matrix_ The underlying **Eigen** matrix class - or alternatively, a wrapper class around such a class.
- * @tparam column_ Whether to scale the columns.
+ * @param by_column_ Whether to scale the columns.
  * If `false`, scaling is applied to the rows instead.
- * @tparam divide_ Whether to divide by the supplied scaling factors.
+ * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the scaling factors and matrix-vector product.
  * 
  * This modification involves scaling all rows or columns, i.e., multiplying or dividing the values of each row/column by some arbitrary value.
  * For example, we can use this to divide each column by the standard deviation to achieve unit variance in principal components analyses.
  * Naively doing such an operation would involve a copy of the matrix, which we avoid by deferring the scaling into the subspace defined by `rhs`.
  */
-template<class Matrix_, bool column_ = true, bool divide_ = true, class EigenVector_ = Eigen::VectorXd>
-struct Scaled {
-    /**
-     * @param m Underlying matrix to be column-scaled (if `column_ = true`) or row-scaled (otherwise).
-     * @param s Vector of length equal to the number of columns (if `column_ = true`) or rows (otherwise) of `m`,
-     * containing the scaling factor to divide (if `divide_ = true`) or multiply (otherwise) to each column/row.
-     */
-    Scaled(const Matrix_* m, const EigenVector_* s) : mat(m), scale(s) {}
-
-    /**
-     * @cond
-     */
-    Eigen::Index rows() const { return mat->rows(); }
-
-    Eigen::Index cols() const { return mat->cols(); }
-    /**
-     * @endcond
-     */
-
+template<bool column_, class Matrix_, class EigenVector_>
+class Scaled {
 public:
     /**
+     * @param matrix Underlying matrix to be column-scaled (if `by_column_ = true`) or row-scaled (otherwise).
+     * @param scale Vector of length equal to the number of columns (if `by_column_ = true`) or rows (otherwise) of `m`,
+     * containing the scaling factor to divide (if `divide = true`) or multiply (otherwise) to each column/row.
+     * @param divide Whether to divide by the supplied scaling factors.
+     */
+    Scaled(const Matrix_& matrix, const EigenVector_& scale, bool divide) : 
+        my_matrix(matrix), my_scale(scale), my_divide(divide) {}
+
+    /**
      * @cond
      */
+public:
+    Eigen::Index rows() const { return my_matrix.rows(); }
+
+    Eigen::Index cols() const { return my_matrix.cols(); }
+
+public:
     template<template<class> class Wrapper_>
     struct BufferedWorkspace {
         BufferedWorkspace(size_t n, Wrapper_<Matrix_> c) : buffer(n), child(std::move(c)) {}
-        Eigen::VectorXd buffer;
+        EigenVector_ buffer;
         Wrapper_<Matrix_> child;
     };
 
@@ -294,9 +313,9 @@ public:
 
     Workspace workspace() const {
         if constexpr(column_) {
-            return BufferedWorkspace<WrappedWorkspace>(mat->cols(), wrapped_workspace(mat));
+            return BufferedWorkspace<WrappedWorkspace>(my_matrix.cols(), wrapped_workspace(my_matrix));
         } else {
-            return wrapped_workspace(mat);
+            return wrapped_workspace(my_matrix);
         }
     }
 
@@ -304,80 +323,87 @@ public:
 
     AdjointWorkspace adjoint_workspace() const {
         if constexpr(column_) {
-            return wrapped_adjoint_workspace(mat);
+            return wrapped_adjoint_workspace(my_matrix);
         } else {
-            return BufferedWorkspace<WrappedAdjointWorkspace>(mat->rows(), wrapped_adjoint_workspace(mat));
+            return BufferedWorkspace<WrappedAdjointWorkspace>(my_matrix.rows(), wrapped_adjoint_workspace(my_matrix));
         }
     }
-    /**
-     * @endcond
-     */
 
 public:
-    /**
-     * @cond
-     */
-    template<class Right_, class EigenVector2_>
-    void multiply(const Right_& rhs, Workspace& work, EigenVector2_& out) const {
+    template<class Right_>
+    void multiply(const Right_& rhs, Workspace& work, EigenVector_& out) const {
         if constexpr(column_) {
-            if constexpr(divide_) {
+            if (my_divide) {
                 // We store the result here, because the underlying matrix's multiply()
                 // might need to access rhs/scale multiple times, especially if it's
                 // parallelized. Better to pay the cost of accessing a separate memory
                 // space than computing the quotient repeatedly.
-                work.buffer = rhs.cwiseQuotient(*scale);
+                work.buffer = rhs.cwiseQuotient(my_scale);
             } else {
-                work.buffer = rhs.cwiseProduct(*scale);
+                work.buffer = rhs.cwiseProduct(my_scale);
             }
-            wrapped_multiply(mat, work.buffer, work.child, out);
+            wrapped_multiply(my_matrix, work.buffer, work.child, out);
 
         } else {
-            wrapped_multiply(mat, rhs, work, out);
-            if constexpr(divide_) {
-                out.array() /= scale->array();
+            wrapped_multiply(my_matrix, rhs, work, out);
+            if (my_divide) {
+                out.array() /= my_scale.array();
             } else {
-                out.array() *= scale->array();
+                out.array() *= my_scale.array();
             }
         }
     }
 
-    template<class Right_, class EigenVector2_>
-    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector2_& out) const {
+    template<class Right_>
+    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& out) const {
         if constexpr(column_) {
-            wrapped_adjoint_multiply(mat, rhs, work, out);
-            if constexpr(divide_) {
-                out.array() /= scale->array();
+            wrapped_adjoint_multiply(my_matrix, rhs, work, out);
+            if (my_divide) {
+                out.array() /= my_scale.array();
             } else {
-                out.array() *= scale->array();
+                out.array() *= my_scale.array();
             }
 
         } else {
-            if constexpr(divide_) {
-                work.buffer = rhs.cwiseQuotient(*scale);
+            if (my_divide) {
+                work.buffer = rhs.cwiseQuotient(my_scale);
             } else {
-                work.buffer = rhs.cwiseProduct(*scale);
+                work.buffer = rhs.cwiseProduct(my_scale);
             }
-            wrapped_adjoint_multiply(mat, work.buffer, work.child, out);
+            wrapped_adjoint_multiply(my_matrix, work.buffer, work.child, out);
         }
     }
 
-    template<class EigenMatrix_ = Eigen::MatrixXd>
+    template<class EigenMatrix_>
     EigenMatrix_ realize() const {
-        auto output = wrapped_realize<EigenMatrix_>(mat);
+        auto output = wrapped_realize<EigenMatrix_>(my_matrix);
+        auto nc = output.cols(), nr = output.rows();
 
-        for (Eigen::Index c = 0; c < output.cols(); ++c) {
-            for (Eigen::Index r = 0; r < output.rows(); ++r) {
-                if constexpr(column_) {
-                    if constexpr(divide_) {
-                        output(r, c) /= (*scale)[c];
-                    } else {
-                        output(r, c) *= (*scale)[c];
+        if constexpr(column_) {
+            if (my_divide) {
+                for (Eigen::Index c = 0; c < nc; ++c) {
+                    for (Eigen::Index r = 0; r < nr; ++r) {
+                        output(r, c) /= my_scale[c];
                     }
-                } else {
-                    if constexpr(divide_) {
-                        output(r, c) /= (*scale)[r];
-                    } else {
-                        output(r, c) *= (*scale)[r];
+                }
+            } else {
+                for (Eigen::Index c = 0; c < nc; ++c) {
+                    for (Eigen::Index r = 0; r < nr; ++r) {
+                        output(r, c) *= my_scale[c];
+                    }
+                }
+            }
+        } else {
+            if (my_divide) {
+                for (Eigen::Index c = 0; c < nc; ++c) {
+                    for (Eigen::Index r = 0; r < nr; ++r) {
+                        output(r, c) /= my_scale[r];
+                    }
+                }
+            } else {
+                for (Eigen::Index c = 0; c < nc; ++c) {
+                    for (Eigen::Index r = 0; r < nr; ++r) {
+                        output(r, c) *= my_scale[r];
                     }
                 }
             }
@@ -390,8 +416,9 @@ public:
      */
 
 private:
-    const Matrix_* mat;
-    const EigenVector_* scale;
+    const Matrix_& my_matrix;
+    const EigenVector_& my_scale;
+    bool my_divide;
 };
 
 }
