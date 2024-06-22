@@ -23,7 +23,7 @@ add_executable(
 #    src/invariant.cpp
     src/MockMatrix.cpp
     src/wrappers.cpp
-#    src/parallel.cpp
+    src/parallel.cpp
 )
 
 target_link_libraries(

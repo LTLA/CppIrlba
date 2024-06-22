@@ -19,7 +19,7 @@ namespace irlba {
 
 /**
  * @brief Get the type of workspace for `wrapped_multiply()`.
- * @tparam Matrix_ Class satifying the `MockMatrix` interface.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface.
  */
 template<class Matrix_, typename = int>
 struct get_workspace {
@@ -68,7 +68,7 @@ WrappedWorkspace<Matrix_> wrapped_workspace(const Matrix_& matrix) {
 
 /**
  * @brief Get the type of workspace for `wrapped_adjoint_multiply()`.
- * @tparam Matrix_ Class satifying the `MockMatrix` interface.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface.
  */
 template<class Matrix_, typename = int>
 struct get_adjoint_workspace {
@@ -136,7 +136,7 @@ struct is_eigen<Matrix_, decltype((void) std::declval<typename Matrix_::Index>()
  */
 
 /**
- * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `EigenMatrix`.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `EigenMatrix`.
  * @tparam Right_ A floating-point `Eigen::Vector` or equivalent expression.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class.
  *
@@ -156,7 +156,7 @@ void wrapped_multiply(const Matrix_& matrix, const Right_& rhs, WrappedWorkspace
 }
 
 /**
- * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `EigenMatrix`.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `EigenMatrix`.
  * @tparam Right_ A floating-point `Eigen::Vector` or equivalent expression.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class
  *
@@ -177,7 +177,7 @@ void wrapped_adjoint_multiply(const Matrix_& matrix, const Right_& rhs, WrappedA
 
 /**
  * @tparam EigenMatrix_ A floating-point `Eigen::Matrix`.
- * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
  * @param[in] matrix Pointer to the wrapped matrix instance.
  * @return A dense **Eigen** matrix containing the realized contents of `mat`.
  */
@@ -193,11 +193,13 @@ EigenMatrix_ wrapped_realize(const Matrix_& matrix) {
 /**
  * @brief Wrapper for a centered matrix.
  *
- * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the column centers and matrix-vector product.
  * 
- * This modification involves centering all columns, i.e., subtracting the mean of each column from the values of that column.
+ * This class computes the matrix-vector product after centering all columns in `Matrix_`, i.e., subtracting the mean of each column from the values of that column.
  * Naively doing such an operation would involve loss of sparsity, which we avoid by deferring the subtraction into the subspace defined by `rhs`.
+ *
+ * This class satisfies the `MockMatrix` interface and implements all of its methods/typedefs.
  */
 template<class Matrix_, class EigenVector_>
 class Centered {
@@ -274,12 +276,14 @@ private:
  *
  * @param by_column_ Whether to scale the columns.
  * If `false`, scaling is applied to the rows instead.
- * @tparam Matrix_ Class satifying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the scaling factors and matrix-vector product.
  * 
- * This modification involves scaling all rows or columns, i.e., multiplying or dividing the values of each row/column by some arbitrary value.
+ * This class computes the matrix-vector product after scaling all rows or columns in `Matrix_`, i.e., multiplying or dividing the values of each row/column by some arbitrary value.
  * For example, we can use this to divide each column by the standard deviation to achieve unit variance in principal components analyses.
  * Naively doing such an operation would involve a copy of the matrix, which we avoid by deferring the scaling into the subspace defined by `rhs`.
+ *
+ * This class satisfies the `MockMatrix` interface and implements all of its methods/typedefs.
  */
 template<bool column_, class Matrix_, class EigenVector_>
 class Scaled {
