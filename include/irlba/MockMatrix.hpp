@@ -11,7 +11,7 @@
 namespace irlba {
 
 /**
- * @brief Interface for a matrix to use in `irlba::compute()`.
+ * @brief Interface for a matrix to use in `compute()`.
  *
  * Defines a compile-time interface for a matrix input to IRLBA.
  * This should mainly provide methods for multiplication with a vector.

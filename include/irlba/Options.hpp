@@ -46,7 +46,7 @@ struct Options {
      * Maximum number of restart iterations.
      * Larger values improve the chance of convergence.
      */
-    int maxit = 1000;
+    int max_iterations = 1000;
 
     /**
      * Whether to perform an exact SVD if the matrix is too small (fewer than 6 elements in any dimension).
@@ -70,6 +70,12 @@ struct Options {
      * Seed for the creation of random vectors, primarily during initialization of the IRLBA algorithm.
      */
     uint64_t seed = std::mt19937_64::default_seed;
+
+    /**
+     * Pointer to an `EigenVector_` (see `compute()`) containing the initial values of the first right singular vector.
+     * This should have length equal to the number of columns of the input `matrix`.
+     */
+    void * initial = NULL;
 };
 
 }

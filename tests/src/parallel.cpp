@@ -6,7 +6,7 @@
 #endif
 
 #include "irlba/parallel.hpp"
-//#include "irlba/irlba.hpp"
+#include "irlba/irlba.hpp"
 #include "Eigen/Dense"
 #include <random>
 
@@ -166,58 +166,56 @@ INSTANTIATE_TEST_SUITE_P(
     )
 );
 
-//class ParallelSparseMatrixIrlbaTest : public ::testing::TestWithParam<std::tuple<int, int, int> >, public ParallelSparseMatrixTestCore {};
-//
-//TEST_P(ParallelSparseMatrixIrlbaTest, Basic) {
-//    auto param = GetParam();
-//    assemble(param);
-//    irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, nt);
-//    irlba::EigenThreadScope tscope(nt);
-//    irlba::Irlba irb;
-//
-//    // Raw.
-//    {
-//        auto ref = irb.run(control);
-//        auto obs = irb.run(A);
-//        expect_equal_vectors(ref.D, obs.D);
-//        expect_equal_column_vectors(ref.U, obs.U);
-//        expect_equal_column_vectors(ref.V, obs.V);
-//    }
-//
-//    std::uniform_real_distribution udist;
-//    std::mt19937_64 rng(nr * nc * 13);
-//    Eigen::VectorXd rando(nc);
-//    for (auto& r : rando) {
-//        r = udist(rng);
-//    }
-//
-//    // Centered.
-//    {
-//        auto ref = irb.run(irlba::Centered(&control, &rando));
-//        auto obs = irb.run(irlba::Centered(&A, &rando));
-//        expect_equal_vectors(ref.D, obs.D);
-//        expect_equal_column_vectors(ref.U, obs.U);
-//        expect_equal_column_vectors(ref.V, obs.V);
-//    }
-//
-//    // Scaled.
-//    {
-//        auto ref = irb.run(irlba::Scaled(&control, &rando));
-//        auto obs = irb.run(irlba::Scaled(&A, &rando));
-//        expect_equal_vectors(ref.D, obs.D);
-//        expect_equal_column_vectors(ref.U, obs.U);
-//        expect_equal_column_vectors(ref.V, obs.V);
-//    }
-//}
-//
-//INSTANTIATE_TEST_SUITE_P(
-//    ParallelSparseMatrix,
-//    ParallelSparseMatrixIrlbaTest,
-//    ::testing::Combine(
-//        ::testing::Values(25, 51), // number of rows
-//        ::testing::Values(32, 47), // number of columns
-//        ::testing::Values(1, 3) // number of threads
-//    )
-//);
-//
-//
+class ParallelSparseMatrixIrlbaTest : public ::testing::TestWithParam<std::tuple<int, int, int> >, public ParallelSparseMatrixTestCore {};
+
+TEST_P(ParallelSparseMatrixIrlbaTest, Basic) {
+    auto param = GetParam();
+    assemble(param);
+    irlba::ParallelSparseMatrix A(nr, nc, values, indices, nzeros, true, nt);
+    irlba::EigenThreadScope tscope(nt);
+    irlba::Options opt;
+
+    // Raw.
+    {
+        auto ref = irlba::compute(control, 5, opt);
+        auto obs = irlba::compute(A, 5, opt);
+        expect_equal_vectors(ref.D, obs.D);
+        expect_equal_column_vectors(ref.U, obs.U);
+        expect_equal_column_vectors(ref.V, obs.V);
+    }
+
+    std::uniform_real_distribution udist;
+    std::mt19937_64 rng(nr * nc * 13);
+    Eigen::VectorXd rando(nc);
+    for (auto& r : rando) {
+        r = udist(rng);
+    }
+
+    // Centered.
+    {
+        auto ref = irlba::compute(irlba::Centered(control, rando), 5, opt);
+        auto obs = irlba::compute(irlba::Centered(A, rando), 5, opt);
+        expect_equal_vectors(ref.D, obs.D);
+        expect_equal_column_vectors(ref.U, obs.U);
+        expect_equal_column_vectors(ref.V, obs.V);
+    }
+
+    // Scaled.
+    {
+        auto ref = irlba::compute(irlba::make_Scaled<true>(control, rando, false), 5, opt);
+        auto obs = irlba::compute(irlba::make_Scaled<true>(A, rando, false), 5, opt);
+        expect_equal_vectors(ref.D, obs.D);
+        expect_equal_column_vectors(ref.U, obs.U);
+        expect_equal_column_vectors(ref.V, obs.V);
+    }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ParallelSparseMatrix,
+    ParallelSparseMatrixIrlbaTest,
+    ::testing::Combine(
+        ::testing::Values(25, 51), // number of rows
+        ::testing::Values(32, 47), // number of columns
+        ::testing::Values(1, 3) // number of threads
+    )
+);

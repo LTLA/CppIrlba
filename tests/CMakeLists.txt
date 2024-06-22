@@ -19,8 +19,8 @@ add_executable(
     src/utils.cpp
     src/lanczos.cpp
 #    src/irlba.cpp
-#    src/sparse.cpp
-#    src/invariant.cpp
+    src/sparse.cpp
+    src/invariant.cpp
     src/MockMatrix.cpp
     src/wrappers.cpp
     src/parallel.cpp

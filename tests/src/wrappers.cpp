@@ -88,7 +88,7 @@ TEST_P(WrapperScalingTest, Basic) {
     auto divide = GetParam();
 
     {
-        auto scaled = irlba::Scaled<true, decltype(A), decltype(B1)>(A, B1, divide);
+        auto scaled = irlba::make_Scaled<true>(A, B1, divide);
         EXPECT_EQ(scaled.rows(), A.rows());
         EXPECT_EQ(scaled.cols(), A.cols());
 
@@ -105,7 +105,7 @@ TEST_P(WrapperScalingTest, Basic) {
     }
 
     {
-        auto scaled = irlba::Scaled<false, decltype(A), decltype(B2)>(A, B2, divide);
+        auto scaled = irlba::make_Scaled<false>(A, B2, divide);
         EXPECT_EQ(scaled.rows(), A.rows());
         EXPECT_EQ(scaled.cols(), A.cols());
 
@@ -126,7 +126,7 @@ TEST_P(WrapperScalingTest, Multiply) {
     auto divide = GetParam();
 
     {
-        auto scaled = irlba::Scaled<true, decltype(A), decltype(B1)>(A, B1, divide);
+        auto scaled = irlba::make_Scaled<true>(A, B1, divide);
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         auto C = create_random_vector(10, 5678);
         Eigen::VectorXd expected = realized * C;
@@ -146,7 +146,7 @@ TEST_P(WrapperScalingTest, Multiply) {
     }
 
     {
-        auto scaled = irlba::Scaled<false, decltype(A), decltype(B2)>(A, B2, divide);
+        auto scaled = irlba::make_Scaled<false>(A, B2, divide);
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         auto C = create_random_vector(10, 4567);
         Eigen::VectorXd expected = realized * C;
@@ -170,7 +170,7 @@ TEST_P(WrapperScalingTest, AdjointMultiply) {
     auto divide = GetParam();
 
     {
-        auto scaled = irlba::Scaled<true, decltype(A), decltype(B1)>(A, B1, divide);
+        auto scaled = irlba::make_Scaled<true>(A, B1, divide);
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         auto C = create_random_vector(20, 5678);
         Eigen::VectorXd expected = realized.adjoint() * C;
@@ -190,7 +190,7 @@ TEST_P(WrapperScalingTest, AdjointMultiply) {
     }
 
     {
-        auto scaled = irlba::Scaled<false, decltype(A), decltype(B2)>(A, B2, divide);
+        auto scaled = irlba::make_Scaled<false>(A, B2, divide);
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         auto C = create_random_vector(20, 1357);
         Eigen::VectorXd expected = realized.adjoint() * C;

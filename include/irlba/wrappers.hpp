@@ -186,7 +186,7 @@ EigenMatrix_ wrapped_realize(const Matrix_& matrix) {
     if constexpr(internal::is_eigen<Matrix_>::value) {
         return EigenMatrix_(matrix);
     } else {
-        return matrix.realize();
+        return matrix.template realize<EigenMatrix_>();
     }
 }
 
@@ -424,6 +424,26 @@ private:
     const EigenVector_& my_scale;
     bool my_divide;
 };
+
+/**
+ * A convenient maker function to enable partial template deduction on the `Scaled` class.
+ *
+ * @param by_column_ Whether to scale the columns.
+ * If `false`, scaling is applied to the rows instead.
+ * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the scaling factors and matrix-vector product.
+ *
+ * @param matrix Underlying matrix to be column-scaled (if `by_column_ = true`) or row-scaled (otherwise).
+ * @param scale Vector of length equal to the number of columns (if `by_column_ = true`) or rows (otherwise) of `m`,
+ * containing the scaling factor to divide (if `divide = true`) or multiply (otherwise) to each column/row.
+ * @param divide Whether to divide by the supplied scaling factors.
+ *
+ * @return A `Scaled` object.
+ */
+template<bool column_, class Matrix_, class EigenVector_>
+Scaled<column_, Matrix_, EigenVector_> make_Scaled(const Matrix_& matrix, const EigenVector_& scale, bool divide) {
+    return Scaled<column_, Matrix_, EigenVector_>(matrix, scale, divide);
+}
 
 }
 
