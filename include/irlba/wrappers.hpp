@@ -160,7 +160,7 @@ void wrapped_multiply(const Matrix_& matrix, const Right_& rhs, WrappedWorkspace
  * @tparam Right_ A floating-point `Eigen::Vector` or equivalent expression.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class
  *
- * @param[in] mat Pointer to the wrapped matrix instance.
+ * @param[in] matrix Pointer to the wrapped matrix instance.
  * @param[in] rhs The right-hand side of the matrix product.
  * @param work Workspace for the adjoint matrix multiplication.
  * @param[out] out The output vector to store the matrix product.
@@ -428,7 +428,7 @@ private:
 /**
  * A convenient maker function to enable partial template deduction on the `Scaled` class.
  *
- * @param by_column_ Whether to scale the columns.
+ * @tparam column_ Whether to scale the columns.
  * If `false`, scaling is applied to the rows instead.
  * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen::Matrix`.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the scaling factors and matrix-vector product.

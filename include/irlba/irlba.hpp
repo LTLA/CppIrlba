@@ -63,7 +63,7 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
  * @tparam EigenMatrix_ A floating-point `Eigen::Matrix` class.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
  *
- * @param[in] mat Input matrix.
+ * @param[in] matrix Input matrix.
  * Custom classes can also be used here to pass modified matrices that cannot be efficiently realized into the standard **Eigen** classes.
  * See the `wrappers.hpp` file for more details, along with the `Centered` and `Scaled` classes.
  * @param number Number of singular triplets to obtain.

@@ -60,7 +60,7 @@ public:
      * If `column_major = true`, `i` should contain row indices; otherwise it should contain column indices.
      * @param p Pointers to the start of each column (if `column_major = true`) or row (otherwise).
      * This should be an ordered array of length equal to the number of columns or rows plus 1.
-     * @tparam column_major Whether the matrix should be in compressed sparse column format.
+     * @param column_major Whether the matrix should be in compressed sparse column format.
      * If `false`, this is assumed to be in row-major format.
      * @param nthreads Number of threads to be used for multiplication.
      *
