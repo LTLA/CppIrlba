@@ -46,7 +46,10 @@ public:
 
 public:
     /**
-     * Workspace class, used to allocate space for intermediate results across multiple calls to `multiply()`.
+     * @brief Workspace class for `multiply()`.
+     *
+     * This is used to allocate space for intermediate results across repeated calls to `multiply()`,
+     * to avoid inefficiencies from repeated (de)allocations.
      */
     struct Workspace {};
 
@@ -58,7 +61,10 @@ public:
     }
 
     /**
-     * Workspace class, used to allocate space for intermediate results across multiple calls to `adjoint_multiply()`.
+     * @brief Workspace class for `adjoint_multiply()`.
+     *
+     * This is used to allocate space for intermediate results across repeated calls to `adjoint_multiply()`.
+     * to avoid inefficiencies from repeated (de)allocations.
      */
     struct AdjointWorkspace {};
 
