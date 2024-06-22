@@ -1,6 +1,6 @@
 <map id="irlba/parallel.hpp" name="irlba/parallel.hpp">
-<area shape="rect" id="Node000001" title="Sparse matrix class with parallelized multiplication." alt="" coords="99,5,214,31"/>
-<area shape="rect" id="Node000002" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="122,79,191,105"/>
+<area shape="rect" id="Node000001" title="Classes for parallelized multiplication." alt="" coords="99,5,214,31"/>
+<area shape="rect" id="Node000002" href="$utils_8hpp_source.html" title=" " alt="" coords="122,79,191,105"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,31,159,63,154,63,154,31"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,153,100,178"/>
 <area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="149,33,112,81,71,141,66,138,108,77,144,30"/>

@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['maxit_0',['maxit',['../structirlba_1_1Irlba_1_1Defaults.html#ade2d730ddc6de0a0143471489e0912a7',1,'irlba::Irlba::Defaults']]],
-  ['multiply_1',['multiply',['../classirlba_1_1ParallelSparseMatrix.html#a6427498919e64e4614a1ccf2f5129e44',1,'irlba::ParallelSparseMatrix::multiply()'],['../structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f',1,'irlba::Centered::multiply()']]]
+  ['make_5fscaled_0',['make_Scaled',['../namespaceirlba.html#a21118aed5175a55b5b277edcd291aa27',1,'irlba']]],
+  ['max_5fiterations_1',['max_iterations',['../structirlba_1_1Options.html#afc7f9a04a63cc7033c2103cdebab3612',1,'irlba::Options']]],
+  ['mockmatrix_2',['MockMatrix',['../classirlba_1_1MockMatrix.html',1,'irlba']]],
+  ['mockmatrix_2ehpp_3',['MockMatrix.hpp',['../MockMatrix_8hpp.html',1,'']]],
+  ['multiply_4',['multiply',['../classirlba_1_1MockMatrix.html#af184ef507c5ceb99c89d782075cb5c1c',1,'irlba::MockMatrix']]]
 ];

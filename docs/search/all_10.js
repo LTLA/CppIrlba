@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['workspace_0',['workspace',['../classirlba_1_1ParallelSparseMatrix.html#aede6b0baadeb52d351c25ab9f24da3dd',1,'irlba::ParallelSparseMatrix::workspace()'],['../structirlba_1_1Centered.html#a55b851d87fb995a2a04d3a07e69121ee',1,'irlba::Centered::workspace()'],['../classirlba_1_1ParallelSparseMatrix.html#ace0a9677ba2415af992719ef0ff88ef5',1,'irlba::ParallelSparseMatrix::Workspace'],['../structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa',1,'irlba::Centered::Workspace']]],
-  ['wrapped_5fadjoint_5fmultiply_1',['wrapped_adjoint_multiply',['../namespaceirlba.html#adb3751dd2a2de0754fe92d25a658b45c',1,'irlba']]],
-  ['wrapped_5fadjoint_5fworkspace_2',['wrapped_adjoint_workspace',['../namespaceirlba.html#a2afbaa693ad02acc03ee74a3ea084630',1,'irlba']]],
-  ['wrapped_5fmultiply_3',['wrapped_multiply',['../namespaceirlba.html#a944729e08e958d309cce1d66761e88c6',1,'irlba']]],
-  ['wrapped_5frealize_4',['wrapped_realize',['../namespaceirlba.html#aa5b2aa0b925ead702a50c11eeb63cba5',1,'irlba']]],
-  ['wrapped_5fworkspace_5',['wrapped_workspace',['../namespaceirlba.html#afb93f4e9565318e79782c847fbebe16b',1,'irlba']]],
-  ['wrappedadjointworkspace_6',['WrappedAdjointWorkspace',['../namespaceirlba.html#abf539bafcd5bf49b8106fa00b7cf61a3',1,'irlba']]],
-  ['wrappedworkspace_7',['WrappedWorkspace',['../namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16',1,'irlba']]],
-  ['wrappers_2ehpp_8',['wrappers.hpp',['../wrappers_8hpp.html',1,'']]]
+  ['workspace_0',['Workspace',['../structirlba_1_1MockMatrix_1_1Workspace.html',1,'irlba::MockMatrix']]],
+  ['workspace_1',['workspace',['../classirlba_1_1MockMatrix.html#aa303ff5b5b67746d84e58a06c679f29d',1,'irlba::MockMatrix']]],
+  ['wrapped_5fadjoint_5fmultiply_2',['wrapped_adjoint_multiply',['../namespaceirlba.html#a3459ae959a334ceffee832a4d854152a',1,'irlba']]],
+  ['wrapped_5fadjoint_5fworkspace_3',['wrapped_adjoint_workspace',['../namespaceirlba.html#ad0e802556cc997916b3b02a074ae99e4',1,'irlba']]],
+  ['wrapped_5fmultiply_4',['wrapped_multiply',['../namespaceirlba.html#aab50891ee0a3fd5a318ef6aa256b7d10',1,'irlba']]],
+  ['wrapped_5frealize_5',['wrapped_realize',['../namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66',1,'irlba']]],
+  ['wrapped_5fworkspace_6',['wrapped_workspace',['../namespaceirlba.html#a3f1075c4c34a8afe68dbed060978c4e3',1,'irlba']]],
+  ['wrappedadjointworkspace_7',['WrappedAdjointWorkspace',['../namespaceirlba.html#ad688d23339418eb0a0cc5b7217f35ad4',1,'irlba']]],
+  ['wrappedworkspace_8',['WrappedWorkspace',['../namespaceirlba.html#af50e89ef6fc5f30c5bdcc904b74eb45c',1,'irlba']]],
+  ['wrappers_2ehpp_9',['wrappers.hpp',['../wrappers_8hpp.html',1,'']]]
 ];

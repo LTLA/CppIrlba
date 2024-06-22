@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parallelsparsematrix_0',['ParallelSparseMatrix',['../classirlba_1_1ParallelSparseMatrix.html',1,'irlba']]]
+  ['options_0',['Options',['../structirlba_1_1Options.html',1,'irlba']]]
 ];

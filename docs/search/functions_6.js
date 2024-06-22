@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['multiply_0',['multiply',['../classirlba_1_1ParallelSparseMatrix.html#a6427498919e64e4614a1ccf2f5129e44',1,'irlba::ParallelSparseMatrix::multiply()'],['../structirlba_1_1Centered.html#a8210b60275f835adc8fed1f204012d9f',1,'irlba::Centered::multiply()']]]
+  ['realize_0',['realize',['../classirlba_1_1MockMatrix.html#ab7a59ec0ae28cab7f6d5443d6f138635',1,'irlba::MockMatrix']]],
+  ['rows_1',['rows',['../classirlba_1_1MockMatrix.html#a8c39c466d1e59f539ec5f262c8692ac5',1,'irlba::MockMatrix::rows()'],['../classirlba_1_1ParallelSparseMatrix.html#a77b639ec28fdc367916dfc4810640fee',1,'irlba::ParallelSparseMatrix::rows()']]]
 ];

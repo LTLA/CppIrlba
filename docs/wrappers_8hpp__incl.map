@@ -1,9 +1,11 @@
 <map id="irlba/wrappers.hpp" name="irlba/wrappers.hpp">
-<area shape="rect" id="Node000001" title="Wrapper classes for multiplication of modified matrices." alt="" coords="41,5,168,31"/>
-<area shape="rect" id="Node000002" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="122,79,191,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,30,141,65,137,68,111,33"/>
+<area shape="rect" id="Node000001" title="Wrapper classes for multiplication of modified matrices." alt="" coords="93,5,220,31"/>
+<area shape="rect" id="Node000002" href="$utils_8hpp_source.html" title=" " alt="" coords="122,79,191,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,31,159,63,154,63,154,31"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,153,100,178"/>
-<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="103,32,64,139,59,137,98,30"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="149,33,112,81,71,141,66,138,108,77,144,30"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="216,79,297,105"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="175,29,229,67,226,72,172,34"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="140,107,84,146,81,141,137,103"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="124,153,189,178"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="159,105,159,137,154,137,154,105"/>

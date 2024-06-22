@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['null_5frng_0',['null_rng',['../namespaceirlba.html#a78ee106624de7aed4f8ff0cc4a414239',1,'irlba']]]
+  ['scaled_0',['Scaled',['../classirlba_1_1Scaled.html#ac62a2c595a9cd36174037eaa83252af0',1,'irlba::Scaled']]]
 ];

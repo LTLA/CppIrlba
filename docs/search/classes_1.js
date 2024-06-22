@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['defaults_0',['Defaults',['../structirlba_1_1Irlba_1_1Defaults.html',1,'irlba::Irlba']]]
+  ['centered_0',['Centered',['../classirlba_1_1Centered.html',1,'irlba']]]
 ];

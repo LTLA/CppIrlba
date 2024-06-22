@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['d_0',['D',['../structirlba_1_1Irlba_1_1Results.html#a56642661468cc1865a9e30b547ef7f6f',1,'irlba::Irlba::Results']]]
+  ['d_0',['D',['../structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc',1,'irlba::Results']]]
 ];

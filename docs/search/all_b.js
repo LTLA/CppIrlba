@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['parallel_2ehpp_0',['parallel.hpp',['../parallel_8hpp.html',1,'']]],
-  ['parallelsparsematrix_1',['parallelsparsematrix',['../classirlba_1_1ParallelSparseMatrix.html',1,'irlba::ParallelSparseMatrix&lt; column_major, ValueArray, IndexArray, PointerArray &gt;'],['../classirlba_1_1ParallelSparseMatrix.html#a16bee0852ada7f1cecf5ebd71a34ddfd',1,'irlba::ParallelSparseMatrix::ParallelSparseMatrix()'],['../classirlba_1_1ParallelSparseMatrix.html#a3e74fcc7617d409787cc9808b088f2eb',1,'irlba::ParallelSparseMatrix::ParallelSparseMatrix(size_t nr, size_t nc, std::vector&lt; double &gt; x, std::vector&lt; int &gt; i, std::vector&lt; size_t &gt; p, int nt)']]],
-  ['pointertype_2',['PointerType',['../classirlba_1_1ParallelSparseMatrix.html#ac54daf205fe2ed9ae391eb9920a59423',1,'irlba::ParallelSparseMatrix']]]
+  ['realize_0',['realize',['../classirlba_1_1MockMatrix.html#ab7a59ec0ae28cab7f6d5443d6f138635',1,'irlba::MockMatrix']]],
+  ['results_1',['Results',['../structirlba_1_1Results.html',1,'irlba']]],
+  ['rows_2',['rows',['../classirlba_1_1MockMatrix.html#a8c39c466d1e59f539ec5f262c8692ac5',1,'irlba::MockMatrix::rows()'],['../classirlba_1_1ParallelSparseMatrix.html#a77b639ec28fdc367916dfc4810640fee',1,'irlba::ParallelSparseMatrix::rows()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['maxit_0',['maxit',['../structirlba_1_1Irlba_1_1Defaults.html#ade2d730ddc6de0a0143471489e0912a7',1,'irlba::Irlba::Defaults']]]
+  ['max_5fiterations_0',['max_iterations',['../structirlba_1_1Options.html#afc7f9a04a63cc7033c2103cdebab3612',1,'irlba::Options']]]
 ];

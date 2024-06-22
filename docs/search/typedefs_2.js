@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['workspace_0',['workspace',['../classirlba_1_1ParallelSparseMatrix.html#ace0a9677ba2415af992719ef0ff88ef5',1,'irlba::ParallelSparseMatrix::Workspace'],['../structirlba_1_1Centered.html#aa86585b7bae6f19ae08d9a4baebc84fa',1,'irlba::Centered::Workspace']]],
-  ['wrappedadjointworkspace_1',['WrappedAdjointWorkspace',['../namespaceirlba.html#abf539bafcd5bf49b8106fa00b7cf61a3',1,'irlba']]],
-  ['wrappedworkspace_2',['WrappedWorkspace',['../namespaceirlba.html#a06d0182fc36d37483e1c4731b966cf16',1,'irlba']]]
+  ['wrappedadjointworkspace_0',['WrappedAdjointWorkspace',['../namespaceirlba.html#ad688d23339418eb0a0cc5b7217f35ad4',1,'irlba']]],
+  ['wrappedworkspace_1',['WrappedWorkspace',['../namespaceirlba.html#af50e89ef6fc5f30c5bdcc904b74eb45c',1,'irlba']]]
 ];

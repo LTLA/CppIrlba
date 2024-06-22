@@ -1,32 +1,37 @@
 <map id="irlba/irlba.hpp" name="irlba/irlba.hpp">
-<area shape="rect" id="Node000001" title="Implements the main user&#45;visible class for running IRLBA." alt="" coords="459,5,556,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="245,300,339,326"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="511,31,510,98,502,140,485,180,453,219,414,251,374,277,337,296,335,291,371,272,411,247,449,215,480,177,497,138,505,97,506,31"/>
-<area shape="rect" id="Node000003" href="$utils_8hpp.html" title="Various utility functions." alt="" coords="141,226,210,252"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="459,22,383,28,338,36,293,48,248,65,207,88,171,117,142,154,138,168,140,183,156,213,152,216,135,185,132,168,137,151,167,113,204,83,246,60,291,43,337,31,382,23,458,17"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="449,300,513,326"/>
-<area shape="poly" id="edge17_Node000001_Node000004" title=" " alt="" coords="515,31,529,78,543,167,541,205,529,253,519,273,506,290,502,287,515,270,524,251,536,205,537,167,524,80,510,32"/>
-<area shape="rect" id="Node000007" href="$lanczos_8hpp.html" title="Perform the Lanczos bidiagonalization iterations." alt="" coords="286,79,375,105"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="479,34,375,75,374,70,477,29"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="412,153,470,178"/>
-<area shape="poly" id="edge15_Node000001_Node000009" title=" " alt="" coords="505,32,455,140,450,137,500,30"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="596,79,657,105"/>
-<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="529,29,595,68,592,73,526,34"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="681,79,758,105"/>
-<area shape="poly" id="edge18_Node000001_Node000012" title=" " alt="" coords="544,29,670,71,669,76,543,34"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="197,250,261,289,258,294,194,255"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="211,246,434,298,433,303,210,251"/>
+<area shape="rect" id="Node000001" title="Implements the IRLBA algorithm." alt="" coords="512,5,610,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="250,300,344,326"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="568,31,580,79,580,105,574,152,566,190,548,223,515,254,478,276,438,292,360,309,359,304,436,287,475,271,511,250,544,219,561,188,569,151,574,105,574,79,563,32"/>
+<area shape="rect" id="Node000003" href="$utils_8hpp_source.html" title=" " alt="" coords="50,226,120,252"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="512,28,403,43,270,69,205,86,149,106,104,129,77,154,71,167,70,182,76,212,71,213,64,182,66,166,72,151,101,125,147,101,204,81,268,64,402,38,511,22"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="500,300,564,326"/>
+<area shape="poly" id="edge20_Node000001_Node000004" title=" " alt="" coords="585,29,611,49,633,78,652,125,659,167,653,207,633,253,609,280,580,298,577,293,606,276,628,251,648,206,654,167,647,127,628,80,608,53,582,34"/>
+<area shape="rect" id="Node000007" href="$lanczos_8hpp_source.html" title=" " alt="" coords="270,79,359,105"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="520,34,372,77,370,72,518,29"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="440,226,501,252"/>
+<area shape="poly" id="edge19_Node000001_Node000011" title=" " alt="" coords="564,32,562,97,554,139,538,180,522,201,503,219,499,215,518,198,533,177,549,138,556,96,559,31"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="466,153,523,178"/>
+<area shape="poly" id="edge18_Node000001_Node000012" title=" " alt="" coords="558,32,509,140,504,137,553,30"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="700,79,777,105"/>
+<area shape="poly" id="edge21_Node000001_Node000014" title=" " alt="" coords="592,29,695,70,693,75,590,34"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="121,250,248,292,246,297,119,255"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="121,247,132,249,328,282,485,303,484,309,327,288,131,255,120,252"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="157,300,208,326"/>
-<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="179,252,182,284,177,285,174,252"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="103,250,156,289,152,293,100,255"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="5,300,133,326"/>
-<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="159,255,101,293,98,289,156,250"/>
-<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="331,105,299,286,294,285,326,104"/>
-<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="286,97,251,101,214,111,180,128,153,154,147,168,148,182,160,212,155,214,143,183,142,167,148,151,177,124,212,106,250,96,285,91"/>
-<area shape="rect" id="Node000008" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="163,153,261,178"/>
-<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="312,107,246,147,243,142,309,103"/>
-<area shape="poly" id="edge13_Node000007_Node000009" title=" " alt="" coords="351,103,411,142,408,146,348,107"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="336,153,389,178"/>
-<area shape="poly" id="edge14_Node000007_Node000010" title=" " alt="" coords="338,104,353,137,348,139,333,106"/>
-<area shape="poly" id="edge12_Node000008_Node000002" title=" " alt="" coords="221,177,280,285,275,288,216,180"/>
-<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="208,180,191,214,186,211,203,177"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="85,253,78,285,72,284,80,252"/>
+<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="316,105,302,285,296,284,311,105"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="270,101,166,121,119,136,102,145,91,154,84,167,81,181,81,211,76,211,75,181,79,165,87,151,99,141,117,131,165,116,269,96"/>
+<area shape="rect" id="Node000008" href="$wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices." alt="" coords="179,153,277,178"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="301,107,255,145,252,141,298,103"/>
+<area shape="rect" id="Node000010" href="$Options_8hpp.html" title="Options for IRLBA." alt="" coords="352,153,442,178"/>
+<area shape="poly" id="edge14_Node000007_Node000010" title=" " alt="" coords="330,103,373,140,370,144,327,107"/>
+<area shape="poly" id="edge16_Node000007_Node000012" title=" " alt="" coords="346,103,452,145,450,150,344,108"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="102,153,154,178"/>
+<area shape="poly" id="edge17_Node000007_Node000013" title=" " alt="" coords="284,108,169,151,167,146,282,103"/>
+<area shape="poly" id="edge12_Node000008_Node000002" title=" " alt="" coords="236,178,287,285,282,287,231,180"/>
+<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="205,181,124,221,122,217,202,176"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="144,226,226,252"/>
+<area shape="poly" id="edge13_Node000008_Node000009" title=" " alt="" coords="223,180,202,214,198,211,218,177"/>
+<area shape="poly" id="edge15_Node000010_Node000011" title=" " alt="" coords="411,177,449,214,445,217,407,180"/>
 </map>
