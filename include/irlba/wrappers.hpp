@@ -247,7 +247,7 @@ public:
             if constexpr(std::is_same<Right_, EigenVector_>::value) {
                 return rhs;
             } else {
-                work.buffer = rhs;
+                work.buffer.noalias() = rhs;
                 return work.buffer;
             }
         }();
@@ -266,7 +266,7 @@ public:
             if constexpr(std::is_same<Right_, EigenVector_>::value) {
                 return rhs;
             } else {
-                work.buffer = rhs;
+                work.buffer.noalias() = rhs;
                 return work.buffer;
             }
         }();
