@@ -1,5 +1,6 @@
 build
 *.swp
 *.pdf
+.DS_Store
 docs/html
 docs/latex

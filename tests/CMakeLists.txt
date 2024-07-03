@@ -34,7 +34,7 @@ target_link_libraries(
 
 target_compile_options(libtest PRIVATE -Wall -Wpedantic -Wextra)
 
-set(CODE_COVERAGE "Enable coverage testing" OFF)
+option(CODE_COVERAGE "Enable coverage testing" OFF)
 set(DO_CODE_COVERAGE OFF)
 if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     set(DO_CODE_COVERAGE ON)
