@@ -280,12 +280,7 @@ public:
     template<class EigenMatrix_>
     Eigen::MatrixXd realize() const {
         auto output = wrapped_realize<EigenMatrix_>(my_matrix);
-        auto nc = output.cols(), nr = output.rows();
-        for (Eigen::Index c = 0; c < nc; ++c) {
-            for (Eigen::Index r = 0; r < nr; ++r) {
-                output(r, c) -= my_center[c];
-            }
-        }
+        output.array().rowwise() -= my_center.adjoint().array();
         return output;
     }
     /**
@@ -407,35 +402,18 @@ public:
     template<class EigenMatrix_>
     EigenMatrix_ realize() const {
         auto output = wrapped_realize<EigenMatrix_>(my_matrix);
-        auto nc = output.cols(), nr = output.rows();
 
         if constexpr(column_) {
             if (my_divide) {
-                for (Eigen::Index c = 0; c < nc; ++c) {
-                    for (Eigen::Index r = 0; r < nr; ++r) {
-                        output(r, c) /= my_scale[c];
-                    }
-                }
+                output.array().rowwise() /= my_scale.adjoint().array();
             } else {
-                for (Eigen::Index c = 0; c < nc; ++c) {
-                    for (Eigen::Index r = 0; r < nr; ++r) {
-                        output(r, c) *= my_scale[c];
-                    }
-                }
+                output.array().rowwise() *= my_scale.adjoint().array();
             }
         } else {
             if (my_divide) {
-                for (Eigen::Index c = 0; c < nc; ++c) {
-                    for (Eigen::Index r = 0; r < nr; ++r) {
-                        output(r, c) /= my_scale[r];
-                    }
-                }
+                output.array().colwise() /= my_scale.array();
             } else {
-                for (Eigen::Index c = 0; c < nc; ++c) {
-                    for (Eigen::Index r = 0; r < nr; ++r) {
-                        output(r, c) *= my_scale[r];
-                    }
-                }
+                output.array().colwise() *= my_scale.array();
             }
         }
 

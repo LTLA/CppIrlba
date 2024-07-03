@@ -22,8 +22,10 @@ TEST_F(WrapperCenteringTest, Basic) {
 
     auto realized = centered.template realize<Eigen::MatrixXd>();
     Eigen::MatrixXd expected = A;
-    for (Eigen::Index r = 0; r < A.rows(); ++r) {
-        expected.row(r).array() -= B.array();
+    for (Eigen::Index c = 0; c < A.cols(); ++c) {
+        for (Eigen::Index r = 0; r < A.rows(); ++r) {
+            expected(r, c) -= B[c];
+        }
     }
     expect_equal_matrix(expected, realized);
 }
@@ -37,7 +39,7 @@ TEST_F(WrapperCenteringTest, Multiply) {
 
     auto wrk = centered.workspace();
     bool is_placeholder = std::is_same<decltype(wrk), bool>::value;
-    EXPECT_TRUE(is_placeholder); // just inherits the child.
+    EXPECT_FALSE(is_placeholder);
 
     Eigen::VectorXd output(20);
     centered.multiply(C, wrk, output);
@@ -58,7 +60,7 @@ TEST_F(WrapperCenteringTest, AdjointMultiply) {
 
     auto wrk = centered.adjoint_workspace();
     bool is_placeholder = std::is_same<decltype(wrk), bool>::value;
-    EXPECT_TRUE(is_placeholder); // just inherits the child.
+    EXPECT_FALSE(is_placeholder);
 
     Eigen::VectorXd output(10);
     centered.adjoint_multiply(C, wrk, output);
@@ -94,11 +96,13 @@ TEST_P(WrapperScalingTest, Basic) {
 
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         Eigen::MatrixXd expected = A;
-        for (Eigen::Index r = 0; r < expected.rows(); ++r) {
-            if (divide) {
-                expected.row(r).array() /= B1.array();
-            } else {
-                expected.row(r).array() *= B1.array();
+        for (Eigen::Index c = 0; c < A.cols(); ++c) {
+            for (Eigen::Index r = 0; r < A.rows(); ++r) {
+                if (divide) {
+                    expected(r, c) /= B1[c];
+                } else {
+                    expected(r, c) *= B1[c];
+                }
             }
         }
         expect_equal_matrix(expected, realized);
@@ -111,11 +115,13 @@ TEST_P(WrapperScalingTest, Basic) {
 
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         Eigen::MatrixXd expected = A;
-        for (Eigen::Index c = 0; c < expected.cols(); ++c) {
-            if (divide) {
-                expected.col(c).array() /= B2.array();
-            } else {
-                expected.col(c).array() *= B2.array();
+        for (Eigen::Index c = 0; c < A.cols(); ++c) {
+            for (Eigen::Index r = 0; r < A.rows(); ++r) {
+                if (divide) {
+                    expected(r, c) /= B2[r];
+                } else {
+                    expected(r, c) *= B2[r];
+                }
             }
         }
         expect_equal_matrix(expected, realized);
