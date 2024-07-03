@@ -463,7 +463,9 @@ public:
      * @endcond
      */
 private:
+#ifdef _OPENMP
     int my_previous;
+#endif
 };
 
 }
