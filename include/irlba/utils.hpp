@@ -42,6 +42,16 @@ void fill_with_random_normals(Matrix_& mat, Eigen::Index column, Engine_& eng) {
     fill_with_random_normals(proxy, eng);
 }
 
+template<class Right_, class EigenVector_>
+const EigenVector_& realize_rhs(const Right_& rhs, EigenVector_& buffer) {
+    if constexpr(std::is_same<Right_, EigenVector_>::value) {
+        return rhs;
+    } else {
+        buffer.noalias() = rhs;
+        return buffer;
+    }
+}
+
 }
 
 }
