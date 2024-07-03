@@ -1,1 +1,5 @@
 build
+*.swp
+*.pdf
+docs/html
+docs/latex
