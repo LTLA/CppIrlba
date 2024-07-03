@@ -49,10 +49,20 @@ TEST_P(IrlbaTester, Basic) {
     ASSERT_EQ(res.U.cols(), rank);
     ASSERT_EQ(res.D.size(), rank);
 
-    // Gives us singular values that are around about right. Unfortunately,
-    // the singular values don't converge enough for an exact comparison.
+    // Gives us singular values that are around about right. Unfortunately, the
+    // U and V values don't converge enough for a decent comparison; we'll
+    // limit this to the first column, as this seems to be the most accurate. 
     Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-6);
+    expect_equal_column_vectors(res.U.leftCols(1), svd.matrixU().leftCols(1), 1e-4);
+    expect_equal_column_vectors(res.V.leftCols(1), svd.matrixV().leftCols(1), 1e-4);
+
+    // Also gives the same results when the matrices are row-major.
+    typedef Eigen::Matrix<double, -1, -1, Eigen::RowMajor> RowEigenXd;
+    auto rmres = irlba::compute<RowEigenXd>(A, rank, opt);
+    expect_equal_matrix(res.U, rmres.U);
+    expect_equal_matrix(res.V, rmres.V);
+    expect_equal_vectors(res.D, rmres.D);
 
     // Also works with some custom initialization.
     auto init = create_random_vector(A.cols(), 1239);
