@@ -22,8 +22,10 @@ TEST_F(WrapperCenteringTest, Basic) {
 
     auto realized = centered.template realize<Eigen::MatrixXd>();
     Eigen::MatrixXd expected = A;
-    for (Eigen::Index r = 0; r < A.rows(); ++r) {
-        expected.row(r).array() -= B.array();
+    for (Eigen::Index c = 0; c < A.cols(); ++c) {
+        for (Eigen::Index r = 0; r < A.rows(); ++r) {
+            expected(r, c) -= B[c];
+        }
     }
     expect_equal_matrix(expected, realized);
 }
@@ -106,11 +108,13 @@ TEST_P(WrapperScalingTest, Basic) {
 
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         Eigen::MatrixXd expected = A;
-        for (Eigen::Index r = 0; r < expected.rows(); ++r) {
-            if (divide) {
-                expected.row(r).array() /= B1.array();
-            } else {
-                expected.row(r).array() *= B1.array();
+        for (Eigen::Index c = 0; c < A.cols(); ++c) {
+            for (Eigen::Index r = 0; r < A.rows(); ++r) {
+                if (divide) {
+                    expected(r, c) /= B1[c];
+                } else {
+                    expected(r, c) *= B1[c];
+                }
             }
         }
         expect_equal_matrix(expected, realized);
@@ -123,11 +127,13 @@ TEST_P(WrapperScalingTest, Basic) {
 
         auto realized = scaled.template realize<Eigen::MatrixXd>();
         Eigen::MatrixXd expected = A;
-        for (Eigen::Index c = 0; c < expected.cols(); ++c) {
-            if (divide) {
-                expected.col(c).array() /= B2.array();
-            } else {
-                expected.col(c).array() *= B2.array();
+        for (Eigen::Index c = 0; c < A.cols(); ++c) {
+            for (Eigen::Index r = 0; r < A.rows(); ++r) {
+                if (divide) {
+                    expected(r, c) /= B2[r];
+                } else {
+                    expected(r, c) *= B2[r];
+                }
             }
         }
         expect_equal_matrix(expected, realized);
