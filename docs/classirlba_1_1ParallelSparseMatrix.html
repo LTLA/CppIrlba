@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>irlba: irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_ &gt; Class Template Reference</title>
+<title>irlba: irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -79,7 +79,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classirlba_1_1ParallelSparseMatrix-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_ &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -90,35 +90,35 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a8f65cf74a1199c98737b9a9431dc3137" id="r_a8f65cf74a1199c98737b9a9431dc3137"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">typedef</a> std::remove_const&lt; typenamestd::remove_reference&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">decltype</a>(std::declval&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;()[0])&gt;::type ::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a8f65cf74a1199c98737b9a9431dc3137">PointerType</a></td></tr>
-<tr class="separator:a8f65cf74a1199c98737b9a9431dc3137"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d67b62dd461e6dc71e4f0d870b76f7" id="r_a05d67b62dd461e6dc71e4f0d870b76f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">typedef</a> std::remove_const&lt; typenamestd::remove_reference&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">decltype</a>(std::declval&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;()[0])&gt;::type ::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a05d67b62dd461e6dc71e4f0d870b76f7">PointerType</a></td></tr>
+<tr class="separator:a05d67b62dd461e6dc71e4f0d870b76f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad5a65986ddb8bf72081857b73d96d015" id="r_ad5a65986ddb8bf72081857b73d96d015"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ad5a65986ddb8bf72081857b73d96d015">ParallelSparseMatrix</a> ()</td></tr>
-<tr class="separator:ad5a65986ddb8bf72081857b73d96d015"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b8ef94cfde4cff7c044593fc511453" id="r_a33b8ef94cfde4cff7c044593fc511453"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a33b8ef94cfde4cff7c044593fc511453">ParallelSparseMatrix</a> (Eigen::Index <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">nrow</a>, Eigen::Index <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ncol</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">x</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">i</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">p</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">bool</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">column_major</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">int</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">nthreads</a>)</td></tr>
-<tr class="separator:a33b8ef94cfde4cff7c044593fc511453"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77b639ec28fdc367916dfc4810640fee" id="r_a77b639ec28fdc367916dfc4810640fee"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a77b639ec28fdc367916dfc4810640fee">rows</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:a77b639ec28fdc367916dfc4810640fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a589fd86d7c2bebe987185a1912e20423" id="r_a589fd86d7c2bebe987185a1912e20423"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a589fd86d7c2bebe987185a1912e20423">cols</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:a589fd86d7c2bebe987185a1912e20423"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada997e4e5f4e223573867fdcfe4ee40d" id="r_ada997e4e5f4e223573867fdcfe4ee40d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ada997e4e5f4e223573867fdcfe4ee40d">get_values</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:ada997e4e5f4e223573867fdcfe4ee40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa44c56ef2c65ec522990d803df42c206" id="r_aa44c56ef2c65ec522990d803df42c206"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aa44c56ef2c65ec522990d803df42c206">get_indices</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:aa44c56ef2c65ec522990d803df42c206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0890b291a5e0a0be9ea7a114bdb25f4" id="r_ab0890b291a5e0a0be9ea7a114bdb25f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ab0890b291a5e0a0be9ea7a114bdb25f4">get_pointers</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:ab0890b291a5e0a0be9ea7a114bdb25f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a065d037510619b19b5e79b582766c9f1" id="r_a065d037510619b19b5e79b582766c9f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a065d037510619b19b5e79b582766c9f1">get_primary_starts</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:a065d037510619b19b5e79b582766c9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad08c15c411cc850f4acd5764ba58174" id="r_aad08c15c411cc850f4acd5764ba58174"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aad08c15c411cc850f4acd5764ba58174">get_primary_ends</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:aad08c15c411cc850f4acd5764ba58174"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9cd72bdca5d6439d7809f436c9ae782" id="r_ad9cd72bdca5d6439d7809f436c9ae782"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; std::vector&lt; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a8f65cf74a1199c98737b9a9431dc3137">PointerType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ad9cd72bdca5d6439d7809f436c9ae782">get_secondary_nonzero_starts</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
-<tr class="separator:ad9cd72bdca5d6439d7809f436c9ae782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf9a12ed3c0c2b532074d67b1514753f" id="r_acf9a12ed3c0c2b532074d67b1514753f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#acf9a12ed3c0c2b532074d67b1514753f">ParallelSparseMatrix</a> ()</td></tr>
+<tr class="separator:acf9a12ed3c0c2b532074d67b1514753f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada7b80f2024172e70c4677cf91423eb1" id="r_ada7b80f2024172e70c4677cf91423eb1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ada7b80f2024172e70c4677cf91423eb1">ParallelSparseMatrix</a> (Eigen::Index <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">nrow</a>, Eigen::Index <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ncol</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">x</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">i</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">p</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">bool</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">column_major</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">int</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">nthreads</a>)</td></tr>
+<tr class="separator:ada7b80f2024172e70c4677cf91423eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf5317ab710d8135149c8c3e3d536a0d" id="r_aaf5317ab710d8135149c8c3e3d536a0d"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aaf5317ab710d8135149c8c3e3d536a0d">rows</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:aaf5317ab710d8135149c8c3e3d536a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad28b7feb9b8edbe5f028bee51635ba7d" id="r_ad28b7feb9b8edbe5f028bee51635ba7d"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ad28b7feb9b8edbe5f028bee51635ba7d">cols</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:ad28b7feb9b8edbe5f028bee51635ba7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ce03a80711242aafdbda1ff4fc0cdee" id="r_a3ce03a80711242aafdbda1ff4fc0cdee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a3ce03a80711242aafdbda1ff4fc0cdee">get_values</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:a3ce03a80711242aafdbda1ff4fc0cdee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329299f8c582d58037b2f4b60b50ee20" id="r_a329299f8c582d58037b2f4b60b50ee20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a329299f8c582d58037b2f4b60b50ee20">get_indices</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:a329299f8c582d58037b2f4b60b50ee20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abca50c26f6276d18c76ca8e8d0a96710" id="r_abca50c26f6276d18c76ca8e8d0a96710"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#abca50c26f6276d18c76ca8e8d0a96710">get_pointers</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:abca50c26f6276d18c76ca8e8d0a96710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab24bf3591dfe0088dccb8041a3881e9e" id="r_ab24bf3591dfe0088dccb8041a3881e9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ab24bf3591dfe0088dccb8041a3881e9e">get_primary_starts</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:ab24bf3591dfe0088dccb8041a3881e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d2c5c0010e2a8ec60b43261f629734e" id="r_a6d2c5c0010e2a8ec60b43261f629734e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a6d2c5c0010e2a8ec60b43261f629734e">get_primary_ends</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:a6d2c5c0010e2a8ec60b43261f629734e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac40f94eb5d8e5e2a6cd4ee64a66828f8" id="r_ac40f94eb5d8e5e2a6cd4ee64a66828f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; std::vector&lt; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a05d67b62dd461e6dc71e4f0d870b76f7">PointerType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ac40f94eb5d8e5e2a6cd4ee64a66828f8">get_secondary_nonzero_starts</a> () <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a></td></tr>
+<tr class="separator:ac40f94eb5d8e5e2a6cd4ee64a66828f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> = std::vector&lt;size_t&gt;&gt;<br />
-class irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_ &gt;</div><p>Sparse matrix with customizable parallelization. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> = Eigen::VectorXd&gt;<br />
+class irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</div><p>Sparse matrix with customizable parallelization. </p>
 <p>This provides an alternative to <code>Eigen::SparseMatrix</code> for parallelized multiplication of compressed sparse matrices. Unlike Eigen, this implementation is able to parallelize when the multiplication does not align well with the storage layout, e.g., multiplication of a compressed sparse column matrix by a dense vector on the right hand side. On construction, it also pre-allocates the rows and/or columns to each thread, aiming to balance the number of non-zero elements that each thread needs to process. All subsequent multiplications can then use these allocations, which is useful for <code><a class="el" href="namespaceirlba.html#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> where the cost of pre-allocation is abrogated by repeated multiplication calls.</p>
 <p>Some cursory testing indicates that the performance of this implementation is comparable to Eigen for OpenMP-based parallelization. However, the real purpose of this class is to support custom parallelization schemes in cases where OpenMP is not available. This is achieved by defining <code>IRLBA_CUSTOM_PARALLEL</code> macro to the name of a function implementing a custom scheme. Such a function should accept two arguments - an integer specifying the number of threads, and a lambda that accepts a thread number. It should then loop over the number of threads and launch one job for each thread via the lambda. Once all threads are complete, the function should return.</p>
 <p>This class satisfies the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface and implements all of its methods/typedefs.</p>
@@ -127,20 +127,21 @@ class irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_ &g
     <tr><td class="paramname">ValueArray_</td><td>Array class containing numeric values for the non-zero values. Should support a read-only <code>[]</code> operator. </td></tr>
     <tr><td class="paramname">IndexArray_</td><td>Array class containing integer values for the indices of the non-zero values. Should support a read-only <code>[]</code> operator. </td></tr>
     <tr><td class="paramname">PointerArray_</td><td>Array class containing integer values for the pointers to the row/column boundaries. Should support a read-only <code>[]</code> operator. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class. </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a8f65cf74a1199c98737b9a9431dc3137" name="a8f65cf74a1199c98737b9a9431dc3137"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f65cf74a1199c98737b9a9431dc3137">&#9670;&#160;</a></span>PointerType</h2>
+<a id="a05d67b62dd461e6dc71e4f0d870b76f7" name="a05d67b62dd461e6dc71e4f0d870b76f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05d67b62dd461e6dc71e4f0d870b76f7">&#9670;&#160;</a></span>PointerType</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">typedef</a> std::remove_const&lt;typenamestd::remove_reference&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">decltype</a>(std::declval&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>&gt;()[0])&gt;::type ::type <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::PointerType</td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">typedef</a> std::remove_const&lt;typenamestd::remove_reference&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">decltype</a>(std::declval&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>&gt;()[0])&gt;::type ::type <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::PointerType</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -149,19 +150,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad5a65986ddb8bf72081857b73d96d015" name="ad5a65986ddb8bf72081857b73d96d015"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5a65986ddb8bf72081857b73d96d015">&#9670;&#160;</a></span>ParallelSparseMatrix() <span class="overload">[1/2]</span></h2>
+<a id="acf9a12ed3c0c2b532074d67b1514753f" name="acf9a12ed3c0c2b532074d67b1514753f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf9a12ed3c0c2b532074d67b1514753f">&#9670;&#160;</a></span>ParallelSparseMatrix() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::ParallelSparseMatrix </td>
+          <td class="memname"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::ParallelSparseMatrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -177,19 +178,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="a33b8ef94cfde4cff7c044593fc511453" name="a33b8ef94cfde4cff7c044593fc511453"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33b8ef94cfde4cff7c044593fc511453">&#9670;&#160;</a></span>ParallelSparseMatrix() <span class="overload">[2/2]</span></h2>
+<a id="ada7b80f2024172e70c4677cf91423eb1" name="ada7b80f2024172e70c4677cf91423eb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7b80f2024172e70c4677cf91423eb1">&#9670;&#160;</a></span>ParallelSparseMatrix() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::ParallelSparseMatrix </td>
+          <td class="memname"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::ParallelSparseMatrix </td>
           <td>(</td>
           <td class="paramtype">Eigen::Index&#160;</td>
           <td class="paramname"><em>nrow</em>, </td>
@@ -259,19 +260,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a589fd86d7c2bebe987185a1912e20423" name="a589fd86d7c2bebe987185a1912e20423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a589fd86d7c2bebe987185a1912e20423">&#9670;&#160;</a></span>cols()</h2>
+<a id="ad28b7feb9b8edbe5f028bee51635ba7d" name="ad28b7feb9b8edbe5f028bee51635ba7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad28b7feb9b8edbe5f028bee51635ba7d">&#9670;&#160;</a></span>cols()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Eigen::Index <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::cols </td>
+          <td class="memname">Eigen::Index <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::cols </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -287,19 +288,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="aa44c56ef2c65ec522990d803df42c206" name="aa44c56ef2c65ec522990d803df42c206"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa44c56ef2c65ec522990d803df42c206">&#9670;&#160;</a></span>get_indices()</h2>
+<a id="a329299f8c582d58037b2f4b60b50ee20" name="a329299f8c582d58037b2f4b60b50ee20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a329299f8c582d58037b2f4b60b50ee20">&#9670;&#160;</a></span>get_indices()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::get_indices </td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a> &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::get_indices </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -315,19 +316,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="ab0890b291a5e0a0be9ea7a114bdb25f4" name="ab0890b291a5e0a0be9ea7a114bdb25f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0890b291a5e0a0be9ea7a114bdb25f4">&#9670;&#160;</a></span>get_pointers()</h2>
+<a id="abca50c26f6276d18c76ca8e8d0a96710" name="abca50c26f6276d18c76ca8e8d0a96710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abca50c26f6276d18c76ca8e8d0a96710">&#9670;&#160;</a></span>get_pointers()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::get_pointers </td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::get_pointers </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -343,19 +344,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="aad08c15c411cc850f4acd5764ba58174" name="aad08c15c411cc850f4acd5764ba58174"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad08c15c411cc850f4acd5764ba58174">&#9670;&#160;</a></span>get_primary_ends()</h2>
+<a id="a6d2c5c0010e2a8ec60b43261f629734e" name="a6d2c5c0010e2a8ec60b43261f629734e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d2c5c0010e2a8ec60b43261f629734e">&#9670;&#160;</a></span>get_primary_ends()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::get_primary_ends </td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::get_primary_ends </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -372,19 +373,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="a065d037510619b19b5e79b582766c9f1" name="a065d037510619b19b5e79b582766c9f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a065d037510619b19b5e79b582766c9f1">&#9670;&#160;</a></span>get_primary_starts()</h2>
+<a id="ab24bf3591dfe0088dccb8041a3881e9e" name="ab24bf3591dfe0088dccb8041a3881e9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab24bf3591dfe0088dccb8041a3881e9e">&#9670;&#160;</a></span>get_primary_starts()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::get_primary_starts </td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">size_t</a> &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::get_primary_starts </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -401,19 +402,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="ad9cd72bdca5d6439d7809f436c9ae782" name="ad9cd72bdca5d6439d7809f436c9ae782"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9cd72bdca5d6439d7809f436c9ae782">&#9670;&#160;</a></span>get_secondary_nonzero_starts()</h2>
+<a id="ac40f94eb5d8e5e2a6cd4ee64a66828f8" name="ac40f94eb5d8e5e2a6cd4ee64a66828f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac40f94eb5d8e5e2a6cd4ee64a66828f8">&#9670;&#160;</a></span>get_secondary_nonzero_starts()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; std::vector&lt; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a8f65cf74a1199c98737b9a9431dc3137">PointerType</a> &gt; &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::get_secondary_nonzero_starts </td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> std::vector&lt; std::vector&lt; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a05d67b62dd461e6dc71e4f0d870b76f7">PointerType</a> &gt; &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::get_secondary_nonzero_starts </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -430,19 +431,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="ada997e4e5f4e223573867fdcfe4ee40d" name="ada997e4e5f4e223573867fdcfe4ee40d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada997e4e5f4e223573867fdcfe4ee40d">&#9670;&#160;</a></span>get_values()</h2>
+<a id="a3ce03a80711242aafdbda1ff4fc0cdee" name="a3ce03a80711242aafdbda1ff4fc0cdee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ce03a80711242aafdbda1ff4fc0cdee">&#9670;&#160;</a></span>get_values()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::get_values </td>
+          <td class="memname"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">const</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a> &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::get_values </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -458,19 +459,19 @@ template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d
 
 </div>
 </div>
-<a id="a77b639ec28fdc367916dfc4810640fee" name="a77b639ec28fdc367916dfc4810640fee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77b639ec28fdc367916dfc4810640fee">&#9670;&#160;</a></span>rows()</h2>
+<a id="aaf5317ab710d8135149c8c3e3d536a0d" name="aaf5317ab710d8135149c8c3e3d536a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf5317ab710d8135149c8c3e3d536a0d">&#9670;&#160;</a></span>rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;&gt; </div>
+template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>  = std::vector&lt;double&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>  = std::vector&lt;int&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>  = std::vector&lt;size_t&gt;, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a>  = Eigen::VectorXd&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Eigen::Index <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a> &gt;::rows </td>
+          <td class="memname">Eigen::Index <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">ValueArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">IndexArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">PointerArray_</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">EigenVector_</a> &gt;::rows </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
