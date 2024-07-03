@@ -37,11 +37,13 @@ namespace irlba {
  * Should support a read-only `[]` operator.
  * @tparam PointerArray_ Array class containing integer values for the pointers to the row/column boundaries.
  * Should support a read-only `[]` operator.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class.
  */
 template<
     class ValueArray_ = std::vector<double>, 
     class IndexArray_ = std::vector<int>, 
-    class PointerArray_ = std::vector<size_t> 
+    class PointerArray_ = std::vector<size_t>,
+    class EigenVector_ = Eigen::VectorXd
 >
 class ParallelSparseMatrix {
 public:
@@ -240,8 +242,7 @@ private:
     }
 
 private:
-    template<class Right_, class EigenVector_>
-    void indirect_multiply(const Right_& rhs, EigenVector_& output) const {
+    void indirect_multiply(const EigenVector_& rhs, EigenVector_& output) const {
         output.setZero();
 
         if (my_nthreads == 1) {
@@ -285,8 +286,7 @@ private:
         return;
     }
 
-    template<class Right_, class EigenVector_>
-    void direct_multiply(const Right_& rhs, EigenVector_& output) const {
+    void direct_multiply(const EigenVector_& rhs, EigenVector_& output) const {
         if (my_nthreads == 1) {
             for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
                 output.coeffRef(c) = column_dot_product<typename EigenVector_::Scalar>(c, rhs);
@@ -318,8 +318,8 @@ private:
         return;
     }
 
-    template<typename Scalar_, class Right_>
-    Scalar_ column_dot_product(size_t c, const Right_& rhs) const {
+    template<typename Scalar_>
+    Scalar_ column_dot_product(size_t c, const EigenVector_& rhs) const {
         PointerType primary_start = my_ptrs[c], primary_end = my_ptrs[c + 1];
         Scalar_ dot = 0;
         for (PointerType s = primary_start; s < primary_end; ++s) {
@@ -333,34 +333,56 @@ private:
      */
     // All MockMatrix interface methods, we can ignore this.
 public:
-    typedef bool Workspace;
+    struct Workspace {
+        EigenVector_ buffer;
+    };
 
-    bool workspace() const {
-        return false;
+    Workspace workspace() const {
+        return Workspace();
     }
 
-    typedef bool AdjointWorkspace;
+    struct AdjointWorkspace {
+        EigenVector_ buffer;
+    };
 
-    bool adjoint_workspace() const {
-        return false;
+    AdjointWorkspace adjoint_workspace() const {
+        return AdjointWorkspace();
     }
 
 public:
-    template<class Right_, class EigenVector_>
-    void multiply(const Right_& rhs, [[maybe_unused]] Workspace& work, EigenVector_& output) const {
+    template<class Right_>
+    void multiply(const Right_& rhs, Workspace& work, EigenVector_& output) const {
+        const auto& realized_rhs = [&]() {
+            if constexpr(std::is_same<Right_, EigenVector_>::value) {
+                return rhs;
+            } else {
+                work.buffer = rhs;
+                return work.buffer;
+            }
+        }();
+
         if (my_column_major) {
-            indirect_multiply(rhs, output);
+            indirect_multiply(realized_rhs, output);
         } else {
-            direct_multiply(rhs, output);
+            direct_multiply(realized_rhs, output);
         }
     }
 
-    template<class Right_, class EigenVector_>
-    void adjoint_multiply(const Right_& rhs, [[maybe_unused]] AdjointWorkspace& work, EigenVector_& output) const {
+    template<class Right_>
+    void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& output) const {
+        const auto& realized_rhs = [&]() {
+            if constexpr(std::is_same<Right_, EigenVector_>::value) {
+                return rhs;
+            } else {
+                work.buffer = rhs;
+                return work.buffer;
+            }
+        }();
+
         if (my_column_major) {
-            direct_multiply(rhs, output);
+            direct_multiply(realized_rhs, output);
         } else {
-            indirect_multiply(rhs, output);
+            indirect_multiply(realized_rhs, output);
         }
     }
 

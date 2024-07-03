@@ -220,23 +220,40 @@ public:
     Eigen::Index cols() const { return my_matrix.cols(); }
 
 public:
-    typedef WrappedWorkspace<Matrix_> Workspace;
+    struct Workspace {
+        Workspace(WrappedWorkspace<Matrix_> i) : inner(std::move(i)) {}
+        WrappedWorkspace<Matrix_> inner;
+        EigenVector_ buffer;
+    };
 
     Workspace workspace() const {
-        return wrapped_workspace(my_matrix);
+        return Workspace(wrapped_workspace(my_matrix));
     }
 
-    typedef WrappedAdjointWorkspace<Matrix_> AdjointWorkspace;
+    struct AdjointWorkspace {
+        AdjointWorkspace(WrappedAdjointWorkspace<Matrix_> i) : inner(std::move(i)) {}
+        WrappedAdjointWorkspace<Matrix_> inner;
+        EigenVector_ buffer;
+    };
 
     AdjointWorkspace adjoint_workspace() const {
-        return wrapped_adjoint_workspace(my_matrix);
+        return AdjointWorkspace(wrapped_adjoint_workspace(my_matrix));
     }
 
 public:
     template<class Right_>
     void multiply(const Right_& rhs, Workspace& work, EigenVector_& out) const {
-        wrapped_multiply(my_matrix, rhs, work, out);
-        auto beta = rhs.dot(my_center);
+        const auto& realized_rhs = [&]() {
+            if constexpr(std::is_same<Right_, EigenVector_>::value) {
+                return rhs;
+            } else {
+                work.buffer = rhs;
+                return work.buffer;
+            }
+        }();
+
+        wrapped_multiply(my_matrix, realized_rhs, work.inner, out);
+        auto beta = realized_rhs.dot(my_center);
         for (auto& o : out) {
             o -= beta;
         }
@@ -245,8 +262,17 @@ public:
 
     template<class Right_>
     void adjoint_multiply(const Right_& rhs, AdjointWorkspace& work, EigenVector_& out) const {
-        wrapped_adjoint_multiply(my_matrix, rhs, work, out);
-        auto beta = rhs.sum();
+        const auto& realized_rhs = [&]() {
+            if constexpr(std::is_same<Right_, EigenVector_>::value) {
+                return rhs;
+            } else {
+                work.buffer = rhs;
+                return work.buffer;
+            }
+        }();
+
+        wrapped_adjoint_multiply(my_matrix, realized_rhs, work.inner, out);
+        auto beta = realized_rhs.sum();
         out -= beta * (my_center);
         return;
     }
