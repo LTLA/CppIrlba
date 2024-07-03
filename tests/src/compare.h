@@ -15,7 +15,7 @@ void expect_equal_column_vectors(const Eigen::MatrixXd& left, const Eigen::Matri
 
     for (Eigen::Index i = 0; i < left.cols(); ++i) {
         for (Eigen::Index j = 0; j < left.rows(); ++j) {
-            EXPECT_TRUE(same_same(std::abs(left(j, i)), std::abs(right(j, i)), tol));
+            EXPECT_TRUE(same_same(std::abs(left(j, i)), std::abs(right(j, i)), tol)) << "(" << left(j, i) << " vs " << right(j, i) << ")" << std::endl;
         }
 
         double left_sum = std::abs(left.col(i).sum());
