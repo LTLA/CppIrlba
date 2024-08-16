@@ -1,10 +1,18 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile doxygen_version="1.9.8">
   <compound kind="file">
+    <name>compute.hpp</name>
+    <path>irlba/</path>
+    <filename>compute_8hpp.html</filename>
+    <class kind="struct">irlba::Results</class>
+    <namespace>irlba</namespace>
+  </compound>
+  <compound kind="file">
     <name>irlba.hpp</name>
     <path>irlba/</path>
     <filename>irlba_8hpp.html</filename>
-    <class kind="struct">irlba::Results</class>
+    <includes id="compute_8hpp" name="compute.hpp" local="yes" import="no" module="no" objc="no">compute.hpp</includes>
+    <includes id="parallel_8hpp" name="parallel.hpp" local="yes" import="no" module="no" objc="no">parallel.hpp</includes>
     <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
