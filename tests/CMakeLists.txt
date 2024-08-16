@@ -18,7 +18,7 @@ add_executable(
     libtest 
     src/utils.cpp
     src/lanczos.cpp
-    src/irlba.cpp
+    src/compute.cpp
     src/sparse.cpp
     src/invariant.cpp
     src/MockMatrix.cpp

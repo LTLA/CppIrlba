@@ -3,7 +3,7 @@
 #include "compare.h"
 #include "NormalSampler.h"
 
-#include "irlba/irlba.hpp"
+#include "irlba/compute.hpp"
 #include "irlba/utils.hpp"
 
 #include "Eigen/Dense"
