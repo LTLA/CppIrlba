@@ -1,25 +1,27 @@
 <map id="irlba/irlba.hpp" name="irlba/irlba.hpp">
-<area shape="rect" id="Node000001" title="Implements IRLBA." alt="" coords="217,5,315,31"/>
-<area shape="rect" id="Node000002" href="$compute_8hpp.html" title="Compute an approximate SVD with IRLBA." alt="" coords="320,79,415,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="285,29,339,67,336,72,282,34"/>
-<area shape="rect" id="Node000010" href="$parallel_8hpp.html" title="Classes for parallelized multiplication." alt="" coords="166,79,252,105"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="259,33,230,68,226,65,254,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="87,153,181,178"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="329,108,189,150,187,145,327,103"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="205,153,274,178"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="347,108,276,147,273,142,344,103"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="400,153,489,178"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="382,103,422,140,419,144,379,107"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="513,153,571,178"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="398,103,500,144,498,149,396,108"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="595,153,655,178"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="412,103,580,149,579,154,411,108"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="679,153,744,178"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="416,99,665,149,664,155,415,104"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="298,153,375,178"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="365,106,350,139,345,137,360,104"/>
-<area shape="poly" id="edge12_Node000010_Node000003" title=" " alt="" coords="198,107,159,144,155,140,194,103"/>
-<area shape="poly" id="edge10_Node000010_Node000004" title=" " alt="" coords="216,104,231,137,226,139,211,106"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="5,153,63,178"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="180,108,78,149,76,144,178,103"/>
+<area shape="rect" id="Node000001" title="Implements IRLBA." alt="" coords="327,5,424,31"/>
+<area shape="rect" id="Node000002" href="$compute_8hpp.html" title="Compute an approximate SVD with IRLBA." alt="" coords="475,79,570,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,29,485,69,482,74,399,34"/>
+<area shape="rect" id="Node000010" href="$parallel_8hpp.html" title="Classes for parallelized multiplication." alt="" coords="230,79,316,105"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="360,34,304,72,301,68,357,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="331,153,426,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="499,108,418,148,415,143,497,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="238,153,308,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="481,108,324,153,322,147,479,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="724,153,814,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="565,103,713,145,712,150,563,108"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="838,153,895,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="571,99,682,119,823,149,822,155,681,124,570,104"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="450,153,510,178"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="518,106,497,141,492,138,513,104"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="534,153,599,178"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="532,103,553,138,549,141,527,106"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="622,153,700,178"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="547,103,625,143,623,147,545,108"/>
+<area shape="poly" id="edge12_Node000010_Node000003" title=" " alt="" coords="292,103,349,141,346,146,289,107"/>
+<area shape="poly" id="edge10_Node000010_Node000004" title=" " alt="" coords="276,105,276,137,270,137,270,105"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="156,153,214,178"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="260,107,213,145,210,141,256,103"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="5,153,133,178"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="239,108,119,150,117,145,238,103"/>
 </map>

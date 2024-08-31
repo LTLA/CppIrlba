@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['parallelsparsematrix_0',['parallelsparsematrix',['../classirlba_1_1ParallelSparseMatrix.html#acf9a12ed3c0c2b532074d67b1514753f',1,'irlba::ParallelSparseMatrix::ParallelSparseMatrix()'],['../classirlba_1_1ParallelSparseMatrix.html#ada7b80f2024172e70c4677cf91423eb1',1,'irlba::ParallelSparseMatrix::ParallelSparseMatrix(Eigen::Index nrow, Eigen::Index ncol, ValueArray_ x, IndexArray_ i, PointerArray_ p, bool column_major, int nthreads)']]]
+  ['realize_0',['realize',['../classirlba_1_1MockMatrix.html#ab7a59ec0ae28cab7f6d5443d6f138635',1,'irlba::MockMatrix']]],
+  ['rows_1',['rows',['../classirlba_1_1MockMatrix.html#a8c39c466d1e59f539ec5f262c8692ac5',1,'irlba::MockMatrix::rows()'],['../classirlba_1_1ParallelSparseMatrix.html#aaf5317ab710d8135149c8c3e3d536a0d',1,'irlba::ParallelSparseMatrix::rows()']]]
 ];

@@ -77,7 +77,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">parallel.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -87,18 +88,21 @@ $(function() {
 <div class="textblock"><code>#include &quot;utils.hpp&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;Eigen/Dense&quot;</code><br />
+<code>#include &quot;subpar/subpar.hpp&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for parallel.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="parallel_8hpp__incl.png" border="0" usemap="#airlba_2parallel_8hpp" alt=""/></div>
 <map name="airlba_2parallel_8hpp" id="airlba_2parallel_8hpp">
-<area shape="rect" title="Classes for parallelized multiplication." alt="" coords="71,5,185,31"/>
+<area shape="rect" title="Classes for parallelized multiplication." alt="" coords="120,5,235,31"/>
 <area shape="rect" title=" " alt="" coords="5,79,75,105"/>
-<area shape="poly" title=" " alt="" coords="115,34,68,71,65,67,111,29"/>
+<area shape="poly" title=" " alt="" coords="155,34,78,74,76,69,153,29"/>
 <area shape="rect" title=" " alt="" coords="99,79,157,105"/>
-<area shape="poly" title=" " alt="" coords="131,31,131,63,125,63,125,31"/>
+<area shape="poly" title=" " alt="" coords="171,33,147,68,143,65,167,30"/>
 <area shape="rect" title=" " alt="" coords="181,79,275,105"/>
-<area shape="poly" title=" " alt="" coords="147,29,200,67,197,72,143,34"/>
+<area shape="poly" title=" " alt="" coords="188,30,213,65,209,68,184,33"/>
+<area shape="rect" title=" " alt="" coords="299,79,426,105"/>
+<area shape="poly" title=" " alt="" coords="210,29,318,71,316,75,208,34"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -128,6 +132,12 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceirlba" id="r_namespaceirlba"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html">irlba</a></td></tr>
 <tr class="memdesc:namespaceirlba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements IRLBA for approximate SVD. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a7ddcae16077f8210cfab2f59ee3effed" id="r_a7ddcae16077f8210cfab2f59ee3effed"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">typename</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">Task_</a> , <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">class</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">Run_</a> &gt; </td></tr>
+<tr class="memitem:a7ddcae16077f8210cfab2f59ee3effed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a7ddcae16077f8210cfab2f59ee3effed">irlba::parallelize</a> (<a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">Task_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">num_tasks</a>, <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">Run_</a> <a class="el" href="namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66">run_task</a>)</td></tr>
+<tr class="separator:a7ddcae16077f8210cfab2f59ee3effed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classes for parallelized multiplication. </p>

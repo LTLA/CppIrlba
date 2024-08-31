@@ -71,13 +71,6 @@
   <compound kind="class">
     <name>irlba::EigenThreadScope</name>
     <filename>classirlba_1_1EigenThreadScope.html</filename>
-    <member kind="function">
-      <type></type>
-      <name>EigenThreadScope</name>
-      <anchorfile>classirlba_1_1EigenThreadScope.html</anchorfile>
-      <anchor>a8fdbc24d92c1e6610c8d5785bc575804</anchor>
-      <arglist>(int n)</arglist>
-    </member>
   </compound>
   <compound kind="struct">
     <name>irlba::get_adjoint_workspace</name>
@@ -457,6 +450,13 @@
       <anchorfile>namespaceirlba.html</anchorfile>
       <anchor>a138d1e78335dbcfdfe7e90c2896e2571</anchor>
       <arglist>(const Matrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const Options &amp;options)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>parallelize</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>a7ddcae16077f8210cfab2f59ee3effed</anchor>
+      <arglist>(Task_ num_tasks, Run_ run_task)</arglist>
     </member>
     <member kind="function">
       <type>WrappedWorkspace&lt; Matrix_ &gt;</type>

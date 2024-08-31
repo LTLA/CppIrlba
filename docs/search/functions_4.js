@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['make_5fscaled_0',['make_Scaled',['../namespaceirlba.html#a21118aed5175a55b5b277edcd291aa27',1,'irlba']]],
-  ['multiply_1',['multiply',['../classirlba_1_1MockMatrix.html#af184ef507c5ceb99c89d782075cb5c1c',1,'irlba::MockMatrix']]]
+  ['parallelize_0',['parallelize',['../namespaceirlba.html#a7ddcae16077f8210cfab2f59ee3effed',1,'irlba']]],
+  ['parallelsparsematrix_1',['parallelsparsematrix',['../classirlba_1_1ParallelSparseMatrix.html#acf9a12ed3c0c2b532074d67b1514753f',1,'irlba::ParallelSparseMatrix::ParallelSparseMatrix()'],['../classirlba_1_1ParallelSparseMatrix.html#ada7b80f2024172e70c4677cf91423eb1',1,'irlba::ParallelSparseMatrix::ParallelSparseMatrix(Eigen::Index nrow, Eigen::Index ncol, ValueArray_ x, IndexArray_ i, PointerArray_ p, bool column_major, int nthreads)']]]
 ];
