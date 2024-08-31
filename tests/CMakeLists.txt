@@ -14,6 +14,31 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+include(GoogleTest)
+
+option(CODE_COVERAGE "Enable coverage testing" OFF)
+set(DO_CODE_COVERAGE OFF)
+if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(DO_CODE_COVERAGE ON)
+endif()
+
+macro(decorate_test target)
+    target_link_libraries(
+        ${target}
+        gtest_main
+        irlba
+    )
+
+    target_compile_options(${target} PRIVATE -Wall -Wpedantic -Wextra)
+
+    if(DO_CODE_COVERAGE)
+        target_compile_options(${target} PRIVATE -O0 -g --coverage)
+        target_link_options(${target} PRIVATE --coverage)
+    endif()
+
+    gtest_discover_tests(${target})
+endmacro()
+
 add_executable(
     libtest 
     src/utils.cpp
@@ -25,47 +50,15 @@ add_executable(
     src/wrappers.cpp
     src/parallel.cpp
 )
-
-target_link_libraries(
-    libtest
-    gtest_main
-    irlba
-)
-
-target_compile_options(libtest PRIVATE -Wall -Wpedantic -Wextra)
-
-option(CODE_COVERAGE "Enable coverage testing" OFF)
-set(DO_CODE_COVERAGE OFF)
-if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(DO_CODE_COVERAGE ON)
-    target_compile_options(libtest PRIVATE -O0 -g --coverage)
-    target_link_options(libtest PRIVATE --coverage)
-endif()
-
-include(GoogleTest)
-gtest_discover_tests(libtest)
+decorate_test(libtest)
 
 # Check that the custom parallelization schemes are properly set up.
 add_executable(
     custom_parallel
     src/parallel.cpp
 )
-
+decorate_test(custom_parallel)
 target_compile_definitions(custom_parallel PRIVATE TEST_CUSTOM_PARALLEL)
-target_compile_options(custom_parallel PRIVATE -Wall -Wpedantic -Wextra)
-
-target_link_libraries(
-    custom_parallel
-    gtest_main
-    irlba
-)
-
-if(DO_CODE_COVERAGE)
-    target_compile_options(custom_parallel PRIVATE -O0 -g --coverage)
-    target_link_options(custom_parallel PRIVATE --coverage)
-endif()
-
-gtest_discover_tests(custom_parallel)
 
 # Check that OpenMP works as expected.
 find_package(OpenMP)
@@ -74,19 +67,37 @@ if (OpenMP_FOUND)
         omptest 
         src/parallel.cpp
     )
-
-    target_link_libraries(
-        omptest
-        gtest_main
-        irlba
-    )
-
-    target_compile_options(omptest PRIVATE -Wall -Wpedantic -Wextra)
+    decorate_test(omptest)
     target_link_libraries(omptest OpenMP::OpenMP_CXX)
-    gtest_discover_tests(omptest)
 
-    if(DO_CODE_COVERAGE)
-        target_compile_options(omptest PRIVATE -O0 -g --coverage)
-        target_link_options(omptest PRIVATE --coverage)
-    endif()
+    add_executable(
+        scopetest 
+        src/EigenThreadScope.cpp
+    )
+    decorate_test(scopetest)
+    target_link_libraries(scopetest OpenMP::OpenMP_CXX)
+
+    add_executable(
+        scopetest_custom
+        src/EigenThreadScope.cpp
+    )
+    decorate_test(scopetest_custom)
+    target_link_libraries(scopetest_custom OpenMP::OpenMP_CXX)
+    target_compile_definitions(scopetest_custom PRIVATE IRLBA_CUSTOM_PARALLEL)
+
+    add_executable(
+        scopetest_noomp
+        src/EigenThreadScope.cpp
+    )
+    decorate_test(scopetest_noomp)
+    target_link_libraries(scopetest_noomp OpenMP::OpenMP_CXX)
+    target_compile_definitions(scopetest_noomp PRIVATE SUBPAR_NO_OPENMP_SIMPLE)
+
+    add_executable(
+        scopetest_custom_omp
+        src/EigenThreadScope.cpp
+    )
+    decorate_test(scopetest_custom_omp)
+    target_link_libraries(scopetest_custom_omp OpenMP::OpenMP_CXX)
+    target_compile_definitions(scopetest_custom_omp PRIVATE IRLBA_CUSTOM_PARALLEL IRLBA_CUSTOM_PARALLEL_USES_OPENMP)
 endif()

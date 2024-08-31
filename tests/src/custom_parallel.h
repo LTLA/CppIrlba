@@ -1,14 +1,14 @@
 #ifndef CUSTOM_PARALLEL_H
 #define CUSTOM_PARALLEL_H
 
-#include <cmath>
 #include <vector>
 #include <thread>
 
-template<class Function>
-void parallelize(size_t nthreads, Function f) {
+template<class Function_>
+void test_parallelize(int nthreads, Function_ f) {
     std::vector<std::thread> jobs;
-    for (size_t w = 0; w < nthreads; ++w) {
+    jobs.reserve(nthreads);
+    for (int w = 0; w < nthreads; ++w) {
         jobs.emplace_back(f, w);
     }
     for (auto& job : jobs) {
@@ -16,5 +16,5 @@ void parallelize(size_t nthreads, Function f) {
     }
 }
 
-#define CUSTOM_PARALLEL parallelize
+#define IRLBA_CUSTOM_PARALLEL ::test_parallelize
 #endif
