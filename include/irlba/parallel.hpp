@@ -172,6 +172,7 @@ private:
     typedef typename std::remove_const<typename std::remove_reference<decltype(std::declval<IndexArray_>()[0])>::type>::type IndexType;
 
     std::vector<size_t> my_primary_starts, my_primary_ends;
+    std::vector<IndexType> my_secondary_ends;
     std::vector<std::vector<PointerType> > my_secondary_nonzero_starts;
 
 public:
@@ -231,14 +232,14 @@ private:
         }
 
         // Splitting rows across threads so each thread processes the same number of nonzero elements.
+        my_secondary_ends.resize(my_nthreads + 1);
         my_secondary_nonzero_starts.resize(my_nthreads + 1, std::vector<PointerType>(my_primary_dim));
         {
             std::vector<PointerType> secondary_nonzeros(my_secondary_dim);
             for (PointerType i = 0; i < total_nzeros; ++i) { // don't using range for loop to avoid an extra requirement on IndexArray.
                 ++(secondary_nonzeros[my_indices[i]]);
             }
-            
-            std::vector<IndexType> secondary_ends(my_nthreads);
+
             IndexType secondary_counter = 0;
             PointerType sofar = per_thread;
             PointerType cum_rows = 0;
@@ -248,7 +249,7 @@ private:
                     cum_rows += secondary_nonzeros[secondary_counter];
                     ++secondary_counter;
                 }
-                secondary_ends[t] = secondary_counter;
+                my_secondary_ends[t + 1] = secondary_counter;
                 sofar += per_thread;
             }
 
@@ -258,7 +259,8 @@ private:
 
                 auto s = primary_start;
                 for (int thread = 0; thread < my_nthreads; ++thread) {
-                    while (s < primary_end && my_indices[s] < secondary_ends[thread]) { 
+                    auto limit = my_secondary_ends[thread + 1];
+                    while (s < primary_end && my_indices[s] < limit) {
                         ++s; 
                     }
                     my_secondary_nonzero_starts[thread + 1][c] = s;
@@ -268,10 +270,9 @@ private:
     }
 
 private:
-    void indirect_multiply(const EigenVector_& rhs, EigenVector_& output) const {
-        output.setZero();
-
+    void indirect_multiply(const EigenVector_& rhs, std::vector<std::vector<typename EigenVector_::Scalar> >& thread_buffers, EigenVector_& output) const {
         if (my_nthreads == 1) {
+            output.setZero();
             for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
                 auto start = my_ptrs[c];
                 auto end = my_ptrs[c + 1];
@@ -284,15 +285,36 @@ private:
         }
 
         parallelize(my_nthreads, [&](int t) -> void {
-            const auto& starts = my_secondary_nonzero_starts[t];
-            const auto& ends = my_secondary_nonzero_starts[t + 1];
+            auto secondary_start = my_secondary_ends[t];
+            auto secondary_end = my_secondary_ends[t + 1];
+            size_t secondary_len = secondary_end - secondary_start;
+
+            // Using a separate buffer for the other threads to avoid false
+            // sharing. On first use, each buffer is allocated within each
+            // thread to give malloc a chance of using thread-specific arenas.
+            typename EigenVector_::Scalar* optr;
+            if (t != 0) {
+                auto& curbuffer = thread_buffers[t - 1];
+                curbuffer.resize(secondary_len);
+                optr = curbuffer.data();
+            } else {
+                optr = output.data() + secondary_start;
+            }
+            std::fill_n(optr, secondary_len, static_cast<typename EigenVector_::Scalar>(0));
+
+            const auto& nz_starts = my_secondary_nonzero_starts[t];
+            const auto& nz_ends = my_secondary_nonzero_starts[t + 1];
             for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
-                auto start = starts[c];
-                auto end = ends[c];
+                auto nz_start = nz_starts[c];
+                auto nz_end = nz_ends[c];
                 auto val = rhs.coeff(c);
-                for (PointerType s = start; s < end; ++s) {
-                    output.coeffRef(my_indices[s]) += my_values[s] * val;
+                for (PointerType s = nz_start; s < nz_end; ++s) {
+                    optr[my_indices[s] - secondary_start] += my_values[s] * val;
                 }
+            }
+
+            if (t != 0) {
+                std::copy_n(optr, secondary_len, output.data() + secondary_start);
             }
         });
 
@@ -331,22 +353,31 @@ private:
     /**
      * @cond
      */
-    // All MockMatrix interface methods, we can ignore this.
 public:
     struct Workspace {
         EigenVector_ buffer;
+        std::vector<std::vector<typename EigenVector_::Scalar> > thread_buffers;
     };
 
     Workspace workspace() const {
-        return Workspace();
+        Workspace output;
+        if (my_nthreads > 1 && my_column_major) {
+            output.thread_buffers.resize(my_nthreads - 1);
+        }
+        return output;
     }
 
     struct AdjointWorkspace {
         EigenVector_ buffer;
+        std::vector<std::vector<typename EigenVector_::Scalar> > thread_buffers;
     };
 
     AdjointWorkspace adjoint_workspace() const {
-        return AdjointWorkspace();
+        AdjointWorkspace output;
+        if (my_nthreads > 1 && !my_column_major) {
+            output.thread_buffers.resize(my_nthreads - 1);
+        }
+        return output;
     }
 
 public:
@@ -354,7 +385,7 @@ public:
     void multiply(const Right_& rhs, Workspace& work, EigenVector_& output) const {
         const auto& realized_rhs = internal::realize_rhs(rhs, work.buffer);
         if (my_column_major) {
-            indirect_multiply(realized_rhs, output);
+            indirect_multiply(realized_rhs, work.thread_buffers, output);
         } else {
             direct_multiply(realized_rhs, output);
         }
@@ -366,7 +397,7 @@ public:
         if (my_column_major) {
             direct_multiply(realized_rhs, output);
         } else {
-            indirect_multiply(realized_rhs, output);
+            indirect_multiply(realized_rhs, work.thread_buffers, output);
         }
     }
 
