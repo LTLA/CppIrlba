@@ -122,10 +122,18 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         A2.adjoint_multiply(vec, awork2, obs2);
         expect_equal_vectors(ref, obs2);
 
+        // Check for correct re-zeroing of the provided buffers.
+        {
+            A.multiply(vec, work, obs);
+            expect_equal_vectors(ref, obs, 0);
+            A2.adjoint_multiply(vec, awork2, obs2);
+            expect_equal_vectors(ref, obs2);
+        }
+
         // Works on expressions.
         {
             auto expr = vec * 2;
-            ref = control * expr;
+            auto ref = control * expr;
             A.multiply(expr, work, obs);
             expect_equal_vectors(ref, obs, 0);
         }
@@ -146,10 +154,18 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         A2.multiply(vec, work2, obs2);
         expect_equal_vectors(ref, obs2);
 
+        // Check for correct re-zeroing of the provided buffers.
+        {
+            A.adjoint_multiply(vec, awork, obs);
+            expect_equal_vectors(ref, obs);
+            A2.multiply(vec, work2, obs2);
+            expect_equal_vectors(ref, obs2);
+        }
+
         // Works on expressions.
         {
             auto expr = vec * 2;
-            ref = control.adjoint() * expr;
+            auto ref = control.adjoint() * expr;
             A.adjoint_multiply(expr, awork, obs);
             expect_equal_vectors(ref, obs);
         }
