@@ -17,7 +17,7 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 All simulations use a density of 10% non-zero elements with 10 multiplication iterations.
 All times are show in milliseconds per operation
 
-On the Apple M2 running Sonoma 14.6.1 (no OpenMP support):
+On the Apple M2 running Sonoma 14.6.1 with Clang 15.0.0 (no OpenMP support):
 
 |  Rows | Columns | Threads | Custom | Eigen | Custom (adjoint) | Eigen (adjoint) |
 |-------|---------|---------|--------|-------|------------------|-----------------|
