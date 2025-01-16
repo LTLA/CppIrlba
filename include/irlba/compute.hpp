@@ -382,7 +382,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, bool center, bool scale, Eig
     }
 
     if (center) {
-        Centered<EigenMatrix_, EigenVector_> centered(matrix, center0);
+        Centered<Matrix_, EigenVector_> centered(matrix, center0);
         if (scale) {
             auto centered_scaled = make_Scaled<true>(centered, scale0, true);
             return compute(centered_scaled, number, outU, outV, outD, options);
