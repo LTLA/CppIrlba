@@ -233,33 +233,34 @@ TEST(IrlbaTester, Fails) {
     Eigen::MatrixXd A = create_random_matrix(20, 10);
 
     // Requested number of SVs > smaller dimension of the matrix.
+    std::string message;
     try {
         irlba::compute(A, 100, irlba::Options());
     } catch (const std::exception& e) {
-        std::string message(e.what());
-        EXPECT_TRUE(message.find("cannot be greater than") != std::string::npos);
+        message = e.what();
     }
+    EXPECT_TRUE(message.find("cannot be greater than") != std::string::npos);
 
     // Requested number of SVs > smaller dimension of the matrix.
+    message.clear();
     try {
         irlba::Options opt;
         opt.exact_for_large_number = false;
         irlba::compute(A, 10, opt);
     } catch (const std::exception& e) {
-        std::string message(e.what());
-        EXPECT_TRUE(message.find("must be less than") != std::string::npos);
+        message = e.what();
     }
+    EXPECT_TRUE(message.find("must be less than") != std::string::npos);
 
     // Initialization vector is not of the right length.
+    message.clear();
     Eigen::VectorXd init(1);
     try {
         irlba::Options opt;
         opt.initial = &init;
-        irlba::compute(A, 5, opt);
+        irlba::compute(A, 2, opt);
     } catch (const std::exception& e) {
-        std::string message(e.what());
-        EXPECT_EQ(message.find("initialization"), 0);
+        message = e.what();
     }
+    EXPECT_EQ(message.find("initialization"), 0);
 }
-
-
