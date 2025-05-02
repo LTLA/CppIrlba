@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.9.8">
+<tagfile doxygen_version="1.12.0">
   <compound kind="file">
     <name>compute.hpp</name>
     <path>irlba/</path>
@@ -81,7 +81,7 @@
       <type>Matrix_::AdjointWorkspace</type>
       <name>type</name>
       <anchorfile>structirlba_1_1get__adjoint__workspace.html</anchorfile>
-      <anchor>a23e08cfffec5a105aa382f00d5d1bc0e</anchor>
+      <anchor>aa1f56f68aab200debc3dc95b00c93cc7</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -93,7 +93,7 @@
       <type>bool</type>
       <name>type</name>
       <anchorfile>structirlba_1_1get__adjoint__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_4f3685937219667b9e24bd9d6fe2308f.html</anchorfile>
-      <anchor>a29f985852fdd7d81f7e050848e4313bb</anchor>
+      <anchor>a9a28ce11b98d1f5d759ea594f3b342b5</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -106,7 +106,7 @@
       <type>Matrix_::Workspace</type>
       <name>type</name>
       <anchorfile>structirlba_1_1get__workspace.html</anchorfile>
-      <anchor>a7b0091233eda54d9908833083effdf3a</anchor>
+      <anchor>aa165e4e08be9630e8f934020a0d464b8</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -118,7 +118,7 @@
       <type>bool</type>
       <name>type</name>
       <anchorfile>structirlba_1_1get__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_3_01typen223c127db2904cd5f8dc8c9aacb0fa94.html</anchorfile>
-      <anchor>a2dc2b13890af3c0edce9fd5d386d9607</anchor>
+      <anchor>ab01e88f05b487ad54813707dd7e25c7f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -262,7 +262,7 @@
       <type>std::remove_const&lt; typenamestd::remove_reference&lt; decltype(std::declval&lt; PointerArray_ &gt;()[0])&gt;::type ::type</type>
       <name>PointerType</name>
       <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
-      <anchor>a05d67b62dd461e6dc71e4f0d870b76f7</anchor>
+      <anchor>ae13bd7c65ba8315f48a8d75acc12a815</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -413,14 +413,14 @@
       <type>typename get_workspace&lt; Matrix_ &gt;::type</type>
       <name>WrappedWorkspace</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>ad2b92efc32285100178f1d2e740db57a</anchor>
+      <anchor>af50e89ef6fc5f30c5bdcc904b74eb45c</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>typename get_adjoint_workspace&lt; Matrix_ &gt;::type</type>
       <name>WrappedAdjointWorkspace</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>aeac6c618f2563487690acec46196ccdc</anchor>
+      <anchor>ad688d23339418eb0a0cc5b7217f35ad4</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
