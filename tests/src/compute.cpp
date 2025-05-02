@@ -20,7 +20,7 @@ TEST(IrlbaTest, CompareToExact) {
     opt.exact_for_large_number = false;
     auto res = irlba::compute(A, 5, opt);
 
-    Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-8);
     expect_equal_column_vectors(res.U, svd.matrixU().leftCols(rank), 1e-8);
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-8);
@@ -44,18 +44,17 @@ TEST_P(IrlbaTester, Basic) {
     assemble(GetParam());
 
     irlba::Options opt;
+    opt.convergence_tolerance = 1e-9;
     auto res = irlba::compute(A, rank, opt);
     ASSERT_EQ(res.V.cols(), rank);
     ASSERT_EQ(res.U.cols(), rank);
     ASSERT_EQ(res.D.size(), rank);
 
-    // Gives us singular values that are around about right. Unfortunately, the
-    // U and V values don't converge enough for a decent comparison; we'll
-    // limit this to the first column, as this seems to be the most accurate. 
-    Eigen::BDCSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    // Gives us singular values that are around about right.
+    Eigen::JacobiSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-6);
-    expect_equal_column_vectors(res.U.leftCols(1), svd.matrixU().leftCols(1), 1e-4);
-    expect_equal_column_vectors(res.V.leftCols(1), svd.matrixV().leftCols(1), 1e-4);
+    expect_equal_column_vectors(res.U, svd.matrixU().leftCols(rank), 1e-6);
+    expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-6);
 
     // Also gives the same results when the matrices are row-major.
     typedef Eigen::Matrix<double, -1, -1, Eigen::RowMajor> RowEigenXd;
@@ -154,7 +153,7 @@ TEST(IrlbaTest, SmallExact) {
 
     auto res = irlba::compute(small, 2, irlba::Options());
 
-    Eigen::BDCSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
     EXPECT_EQ(svd.singularValues().head(2), res.D);
     EXPECT_EQ(svd.matrixU().leftCols(2), res.U);
     EXPECT_EQ(svd.matrixV().leftCols(2), res.V);
@@ -166,7 +165,7 @@ TEST(IrlbaTest, LargeExact) {
     irlba::Options opt;
     auto res = irlba::compute(mat, 15, opt);
 
-    Eigen::BDCSVD svd(mat, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD svd(mat, Eigen::ComputeThinU | Eigen::ComputeThinV);
     EXPECT_EQ(svd.singularValues().head(15), res.D);
     EXPECT_EQ(svd.matrixU().leftCols(15), res.U);
     EXPECT_EQ(svd.matrixV().leftCols(15), res.V);

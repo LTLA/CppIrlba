@@ -24,7 +24,7 @@ namespace internal {
 
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
-    Eigen::BDCSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
 
     if constexpr(internal::is_eigen<Matrix_>::value) {
         svd.compute(matrix);
