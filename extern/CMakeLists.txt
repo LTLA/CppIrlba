@@ -5,7 +5,7 @@ include(FetchContent)
 FetchContent_Declare(
   eigen 
   GIT_REPOSITORY https://gitlab.com/libeigen/eigen
-  GIT_TAG 3.4.0
+  GIT_TAG 5.0.0
 )
 
 FetchContent_Declare(
@@ -20,6 +20,10 @@ FetchContent_Declare(
   GIT_TAG master # ^0.3.1
 )
 
+# Forcing the Eigen build to create the installation files,
+# otherwise irlba's own installation gets confused.
+option(EIGEN_BUILD_CMAKE_PACKAGE "Build the Eigen Cmake package" ON)
 FetchContent_MakeAvailable(eigen)
+
 FetchContent_MakeAvailable(aarand)
 FetchContent_MakeAvailable(subpar)

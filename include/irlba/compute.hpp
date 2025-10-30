@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <random>
 #include <stdexcept>
+#include <type_traits>
 
 /**
  * @file compute.hpp
@@ -22,11 +23,24 @@ namespace irlba {
  */
 namespace internal {
 
+template<typename EigenMatrix_>
+using JacobiSVD = Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV>;
+
+template<class EigenMatrix_, class Matrix_, typename = int>
+struct can_svd {
+    static constexpr bool value = false;
+};
+
+template<class EigenMatrix_, class Matrix_>
+struct can_svd<EigenMatrix_, Matrix_, decltype((void) std::declval<JacobiSVD<EigenMatrix_> >().compute(std::declval<Matrix_>()), 0)> {
+    static constexpr bool value = true;
+};
+
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
-    Eigen::JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols(), Eigen::ComputeThinU | Eigen::ComputeThinV);
+    JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols());
 
-    if constexpr(internal::is_eigen<Matrix_>::value) {
+    if constexpr(can_svd<EigenMatrix_, Matrix_>::value) {
         svd.compute(matrix);
     } else {
         auto adjusted = wrapped_realize<EigenMatrix_>(matrix);
@@ -115,7 +129,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
     bool converged = false;
     int iter = 0;
     Eigen::Index k = 0;
-    Eigen::JacobiSVD<EigenMatrix_> svd(work, work, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    internal::JacobiSVD<EigenMatrix_> svd(work, work);
 
     internal::LanczosWorkspace<EigenVector_, Matrix_> lptmp(matrix);
 

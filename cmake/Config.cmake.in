@@ -1,7 +1,7 @@
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
-find_dependency(Eigen3 3.4.0 CONFIG REQUIRED)
+find_dependency(eigen 5.0.0 CONFIG REQUIRED)
 find_dependency(ltla_aarand 1.0.0 CONFIG REQUIRED)
 find_dependency(ltla_subpar 0.3.1 CONFIG REQUIRED)
 

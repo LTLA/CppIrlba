@@ -20,7 +20,7 @@ TEST(IrlbaTest, CompareToExact) {
     opt.exact_for_large_number = false;
     auto res = irlba::compute(A, 5, opt);
 
-    Eigen::JacobiSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD<decltype(A), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(A);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-8);
     expect_equal_column_vectors(res.U, svd.matrixU().leftCols(rank), 1e-8);
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-8);
@@ -51,7 +51,7 @@ TEST_P(IrlbaTester, Basic) {
     ASSERT_EQ(res.D.size(), rank);
 
     // Gives us singular values that are around about right.
-    Eigen::JacobiSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD<decltype(A), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(A);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-6);
     expect_equal_column_vectors(res.U, svd.matrixU().leftCols(rank), 1e-6);
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-6);
@@ -68,6 +68,10 @@ TEST_P(IrlbaTester, Basic) {
     opt.initial = &init;
     auto res2 = irlba::compute(A, rank, opt);
     expect_equal_vectors(res.D, res2.D, 1e-6);
+
+    // Checking that all of our SFINAE checks hold up.
+    constexpr bool can_svd = irlba::internal::can_svd<Eigen::MatrixXd, decltype(A)>::value;
+    EXPECT_TRUE(can_svd);
 }
 
 std::vector<Eigen::MatrixXd> spawn_center_scale(const Eigen::MatrixXd& A) {
@@ -153,7 +157,7 @@ TEST(IrlbaTest, SmallExact) {
 
     auto res = irlba::compute(small, 2, irlba::Options());
 
-    Eigen::JacobiSVD svd(small, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD<decltype(small), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(small);
     EXPECT_EQ(svd.singularValues().head(2), res.D);
     EXPECT_EQ(svd.matrixU().leftCols(2), res.U);
     EXPECT_EQ(svd.matrixV().leftCols(2), res.V);
@@ -165,7 +169,7 @@ TEST(IrlbaTest, LargeExact) {
     irlba::Options opt;
     auto res = irlba::compute(mat, 15, opt);
 
-    Eigen::JacobiSVD svd(mat, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD<decltype(mat), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(mat);
     EXPECT_EQ(svd.singularValues().head(15), res.D);
     EXPECT_EQ(svd.matrixU().leftCols(15), res.U);
     EXPECT_EQ(svd.matrixV().leftCols(15), res.V);
