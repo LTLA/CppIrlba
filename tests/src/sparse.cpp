@@ -48,6 +48,10 @@ TEST_F(SparseTester, Sparse) {
     expect_equal_vectors(res.D, res2.D);
     expect_equal_column_vectors(res.U, res2.U);
     expect_equal_column_vectors(res.V, res2.V);
+
+    // Checking that all of our SFINAE checks hold up.
+    constexpr bool can_svd = irlba::internal::can_svd<Eigen::MatrixXd, decltype(B)>::value;
+    EXPECT_FALSE(can_svd);
 }
 
 TEST_F(SparseTester, CenterScale) {
@@ -76,7 +80,7 @@ TEST_F(SparseTester, SparseToReference) {
     auto res = irlba::compute(B, 13, opt);
 
     // Bumping up the tolerance as later SV's tend to be a bit more variable.
-    Eigen::JacobiSVD svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::JacobiSVD<decltype(A), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(A);
     expect_equal_vectors(res.D, svd.singularValues().head(13), 1e-5);
     expect_equal_column_vectors(res.U, svd.matrixU().leftCols(13), 1e-5);
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(13), 1e-5);
