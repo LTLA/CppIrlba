@@ -19,7 +19,7 @@ namespace irlba {
 /**
  * @brief Workspace class for multiplying a `SimpleMatrix`.
  *
- * @tparam EigenVector_ A floating-point `Eigen::Vector`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
  * @tparam Simple_ The underlying matrix referenced by the `SimpleMatrix`. 
  *
  * Typically constructed by `SimpleMatrix::new_workspace()`.
@@ -47,7 +47,7 @@ public:
 /**
  * @brief Workspace class for multiplying a transposed `SimpleMatrix`.
  *
- * @tparam EigenVector_ A floating-point `Eigen::Vector`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
  * @tparam Simple_ The underlying matrix referenced by the `SimpleMatrix`. 
  *
  * Typically constructed by `SimpleMatrix::new_adjoint_workspace()`.
@@ -75,7 +75,7 @@ public:
 /**
  * @brief Workspace class for realizing a `SimpleMatrix`.
  *
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix`.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
  * @tparam Simple_ The underlying matrix referenced by the `SimpleMatrix`. 
  *
  * Typically constructed by `SimpleMatrix::new_realize_workspace()`.
@@ -110,8 +110,9 @@ public:
 /**
  * @brief A `Matrix`-compatible wrapper around a "simple" matrix.
  *
- * @tparam EigenVector_ A floating-point `Eigen::Vector`.
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of multiplication operations.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
+ * Typically of the same scalar type as `EigenVector_`.
  * @tparam SimplePointer_ Pointer to an instance of a simple matrix class. 
  * This may be a raw or smart pointer.
  *
@@ -154,14 +155,23 @@ public:
     }
 
 public:
+    /**
+     * Overrides `Matrix::new_known_workspace()` to enable devirtualization.
+     */
     std::unique_ptr<SimpleWorkspace<EigenVector_, I<decltype(*my_matrix)> > > new_known_workspace() const {
         return std::make_unique<SimpleWorkspace<EigenVector_, I<decltype(*my_matrix)> > >(*my_matrix);
     }
 
+    /**
+     * Overrides `Matrix::new_known_adjoint_workspace()` to enable devirtualization.
+     */
     std::unique_ptr<SimpleAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)> > > new_known_adjoint_workspace() const {
         return std::make_unique<SimpleAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)> > >(*my_matrix);
     }
 
+    /**
+     * Overrides `Matrix::new_known_realize_workspace()` to enable devirtualization.
+     */
     std::unique_ptr<SimpleRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)> > > new_known_realize_workspace() const {
         return std::make_unique<SimpleRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)> > >(*my_matrix);
     }

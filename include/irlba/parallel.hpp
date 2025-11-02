@@ -57,6 +57,9 @@ void parallelize(Task_ num_tasks, Run_ run_task) {
 class EigenThreadScope {
 #ifndef _OPENMP
 public:
+    /**
+     * @param num_threads Number of threads to be used by Eigen.
+     */
     EigenThreadScope([[maybe_unused]] int num_threads) {}
 
 #else

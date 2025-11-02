@@ -49,6 +49,7 @@ add_executable(
     src/Matrix/scaled.cpp
     src/Matrix/centered.cpp
     src/Matrix/sparse.cpp
+    src/Matrix/simple.cpp
 )
 decorate_test(libtest)
 

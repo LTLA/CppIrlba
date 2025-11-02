@@ -61,16 +61,8 @@ TEST_P(ComputeTest, Basic) {
     expect_equal_column_vectors(res.U, svd.matrixU().leftCols(rank), 1e-6);
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-6);
 
-    // Also gives the same results when the matrices are row-major.
-    Eigen::Matrix<double, -1, -1, Eigen::RowMajor> Arow(A);
-    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&Arow)> wrapped_row(&Arow);
-    auto rmres = irlba::compute(wrapped_row, rank, opt);
-    expect_equal_matrix(res.U, rmres.U);
-    expect_equal_matrix(res.V, rmres.V);
-    expect_equal_vectors(res.D, rmres.D);
-
     // Also works with some custom initialization.
-    auto init = create_random_vector(A.cols(), 1239);
+    auto init = create_random_vector(A.cols(), 1239 + nr + nc + rank);
     opt.initial = &init;
     auto res2 = irlba::compute(wrapped, rank, opt);
     expect_equal_vectors(res.D, res2.D, 1e-6);
@@ -86,7 +78,39 @@ INSTANTIATE_TEST_SUITE_P(
     )
 );
 
-TEST(IrlbaTest, SmallExact) {
+TEST(Compute, RowMajor) {
+    auto A = create_random_matrix(39, 28);
+    int rank = 5;
+
+    irlba::Options opt;
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+    auto res = irlba::compute(wrapped, rank, opt);
+
+    // Check that we don't make any assumptions about the column-majorness of an input Eigen matrix.
+    Eigen::Matrix<double, -1, -1, Eigen::RowMajor> Arow(A);
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&Arow)> wrapped_row(&Arow);
+    auto rmres = irlba::compute(wrapped_row, rank, opt);
+    expect_equal_matrix(res.U, rmres.U);
+    expect_equal_matrix(res.V, rmres.V);
+    expect_equal_vectors(res.D, rmres.D);
+}
+
+TEST(Compute, SimpleOverload) {
+    auto A = create_random_matrix(39, 28);
+    int rank = 5;
+
+    irlba::Options opt;
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+    auto res = irlba::compute(wrapped, rank, opt);
+
+    // Check that our compute_simple() overload works as expected.
+    auto sres = irlba::compute_simple(A, rank, opt);
+    expect_equal_matrix(res.U, sres.U);
+    expect_equal_matrix(res.V, sres.V);
+    expect_equal_vectors(res.D, sres.D);
+}
+
+TEST(Compute, SmallExact) {
     Eigen::MatrixXd small = create_random_matrix(10, 3);
     irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&small)> wrapped(&small);
     auto res = irlba::compute(wrapped, 2, irlba::Options());

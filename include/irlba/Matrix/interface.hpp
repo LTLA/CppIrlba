@@ -37,10 +37,8 @@ public:
      */
 
     /**
-     * @param[in] rhs The right-hand side of the matrix product.
-     * @param work The return value of `workspace()`.
-     * This can be reused across multiple `multiply()` calls.
-     * @param[out] out The output vector to store the matrix product.
+     * @param[in] right The right-hand side of the matrix product.
+     * @param[out] output The output vector to store the matrix product.
      * This is filled with the product of this matrix and `rhs`.
      *
      * This method will be called without any explicit template arguments, 
@@ -77,10 +75,8 @@ public:
 
     /**
      *
-     * @param[in] rhs The right-hand side of the matrix product.
-     * @param work The return value of `adjoint_workspace()`.
-     * This can be reused across multiple `adjoint_multiply()` calls.
-     * @param[out] out The output vector to store the matrix product.
+     * @param[in] right The right-hand side of the matrix product.
+     * @param[out] output The output vector to store the matrix product.
      * This is filled with the product of the transpose of this matrix and `rhs`.
      *
      * This method will be called without any explicit template arguments, 

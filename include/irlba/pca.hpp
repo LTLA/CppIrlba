@@ -25,7 +25,7 @@ namespace irlba {
  *
  * @tparam InputEigenMatrix_ An **Eigen** matrix class containing the input data.
  * @tparam OutputEigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `EigenMatrix_`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `OutputEigenMatrix_`.
  *
  * @param[in] matrix Input matrix.
  * @param center Should the matrix be centered by column?
@@ -50,7 +50,7 @@ namespace irlba {
  * No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. 
  */
 template<class InputEigenMatrix_, class OutputEigenMatrix_, class EigenVector_>
-std::pair<bool, int> compute(
+std::pair<bool, int> pca(
     const InputEigenMatrix_& matrix,
     bool center,
     bool scale,
@@ -140,7 +140,7 @@ std::pair<bool, int> compute(
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
 Results<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options& options) {
     Results<OutputEigenMatrix_, EigenVector_> output;
-    auto stats = compute(matrix, center, scale, number, output.U, output.V, output.D, options);
+    auto stats = pca(matrix, center, scale, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;

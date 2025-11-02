@@ -9,6 +9,7 @@
 
 #include "utils.hpp"
 #include "lanczos.hpp"
+#include "Matrix/simple.hpp"
 
 #include "Eigen/Dense"
 
@@ -52,12 +53,10 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
  * with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.
  *
  * @tparam Matrix_ Class satisfying the `Matrix<EigenVector_, EigenMatrix_>` interface. 
- * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `EigenMatrix_`.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class to store the output.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class to store the output, typically of the same scalar type as `EigenMatrix_`.
  *
  * @param[in] matrix Input matrix.
- * Custom classes can also be used here to pass modified matrices that cannot be efficiently realized into the standard **Eigen** classes.
- * See the `wrappers.hpp` file for more details, along with the `Centered` and `Scaled` classes.
  * @param number Number of singular triplets to obtain.
  * @param[out] outU Output matrix where columns contain the first left singular vectors.
  * Dimensions are set automatically on output;
@@ -250,6 +249,47 @@ std::pair<bool, int> compute(
 }
 
 /**
+ * Convenient overload of `compute()` that accepts an **Eigen** matrix directly.
+ *
+ * @tparam InputEigenMatrix_ An **Eigen** matrix class containing the input data.
+ * @tparam OutputEigenMatrix_ A dense floating-point `Eigen::Matrix` class to store the output.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class to store the output, typically of the same scalar type as `EigenMatrix_`.
+ *
+ * @param[in] matrix Input matrix.
+ * @param number Number of singular triplets to obtain.
+ * @param[out] outU Output matrix where columns contain the first left singular vectors.
+ * Dimensions are set automatically on output;
+ * the number of columns is set to `number` and the number of rows is equal to the number of rows in `mat`.
+ * @param[out] outV Output matrix where columns contain the first right singular vectors.
+ * Dimensions are set automatically on output;
+ * the number of columns is set to `number` and the number of rows is equal to the number of columns in `mat`.
+ * @param[out] outD Vector to store the first singular values.
+ * The length is set to `number` on output.
+ * @param options Further options.
+ *
+ * @return A pair where the first entry indicates whether the algorithm converged,
+ * and the second entry indicates the number of restart iterations performed.
+ */
+template<class InputEigenMatrix_, class OutputEigenMatrix_, class EigenVector_>
+std::pair<bool, int> compute_simple(
+    const InputEigenMatrix_& matrix,
+    Eigen::Index number,
+    OutputEigenMatrix_& outU,
+    OutputEigenMatrix_& outV,
+    EigenVector_& outD,
+    const Options& options
+) {
+    SimpleMatrix<EigenVector_, OutputEigenMatrix_, const InputEigenMatrix_*> wrapped(&matrix);
+
+    // Force the compiler to use virtual dispatch to avoid realizing multiple
+    // instances of this function for each InputEigenMatrix_ type. If you
+    // don't like this, call compute() directly.
+    typedef Matrix<EigenVector_, OutputEigenMatrix_> Interface; 
+
+    return compute<Interface>(wrapped, number, outU, outV, outD, options);
+}
+
+/**
  * @brief Result of the IRLBA-based decomposition.
  * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
@@ -290,8 +330,8 @@ struct Results {
 /** 
  * Convenient overload of `compute()` that allocates memory for the output matrices of the SVD.
  *
- * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class to store the output.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `EigenMatrix_`.
  * @tparam Matrix_ Class satisfying the `Matrix<EigenVector_, EigenMatrix_>` interface. 
  *
  * @param[in] matrix Input matrix.
@@ -304,6 +344,29 @@ template<class EigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::Vecto
 Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index number, const Options& options) {
     Results<EigenMatrix_, EigenVector_> output;
     auto stats = compute(matrix, number, output.U, output.V, output.D, options);
+    output.converged = stats.first;
+    output.iterations = stats.second;
+    return output;
+}
+
+/** 
+ * Convenient overload of `compute()` that accepts an **Eigen** matrix directly.
+ *
+ * @tparam InputEigenMatrix_ An **Eigen** matrix class containing the input data.
+ * @tparam OutputEigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `OutputEigenMatrix_`.
+ * @tparam Matrix_ Class satisfying the `Matrix<EigenVector_, EigenMatrix_>` interface. 
+ *
+ * @param[in] matrix Input matrix.
+ * @param number Number of singular triplets to obtain.
+ * @param options Further options.
+ *
+ * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
+ */
+template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
+Results<OutputEigenMatrix_, EigenVector_> compute_simple(const InputEigenMatrix_& matrix, Eigen::Index number, const Options& options) {
+    Results<OutputEigenMatrix_, EigenVector_> output;
+    auto stats = compute_simple(matrix, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;

@@ -262,9 +262,9 @@ private:
 /**
  * @brief Workspace for multiplication of a `ParallelSparseMatrix`.
  *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
  * @tparam ValueArray_ Array class containing the non-zero values, see `ParallelSparseMatrix`.
- * @tparam ValueArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
+ * @tparam IndexArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
  * @tparam PointerArray_ Array class containing the pointers to the row/column boundaries, see `ParallelSparseMatrix`.
  *
  * Typically constructed by `ParallelSparseMatrix::new_known_workspace()`.
@@ -300,6 +300,16 @@ public:
     }
 };
 
+/**
+ * @brief Workspace for multiplication of a transposed `ParallelSparseMatrix`.
+ *
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
+ * @tparam ValueArray_ Array class containing the non-zero values, see `ParallelSparseMatrix`.
+ * @tparam IndexArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
+ * @tparam PointerArray_ Array class containing the pointers to the row/column boundaries, see `ParallelSparseMatrix`.
+ *
+ * Typically constructed by `ParallelSparseMatrix::new_known_adjoint_workspace()`.
+ */
 template<class EigenVector_, class ValueArray_, class IndexArray_, class PointerArray_ >
 class ParallelSparseAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
@@ -331,12 +341,28 @@ public:
     }
 };
 
+/**
+ * @brief Workspace for realizing a `ParallelSparseMatrix`.
+ *
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
+ * @tparam ValueArray_ Array class containing the non-zero values, see `ParallelSparseMatrix`.
+ * @tparam IndexArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
+ * @tparam PointerArray_ Array class containing the pointers to the row/column boundaries, see `ParallelSparseMatrix`.
+ *
+ * Typically constructed by `ParallelSparseMatrix::new_known_realize_workspace()`.
+ */
 template<class EigenMatrix_, class ValueArray_, class IndexArray_, class PointerArray_ >
 class ParallelSparseRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
+    /**
+     * @cond
+     */
     ParallelSparseRealizeWorkspace(const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& core) :
         my_core(core)
     {}
+    /**
+     * @endcond
+     */
 
 private:
     const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& my_core;
@@ -388,8 +414,9 @@ public:
  * It should then loop over the number of threads and launch one job for each thread via the lambda.
  * Once all threads are complete, the function should return.
  *
- * @tparam EigenVector_ A floating-point `Eigen::Vector`.
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix`.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of multiplication operations.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
+ * Typically of the same scalar type as `EigenVector_`.
  * @tparam ValueArray_ Array class containing numeric values for the non-zero values.
  * Should support a read-only `[]` operator.
  * @tparam IndexArray_ Array class containing integer values for the indices of the non-zero values.
@@ -524,14 +551,23 @@ public:
     }
 
 public:
+    /**
+     * Overrides `Matrix::new_known_workspace()` to enable devirtualization.
+     */
     std::unique_ptr<ParallelSparseWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> > new_known_workspace() const {
         return std::make_unique<ParallelSparseWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
+    /**
+     * Overrides `Matrix::new_known_adjoint_workspace()` to enable devirtualization.
+     */
     std::unique_ptr<ParallelSparseAdjointWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> > new_known_adjoint_workspace() const {
         return std::make_unique<ParallelSparseAdjointWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
+    /**
+     * Overrides `Matrix::new_known_realize_workspace()` to enable devirtualization. 
+     */
     std::unique_ptr<ParallelSparseRealizeWorkspace<EigenMatrix_, ValueArray_, IndexArray_, PointerArray_> > new_known_realize_workspace() const {
         return std::make_unique<ParallelSparseRealizeWorkspace<EigenMatrix_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
