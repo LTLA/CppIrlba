@@ -23,29 +23,13 @@ namespace irlba {
  */
 namespace internal {
 
-template<typename EigenMatrix_>
-using JacobiSVD = Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV>;
-
-template<class EigenMatrix_, class Matrix_, typename = int>
-struct can_svd {
-    static constexpr bool value = false;
-};
-
-template<class EigenMatrix_, class Matrix_>
-struct can_svd<EigenMatrix_, Matrix_, decltype((void) std::declval<JacobiSVD<EigenMatrix_> >().compute(std::declval<Matrix_>()), 0)> {
-    static constexpr bool value = true;
-};
-
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
     JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols());
 
-    if constexpr(can_svd<EigenMatrix_, Matrix_>::value) {
-        svd.compute(matrix);
-    } else {
-        auto adjusted = wrapped_realize<EigenMatrix_>(matrix);
-        svd.compute(adjusted);
-    }
+    auto realizer = matrix.new_known_realize_workspace();
+    EigenMatrix_ buffer;
+    svd.compute(realizer.realize(buffer));
 
     outD.resize(requested_number);
     outD = svd.singularValues().head(requested_number);
@@ -55,8 +39,6 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
 
     outV.resize(matrix.cols(), requested_number);
     outV = svd.matrixV().leftCols(requested_number);
-
-    return;
 }
 
 }
@@ -131,7 +113,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
     Eigen::Index k = 0;
     internal::JacobiSVD<EigenMatrix_> svd(work, work);
 
-    internal::LanczosWorkspace<EigenVector_, Matrix_> lptmp(matrix);
+    internal::LanczosWorkspace<EigenVector_, Matrix_> lpwork(matrix);
 
     EigenMatrix_ W(matrix.rows(), work);
     EigenMatrix_ Wtmp(matrix.rows(), work);
@@ -151,7 +133,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
         // Technically, this is only a 'true' Lanczos bidiagonalization
         // when k = 0. All other times, we're just recycling the machinery,
         // see the text below Equation 3.11 in Baglama and Reichel.
-        internal::run_lanczos_bidiagonalization(matrix, W, V, B, eng, lptmp, k, options);
+        internal::run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -170,7 +152,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
             break;
         }
 
-        const auto& F = lptmp.F; // i.e., the residuals, see Algorithm 2.1 of Baglama and Reichel.
+        const auto& F = lpwork.F; // i.e., the residuals, see Algorithm 2.1 of Baglama and Reichel.
         auto R_F = F.norm();
 
         // Computes the convergence criterion defined in on the LHS of
