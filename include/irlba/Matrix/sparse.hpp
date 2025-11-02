@@ -270,7 +270,7 @@ private:
  * Typically constructed by `ParallelSparseMatrix::new_known_workspace()`.
  */
 template<class EigenVector_, class ValueArray_, class IndexArray_, class PointerArray_ >
-class ParallelSparseWorkspace : public Workspace<EigenVector_> {
+class ParallelSparseWorkspace final : public Workspace<EigenVector_> {
 public:
     /**
      * @cond
@@ -301,7 +301,7 @@ public:
 };
 
 template<class EigenVector_, class ValueArray_, class IndexArray_, class PointerArray_ >
-class ParallelSparseAdjointWorkspace : public AdjointWorkspace<EigenVector_> {
+class ParallelSparseAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
     /**
      * @cond
@@ -332,7 +332,7 @@ public:
 };
 
 template<class EigenMatrix_, class ValueArray_, class IndexArray_, class PointerArray_ >
-class ParallelSparseRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
+class ParallelSparseRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
     ParallelSparseRealizeWorkspace(const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& core) :
         my_core(core)
@@ -404,7 +404,7 @@ template<
     class IndexArray_,
     class PointerArray_
 >
-class ParallelSparseMatrix : public Matrix<EigenVector_, EigenMatrix_> {
+class ParallelSparseMatrix final : public Matrix<EigenVector_, EigenMatrix_> {
 public:
     /**
      * Default constructor.

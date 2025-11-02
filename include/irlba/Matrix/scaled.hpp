@@ -25,7 +25,7 @@ namespace irlba {
  * Typically constructed by `ScaledMatrix::new_workspace()`.
  */
 template<class EigenVector_, class Matrix_, class Scale_>
-class ScaledWorkspace : public Workspace<EigenVector_> {
+class ScaledWorkspace final : public Workspace<EigenVector_> {
 public:
     /**
      * @cond
@@ -79,7 +79,7 @@ public:
  * Typically constructed by `ScaledMatrix::new_adjoint_workspace()`.
  */
 template<class EigenVector_, class Matrix_, class Scale_>
-class ScaledAdjointWorkspace : public AdjointWorkspace<EigenVector_> {
+class ScaledAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
     ScaledAdjointWorkspace(const Matrix_& matrix, const Scale_& scale, const bool column, const bool divide) :
         my_work(matrix.new_known_adjoint_workspace()),
@@ -127,7 +127,7 @@ public:
  * Typically constructed by `ScaledMatrix::new_realize_workspace()`.
  */
 template<class EigenMatrix_, class Matrix_, class Scale_>
-class ScaledRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
+class ScaledRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
     ScaledRealizeWorkspace(const Matrix_& matrix, const Scale_& scale, const bool column, const bool divide) :
         my_work(matrix.new_known_realize_workspace()),
@@ -185,7 +185,7 @@ template<
     class MatrixPointer_ = const Matrix<EigenVector_, EigenMatrix_>*,
     class ScalePointer_ = const EigenVector_*
 >
-class ScaledMatrix : public Matrix<EigenVector_, EigenMatrix_> {
+class ScaledMatrix final : public Matrix<EigenVector_, EigenMatrix_> {
 public:
     /**
      * @param matrix Pointer to a matrix to be column-scaled (if `column_ = true`) or row-scaled (otherwise).

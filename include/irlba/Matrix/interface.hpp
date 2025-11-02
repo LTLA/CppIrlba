@@ -31,7 +31,7 @@ public:
     Workspace(const Workspace&) = default;
     Workspace& operator=(Workspace&&) = default;
     Workspace& operator=(const Workspace&) = default;
-    ~Workspace() {}
+    virtual ~Workspace() {}
     /**
      * @endcond
      */
@@ -70,7 +70,7 @@ public:
     AdjointWorkspace(const AdjointWorkspace&) = default;
     AdjointWorkspace& operator=(AdjointWorkspace&&) = default;
     AdjointWorkspace& operator=(const AdjointWorkspace&) = default;
-    ~AdjointWorkspace() {}
+    virtual ~AdjointWorkspace() {}
     /**
      * @endcond
      */
@@ -110,7 +110,7 @@ public:
     RealizeWorkspace(const RealizeWorkspace&) = default;
     RealizeWorkspace& operator=(RealizeWorkspace&&) = default;
     RealizeWorkspace& operator=(const RealizeWorkspace&) = default;
-    ~RealizeWorkspace() {}
+    virtual ~RealizeWorkspace() {}
     /**
      * @endcond
      */
@@ -144,6 +144,20 @@ public:
  */
 template<class EigenVector_, class EigenMatrix_>
 class Matrix {
+public:
+    /**
+     * @cond
+     */
+    Matrix() = default;
+    Matrix(Matrix&&) = default;
+    Matrix(const Matrix&) = default;
+    Matrix& operator=(Matrix&&) = default;
+    Matrix& operator=(const Matrix&) = default;
+    virtual ~Matrix() {}
+    /**
+     * @endcond
+     */
+
 public:
     /**
      * @return Number of rows in the matrix.

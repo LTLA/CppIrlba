@@ -25,7 +25,7 @@ namespace irlba {
  * Typically constructed by `CenteredMatrix::new_workspace()`.
  */
 template<class EigenVector_, class Matrix_, class Center_>
-class CenteredWorkspace : public Workspace<EigenVector_> {
+class CenteredWorkspace final : public Workspace<EigenVector_> {
 public:
     /**
      * @cond
@@ -62,7 +62,7 @@ public:
  * Typically constructed by `CenteredMatrix::new_adjoint_workspace()`.
  */
 template<class EigenVector_, class Matrix_, class Center_>
-class CenteredAdjointWorkspace : public AdjointWorkspace<EigenVector_> {
+class CenteredAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
     CenteredAdjointWorkspace(const Matrix_& matrix, const Center_& center) :
         my_work(matrix.new_known_adjoint_workspace()),
@@ -91,7 +91,7 @@ public:
  * Typically constructed by `CenteredMatrix::new_realize_workspace()`.
  */
 template<class EigenMatrix_, class Matrix_, class Center_>
-class CenteredRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
+class CenteredRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
     /**
      * @cond
@@ -135,7 +135,7 @@ template<
     class MatrixPointer_ = const Matrix<EigenVector_, EigenMatrix_>*,
     class CenterPointer_ = const EigenVector_* 
 >
-class CenteredMatrix : public Matrix<EigenVector_, EigenMatrix_> {
+class CenteredMatrix final : public Matrix<EigenVector_, EigenMatrix_> {
 public:
     /**
      * @param matrix Pointer to a matrix to be column-centered.

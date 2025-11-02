@@ -25,7 +25,7 @@ namespace irlba {
  * Typically constructed by `SimpleMatrix::new_workspace()`.
  */
 template<class EigenVector_, class Simple_>
-class SimpleWorkspace : public Workspace<EigenVector_> {
+class SimpleWorkspace final : public Workspace<EigenVector_> {
 public:
     /**
      * @cond
@@ -53,7 +53,7 @@ public:
  * Typically constructed by `SimpleMatrix::new_adjoint_workspace()`.
  */
 template<class EigenVector_, class Simple_>
-class SimpleAdjointWorkspace : public AdjointWorkspace<EigenVector_> {
+class SimpleAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
     /**
      * @cond
@@ -81,7 +81,7 @@ public:
  * Typically constructed by `SimpleMatrix::new_realize_workspace()`.
  */
 template<class EigenMatrix_, class Simple_>
-class SimpleRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
+class SimpleRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
     /**
      * @cond
@@ -121,7 +121,7 @@ public:
  * This is most typically an instance of an **Eigen** matrix class, though the exact class need not be the same as `EigenMatrix_`.
  */
 template<class EigenVector_, class EigenMatrix_, class SimplePointer_>
-class SimpleMatrix : public Matrix<EigenVector_, EigenMatrix_> {
+class SimpleMatrix final : public Matrix<EigenVector_, EigenMatrix_> {
 public:
     /**
      * @param matrix Pointer to a simple matrix.
