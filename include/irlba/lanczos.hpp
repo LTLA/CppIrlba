@@ -1,16 +1,18 @@
 #ifndef IRLBA_LANCZOS_HPP
 #define IRLBA_LANCZOS_HPP
 
-#include "Eigen/Dense"
-#include "utils.hpp"
-#include "wrappers.hpp"
-#include "Options.hpp"
 #include <cmath>
 #include <limits>
+#include <stdexcept>
+#include <utility>
+
+#include "utils.hpp"
+#include "Matrix/interface.hpp"
+#include "Options.hpp"
+
+#include "Eigen/Dense"
 
 namespace irlba {
-
-namespace internal {
 
 template<class EigenMatrix_, class EigenVector_>
 void orthogonalize_vector(const EigenMatrix_& mat, EigenVector_& vec, size_t ncols, EigenVector_& tmp) {
@@ -32,8 +34,8 @@ struct LanczosWorkspace {
     EigenVector_ W_next;
     EigenVector_ orthog_tmp;
 
-    I<decltype(std::declval<Matrix_>().new_known_workspace()) work;
-    I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace()) awork;
+    I<decltype(std::declval<Matrix_>().new_known_workspace())> work;
+    I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> awork;
 };
 
 /*
@@ -85,7 +87,9 @@ void run_lanczos_bidiagonalization(
 
     // The Lanczos iterations themselves, see algorithm 2.1 of Baglama and Reichel.
     for (Eigen::Index j = start; j < work; ++j) {
-        inter.awork->multiply(W_next, F); // i.e., F = mat.adjoint() * W.col(j), as W_next is assigned into W.col(j+1) from the previous iteration.
+        // This step is equivalent to F = mat.adjoint() * W.col(j).
+        // This is because W_next is assigned into W.col(start) at the start, or W.col(j+1) from the previous iteration.
+        inter.awork->multiply(W_next, F); 
 
         F -= S * V.col(j); // equivalent to daxpy.
         orthogonalize_vector(V, F, j + 1, otmp);
@@ -135,8 +139,6 @@ void run_lanczos_bidiagonalization(
             B(j, j) = S;
         }
     }
-}
-
 }
 
 }

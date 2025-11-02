@@ -1,5 +1,5 @@
-#ifndef IRLBA_MATRIX_CENTERED_HPP
-#define IRLBA_MATRIX_CENTERED_HPP
+#ifndef IRLBA_MATRIX_SCALED_HPP
+#define IRLBA_MATRIX_SCALED_HPP
 
 #include <memory>
 
@@ -41,7 +41,7 @@ public:
      */
 
 private:
-    I<decltype(my_matrix.new_known_workspace())> my_work;
+    I<decltype(std::declval<Matrix_>().new_known_workspace())> my_work;
     const Scale_& my_scale;
     bool my_column;
     bool my_divide;
@@ -89,7 +89,7 @@ public:
     {}
 
 private:
-    I<decltype(my_matrix.new_known_adjoint_workspace())> my_work;
+    I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> my_work;
     const Scale_& my_scale;
     bool my_column;
     bool my_divide;
@@ -129,7 +129,7 @@ public:
 template<class EigenMatrix_, class Matrix_, class Scale_>
 class ScaledRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
 public:
-    ScaledRealizeWorkspace(const Matrix_& matrix, const Scale_& scale) :
+    ScaledRealizeWorkspace(const Matrix_& matrix, const Scale_& scale, const bool column, const bool divide) :
         my_work(matrix.new_known_realize_workspace()),
         my_scale(scale),
         my_column(column),
@@ -137,7 +137,7 @@ public:
     {}
 
 private:
-    I<decltype(my_matrix.new_known_realize_workspace())> my_work;
+    I<decltype(std::declval<Matrix_>().new_known_realize_workspace())> my_work;
     const Scale_& my_scale;
     bool my_column;
     bool my_divide;
@@ -148,16 +148,16 @@ public:
 
         if (my_column) {
             if (my_divide) {
-                output.array().rowwise() /= my_scale.adjoint().array();
+                buffer.array().rowwise() /= my_scale.adjoint().array();
             } else {
-                output.array().rowwise() *= my_scale.adjoint().array();
+                buffer.array().rowwise() *= my_scale.adjoint().array();
             }
 
         } else {
             if (my_divide) {
-                output.array().colwise() /= my_scale.array();
+                buffer.array().colwise() /= my_scale.array();
             } else {
-                output.array().colwise() *= my_scale.array();
+                buffer.array().colwise() *= my_scale.array();
             }
         }
 
@@ -233,15 +233,15 @@ public:
 
 public:
     std::unique_ptr<ScaledWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > > new_known_workspace() const {
-        return std::make_unique<ScaledWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale);
+        return std::make_unique<ScaledWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale, my_column, my_divide);
     }
 
     std::unique_ptr<ScaledAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > > new_known_adjoint_workspace() const {
-        return std::make_unique<ScaledAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale);
+        return std::make_unique<ScaledAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale, my_column, my_divide);
     }
 
     std::unique_ptr<ScaledRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > > new_known_realize_workspace() const {
-        return std::make_unique<ScaledRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale);
+        return std::make_unique<ScaledRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale, my_column, my_divide);
     }
 };
 

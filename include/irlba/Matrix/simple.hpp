@@ -81,7 +81,7 @@ public:
  * Typically constructed by `SimpleMatrix::new_realize_workspace()`.
  */
 template<class EigenMatrix_, class Simple_>
-class SimpleRealizeWorkspace : public RealizeWorkspace<EigenVector_> {
+class SimpleRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
 public:
     /**
      * @cond
@@ -93,7 +93,7 @@ public:
 
 private:
     const Simple_& my_matrix;
-    constexpr bool is_same = std::is_same<EigenMatrix_, I<Simple_> >::value;
+    static constexpr bool is_same = std::is_same<EigenMatrix_, I<Simple_> >::value;
     typename std::conditional<is_same, bool, EigenMatrix_>::type buffer;
 
 public:
@@ -163,7 +163,7 @@ public:
     }
 
     std::unique_ptr<SimpleRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)> > > new_known_realize_workspace() const {
-        return std::make_unique<SimpleRealizeWorkspace<EigenVector_, I<decltype(*my_matrix)> > >(*my_matrix);
+        return std::make_unique<SimpleRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)> > >(*my_matrix);
     }
 };
 

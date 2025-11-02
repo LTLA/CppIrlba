@@ -1,15 +1,16 @@
 #ifndef IRLBA_COMPUTE_HPP
 #define IRLBA_COMPUTE_HPP
 
-#include "Eigen/Dense"
-#include "utils.hpp"
-#include "lanczos.hpp"
-
 #include <cmath>
 #include <cstdint>
 #include <random>
 #include <stdexcept>
 #include <type_traits>
+
+#include "utils.hpp"
+#include "lanczos.hpp"
+
+#include "Eigen/Dense"
 
 /**
  * @file compute.hpp
@@ -21,7 +22,8 @@ namespace irlba {
 /**
  * @cond
  */
-namespace internal {
+template<typename EigenMatrix_>
+using JacobiSVD = Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV>;
 
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
@@ -29,7 +31,7 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
 
     auto realizer = matrix.new_known_realize_workspace();
     EigenMatrix_ buffer;
-    svd.compute(realizer.realize(buffer));
+    svd.compute(realizer->realize(buffer));
 
     outD.resize(requested_number);
     outD = svd.singularValues().head(requested_number);
@@ -40,8 +42,6 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
     outV.resize(matrix.cols(), requested_number);
     outV = svd.matrixV().leftCols(requested_number);
 }
-
-}
 /**
  * @endcond
  */
@@ -51,9 +51,9 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
  * This is heavily derived from the C code in the [**irlba** package](https://github.com/bwlewis/irlba),
  * with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.
  *
- * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen:Matrix` class.
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix` class.
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
+ * @tparam Matrix_ Class satisfying the `Matrix<EigenVector_, EigenMatrix_>` interface. 
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `EigenMatrix_`.
  *
  * @param[in] matrix Input matrix.
  * Custom classes can also be used here to pass modified matrices that cannot be efficiently realized into the standard **Eigen** classes.
@@ -73,7 +73,14 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
  * and the second entry indicates the number of restart iterations performed.
  */
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
-std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD, const Options& options) {
+std::pair<bool, int> compute(
+    const Matrix_& matrix,
+    Eigen::Index number,
+    EigenMatrix_& outU,
+    EigenMatrix_& outV,
+    EigenVector_& outD,
+    const Options& options
+) {
     Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());
     Eigen::Index requested_number = number;
     if (requested_number > smaller) {
@@ -89,7 +96,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
     // Falling back to an exact SVD for small matrices or if the requested number is too large 
     // (not enough of a workspace). Hey, I don't make the rules.
     if ((options.exact_for_small_matrix && smaller < 6) || (options.exact_for_large_number && requested_number * 2 >= smaller)) {
-        internal::exact(matrix, requested_number, outU, outV, outD);
+        exact(matrix, requested_number, outU, outV, outD);
         return std::make_pair(true, 0);
     }
 
@@ -104,16 +111,16 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
         }
         V.col(0) = *init;
     } else {
-        internal::fill_with_random_normals(V, 0, eng);
+        fill_with_random_normals(V, 0, eng);
     }
     V.col(0) /= V.col(0).norm();
 
     bool converged = false;
     int iter = 0;
     Eigen::Index k = 0;
-    internal::JacobiSVD<EigenMatrix_> svd(work, work);
+    JacobiSVD<EigenMatrix_> svd(work, work);
 
-    internal::LanczosWorkspace<EigenVector_, Matrix_> lpwork(matrix);
+    LanczosWorkspace<EigenVector_, Matrix_> lpwork(matrix);
 
     EigenMatrix_ W(matrix.rows(), work);
     EigenMatrix_ Wtmp(matrix.rows(), work);
@@ -133,7 +140,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
         // Technically, this is only a 'true' Lanczos bidiagonalization
         // when k = 0. All other times, we're just recycling the machinery,
         // see the text below Equation 3.11 in Baglama and Reichel.
-        internal::run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);
+        run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -244,7 +251,7 @@ std::pair<bool, int> compute(const Matrix_& matrix, Eigen::Index number, EigenMa
 
 /**
  * @brief Result of the IRLBA-based decomposition.
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix` class.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
  */
 template<class EigenMatrix_, class EigenVector_>
@@ -283,9 +290,9 @@ struct Results {
 /** 
  * Convenient overload of `compute()` that allocates memory for the output matrices of the SVD.
  *
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix` class.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
- * @tparam Matrix_ Class satisfying the `MockMatrix` interface, or a floating-point `Eigen:Matrix` class.
+ * @tparam Matrix_ Class satisfying the `Matrix<EigenVector_, EigenMatrix_>` interface. 
  *
  * @param[in] matrix Input matrix.
  * @param number Number of singular triplets to obtain.
@@ -297,119 +304,6 @@ template<class EigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::Vecto
 Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index number, const Options& options) {
     Results<EigenMatrix_, EigenVector_> output;
     auto stats = compute(matrix, number, output.U, output.V, output.D, options);
-    output.converged = stats.first;
-    output.iterations = stats.second;
-    return output;
-}
-
-/**
- * Convenient overload of `compute()` that handles the centering and scaling.
- *
- * @tparam Matrix_ A floating-point `Eigen::Matrix` or equivalent sparse matrix class.
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix` class.
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
- *
- * @param[in] matrix Input matrix.
- * @param center Should the matrix be centered by column?
- * @param scale Should the matrix be scaled to unit variance for each column?
- * @param number Number of singular triplets to obtain.
- * @param[out] outU Output matrix where columns contain the first left singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of rows in `mat`.
- * @param[out] outV Output matrix where columns contain the first right singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of columns in `mat`.
- * @param[out] outD Vector to store the first singular values.
- * The length is set to `number` on output.
- * @param options Further options.
- *
- * @return A pair where the first entry indicates whether the algorithm converged,
- * and the second entry indicates the number of restart iterations performed.
- *
- * Centering is performed by subtracting each element of `center` from the corresponding column of `mat`.
- * Scaling is performed by dividing each column of `mat` by the corresponding element of `scale` (after any centering has been applied).
- * Note that `scale=true` requires `center=true` to guarantee unit variance along each column. 
- * No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. 
- */
-template<class Matrix_, class EigenMatrix_, class EigenVector_>
-std::pair<bool, int> compute(const Matrix_& matrix, bool center, bool scale, Eigen::Index number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD, const Options& options) {
-    if (!scale && !center) {
-        return compute(matrix, number, outU, outV, outD, options);
-    }
-
-    auto nr = matrix.rows();
-    auto nc = matrix.cols();
-
-    Eigen::VectorXd center0;
-    if (center) {
-        if (nr < 1) {
-            throw std::runtime_error("cannot center with no observations");    
-        }
-        center0.resize(nc);
-    }
-
-    Eigen::VectorXd scale0;
-    if (scale) {
-        if (nr < 2) {
-            throw std::runtime_error("cannot scale with fewer than two observations");    
-        }
-        scale0.resize(nc);
-    }
-
-    for (Eigen::Index i = 0; i < nc; ++i) {
-        double mean = 0;
-        if (center) {
-            mean = matrix.col(i).sum() / nr;
-            center0[i] = mean;
-        }
-        if (scale) {
-            EigenVector_ current = matrix.col(i); // force it to be a Vector, even if it's a sparse matrix.
-            typename EigenMatrix_::Scalar var = 0;
-            for (auto x : current) {
-                var += (x - mean)*(x - mean);
-            }
-
-            if (var) {
-                scale0[i] = std::sqrt(var/(nr - 1));
-            } else {
-                scale0[i] = 1;
-            }
-        }
-    }
-
-    if (center) {
-        Centered<Matrix_, EigenVector_> centered(matrix, center0);
-        if (scale) {
-            auto centered_scaled = make_Scaled<true>(centered, scale0, true);
-            return compute(centered_scaled, number, outU, outV, outD, options);
-        } else {
-            return compute(centered, number, outU, outV, outD, options);
-        }
-    } else {
-        auto scaled = make_Scaled<true>(matrix, scale0, true);
-        return compute(scaled, number, outU, outV, outD, options);
-    }
-}
-
-/** 
- * Convenient overload of `compute()` with centering and scaling, which allocates memory for the output matrices of the SVD.
- *
- * @tparam Matrix_ A floating-point `Eigen::Matrix` or equivalent sparse matrix class.
- * @tparam EigenMatrix_ A floating-point `Eigen::Matrix` class.
- * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
- *
- * @param[in] matrix Input matrix.
- * @param center Should the matrix be centered by column?
- * @param scale Should the matrix be scaled to unit variance for each column?
- * @param number Number of singular triplets to obtain.
- * @param options Further options.
- *
- * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
- */
-template<class EigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class Matrix_>
-Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, bool center, bool scale, Eigen::Index number, const Options& options) {
-    Results<EigenMatrix_, EigenVector_> output;
-    auto stats = compute(matrix, center, scale, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;

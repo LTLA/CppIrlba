@@ -39,13 +39,13 @@ public:
      */
 
 private:
-    I<decltype(my_matrix.new_known_workspace())> my_work;
+    I<decltype(std::declval<Matrix_>().new_known_workspace())> my_work;
     const Center_& my_center;
 
 public:
     void multiply(const EigenVector_& right, EigenVector_& out) {
         my_work->multiply(right, out);
-        const auto beta = realized_rhs.dot(my_center);
+        const auto beta = right.dot(my_center);
         for (auto& o : out) {
             o -= beta;
         }
@@ -61,7 +61,7 @@ public:
  *
  * Typically constructed by `CenteredMatrix::new_adjoint_workspace()`.
  */
-template<class EigenVector_, Matrix_, class Center_>
+template<class EigenVector_, class Matrix_, class Center_>
 class CenteredAdjointWorkspace : public AdjointWorkspace<EigenVector_> {
 public:
     CenteredAdjointWorkspace(const Matrix_& matrix, const Center_& center) :
@@ -70,13 +70,13 @@ public:
     {}
 
 private:
-    I<decltype(my_matrix.new_known_adjoint_workspace())> my_work;
+    I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> my_work;
     const Center_& my_center;
 
 public:
     void multiply(const EigenVector_& right, EigenVector_& out) {
         my_work->multiply(right, out);
-        const auto beta = realized_rhs.sum();
+        const auto beta = right.sum();
         out -= beta * my_center;
     }
 };
@@ -105,7 +105,7 @@ public:
      */
 
 private:
-    I<decltype(my_matrix.new_known_realize_workspace())> my_work;
+    I<decltype(std::declval<Matrix_>().new_known_realize_workspace())> my_work;
     const Center_& my_center;
 
 public:

@@ -319,7 +319,7 @@ public:
 };
 
 template<class EigenMatrix_, class ValueArray_, class IndexArray_, class PointerArray_ >
-class ParallelSparseRealizeWorkspace : public RealizeWorkspace<EigenVector_> {
+class ParallelSparseRealizeWorkspace : public RealizeWorkspace<EigenMatrix_> {
 public:
     ParallelSparseRealizeWorkspace(const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& core) :
         my_core(core)

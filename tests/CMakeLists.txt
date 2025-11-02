@@ -43,12 +43,13 @@ add_executable(
     libtest 
     src/utils.cpp
     src/lanczos.cpp
-    src/compute.cpp
-    src/sparse.cpp
     src/invariant.cpp
-    src/MockMatrix.cpp
-    src/wrappers.cpp
-    src/parallel.cpp
+    src/compute.cpp
+    src/pca.cpp
+    #src/sparse.cpp
+    #src/MockMatrix.cpp
+    #src/wrappers.cpp
+    #src/parallel.cpp
 )
 decorate_test(libtest)
 

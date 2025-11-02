@@ -31,7 +31,8 @@ protected:
 TEST_P(InvariantTester, SingularCheck) {
     int rank = GetParam();
     assemble(rank);
-    auto res = irlba::compute(A, rank + 3, irlba::Options());
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+    auto res = irlba::compute(wrapped, rank + 3, irlba::Options());
 
     // Checking that the first 'rank' columns have non-zero singular values,
     // while the remainders are on zero.    
@@ -62,8 +63,8 @@ TEST_P(InvariantTester, SingularCheck) {
 TEST_P(InvariantTester, Recovery) {
     int rank = GetParam();
     assemble(rank);
-
-    auto res = irlba::compute(A, rank + 2, irlba::Options());
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+    auto res = irlba::compute(wrapped, rank + 2, irlba::Options());
 
     // Check that recovered low-rank matrix is identical to the input.
     Eigen::MatrixXd recovered = res.U * res.D.asDiagonal() * res.V.adjoint();

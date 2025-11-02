@@ -2,7 +2,8 @@
 #define IRLBA_MATRIX_INTERFACE_HPP
 
 #include <memory>
-#include "Eigen/Dense.hpp"
+
+#include "Eigen/Dense"
 
 /**
  * @file interface.hpp
@@ -98,7 +99,9 @@ public:
  * Typically constructed by `Matrix::new_realize_workspace()`.
  * The lifetime of this object should not exceed that of the `Matrix` instance used to construct it.
  */
+template<class EigenMatrix_>
 class RealizeWorkspace { 
+public:
     /**
      * @cond
      */
