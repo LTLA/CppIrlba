@@ -2,9 +2,11 @@
 
 #include "compare.h"
 #include "NormalSampler.h"
+#include "sparse.h"
 
 #include "irlba/compute.hpp"
 #include "irlba/Matrix/simple.hpp"
+#include "irlba/Matrix/sparse.hpp"
 #include "irlba/utils.hpp"
 
 #include "Eigen/Dense"
@@ -155,4 +157,51 @@ TEST(Compute, Fails) {
         message = e.what();
     }
     EXPECT_EQ(message.find("initialization"), 0);
+}
+
+TEST(Compute, Sparse) {
+    auto simulated = simulate_compressed_sparse(99, 64);
+    auto A = create_dense_matrix(simulated);
+    auto B = create_sparse_matrix(simulated);
+
+    irlba::Options opt;
+    opt.extra_work = 7;
+
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+    auto res = irlba::compute(wrapped, 8, opt);
+    irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&B)> wrapped2(&B);
+    auto res2 = irlba::compute(wrapped2, 8, opt);
+
+    expect_equal_vectors(res.D, res2.D);
+    expect_equal_column_vectors(res.U, res2.U);
+    expect_equal_column_vectors(res.V, res2.V);
+
+    // Checking our custom sparse matrix.
+    {
+        irlba::ParallelSparseMatrix<
+            Eigen::VectorXd,
+            Eigen::MatrixXd,
+            decltype(simulated.values),
+            decltype(simulated.indices),
+            decltype(simulated.nzeros)
+        > psparse(simulated.rows, simulated.cols, simulated.values, simulated.indices, simulated.nzeros, true, 1);
+        auto res3 = irlba::compute(psparse, 8, opt);
+
+        expect_equal_vectors(res.D, res3.D);
+        expect_equal_column_vectors(res.U, res3.U);
+        expect_equal_column_vectors(res.V, res3.V);
+    }
+
+    // Comparing it to the reference. 
+    {
+        irlba::Options opt;
+        opt.extra_work = 20;
+        auto res = irlba::compute(wrapped2, 13, opt);
+
+        // Bumping up the tolerance as later SV's tend to be a bit more variable.
+        Eigen::JacobiSVD<decltype(A), Eigen::ComputeThinU | Eigen::ComputeThinV> ref(A);
+        expect_equal_vectors(res.D, ref.singularValues().head(13), 1e-5);
+        expect_equal_column_vectors(res.U, ref.matrixU().leftCols(13), 1e-5);
+        expect_equal_column_vectors(res.V, ref.matrixV().leftCols(13), 1e-5);
+    }
 }

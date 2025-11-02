@@ -6,6 +6,7 @@
 #include <cstddef>
 
 #include "../utils.hpp"
+#include "../parallel.hpp"
 #include "interface.hpp"
 
 #include "Eigen/Dense"
@@ -157,6 +158,18 @@ public:
         return my_column_major;
     }
 
+    const std::vector<size_t>& get_primary_starts() const {
+        return my_primary_starts;
+    }
+
+    const std::vector<size_t>& get_primary_ends() const {
+        return my_primary_ends;
+    }
+
+    const std::vector<std::vector<PointerType> >& get_secondary_nonzero_starts() const {
+        return my_secondary_nonzero_starts;
+    }
+
 public:
     template<typename EigenVector_>
     void indirect_multiply(const EigenVector_& rhs, std::vector<std::vector<typename EigenVector_::Scalar> >& thread_buffers, EigenVector_& output) const {
@@ -278,7 +291,7 @@ private:
     std::vector<std::vector<typename EigenVector_::Scalar> > my_thread_buffers;
 
 public:
-    void multiply(const EigenVector_& right, EigenVector_& out) {
+    void multiply(const EigenVector_& right, EigenVector_& output) {
         if (my_core.get_column_major()) {
             my_core.indirect_multiply(right, my_thread_buffers, output);
         } else {
@@ -309,11 +322,11 @@ private:
     std::vector<std::vector<typename EigenVector_::Scalar> > my_thread_buffers;
 
 public:
-    void multiply(const EigenVector_& right, EigenVector_& out) {
+    void multiply(const EigenVector_& right, EigenVector_& output) {
         if (my_core.get_column_major()) {
             my_core.direct_multiply(right, output);
         } else {
-            my_core.indirect_multiply(right, work.thread_buffers, output);
+            my_core.indirect_multiply(right, my_thread_buffers, output);
         }
     }
 };
@@ -325,16 +338,20 @@ public:
         my_core(core)
     {}
 
+private:
+    const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& my_core;
+
 public:
     const EigenMatrix_& realize(EigenMatrix_& buffer) {
         const auto nr = my_core.rows(), nc = my_core.cols();
-        EigenMatrix_ buffer(nr, nc);
+        buffer.resize(nr, nc);
         buffer.setZero();
 
         const auto& ptrs = my_core.get_pointers();
         const auto& indices = my_core.get_indices();
         const auto& values = my_core.get_values();
 
+        typedef I<decltype(std::declval<PointerArray_>()[0])> PointerType;
         if (my_core.get_column_major()) {
             for (Eigen::Index c = 0; c < nc; ++c) {
                 PointerType col_start = ptrs[c], col_end = ptrs[c + 1];
@@ -416,7 +433,7 @@ public:
     {}
 
 private:
-    ParallelSparseMatrix<ValueArray_, IndexArray_, PointerArray_> my_core;
+    ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_> my_core;
 
 public:
     /**
@@ -456,13 +473,11 @@ public:
         return my_core.get_pointers();
     }
 
-public:
     /**
      * Type of the elements inside a `PointerArray_`.
      */
     typedef I<decltype(std::declval<PointerArray_>()[0])> PointerType;
 
-public:
     /**
      * This should only be called if `num_threads > 1` in the constructor, otherwise it will not be initialized.
      *
@@ -509,15 +524,15 @@ public:
     }
 
 public:
-    std::unique_ptr<ParallelSparseWorkspace<EigenVector_> > new_known_workspace() const {
+    std::unique_ptr<ParallelSparseWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> > new_known_workspace() const {
         return std::make_unique<ParallelSparseWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
-    std::unique_ptr<ParallelSparseAdjointWorkspace<EigenVector_> > new_known_adjoint_workspace() const {
+    std::unique_ptr<ParallelSparseAdjointWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> > new_known_adjoint_workspace() const {
         return std::make_unique<ParallelSparseAdjointWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
-    std::unique_ptr<ParallelSparseRealizeWorkspace<EigenMatrix_> > new_known_realize_workspace() const {
+    std::unique_ptr<ParallelSparseRealizeWorkspace<EigenMatrix_, ValueArray_, IndexArray_, PointerArray_> > new_known_realize_workspace() const {
         return std::make_unique<ParallelSparseRealizeWorkspace<EigenMatrix_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 

@@ -2,6 +2,7 @@
 
 #include "compare.h"
 #include "NormalSampler.h"
+#include "sparse.h"
 
 #include "irlba/pca.hpp"
 #include "irlba/utils.hpp"
@@ -155,4 +156,28 @@ TEST(Pca, SmallExactCenterScale) {
         expect_equal_column_vectors(res.V, res2.V);
         EXPECT_NE(ref.D, res2.D);
     }
+}
+
+TEST(Pca, Sparse) {
+    auto simulated = simulate_compressed_sparse(76, 128);
+    auto A = create_dense_matrix(simulated);
+    auto B = create_sparse_matrix(simulated);
+
+    irlba::Options opt;
+    opt.extra_work = 7;
+    auto res = irlba::pca(A, true, true, 8, opt);
+    auto res2 = irlba::pca(B, true, true, 8, opt);
+
+    expect_equal_vectors(res.D, res2.D);
+    expect_equal_column_vectors(res.V, res2.V);
+
+    // Don't compare U, as this will always be zero.
+    for (Eigen::Index i = 0; i < res.U.cols(); ++i) {
+        for (Eigen::Index j = 0; j < res.U.rows(); ++j) {
+            double labs = std::abs(res.U(j, i));
+            double rabs = std::abs(res2.U(j, i));
+            EXPECT_TRUE(same_same(labs, rabs, 1e-8));
+        }
+        EXPECT_TRUE(std::abs(res2.U.col(i).sum()) < 1e-8);
+    }    
 }

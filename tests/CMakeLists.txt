@@ -46,17 +46,16 @@ add_executable(
     src/invariant.cpp
     src/compute.cpp
     src/pca.cpp
-    #src/sparse.cpp
-    #src/MockMatrix.cpp
-    #src/wrappers.cpp
-    #src/parallel.cpp
+    src/Matrix/scaled.cpp
+    src/Matrix/centered.cpp
+    src/Matrix/sparse.cpp
 )
 decorate_test(libtest)
 
 # Check that the custom parallelization schemes are properly set up.
 add_executable(
     custom_parallel
-    src/parallel.cpp
+    src/Matrix/sparse.cpp
 )
 decorate_test(custom_parallel)
 target_compile_definitions(custom_parallel PRIVATE TEST_CUSTOM_PARALLEL)
@@ -66,7 +65,7 @@ find_package(OpenMP)
 if (OpenMP_FOUND)
     add_executable(
         omptest 
-        src/parallel.cpp
+        src/Matrix/sparse.cpp
     )
     decorate_test(omptest)
     target_link_libraries(omptest OpenMP::OpenMP_CXX)
