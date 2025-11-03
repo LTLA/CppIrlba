@@ -1,0 +1,11 @@
+<map id="irlba::Workspace&lt; EigenVector_ &gt;" name="irlba::Workspace&lt; EigenVector_ &gt;">
+<area shape="rect" id="Node000001" title="Workspace class for multiplying a Matrix." alt="" coords="5,140,221,166"/>
+<area shape="rect" id="Node000002" href="$classirlba_1_1CenteredWorkspace.html" title="Workspace class for multiplying a CenteredMatrix." alt="" coords="285,5,453,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,130,268,71,294,59,296,64,270,76,153,135"/>
+<area shape="rect" id="Node000003" href="$classirlba_1_1ParallelSparseWorkspace.html" title="Workspace for multiplication of a ParallelSparseMatrix." alt="" coords="269,85,469,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,135,268,126,269,132,215,140"/>
+<area shape="rect" id="Node000004" href="$classirlba_1_1ScaledWorkspace.html" title="Workspace class for multiplying a ScaledMatrix." alt="" coords="291,165,447,221"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="215,166,291,178,290,184,214,172"/>
+<area shape="rect" id="Node000005" href="$classirlba_1_1SimpleWorkspace.html" title="Workspace class for multiplying a SimpleMatrix." alt="" coords="282,245,456,286"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="152,172,207,201,270,231,299,242,297,247,268,236,204,206,149,176"/>
+</map>

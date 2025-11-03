@@ -1,4 +1,16 @@
 var searchData=
 [
-  ['type_0',['type',['../structirlba_1_1get__workspace.html#aa165e4e08be9630e8f934020a0d464b8',1,'irlba::get_workspace::type'],['../structirlba_1_1get__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_3_01typen223c127db2904cd5f8dc8c9aacb0fa94.html#ab01e88f05b487ad54813707dd7e25c7f',1,'irlba::get_workspace&lt; Matrix_, decltype((void) std::declval&lt; typename Matrix_::Index &gt;(), 0)&gt;::type'],['../structirlba_1_1get__adjoint__workspace.html#aa1f56f68aab200debc3dc95b00c93cc7',1,'irlba::get_adjoint_workspace::type'],['../structirlba_1_1get__adjoint__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_4f3685937219667b9e24bd9d6fe2308f.html#a9a28ce11b98d1f5d759ea594f3b342b5',1,'irlba::get_adjoint_workspace&lt; Matrix_, decltype((void) std::declval&lt; typename Matrix_::Index &gt;(), 0)&gt;::type']]]
+  ['scaled_2ehpp_0',['scaled.hpp',['../scaled_8hpp.html',1,'']]],
+  ['scaledadjointworkspace_1',['ScaledAdjointWorkspace',['../classirlba_1_1ScaledAdjointWorkspace.html',1,'irlba']]],
+  ['scaledmatrix_2',['ScaledMatrix',['../classirlba_1_1ScaledMatrix.html',1,'irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;'],['../classirlba_1_1ScaledMatrix.html#a48c27c2c1b443f6fafac86c1a5c04cc1',1,'irlba::ScaledMatrix::ScaledMatrix()']]],
+  ['scaledrealizeworkspace_3',['ScaledRealizeWorkspace',['../classirlba_1_1ScaledRealizeWorkspace.html',1,'irlba']]],
+  ['scaledworkspace_4',['ScaledWorkspace',['../classirlba_1_1ScaledWorkspace.html',1,'irlba']]],
+  ['seed_5',['seed',['../structirlba_1_1Options.html#a4252ea1bbebe8ad2a7541c1edb2699e2',1,'irlba::Options']]],
+  ['simple_2ehpp_6',['simple.hpp',['../simple_8hpp.html',1,'']]],
+  ['simpleadjointworkspace_7',['SimpleAdjointWorkspace',['../classirlba_1_1SimpleAdjointWorkspace.html',1,'irlba']]],
+  ['simplematrix_8',['SimpleMatrix',['../classirlba_1_1SimpleMatrix.html',1,'irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;'],['../classirlba_1_1SimpleMatrix.html#a40ad6109c43db9aae47c10eb731039c6',1,'irlba::SimpleMatrix::SimpleMatrix()']]],
+  ['simplerealizeworkspace_9',['SimpleRealizeWorkspace',['../classirlba_1_1SimpleRealizeWorkspace.html',1,'irlba']]],
+  ['simpleworkspace_10',['SimpleWorkspace',['../classirlba_1_1SimpleWorkspace.html',1,'irlba']]],
+  ['singular_5fvalue_5fratio_5ftolerance_11',['singular_value_ratio_tolerance',['../structirlba_1_1Options.html#a1e6e7fa2394b489f39e613c0f0fa3092',1,'irlba::Options']]],
+  ['sparse_2ehpp_12',['sparse.hpp',['../sparse_8hpp.html',1,'']]]
 ];

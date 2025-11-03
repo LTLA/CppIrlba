@@ -1,0 +1,5 @@
+<map id="irlba::ParallelSparseWorkspace&lt; EigenVector_, ValueArray_, IndexArray_, PointerArray_ &gt;" name="irlba::ParallelSparseWorkspace&lt; EigenVector_, ValueArray_, IndexArray_, PointerArray_ &gt;">
+<area shape="rect" id="Node000001" title="Workspace for multiplication of a ParallelSparseMatrix." alt="" coords="13,79,213,135"/>
+<area shape="rect" id="Node000002" href="$classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix." alt="" coords="5,5,221,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,47,116,78,110,78,110,47"/>
+</map>

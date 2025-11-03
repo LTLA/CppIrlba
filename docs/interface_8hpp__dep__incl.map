@@ -1,0 +1,21 @@
+<map id="irlba/Matrix/interface.hpp" name="irlba/Matrix/interface.hpp">
+<area shape="rect" id="Node000001" title="Interfaces for matrix inputs." alt="" coords="241,5,404,31"/>
+<area shape="rect" id="Node000002" href="$centered_8hpp.html" title="Deferred centering for a matrix." alt="" coords="5,153,168,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="291,42,107,154,105,150,289,37"/>
+<area shape="rect" id="Node000005" href="$scaled_8hpp.html" title="Deferred scaling for a matrix." alt="" coords="191,153,342,178"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="311,46,294,80,272,153,267,152,289,78,306,44"/>
+<area shape="rect" id="Node000006" href="$simple_8hpp.html" title="Simple wrapper around an Eigen matrix." alt="" coords="303,79,454,105"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="343,41,371,77,367,80,339,45"/>
+<area shape="rect" id="Node000008" href="$sparse_8hpp.html" title="Sparse matrix with parallelized multiplication." alt="" coords="478,79,629,105"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="377,33,515,76,513,81,375,38"/>
+<area shape="rect" id="Node000003" href="$pca_8hpp.html" title="Perform PCA with IRLBA." alt="" coords="331,226,426,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="151,180,332,224,331,229,150,185"/>
+<area shape="rect" id="Node000004" href="$irlba_8hpp.html" title="Implements IRLBA." alt="" coords="371,300,468,326"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="395,264,415,298,411,301,391,267"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="300,185,361,223,358,228,297,189"/>
+<area shape="poly" id="edge10_Node000006_Node000003" title=" " alt="" coords="381,120,381,226,376,226,376,120"/>
+<area shape="rect" id="Node000007" href="$compute_8hpp.html" title="Compute an approximate SVD with IRLBA." alt="" coords="416,153,539,178"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="409,112,462,150,459,154,406,116"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="450,190,397,228,393,224,447,186"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="469,194,427,300,422,299,464,192"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mockmatrix_0',['MockMatrix',['../classirlba_1_1MockMatrix.html',1,'irlba']]]
+  ['options_0',['Options',['../structirlba_1_1Options.html',1,'irlba']]]
 ];

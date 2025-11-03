@@ -88,16 +88,10 @@ $(function(){ initResizable(false); });
 <div class="contents">
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
-<h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
-<li>adjoint_multiply()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#a1ab37bcf97cf881f19293653b4fb4ef4">irlba::MockMatrix</a></li>
-<li>adjoint_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#a289b2248e6ec7dfcb26b6412ab3470ed">irlba::MockMatrix</a></li>
-</ul>
-
-
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>cap_number&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">irlba::Options</a></li>
-<li>Centered()&#160;:&#160;<a class="el" href="classirlba_1_1Centered.html#a48b46304c577789a6957b472fef87874">irlba::Centered&lt; Matrix_, EigenVector_ &gt;</a></li>
-<li>cols()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#a4940f9dd3cfe19dbe048a5facb0c44d5">irlba::MockMatrix</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ad28b7feb9b8edbe5f028bee51635ba7d">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
+<li>CenteredMatrix()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#ae2d0db17316cb8865003c01177cd94f0">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a></li>
+<li>cols()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#a2ccca89f9ed6d8a609503b0833cc945b">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a501fe6e1d2f916d46239529e731da328">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a4384154be9eb26ee6d789e749c33390f">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#a7b7503144b1b012eb434e40bbc7290cc">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#abea605d297da66b88ac041d8312803c6">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
 <li>converged&#160;:&#160;<a class="el" href="structirlba_1_1Results.html#a867a16b6a3c46b48deea9a17dd4e20b9">irlba::Results&lt; EigenMatrix_, EigenVector_ &gt;</a></li>
 <li>convergence_tolerance&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#a1fd00b6a91fb447f35c0c0cfa65dafd7">irlba::Options</a></li>
 </ul>
@@ -109,6 +103,7 @@ $(function(){ initResizable(false); });
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>EigenThreadScope()&#160;:&#160;<a class="el" href="classirlba_1_1EigenThreadScope.html#a5bed6285b3da4aba87eeaf3cddbef1c1">irlba::EigenThreadScope</a></li>
 <li>exact_for_large_number&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#ae4bd4e00dd4815e3aa66b0b23f8820b0">irlba::Options</a></li>
 <li>exact_for_small_matrix&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#a6139d421c988fe1818bfe338f9ce85ad">irlba::Options</a></li>
 <li>extra_work&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#ab903b879a43cb167ddbab093b44c32e0">irlba::Options</a></li>
@@ -116,12 +111,12 @@ $(function(){ initResizable(false); });
 
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
-<li>get_indices()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a329299f8c582d58037b2f4b60b50ee20">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
-<li>get_pointers()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#abca50c26f6276d18c76ca8e8d0a96710">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
-<li>get_primary_ends()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a6d2c5c0010e2a8ec60b43261f629734e">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
-<li>get_primary_starts()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ab24bf3591dfe0088dccb8041a3881e9e">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
-<li>get_secondary_nonzero_starts()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ac40f94eb5d8e5e2a6cd4ee64a66828f8">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
-<li>get_values()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a3ce03a80711242aafdbda1ff4fc0cdee">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
+<li>get_indices()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#adaf070a354be6f2d65263864cc3cea15">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
+<li>get_pointers()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ad28e10195596f59f6f089c1e89f3f2ea">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
+<li>get_primary_ends()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aa6f051878910af5820563453cb8e0957">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
+<li>get_primary_starts()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a7b0edebfb5df14167ce08100d19e824f">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
+<li>get_secondary_nonzero_starts()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a5b338eba3c51b12314bcaeb506dee6f1">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
+<li>get_values()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a78d57d5921d40f01a45543bb6b9cd277">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
 </ul>
 
 
@@ -134,31 +129,38 @@ $(function(){ initResizable(false); });
 
 <h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
 <li>max_iterations&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#afc7f9a04a63cc7033c2103cdebab3612">irlba::Options</a></li>
-<li>multiply()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#af184ef507c5ceb99c89d782075cb5c1c">irlba::MockMatrix</a></li>
+<li>multiply()&#160;:&#160;<a class="el" href="classirlba_1_1AdjointWorkspace.html#a586c1f21819b781503a58c87249c3b63">irlba::AdjointWorkspace&lt; EigenVector_ &gt;</a>, <a class="el" href="classirlba_1_1CenteredAdjointWorkspace.html#a62336e2c0fb751243a638f9bf3c5c8c5">irlba::CenteredAdjointWorkspace&lt; EigenVector_, Matrix_, Center_ &gt;</a>, <a class="el" href="classirlba_1_1CenteredWorkspace.html#a7f7bddfea87ce7660c27ce57f319646c">irlba::CenteredWorkspace&lt; EigenVector_, Matrix_, Center_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseAdjointWorkspace.html#a6e8b220c427cbbc75d2d3bc00f804d88">irlba::ParallelSparseAdjointWorkspace&lt; EigenVector_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseWorkspace.html#ad3fc5f626b0bb46c158b5815be9d8482">irlba::ParallelSparseWorkspace&lt; EigenVector_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledAdjointWorkspace.html#aa9d658babc15da2738e7303e54f8a00c">irlba::ScaledAdjointWorkspace&lt; EigenVector_, Matrix_, Scale_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledWorkspace.html#a715006cf4bc73e133803e8cab60c6e47">irlba::ScaledWorkspace&lt; EigenVector_, Matrix_, Scale_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleAdjointWorkspace.html#a0d058d982265184bfcef57e33ba9b4d9">irlba::SimpleAdjointWorkspace&lt; EigenVector_, Simple_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleWorkspace.html#ad4233a023a12e966556b72cd4f816478">irlba::SimpleWorkspace&lt; EigenVector_, Simple_ &gt;</a>, <a class="el" href="classirlba_1_1Workspace.html#aace68ce16da70c397d4a790f3667ae35">irlba::Workspace&lt; EigenVector_ &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_n" name="index_n"></a>- n -</h3><ul>
+<li>new_adjoint_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#acd389d1385dacd65330aa3b8c6f7718e">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a21e0ea4abfe872d6c0d6730a997db828">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a7d9b58d608a2b2b8a8b8cbb4b9e41ce8">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#abcd60a1d5a7875157155be1ab7b7f2ee">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#a4722a76b2cf4c2c78131b0f0e0c96878">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
+<li>new_known_adjoint_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#aaf02c11ab9f33e80d2c2ca7a7e4aab5d">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a4d24b11b4a1f7082f88fae5dfc70edd4">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#afbd674f5821082d248fab3ed0357d8c0">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#ac4386c1d79868751455714559357d621">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#aff10a1242e8858f5223cc085b209fb24">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
+<li>new_known_realize_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#a899c39be9fcaa885177610056ff3411c">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a9a4da990893ff44f8b2039d2acfa4332">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ad55f7e2ad547885ab8dcc78fd819b795">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#a10fd288ec69fb77a6fd6dcb147cd11b2">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#a479e87be37b59b44dcd258bc1a0aebce">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
+<li>new_known_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#a2c7fa29c1575e39c2f57c83ef4ac442d">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#af4069e1f696ae7495d1b495d08fd57a1">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ac3653e6ecd6ef7c8b2455880279e705c">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#a996ab70cb7743bb6b83b9cc53901c7ee">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#a227b3b5937dd21b0e0150652669f9f29">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
+<li>new_realize_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#abc897e918a23c24eeaedfe43760d151f">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a34bc2683917efaf71525446eef8b7786">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a9d7a53e223d10e5e5863a24f3ab82b4e">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#a6e352efaf051c6158a02919e45c35257">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#acde47445ae7eb9e599c6fbd1b34b14ea">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
+<li>new_workspace()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#a7dbbce4a13a2ef4051fe223a8cb8183f">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a6abf35c662b5f18dddfa1a5e68a3d227">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#adf44a97e086bb8446961ff36faa9f509">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#af3f177b829d11e61dc7637d26395657d">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#a4d828993e46ab39f37647d8d77b6b86b">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_p" name="index_p"></a>- p -</h3><ul>
-<li>ParallelSparseMatrix()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#acf9a12ed3c0c2b532074d67b1514753f">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
-<li>PointerType&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#ae13bd7c65ba8315f48a8d75acc12a815">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
+<li>ParallelSparseMatrix()&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a95f1f0793968638d2a7086beb2b6dab2">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
+<li>PointerType&#160;:&#160;<a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a812d625d449ea75df1b42428a0d09c03">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
-<li>realize()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#ab7a59ec0ae28cab7f6d5443d6f138635">irlba::MockMatrix</a></li>
-<li>rows()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#a8c39c466d1e59f539ec5f262c8692ac5">irlba::MockMatrix</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#aaf5317ab710d8135149c8c3e3d536a0d">irlba::ParallelSparseMatrix&lt; ValueArray_, IndexArray_, PointerArray_, EigenVector_ &gt;</a></li>
+<li>realize()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredRealizeWorkspace.html#a6aece4f93699ca7d925cf7e62ff492f1">irlba::CenteredRealizeWorkspace&lt; EigenMatrix_, Matrix_, Center_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseRealizeWorkspace.html#a7f1d0da3da9d067a53cd08006a7affb6">irlba::ParallelSparseRealizeWorkspace&lt; EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1RealizeWorkspace.html#a8596db8855716e629a8510ac6e12e71e">irlba::RealizeWorkspace&lt; EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledRealizeWorkspace.html#ac6b612318b238a96396008d91ee61c89">irlba::ScaledRealizeWorkspace&lt; EigenMatrix_, Matrix_, Scale_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleRealizeWorkspace.html#a2bff5fb36075a9cbb8245fc51972a590">irlba::SimpleRealizeWorkspace&lt; EigenMatrix_, Simple_ &gt;</a></li>
+<li>realize_copy()&#160;:&#160;<a class="el" href="classirlba_1_1RealizeWorkspace.html#afbd1cdc749cdca173d5659bb9a8718c1">irlba::RealizeWorkspace&lt; EigenMatrix_ &gt;</a></li>
+<li>rows()&#160;:&#160;<a class="el" href="classirlba_1_1CenteredMatrix.html#a7bd996660d56400904d1191d3d9dee96">irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;</a>, <a class="el" href="classirlba_1_1Matrix.html#a445f7873a357819428df497c3ed69a33">irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</a>, <a class="el" href="classirlba_1_1ParallelSparseMatrix.html#a7ea7b264d343553c52cb4e0a04bf0cf9">irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</a>, <a class="el" href="classirlba_1_1ScaledMatrix.html#aee91777f1fc6065af5d62da64014317c">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a>, <a class="el" href="classirlba_1_1SimpleMatrix.html#a61f8ae12917ce7029309a94bcd19076a">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
-<li>Scaled()&#160;:&#160;<a class="el" href="classirlba_1_1Scaled.html#ac62a2c595a9cd36174037eaa83252af0">irlba::Scaled&lt; column_, Matrix_, EigenVector_ &gt;</a></li>
+<li>ScaledMatrix()&#160;:&#160;<a class="el" href="classirlba_1_1ScaledMatrix.html#a48c27c2c1b443f6fafac86c1a5c04cc1">irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;</a></li>
 <li>seed&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#a4252ea1bbebe8ad2a7541c1edb2699e2">irlba::Options</a></li>
+<li>SimpleMatrix()&#160;:&#160;<a class="el" href="classirlba_1_1SimpleMatrix.html#a40ad6109c43db9aae47c10eb731039c6">irlba::SimpleMatrix&lt; EigenVector_, EigenMatrix_, SimplePointer_ &gt;</a></li>
 <li>singular_value_ratio_tolerance&#160;:&#160;<a class="el" href="structirlba_1_1Options.html#a1e6e7fa2394b489f39e613c0f0fa3092">irlba::Options</a></li>
-</ul>
-
-
-<h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
-<li>type&#160;:&#160;<a class="el" href="structirlba_1_1get__adjoint__workspace.html#aa1f56f68aab200debc3dc95b00c93cc7">irlba::get_adjoint_workspace&lt; Matrix_, typename &gt;</a>, <a class="el" href="structirlba_1_1get__adjoint__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_4f3685937219667b9e24bd9d6fe2308f.html#a9a28ce11b98d1f5d759ea594f3b342b5">irlba::get_adjoint_workspace&lt; Matrix_, decltype((void) std::declval&lt; typename Matrix_::Index &gt;(), 0)&gt;</a>, <a class="el" href="structirlba_1_1get__workspace.html#aa165e4e08be9630e8f934020a0d464b8">irlba::get_workspace&lt; Matrix_, typename &gt;</a>, <a class="el" href="structirlba_1_1get__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_3_01typen223c127db2904cd5f8dc8c9aacb0fa94.html#ab01e88f05b487ad54813707dd7e25c7f">irlba::get_workspace&lt; Matrix_, decltype((void) std::declval&lt; typename Matrix_::Index &gt;(), 0)&gt;</a></li>
 </ul>
 
 
@@ -169,11 +171,6 @@ $(function(){ initResizable(false); });
 
 <h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
 <li>V&#160;:&#160;<a class="el" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">irlba::Results&lt; EigenMatrix_, EigenVector_ &gt;</a></li>
-</ul>
-
-
-<h3><a id="index_w" name="index_w"></a>- w -</h3><ul>
-<li>workspace()&#160;:&#160;<a class="el" href="classirlba_1_1MockMatrix.html#aa303ff5b5b67746d84e58a06c679f29d">irlba::MockMatrix</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

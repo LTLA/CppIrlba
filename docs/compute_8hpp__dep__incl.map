@@ -1,5 +1,8 @@
 <map id="irlba/compute.hpp" name="irlba/compute.hpp">
 <area shape="rect" id="Node000001" title="Compute an approximate SVD with IRLBA." alt="" coords="5,5,129,31"/>
-<area shape="rect" id="Node000002" href="$irlba_8hpp.html" title="Implements IRLBA." alt="" coords="18,79,116,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,46,70,79,64,79,64,46"/>
+<area shape="rect" id="Node000002" href="$irlba_8hpp.html" title="Implements IRLBA." alt="" coords="18,153,116,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,46,54,74,54,104,65,151,60,153,48,105,49,74,55,45"/>
+<area shape="rect" id="Node000003" href="$pca_8hpp.html" title="Perform PCA with IRLBA." alt="" coords="62,79,157,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="84,43,105,77,100,80,80,46"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="97,119,76,154,72,151,93,116"/>
 </map>

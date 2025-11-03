@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scaled_0',['Scaled',['../classirlba_1_1Scaled.html',1,'irlba']]]
+  ['workspace_0',['Workspace',['../classirlba_1_1Workspace.html',1,'irlba']]]
 ];

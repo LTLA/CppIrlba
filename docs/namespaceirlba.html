@@ -88,7 +88,6 @@ $(function(){ initResizable(false); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">irlba Namespace Reference</div></div>
 </div><!--header-->
@@ -99,272 +98,105 @@ $(function(){ initResizable(false); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Centered.html">Centered</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for a centered matrix.  <a href="classirlba_1_1Centered.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1AdjointWorkspace.html">AdjointWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a transposed <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.  <a href="classirlba_1_1AdjointWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1CenteredAdjointWorkspace.html">CenteredAdjointWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a transposed <code><a class="el" href="classirlba_1_1CenteredMatrix.html" title="Deferred centering of a matrix.">CenteredMatrix</a></code>.  <a href="classirlba_1_1CenteredAdjointWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1CenteredMatrix.html">CenteredMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deferred centering of a matrix.  <a href="classirlba_1_1CenteredMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1CenteredRealizeWorkspace.html">CenteredRealizeWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for realizing a <code><a class="el" href="classirlba_1_1CenteredMatrix.html" title="Deferred centering of a matrix.">CenteredMatrix</a></code>.  <a href="classirlba_1_1CenteredRealizeWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1CenteredWorkspace.html">CenteredWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a <code><a class="el" href="classirlba_1_1CenteredMatrix.html" title="Deferred centering of a matrix.">CenteredMatrix</a></code>.  <a href="classirlba_1_1CenteredWorkspace.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1EigenThreadScope.html">EigenThreadScope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restrict the number of available threads for Eigen.  <a href="classirlba_1_1EigenThreadScope.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1get__adjoint__workspace.html">get_adjoint_workspace</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of workspace for <code><a class="el" href="#a3459ae959a334ceffee832a4d854152a">wrapped_adjoint_multiply()</a></code>.  <a href="structirlba_1_1get__adjoint__workspace.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1get__adjoint__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_4f3685937219667b9e24bd9d6fe2308f.html">get_adjoint_workspace&lt; Matrix_, decltype((void) std::declval&lt; typename Matrix_::Index &gt;(), 0)&gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of workspace for <code><a class="el" href="#a3459ae959a334ceffee832a4d854152a">wrapped_adjoint_multiply()</a></code>.  <a href="structirlba_1_1get__adjoint__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_4f3685937219667b9e24bd9d6fe2308f.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1get__workspace.html">get_workspace</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of workspace for <code><a class="el" href="#aab50891ee0a3fd5a318ef6aa256b7d10">wrapped_multiply()</a></code>.  <a href="structirlba_1_1get__workspace.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1get__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_3_01typen223c127db2904cd5f8dc8c9aacb0fa94.html">get_workspace&lt; Matrix_, decltype((void) std::declval&lt; typename Matrix_::Index &gt;(), 0)&gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the type of workspace for <code><a class="el" href="#aab50891ee0a3fd5a318ef6aa256b7d10">wrapped_multiply()</a></code>.  <a href="structirlba_1_1get__workspace_3_01Matrix___00_01decltype_07_07void_08_01std_1_1declval_3_01typen223c127db2904cd5f8dc8c9aacb0fa94.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1MockMatrix.html">MockMatrix</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for a matrix to use in <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code>.  <a href="classirlba_1_1MockMatrix.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Matrix.html">Matrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for a matrix to use in <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code>.  <a href="classirlba_1_1Matrix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Options.html">Options</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Options.html" title="Options for the IRLBA algorithm.">Options</a> for the IRLBA algorithm.  <a href="structirlba_1_1Options.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseAdjointWorkspace.html">ParallelSparseAdjointWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> for multiplication of a transposed <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html" title="Sparse matrix with customizable parallelization.">ParallelSparseMatrix</a></code>.  <a href="classirlba_1_1ParallelSparseAdjointWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseMatrix.html">ParallelSparseMatrix</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sparse matrix with customizable parallelization.  <a href="classirlba_1_1ParallelSparseMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseRealizeWorkspace.html">ParallelSparseRealizeWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> for realizing a <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html" title="Sparse matrix with customizable parallelization.">ParallelSparseMatrix</a></code>.  <a href="classirlba_1_1ParallelSparseRealizeWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseWorkspace.html">ParallelSparseWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> for multiplication of a <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html" title="Sparse matrix with customizable parallelization.">ParallelSparseMatrix</a></code>.  <a href="classirlba_1_1ParallelSparseWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1RealizeWorkspace.html">RealizeWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for realizing a <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.  <a href="classirlba_1_1RealizeWorkspace.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Results.html">Results</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of the IRLBA-based decomposition.  <a href="structirlba_1_1Results.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Scaled.html">Scaled</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for a scaled matrix.  <a href="classirlba_1_1Scaled.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ScaledAdjointWorkspace.html">ScaledAdjointWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a transposed <code><a class="el" href="classirlba_1_1ScaledMatrix.html" title="Deferred scaling of a matrix.">ScaledMatrix</a></code>.  <a href="classirlba_1_1ScaledAdjointWorkspace.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:af50e89ef6fc5f30c5bdcc904b74eb45c" id="r_af50e89ef6fc5f30c5bdcc904b74eb45c"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ &gt; </td></tr>
-<tr class="memitem:af50e89ef6fc5f30c5bdcc904b74eb45c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af50e89ef6fc5f30c5bdcc904b74eb45c">WrappedWorkspace</a> = typename <a class="el" href="structirlba_1_1get__workspace.html">get_workspace</a>&lt;Matrix_&gt;::type</td></tr>
-<tr class="separator:af50e89ef6fc5f30c5bdcc904b74eb45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad688d23339418eb0a0cc5b7217f35ad4" id="r_ad688d23339418eb0a0cc5b7217f35ad4"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ &gt; </td></tr>
-<tr class="memitem:ad688d23339418eb0a0cc5b7217f35ad4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad688d23339418eb0a0cc5b7217f35ad4">WrappedAdjointWorkspace</a> = typename <a class="el" href="structirlba_1_1get__adjoint__workspace.html">get_adjoint_workspace</a>&lt;Matrix_&gt;::type</td></tr>
-<tr class="separator:ad688d23339418eb0a0cc5b7217f35ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ScaledMatrix.html">ScaledMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deferred scaling of a matrix.  <a href="classirlba_1_1ScaledMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ScaledRealizeWorkspace.html">ScaledRealizeWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for realizing a <code><a class="el" href="classirlba_1_1ScaledMatrix.html" title="Deferred scaling of a matrix.">ScaledMatrix</a></code>.  <a href="classirlba_1_1ScaledRealizeWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ScaledWorkspace.html">ScaledWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a <code><a class="el" href="classirlba_1_1ScaledMatrix.html" title="Deferred scaling of a matrix.">ScaledMatrix</a></code>.  <a href="classirlba_1_1ScaledWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1SimpleAdjointWorkspace.html">SimpleAdjointWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a transposed <code><a class="el" href="classirlba_1_1SimpleMatrix.html" title="A Matrix-compatible wrapper around a &quot;simple&quot; matrix.">SimpleMatrix</a></code>.  <a href="classirlba_1_1SimpleAdjointWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1SimpleMatrix.html">SimpleMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>-compatible wrapper around a "simple" matrix.  <a href="classirlba_1_1SimpleMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1SimpleRealizeWorkspace.html">SimpleRealizeWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for realizing a <code><a class="el" href="classirlba_1_1SimpleMatrix.html" title="A Matrix-compatible wrapper around a &quot;simple&quot; matrix.">SimpleMatrix</a></code>.  <a href="classirlba_1_1SimpleRealizeWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1SimpleWorkspace.html">SimpleWorkspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a <code><a class="el" href="classirlba_1_1SimpleMatrix.html" title="A Matrix-compatible wrapper around a &quot;simple&quot; matrix.">SimpleMatrix</a></code>.  <a href="classirlba_1_1SimpleWorkspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1Workspace.html">Workspace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.  <a href="classirlba_1_1Workspace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a6fe58ca810293f76a81ff7ab05d041f4" id="r_a6fe58ca810293f76a81ff7ab05d041f4"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </td></tr>
 <tr class="memitem:a6fe58ca810293f76a81ff7ab05d041f4"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute</a> (const Matrix_ &amp;matrix, Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
 <tr class="separator:a6fe58ca810293f76a81ff7ab05d041f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3aed8e6de2f1f8f82b54a84f419ded5" id="r_ad3aed8e6de2f1f8f82b54a84f419ded5"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
+<tr class="memitem:ad3aed8e6de2f1f8f82b54a84f419ded5"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad3aed8e6de2f1f8f82b54a84f419ded5">compute_simple</a> (const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:ad3aed8e6de2f1f8f82b54a84f419ded5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fba15566b7b2f50bdcddb1b7df3ed4c" id="r_a1fba15566b7b2f50bdcddb1b7df3ed4c"><td class="memTemplParams" colspan="2">template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class Matrix_ &gt; </td></tr>
 <tr class="memitem:a1fba15566b7b2f50bdcddb1b7df3ed4c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; EigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1fba15566b7b2f50bdcddb1b7df3ed4c">compute</a> (const Matrix_ &amp;matrix, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
 <tr class="separator:a1fba15566b7b2f50bdcddb1b7df3ed4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb3ed37a9cf1d7cb8aa67e79df993e17" id="r_aeb3ed37a9cf1d7cb8aa67e79df993e17"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:aeb3ed37a9cf1d7cb8aa67e79df993e17"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aeb3ed37a9cf1d7cb8aa67e79df993e17">compute</a> (const Matrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
-<tr class="separator:aeb3ed37a9cf1d7cb8aa67e79df993e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a138d1e78335dbcfdfe7e90c2896e2571" id="r_a138d1e78335dbcfdfe7e90c2896e2571"><td class="memTemplParams" colspan="2">template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class Matrix_ &gt; </td></tr>
-<tr class="memitem:a138d1e78335dbcfdfe7e90c2896e2571"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; EigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a138d1e78335dbcfdfe7e90c2896e2571">compute</a> (const Matrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
-<tr class="separator:a138d1e78335dbcfdfe7e90c2896e2571"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f0da0f8a90c7aeb5f243097a751b87e" id="r_a7f0da0f8a90c7aeb5f243097a751b87e"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
+<tr class="memitem:a7f0da0f8a90c7aeb5f243097a751b87e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7f0da0f8a90c7aeb5f243097a751b87e">compute_simple</a> (const InputEigenMatrix_ &amp;matrix, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:a7f0da0f8a90c7aeb5f243097a751b87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ddcae16077f8210cfab2f59ee3effed" id="r_a7ddcae16077f8210cfab2f59ee3effed"><td class="memTemplParams" colspan="2">template&lt;typename Task_ , class Run_ &gt; </td></tr>
 <tr class="memitem:a7ddcae16077f8210cfab2f59ee3effed"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7ddcae16077f8210cfab2f59ee3effed">parallelize</a> (Task_ num_tasks, Run_ run_task)</td></tr>
 <tr class="separator:a7ddcae16077f8210cfab2f59ee3effed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f1075c4c34a8afe68dbed060978c4e3" id="r_a3f1075c4c34a8afe68dbed060978c4e3"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ &gt; </td></tr>
-<tr class="memitem:a3f1075c4c34a8afe68dbed060978c4e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#af50e89ef6fc5f30c5bdcc904b74eb45c">WrappedWorkspace</a>&lt; Matrix_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3f1075c4c34a8afe68dbed060978c4e3">wrapped_workspace</a> (const Matrix_ &amp;matrix)</td></tr>
-<tr class="separator:a3f1075c4c34a8afe68dbed060978c4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0e802556cc997916b3b02a074ae99e4" id="r_ad0e802556cc997916b3b02a074ae99e4"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ &gt; </td></tr>
-<tr class="memitem:ad0e802556cc997916b3b02a074ae99e4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#ad688d23339418eb0a0cc5b7217f35ad4">WrappedAdjointWorkspace</a>&lt; Matrix_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad0e802556cc997916b3b02a074ae99e4">wrapped_adjoint_workspace</a> (const Matrix_ &amp;matrix)</td></tr>
-<tr class="separator:ad0e802556cc997916b3b02a074ae99e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab50891ee0a3fd5a318ef6aa256b7d10" id="r_aab50891ee0a3fd5a318ef6aa256b7d10"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ , class Right_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:aab50891ee0a3fd5a318ef6aa256b7d10"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aab50891ee0a3fd5a318ef6aa256b7d10">wrapped_multiply</a> (const Matrix_ &amp;matrix, const Right_ &amp;rhs, <a class="el" href="#af50e89ef6fc5f30c5bdcc904b74eb45c">WrappedWorkspace</a>&lt; Matrix_ &gt; &amp;work, EigenVector_ &amp;out)</td></tr>
-<tr class="separator:aab50891ee0a3fd5a318ef6aa256b7d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3459ae959a334ceffee832a4d854152a" id="r_a3459ae959a334ceffee832a4d854152a"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ , class Right_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:a3459ae959a334ceffee832a4d854152a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3459ae959a334ceffee832a4d854152a">wrapped_adjoint_multiply</a> (const Matrix_ &amp;matrix, const Right_ &amp;rhs, <a class="el" href="#ad688d23339418eb0a0cc5b7217f35ad4">WrappedAdjointWorkspace</a>&lt; Matrix_ &gt; &amp;work, EigenVector_ &amp;out)</td></tr>
-<tr class="separator:a3459ae959a334ceffee832a4d854152a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec781c9e4054d9f1b62fc52af8d19c66" id="r_aec781c9e4054d9f1b62fc52af8d19c66"><td class="memTemplParams" colspan="2">template&lt;class EigenMatrix_ , class Matrix_ &gt; </td></tr>
-<tr class="memitem:aec781c9e4054d9f1b62fc52af8d19c66"><td class="memTemplItemLeft" align="right" valign="top">EigenMatrix_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aec781c9e4054d9f1b62fc52af8d19c66">wrapped_realize</a> (const Matrix_ &amp;matrix)</td></tr>
-<tr class="separator:aec781c9e4054d9f1b62fc52af8d19c66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21118aed5175a55b5b277edcd291aa27" id="r_a21118aed5175a55b5b277edcd291aa27"><td class="memTemplParams" colspan="2">template&lt;bool column_, class Matrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:a21118aed5175a55b5b277edcd291aa27"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classirlba_1_1Scaled.html">Scaled</a>&lt; column_, Matrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a21118aed5175a55b5b277edcd291aa27">make_Scaled</a> (const Matrix_ &amp;matrix, const EigenVector_ &amp;scale, bool divide)</td></tr>
-<tr class="separator:a21118aed5175a55b5b277edcd291aa27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f28d73593e7da019e54b134dd149888" id="r_a0f28d73593e7da019e54b134dd149888"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
+<tr class="memitem:a0f28d73593e7da019e54b134dd149888"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a0f28d73593e7da019e54b134dd149888">pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:a0f28d73593e7da019e54b134dd149888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a834ea1fa5dd1463d27f407219deb19" id="r_a4a834ea1fa5dd1463d27f407219deb19"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
+<tr class="memitem:a4a834ea1fa5dd1463d27f407219deb19"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4a834ea1fa5dd1463d27f407219deb19">pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:a4a834ea1fa5dd1463d27f407219deb19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements IRLBA for approximate SVD. </p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
-<a id="ad688d23339418eb0a0cc5b7217f35ad4" name="ad688d23339418eb0a0cc5b7217f35ad4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad688d23339418eb0a0cc5b7217f35ad4">&#9670;&#160;</a></span>WrappedAdjointWorkspace</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Matrix_ &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#ad688d23339418eb0a0cc5b7217f35ad4">irlba::WrappedAdjointWorkspace</a> = typename <a class="el" href="structirlba_1_1get__adjoint__workspace.html">get_adjoint_workspace</a>&lt;Matrix_&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Type of workspace for <code><a class="el" href="#a3459ae959a334ceffee832a4d854152a">wrapped_adjoint_multiply()</a></code>. This can be used to satisfy the <code><a class="el" href="structirlba_1_1MockMatrix_1_1AdjointWorkspace.html" title="Workspace class for adjoint_multiply().">MockMatrix::AdjointWorkspace</a></code> interface, either directly or as a component of a larger workspace class.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>A floating-point <code>Eigen::Matrix</code> class, or a class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af50e89ef6fc5f30c5bdcc904b74eb45c" name="af50e89ef6fc5f30c5bdcc904b74eb45c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af50e89ef6fc5f30c5bdcc904b74eb45c">&#9670;&#160;</a></span>WrappedWorkspace</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Matrix_ &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#af50e89ef6fc5f30c5bdcc904b74eb45c">irlba::WrappedWorkspace</a> = typename <a class="el" href="structirlba_1_1get__workspace.html">get_workspace</a>&lt;Matrix_&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Type of workspace for <code><a class="el" href="#aab50891ee0a3fd5a318ef6aa256b7d10">wrapped_multiply()</a></code>. This can be used to satisfy the <code><a class="el" href="structirlba_1_1MockMatrix_1_1Workspace.html" title="Workspace class for multiply().">MockMatrix::Workspace</a></code> interface, either directly or as a component of a larger workspace class.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>A floating-point <code>Eigen::Matrix</code> class, or a class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a138d1e78335dbcfdfe7e90c2896e2571" name="a138d1e78335dbcfdfe7e90c2896e2571"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a138d1e78335dbcfdfe7e90c2896e2571">&#9670;&#160;</a></span>compute() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class Matrix_ &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; EigenMatrix_, EigenVector_ &gt; irlba::compute </td>
-          <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>center</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convenient overload of <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> with centering and scaling, which allocates memory for the output matrices of the SVD.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>A floating-point <code>Eigen::Matrix</code> or equivalent sparse matrix class. </td></tr>
-    <tr><td class="paramname">EigenMatrix_</td><td>A floating-point <code>Eigen::Matrix</code> class. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Result of the IRLBA-based decomposition.">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
-
-</div>
-</div>
-<a id="aeb3ed37a9cf1d7cb8aa67e79df993e17" name="aeb3ed37a9cf1d7cb8aa67e79df993e17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb3ed37a9cf1d7cb8aa67e79df993e17">&#9670;&#160;</a></span>compute() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">std::pair&lt; bool, int &gt; irlba::compute </td>
-          <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>center</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">EigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outU</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">EigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outV</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outD</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convenient overload of <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> that handles the centering and scaling.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>A floating-point <code>Eigen::Matrix</code> or equivalent sparse matrix class. </td></tr>
-    <tr><td class="paramname">EigenMatrix_</td><td>A floating-point <code>Eigen::Matrix</code> class. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set to <code>number</code> on output. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed.</dd></dl>
-<p>Centering is performed by subtracting each element of <code>center</code> from the corresponding column of <code>mat</code>. Scaling is performed by dividing each column of <code>mat</code> by the corresponding element of <code>scale</code> (after any centering has been applied). Note that <code>scale=true</code> requires <code>center=true</code> to guarantee unit variance along each column. No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. </p>
-
-</div>
-</div>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a1fba15566b7b2f50bdcddb1b7df3ed4c" name="a1fba15566b7b2f50bdcddb1b7df3ed4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fba15566b7b2f50bdcddb1b7df3ed4c">&#9670;&#160;</a></span>compute() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fba15566b7b2f50bdcddb1b7df3ed4c">&#9670;&#160;</a></span>compute() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,9 +223,9 @@ template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::
 <p>Convenient overload of <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> that allocates memory for the output matrices of the SVD.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">EigenMatrix_</td><td>A floating-point <code>Eigen::Matrix</code> class. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class, typically of the same scalar type as <code>EigenMatrix_</code>. </td></tr>
-    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface, or a floating-point <code>Eigen:Matrix</code> class.</td></tr>
+    <tr><td class="paramname">EigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class to store the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>EigenMatrix_</code>. </td></tr>
+    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a>&lt;EigenVector_, EigenMatrix_&gt;</code> interface.</td></tr>
   </table>
   </dd>
 </dl>
@@ -410,7 +242,7 @@ template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::
 </div>
 </div>
 <a id="a6fe58ca810293f76a81ff7ab05d041f4" name="a6fe58ca810293f76a81ff7ab05d041f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fe58ca810293f76a81ff7ab05d041f4">&#9670;&#160;</a></span>compute() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fe58ca810293f76a81ff7ab05d041f4">&#9670;&#160;</a></span>compute() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -452,15 +284,15 @@ template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </div>
 <p>Implements the Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) for fast truncated singular value decomposition. This is heavily derived from the C code in the <a href="https://github.com/bwlewis/irlba"><b>irlba</b> package</a>, with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface, or a floating-point <code>Eigen:Matrix</code> class. </td></tr>
-    <tr><td class="paramname">EigenMatrix_</td><td>A floating-point <code>Eigen::Matrix</code> class. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
+    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a>&lt;EigenVector_, EigenMatrix_&gt;</code> interface. </td></tr>
+    <tr><td class="paramname">EigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class to store the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class to store the output, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. Custom classes can also be used here to pass modified matrices that cannot be efficiently realized into the standard <b>Eigen</b> classes. See the <code><a class="el" href="wrappers_8hpp.html" title="Wrapper classes for multiplication of modified matrices.">wrappers.hpp</a></code> file for more details, along with the <code><a class="el" href="classirlba_1_1Centered.html" title="Wrapper for a centered matrix.">Centered</a></code> and <code><a class="el" href="classirlba_1_1Scaled.html" title="Wrapper for a scaled matrix.">Scaled</a></code> classes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
@@ -473,49 +305,114 @@ template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </div>
 
 </div>
 </div>
-<a id="a21118aed5175a55b5b277edcd291aa27" name="a21118aed5175a55b5b277edcd291aa27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21118aed5175a55b5b277edcd291aa27">&#9670;&#160;</a></span>make_Scaled()</h2>
+<a id="a7f0da0f8a90c7aeb5f243097a751b87e" name="a7f0da0f8a90c7aeb5f243097a751b87e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f0da0f8a90c7aeb5f243097a751b87e">&#9670;&#160;</a></span>compute_simple() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;bool column_, class Matrix_ , class EigenVector_ &gt; </div>
+template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classirlba_1_1Scaled.html">Scaled</a>&lt; column_, Matrix_, EigenVector_ &gt; irlba::make_Scaled </td>
+          <td class="memname"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt; irlba::compute_simple </td>
           <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>divide</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A convenient maker function to enable partial template deduction on the <code><a class="el" href="classirlba_1_1Scaled.html" title="Wrapper for a scaled matrix.">Scaled</a></code> class.</p>
+<p>Convenient overload of <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> that accepts an <b>Eigen</b> matrix directly.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">column_</td><td>Whether to scale the columns. If <code>false</code>, scaling is applied to the rows instead. </td></tr>
-    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface, or a floating-point <code>Eigen::Matrix</code>. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the scaling factors and matrix-vector product.</td></tr>
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class for the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>OutputEigenMatrix_</code>. </td></tr>
+    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a>&lt;EigenVector_, EigenMatrix_&gt;</code> interface.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">matrix</td><td>Underlying matrix to be column-scaled (if <code>by_column_ = true</code>) or row-scaled (otherwise). </td></tr>
-    <tr><td class="paramname">scale</td><td>Vector of length equal to the number of columns (if <code>by_column_ = true</code>) or rows (otherwise) of <code>m</code>, containing the scaling factor to divide (if <code>divide = true</code>) or multiply (otherwise) to each column/row. </td></tr>
-    <tr><td class="paramname">divide</td><td>Whether to divide by the supplied scaling factors.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="classirlba_1_1Scaled.html" title="Wrapper for a scaled matrix.">Scaled</a></code> object. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Result of the IRLBA-based decomposition.">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+
+</div>
+</div>
+<a id="ad3aed8e6de2f1f8f82b54a84f419ded5" name="ad3aed8e6de2f1f8f82b54a84f419ded5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3aed8e6de2f1f8f82b54a84f419ded5">&#9670;&#160;</a></span>compute_simple() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; bool, int &gt; irlba::compute_simple </td>
+          <td>(</td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outU</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outV</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outD</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenient overload of <code><a class="el" href="#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> that accepts an <b>Eigen</b> matrix directly.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class to store the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class to store the output, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set to <code>number</code> on output. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed. </dd></dl>
 
 </div>
 </div>
@@ -557,200 +454,138 @@ template&lt;typename Task_ , class Run_ &gt; </div>
 
 </div>
 </div>
-<a id="a3459ae959a334ceffee832a4d854152a" name="a3459ae959a334ceffee832a4d854152a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3459ae959a334ceffee832a4d854152a">&#9670;&#160;</a></span>wrapped_adjoint_multiply()</h2>
+<a id="a4a834ea1fa5dd1463d27f407219deb19" name="a4a834ea1fa5dd1463d27f407219deb19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a834ea1fa5dd1463d27f407219deb19">&#9670;&#160;</a></span>pca() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Matrix_ , class Right_ , class EigenVector_ &gt; </div>
+template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void irlba::wrapped_adjoint_multiply </td>
+          <td class="memname"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt; irlba::pca </td>
           <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Right_ &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>, </td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>center</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="#ad688d23339418eb0a0cc5b7217f35ad4">WrappedAdjointWorkspace</a>&lt; Matrix_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>work</em></span>, </td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span>&#160;)</td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Convenient overload of <code><a class="el" href="#a0f28d73593e7da019e54b134dd149888">pca()</a></code> that allocates memory for the output matrices of the SVD.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface, or a floating-point <code>EigenMatrix</code>. </td></tr>
-    <tr><td class="paramname">Right_</td><td>A floating-point <code>Eigen::Vector</code> or equivalent expression. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class</td></tr>
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class for the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Pointer to the wrapped matrix instance. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">work</td><td>Workspace for the adjoint matrix multiplication. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product. This is filled with the product of this matrix and <code>rhs</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Result of the IRLBA-based decomposition.">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
 
 </div>
 </div>
-<a id="ad0e802556cc997916b3b02a074ae99e4" name="ad0e802556cc997916b3b02a074ae99e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0e802556cc997916b3b02a074ae99e4">&#9670;&#160;</a></span>wrapped_adjoint_workspace()</h2>
+<a id="a0f28d73593e7da019e54b134dd149888" name="a0f28d73593e7da019e54b134dd149888"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f28d73593e7da019e54b134dd149888">&#9670;&#160;</a></span>pca() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Matrix_ &gt; </div>
+template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#ad688d23339418eb0a0cc5b7217f35ad4">WrappedAdjointWorkspace</a>&lt; Matrix_ &gt; irlba::wrapped_adjoint_workspace </td>
+          <td class="memname">std::pair&lt; bool, int &gt; irlba::pca </td>
           <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>A floating-point <code>Eigen::Matrix</code> class, or a class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">matrix</td><td>Instance of a matrix. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Workspace to use in <code>adjoint_multiply()</code>. </dd></dl>
-
-</div>
-</div>
-<a id="aab50891ee0a3fd5a318ef6aa256b7d10" name="aab50891ee0a3fd5a318ef6aa256b7d10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab50891ee0a3fd5a318ef6aa256b7d10">&#9670;&#160;</a></span>wrapped_multiply()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Matrix_ , class Right_ , class EigenVector_ &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void irlba::wrapped_multiply </td>
-          <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Right_ &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>, </td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>center</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="#af50e89ef6fc5f30c5bdcc904b74eb45c">WrappedWorkspace</a>&lt; Matrix_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>work</em></span>, </td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span>&#160;)</td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface, or a floating-point <code>EigenMatrix</code>. </td></tr>
-    <tr><td class="paramname">Right_</td><td>A floating-point <code>Eigen::Vector</code> or equivalent expression. </td></tr>
-    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Pointer to the wrapped matrix instance. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The right-hand side of the matrix product. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">work</td><td>Workspace for the matrix multiplication. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>The output vector to store the matrix product. This is filled with the product of this matrix and <code>rhs</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aec781c9e4054d9f1b62fc52af8d19c66" name="aec781c9e4054d9f1b62fc52af8d19c66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec781c9e4054d9f1b62fc52af8d19c66">&#9670;&#160;</a></span>wrapped_realize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class EigenMatrix_ , class Matrix_ &gt; </div>
-      <table class="memname">
         <tr>
-          <td class="memname">EigenMatrix_ irlba::wrapped_realize </td>
-          <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outU</em></span>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">EigenMatrix_</td><td>A floating-point <code>Eigen::Matrix</code>. </td></tr>
-    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface, or a floating-point <code>Eigen::Matrix</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Pointer to the wrapped matrix instance. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A dense <b>Eigen</b> matrix containing the realized contents of <code>mat</code>. </dd></dl>
-
-</div>
-</div>
-<a id="a3f1075c4c34a8afe68dbed060978c4e3" name="a3f1075c4c34a8afe68dbed060978c4e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f1075c4c34a8afe68dbed060978c4e3">&#9670;&#160;</a></span>wrapped_workspace()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Matrix_ &gt; </div>
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#af50e89ef6fc5f30c5bdcc904b74eb45c">WrappedWorkspace</a>&lt; Matrix_ &gt; irlba::wrapped_workspace </td>
-          <td>(</td>
-          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outV</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outD</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Perform a principal components analysis (PCA) using IRLBA for the underlying SVD. This applies deferred centering and scaling via the <code><a class="el" href="classirlba_1_1CenteredMatrix.html" title="Deferred centering of a matrix.">CenteredMatrix</a></code> and <code><a class="el" href="classirlba_1_1ScaledMatrix.html" title="Deferred scaling of a matrix.">ScaledMatrix</a></code> classes, respectively.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Matrix_</td><td>A floating-point <code>Eigen::Matrix</code> class, or a class satisfying the <code><a class="el" href="classirlba_1_1MockMatrix.html" title="Interface for a matrix to use in compute().">MockMatrix</a></code> interface. </td></tr>
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class for the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>OutputEigenMatrix_</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">matrix</td><td>Instance of a matrix. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set to <code>number</code> on output. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Workspace to use in <code>multiply()</code>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed.</dd></dl>
+<p>Centering is performed by subtracting each element of <code>center</code> from the corresponding column of <code>mat</code>. Scaling is performed by dividing each column of <code>mat</code> by the corresponding element of <code>scale</code> (after any centering has been applied). Note that <code>scale=true</code> requires <code>center=true</code> to guarantee unit variance along each column. No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. </p>
 
 </div>
 </div>

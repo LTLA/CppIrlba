@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['parallelsparsematrix_0',['ParallelSparseMatrix',['../classirlba_1_1ParallelSparseMatrix.html',1,'irlba']]]
+  ['realizeworkspace_0',['RealizeWorkspace',['../classirlba_1_1RealizeWorkspace.html',1,'irlba']]],
+  ['results_1',['Results',['../structirlba_1_1Results.html',1,'irlba']]]
 ];

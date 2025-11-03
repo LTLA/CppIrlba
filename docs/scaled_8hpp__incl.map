@@ -1,0 +1,13 @@
+<map id="irlba/Matrix/scaled.hpp" name="irlba/Matrix/scaled.hpp">
+<area shape="rect" id="Node000001" title="Deferred scaling for a matrix." alt="" coords="43,5,193,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="36,153,104,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,34,40,52,24,65,12,80,8,96,14,112,26,127,41,141,37,145,22,131,9,115,3,96,7,78,21,61,37,48,73,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="22,79,102,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="111,33,83,68,79,65,107,30"/>
+<area shape="rect" id="Node000004" href="$interface_8hpp.html" title="Interfaces for matrix inputs." alt="" coords="126,79,222,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="129,30,157,65,153,68,125,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="169,153,264,178"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="168,29,206,47,223,61,236,78,242,93,242,109,233,140,228,138,237,109,237,94,232,80,219,65,203,52,166,34"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="158,107,101,146,98,141,155,103"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="183,104,204,138,199,141,179,106"/>
+</map>

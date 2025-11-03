@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['workspace_0',['workspace',['../classirlba_1_1MockMatrix.html#aa303ff5b5b67746d84e58a06c679f29d',1,'irlba::MockMatrix']]],
-  ['wrapped_5fadjoint_5fmultiply_1',['wrapped_adjoint_multiply',['../namespaceirlba.html#a3459ae959a334ceffee832a4d854152a',1,'irlba']]],
-  ['wrapped_5fadjoint_5fworkspace_2',['wrapped_adjoint_workspace',['../namespaceirlba.html#ad0e802556cc997916b3b02a074ae99e4',1,'irlba']]],
-  ['wrapped_5fmultiply_3',['wrapped_multiply',['../namespaceirlba.html#aab50891ee0a3fd5a318ef6aa256b7d10',1,'irlba']]],
-  ['wrapped_5frealize_4',['wrapped_realize',['../namespaceirlba.html#aec781c9e4054d9f1b62fc52af8d19c66',1,'irlba']]],
-  ['wrapped_5fworkspace_5',['wrapped_workspace',['../namespaceirlba.html#a3f1075c4c34a8afe68dbed060978c4e3',1,'irlba']]]
+  ['scaledmatrix_0',['ScaledMatrix',['../classirlba_1_1ScaledMatrix.html#a48c27c2c1b443f6fafac86c1a5c04cc1',1,'irlba::ScaledMatrix']]],
+  ['simplematrix_1',['SimpleMatrix',['../classirlba_1_1SimpleMatrix.html#a40ad6109c43db9aae47c10eb731039c6',1,'irlba::SimpleMatrix']]]
 ];
