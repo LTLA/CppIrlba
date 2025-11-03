@@ -1,16 +1,18 @@
 #ifndef IRLBA_LANCZOS_HPP
 #define IRLBA_LANCZOS_HPP
 
-#include "Eigen/Dense"
-#include "utils.hpp"
-#include "wrappers.hpp"
-#include "Options.hpp"
 #include <cmath>
 #include <limits>
+#include <stdexcept>
+#include <utility>
+
+#include "utils.hpp"
+#include "Matrix/interface.hpp"
+#include "Options.hpp"
+
+#include "Eigen/Dense"
 
 namespace irlba {
-
-namespace internal {
 
 template<class EigenMatrix_, class EigenVector_>
 void orthogonalize_vector(const EigenMatrix_& mat, EigenVector_& vec, size_t ncols, EigenVector_& tmp) {
@@ -24,16 +26,16 @@ struct LanczosWorkspace {
         F(mat.cols()), 
         W_next(mat.rows()), 
         orthog_tmp(mat.cols()), 
-        work(wrapped_workspace(mat)),
-        awork(wrapped_adjoint_workspace(mat))
+        work(mat.new_known_workspace()),
+        awork(mat.new_known_adjoint_workspace())
     {}
 
-public:
     EigenVector_ F; 
     EigenVector_ W_next;
     EigenVector_ orthog_tmp;
-    WrappedWorkspace<Matrix_> work;
-    WrappedAdjointWorkspace<Matrix_> awork;
+
+    I<decltype(std::declval<Matrix_>().new_known_workspace())> work;
+    I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> awork;
 };
 
 /*
@@ -51,12 +53,11 @@ public:
  */
 template<class Matrix_, class EigenMatrix_, class EigenVector_, class Engine_>
 void run_lanczos_bidiagonalization(
-    const Matrix_& mat, 
+    LanczosWorkspace<EigenVector_, Matrix_>& inter, 
     EigenMatrix_& W, 
     EigenMatrix_& V, 
     EigenMatrix_& B, 
     Engine_& eng, 
-    LanczosWorkspace<EigenVector_, Matrix_>& inter, 
     Eigen::Index start, 
     const Options& options) 
 {
@@ -70,7 +71,7 @@ void run_lanczos_bidiagonalization(
     auto& otmp = inter.orthog_tmp;
 
     F = V.col(start);
-    wrapped_multiply(mat, F, inter.work, W_next); // i.e., W_next = mat * F;
+    inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
 
     // If start = 0, there's nothing to orthogonalize against.
     if (start) {
@@ -86,7 +87,9 @@ void run_lanczos_bidiagonalization(
 
     // The Lanczos iterations themselves, see algorithm 2.1 of Baglama and Reichel.
     for (Eigen::Index j = start; j < work; ++j) {
-        wrapped_adjoint_multiply(mat, W.col(j), inter.awork, F); // i.e., F = mat.adjoint() * W.col(j);
+        // This step is equivalent to F = mat.adjoint() * W.col(j).
+        // This is because W_next is assigned into W.col(start) at the start, or W.col(j+1) from the previous iteration.
+        inter.awork->multiply(W_next, F); 
 
         F -= S * V.col(j); // equivalent to daxpy.
         orthogonalize_vector(V, F, j + 1, otmp);
@@ -108,7 +111,7 @@ void run_lanczos_bidiagonalization(
             B(j, j) = S;
             B(j, j + 1) = R_F;
 
-            wrapped_multiply(mat, F, inter.work, W_next); // i.e., W_next = mat * F;
+            inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
             W_next -= R_F * W.col(j); // equivalent to daxpy.
 
             // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
@@ -136,8 +139,6 @@ void run_lanczos_bidiagonalization(
             B(j, j) = S;
         }
     }
-}
-
 }
 
 }

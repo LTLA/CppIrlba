@@ -1,14 +1,17 @@
 #ifndef IRLBA_UTILS_HPP
 #define IRLBA_UTILS_HPP
 
-#include "Eigen/Dense"
 #include <random>
 #include <utility>
+#include <type_traits>
+
 #include "aarand/aarand.hpp"
+#include "Eigen/Dense"
 
 namespace irlba {
 
-namespace internal {
+template<typename Input_>
+using I = typename std::remove_cv<typename std::remove_reference<Input_>::type>::type;
 
 template<class EigenVector_, class Engine_>
 void fill_with_random_normals(EigenVector_& vec, Engine_& eng) {
@@ -40,18 +43,6 @@ template<class Matrix_, class Engine_>
 void fill_with_random_normals(Matrix_& mat, Eigen::Index column, Engine_& eng) {
     ColumnVectorProxy proxy(mat, column);
     fill_with_random_normals(proxy, eng);
-}
-
-template<class Right_, class EigenVector_>
-const EigenVector_& realize_rhs(const Right_& rhs, EigenVector_& buffer) {
-    if constexpr(std::is_same<Right_, EigenVector_>::value) {
-        return rhs;
-    } else {
-        buffer.noalias() = rhs;
-        return buffer;
-    }
-}
-
 }
 
 }

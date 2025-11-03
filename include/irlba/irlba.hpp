@@ -2,7 +2,9 @@
 #define IRLBA_IRLBA_HPP
 
 #include "compute.hpp"
+#include "pca.hpp"
 #include "parallel.hpp"
+#include "Options.hpp"
 
 /**
  * @file irlba.hpp

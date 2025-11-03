@@ -24,7 +24,7 @@ TEST(UtilsTest, FillNormals) {
     std::mt19937_64 eng(1000);
 
     // Filled with non-zeros.
-    irlba::internal::fill_with_random_normals(test, eng);
+    irlba::fill_with_random_normals(test, eng);
     for (auto v : test) {
         EXPECT_NE(v, 0);
     }
@@ -38,7 +38,7 @@ TEST(UtilsTest, FillNormals) {
     Eigen::VectorXd test2(11);
     test2.setZero();
 
-    irlba::internal::fill_with_random_normals(test2, eng);
+    irlba::fill_with_random_normals(test2, eng);
     for (auto v : test2) {
         EXPECT_NE(v, 0);
     }
@@ -52,7 +52,7 @@ TEST(UtilsTest, FillNormals) {
     Eigen::MatrixXd test3(13, 2);
     test3.setZero();
 
-    irlba::internal::fill_with_random_normals(test3, 0, eng);
+    irlba::fill_with_random_normals(test3, 0, eng);
     auto first = test3.col(0);
     for (auto v : first) {
         EXPECT_NE(v, 0);
