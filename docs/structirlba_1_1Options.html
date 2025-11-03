@@ -120,8 +120,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae4bd4e00dd4815e3aa66b0b23f8820b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e6e040a6ff921f48c70961ad9876c31" id="r_a4e6e040a6ff921f48c70961ad9876c31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e6e040a6ff921f48c70961ad9876c31">cap_number</a> = false</td></tr>
 <tr class="separator:a4e6e040a6ff921f48c70961ad9876c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4252ea1bbebe8ad2a7541c1edb2699e2" id="r_a4252ea1bbebe8ad2a7541c1edb2699e2"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4252ea1bbebe8ad2a7541c1edb2699e2">seed</a> = std::mt19937_64::default_seed</td></tr>
-<tr class="separator:a4252ea1bbebe8ad2a7541c1edb2699e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaaa742e5abf1ac4852d247ed8e3eac3" id="r_aeaaa742e5abf1ac4852d247ed8e3eac3"><td class="memItemLeft" align="right" valign="top">std::mt19937_64::result_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeaaa742e5abf1ac4852d247ed8e3eac3">seed</a> = std::mt19937_64::default_seed</td></tr>
+<tr class="separator:aeaaa742e5abf1ac4852d247ed8e3eac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7d48ae8392f7097519642f5b2ffe26c" id="r_ab7d48ae8392f7097519642f5b2ffe26c"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7d48ae8392f7097519642f5b2ffe26c">initial</a> = NULL</td></tr>
 <tr class="separator:ab7d48ae8392f7097519642f5b2ffe26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -214,7 +214,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Pointer to an <code>EigenVector_</code> (see <code><a class="el" href="namespaceirlba.html#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code>) containing the initial values of the first right singular vector. This should have length equal to the number of columns of the input <code>matrix</code>. </p>
+<p>Pointer to an <code>EigenVector_</code> (see <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>) containing the initial values of the first right singular vector. This should have length equal to the number of columns of the input <code>matrix</code>. </p>
 
 </div>
 </div>
@@ -248,14 +248,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4252ea1bbebe8ad2a7541c1edb2699e2" name="a4252ea1bbebe8ad2a7541c1edb2699e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4252ea1bbebe8ad2a7541c1edb2699e2">&#9670;&#160;</a></span>seed</h2>
+<a id="aeaaa742e5abf1ac4852d247ed8e3eac3" name="aeaaa742e5abf1ac4852d247ed8e3eac3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaaa742e5abf1ac4852d247ed8e3eac3">&#9670;&#160;</a></span>seed</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t irlba::Options::seed = std::mt19937_64::default_seed</td>
+          <td class="memname">std::mt19937_64::result_type irlba::Options::seed = std::mt19937_64::default_seed</td>
         </tr>
       </table>
 </div><div class="memdoc">

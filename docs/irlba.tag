@@ -359,10 +359,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>uint64_t</type>
+      <type>std::mt19937_64::result_type</type>
       <name>seed</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a4252ea1bbebe8ad2a7541c1edb2699e2</anchor>
+      <anchor>aeaaa742e5abf1ac4852d247ed8e3eac3</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -455,24 +455,24 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function">
-      <type>const std::vector&lt; size_t &gt; &amp;</type>
-      <name>get_primary_starts</name>
+      <type>const std::vector&lt; Eigen::Index &gt; &amp;</type>
+      <name>get_primary_boundaries</name>
       <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
-      <anchor>a7b0edebfb5df14167ce08100d19e824f</anchor>
+      <anchor>a40caa4287650837e5b149e8b5ae37219</anchor>
       <arglist>() const</arglist>
     </member>
     <member kind="function">
-      <type>const std::vector&lt; size_t &gt; &amp;</type>
-      <name>get_primary_ends</name>
+      <type>const std::vector&lt; Eigen::Index &gt; &amp;</type>
+      <name>get_secondary_boundaries</name>
       <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
-      <anchor>aa6f051878910af5820563453cb8e0957</anchor>
+      <anchor>af0ae59f466ead930a77a3f771a9aae8e</anchor>
       <arglist>() const</arglist>
     </member>
     <member kind="function">
       <type>const std::vector&lt; std::vector&lt; PointerType &gt; &gt; &amp;</type>
-      <name>get_secondary_nonzero_starts</name>
+      <name>get_secondary_nonzero_boundaries</name>
       <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
-      <anchor>a5b338eba3c51b12314bcaeb506dee6f1</anchor>
+      <anchor>ac48259f75c9588d8d9698edf0b804904</anchor>
       <arglist>() const</arglist>
     </member>
     <member kind="function">
@@ -882,8 +882,8 @@
       <type>std::pair&lt; bool, int &gt;</type>
       <name>compute</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a6fe58ca810293f76a81ff7ab05d041f4</anchor>
-      <arglist>(const Matrix_ &amp;matrix, Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options &amp;options)</arglist>
+      <anchor>a2a7a32f05a96168350184b5d7da5da24</anchor>
+      <arglist>(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::pair&lt; bool, int &gt;</type>

@@ -144,12 +144,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adaf070a354be6f2d65263864cc3cea15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad28e10195596f59f6f089c1e89f3f2ea" id="r_ad28e10195596f59f6f089c1e89f3f2ea"><td class="memItemLeft" align="right" valign="top">const PointerArray_ &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad28e10195596f59f6f089c1e89f3f2ea">get_pointers</a> () const</td></tr>
 <tr class="separator:ad28e10195596f59f6f089c1e89f3f2ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b0edebfb5df14167ce08100d19e824f" id="r_a7b0edebfb5df14167ce08100d19e824f"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; size_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b0edebfb5df14167ce08100d19e824f">get_primary_starts</a> () const</td></tr>
-<tr class="separator:a7b0edebfb5df14167ce08100d19e824f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6f051878910af5820563453cb8e0957" id="r_aa6f051878910af5820563453cb8e0957"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; size_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6f051878910af5820563453cb8e0957">get_primary_ends</a> () const</td></tr>
-<tr class="separator:aa6f051878910af5820563453cb8e0957"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b338eba3c51b12314bcaeb506dee6f1" id="r_a5b338eba3c51b12314bcaeb506dee6f1"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="#a812d625d449ea75df1b42428a0d09c03">PointerType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b338eba3c51b12314bcaeb506dee6f1">get_secondary_nonzero_starts</a> () const</td></tr>
-<tr class="separator:a5b338eba3c51b12314bcaeb506dee6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40caa4287650837e5b149e8b5ae37219" id="r_a40caa4287650837e5b149e8b5ae37219"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Eigen::Index &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40caa4287650837e5b149e8b5ae37219">get_primary_boundaries</a> () const</td></tr>
+<tr class="separator:a40caa4287650837e5b149e8b5ae37219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ae59f466ead930a77a3f771a9aae8e" id="r_af0ae59f466ead930a77a3f771a9aae8e"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Eigen::Index &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0ae59f466ead930a77a3f771a9aae8e">get_secondary_boundaries</a> () const</td></tr>
+<tr class="separator:af0ae59f466ead930a77a3f771a9aae8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac48259f75c9588d8d9698edf0b804904" id="r_ac48259f75c9588d8d9698edf0b804904"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="#a812d625d449ea75df1b42428a0d09c03">PointerType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac48259f75c9588d8d9698edf0b804904">get_secondary_nonzero_boundaries</a> () const</td></tr>
+<tr class="separator:ac48259f75c9588d8d9698edf0b804904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf44a97e086bb8446961ff36faa9f509" id="r_adf44a97e086bb8446961ff36faa9f509"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classirlba_1_1Workspace.html">Workspace</a>&lt; EigenVector_ &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf44a97e086bb8446961ff36faa9f509">new_workspace</a> () const</td></tr>
 <tr class="separator:adf44a97e086bb8446961ff36faa9f509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d9b58d608a2b2b8a8b8cbb4b9e41ce8" id="r_a7d9b58d608a2b2b8a8b8cbb4b9e41ce8"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classirlba_1_1AdjointWorkspace.html">AdjointWorkspace</a>&lt; EigenVector_ &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d9b58d608a2b2b8a8b8cbb4b9e41ce8">new_adjoint_workspace</a> () const</td></tr>
@@ -173,7 +173,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class EigenVector_, class EigenMatrix_, class ValueArray_, class IndexArray_, class PointerArray_&gt;<br />
 class irlba::ParallelSparseMatrix&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;</div><p>Sparse matrix with customizable parallelization. </p>
-<p>This provides an alternative to <code>Eigen::SparseMatrix</code> for parallelized multiplication of compressed sparse matrices. Unlike <b>Eigen</b>'s sparse matrix, this implementation is able to parallelize when the multiplication does not align well with the storage layout, e.g., multiplication of a compressed sparse column matrix by a dense vector on the right hand side. On construction, it also pre-allocates the rows and/or columns to each thread, aiming to balance the number of non-zero elements that each thread needs to process. All subsequent multiplications can then use these allocations, which is useful for <code><a class="el" href="namespaceirlba.html#a6fe58ca810293f76a81ff7ab05d041f4">compute()</a></code> where the cost of pre-allocation is abrogated by repeated multiplication calls.</p>
+<p>This provides an alternative to <code>Eigen::SparseMatrix</code> for parallelized multiplication of compressed sparse matrices. Unlike <b>Eigen</b>'s sparse matrix, this implementation is able to parallelize when the multiplication does not align well with the storage layout, e.g., multiplication of a compressed sparse column matrix by a dense vector on the right hand side. On construction, it also pre-allocates the rows and/or columns to each thread, aiming to balance the number of non-zero elements that each thread needs to process. All subsequent multiplications can then use these allocations, which is useful for <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code> where the cost of pre-allocation is abrogated by repeated multiplication calls.</p>
 <p>Some cursory testing indicates that the performance of this implementation is comparable to Eigen for OpenMP-based parallelization. However, the real purpose of this class is to support custom parallelization schemes in cases where OpenMP is not available. This is achieved by defining <code>IRLBA_CUSTOM_PARALLEL</code> macro to the name of a function implementing a custom scheme. Such a function should accept two arguments - an integer specifying the number of threads, and a lambda that accepts a thread number. It should then loop over the number of threads and launch one job for each thread via the lambda. Once all threads are complete, the function should return.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -388,8 +388,8 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
 
 </div>
 </div>
-<a id="aa6f051878910af5820563453cb8e0957" name="aa6f051878910af5820563453cb8e0957"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6f051878910af5820563453cb8e0957">&#9670;&#160;</a></span>get_primary_ends()</h2>
+<a id="a40caa4287650837e5b149e8b5ae37219" name="a40caa4287650837e5b149e8b5ae37219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40caa4287650837e5b149e8b5ae37219">&#9670;&#160;</a></span>get_primary_boundaries()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,7 +400,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt; size_t &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;::get_primary_ends </td>
+          <td class="memname">const std::vector&lt; Eigen::Index &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;::get_primary_boundaries </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -413,12 +413,12 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
 </table>
 </div><div class="memdoc">
 <p>This should only be called if <code>num_threads &gt; 1</code> in the constructor, otherwise it will not be initialized.</p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of length equal to the number of threads, specifying the one-past-the-last dimension along the primary extent (e.g., column for <code>column_major = true</code>) that each thread works on. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of length equal to the number of threads plus one. The <code>t</code>-th and <code>t + 1</code>-th entries specifies the first and one-past-the-last elements along the primary dimension (e.g., column for <code>column_major = true</code>) that each thread operates on. </dd></dl>
 
 </div>
 </div>
-<a id="a7b0edebfb5df14167ce08100d19e824f" name="a7b0edebfb5df14167ce08100d19e824f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b0edebfb5df14167ce08100d19e824f">&#9670;&#160;</a></span>get_primary_starts()</h2>
+<a id="af0ae59f466ead930a77a3f771a9aae8e" name="af0ae59f466ead930a77a3f771a9aae8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0ae59f466ead930a77a3f771a9aae8e">&#9670;&#160;</a></span>get_secondary_boundaries()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,7 +429,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt; size_t &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;::get_primary_starts </td>
+          <td class="memname">const std::vector&lt; Eigen::Index &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;::get_secondary_boundaries </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -442,12 +442,12 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
 </table>
 </div><div class="memdoc">
 <p>This should only be called if <code>num_threads &gt; 1</code> in the constructor, otherwise it will not be initialized.</p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of length equal to the number of threads, specifying the first dimension along the primary extent (e.g., column for <code>column_major = true</code>) that each thread works on. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of length equal to the number of threads plus one. The <code>t</code>-th and <code>t + 1</code>-th entries specifies the first and one-past-the-last elements along the secondary dimension (e.g., row for <code>column_major = true</code>) that each thread operates on. </dd></dl>
 
 </div>
 </div>
-<a id="a5b338eba3c51b12314bcaeb506dee6f1" name="a5b338eba3c51b12314bcaeb506dee6f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b338eba3c51b12314bcaeb506dee6f1">&#9670;&#160;</a></span>get_secondary_nonzero_starts()</h2>
+<a id="ac48259f75c9588d8d9698edf0b804904" name="ac48259f75c9588d8d9698edf0b804904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac48259f75c9588d8d9698edf0b804904">&#9670;&#160;</a></span>get_secondary_nonzero_boundaries()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,7 +458,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt; std::vector&lt; <a class="el" href="#a812d625d449ea75df1b42428a0d09c03">PointerType</a> &gt; &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;::get_secondary_nonzero_starts </td>
+          <td class="memname">const std::vector&lt; std::vector&lt; <a class="el" href="#a812d625d449ea75df1b42428a0d09c03">PointerType</a> &gt; &gt; &amp; <a class="el" href="classirlba_1_1ParallelSparseMatrix.html">irlba::ParallelSparseMatrix</a>&lt; EigenVector_, EigenMatrix_, ValueArray_, IndexArray_, PointerArray_ &gt;::get_secondary_nonzero_boundaries </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -471,7 +471,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class ValueArray_ , class 
 </table>
 </div><div class="memdoc">
 <p>This should only be called if <code>num_threads &gt; 1</code> in the constructor, otherwise it will not be initialized.</p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of length equal to the number of threads plus one. Each inner vector is of length equal to the size of the primary extent (e.g., number of columns for <code>column_major = true</code>). For thread <code>i</code>, the vectors <code>i</code> and <code>i + 1</code> define the ranges of non-zero elements assigned to that thread within each primary dimension. This is guaranteed to contain all and only non-zero elements with indices in a contiguous range of secondary dimensions. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of length equal to the number of threads plus one. Each inner vector is of length equal to the extent of the primary dimension (e.g., number of columns for <code>column_major = true</code>). For thread <code>t</code>, <code>secondary_nonzero_boundaries[t][i]</code> is the first non-zero element to be processed by this thread in the primary dimension element <code>i</code>, while <code>boundaries[t + 1][i]</code> is one-past-the-last non-zero element to be processed. This is guaranteed to contain all and only non-zero elements with indices <code>i</code> where <code>secondary_boundaries[t] &lt;= i &lt; secondary_boundaries[t + 1]</code>. </dd></dl>
 
 </div>
 </div>
