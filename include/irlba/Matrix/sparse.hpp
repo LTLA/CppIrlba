@@ -83,11 +83,11 @@ public:
                 sanisizer::resize(my_secondary_boundaries, nthreads_p1);
                 Eigen::Index secondary_counter = 0;
                 PointerType sofar = 0;
-                PointerType cum_rows = 0;
+                PointerType cum_secondary = 0;
                 for (int t = 0; t < my_num_threads; ++t) {
                     sofar += per_thread_floor + (t < per_thread_extra); // first few threads might get an extra element to deal with the remainder.
-                    while (secondary_counter < my_secondary_dim && cum_rows <= sofar) {
-                        cum_rows += secondary_nonzeros[secondary_counter];
+                    while (secondary_counter < my_secondary_dim && cum_secondary <= sofar) {
+                        cum_secondary += secondary_nonzeros[secondary_counter];
                         ++secondary_counter;
                     }
                     my_secondary_boundaries[t + 1] = secondary_counter;
