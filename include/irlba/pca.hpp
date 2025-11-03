@@ -68,8 +68,8 @@ std::pair<bool, int> pca(
         return compute<Interface>(wrapped, number, outU, outV, outD, options);
     }
 
-    auto nr = matrix.rows();
-    auto nc = matrix.cols();
+    const Eigen::Index nr = matrix.rows();
+    const Eigen::Index nc = matrix.cols();
 
     EigenVector_ center0;
     if (center) {
@@ -88,7 +88,7 @@ std::pair<bool, int> pca(
     }
 
     for (Eigen::Index i = 0; i < nc; ++i) {
-        double mean = 0;
+        typename EigenVector_::Scalar mean = 0;
         if (center) {
             mean = matrix.col(i).sum() / nr;
             center0[i] = mean;
@@ -140,7 +140,7 @@ std::pair<bool, int> pca(
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
 Results<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options& options) {
     Results<OutputEigenMatrix_, EigenVector_> output;
-    auto stats = pca(matrix, center, scale, number, output.U, output.V, output.D, options);
+    const auto stats = pca(matrix, center, scale, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;

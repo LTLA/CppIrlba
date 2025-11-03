@@ -30,6 +30,51 @@ TEST(Compute, CompareToExact) {
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-8);
 }
 
+TEST(Compute, RequestedVsHalfSmaller) {
+    EXPECT_TRUE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 10));
+    EXPECT_FALSE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 30));
+
+    EXPECT_TRUE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 19));
+    EXPECT_TRUE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 20));
+    EXPECT_FALSE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 21));
+    EXPECT_FALSE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 22));
+}
+
+TEST(Compute, ChooseRequestedPlusExtraWorkOrSmaller) {
+    EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 5), 5);
+    EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 10), 10);
+    EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 15), 15);
+    EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 25), 25);
+    EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 30), 30);
+    EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 35), 30);
+}
+
+TEST(Compute, UpdateK) {
+    auto ref_update_k = [](int k, const int requested_number, const int n_converged, const int work) -> int {
+        if (k < requested_number + n_converged) {
+           k = requested_number + n_converged;
+        }
+        if (k > work - 3) {
+           k = work - 3;
+        }
+        if (k < 1) {
+           k = 1;
+        }
+        return k;
+    };
+
+    std::vector<int> values{ 0, 5, 10, 25, 30 };
+    for (auto k : values) {
+        for (auto request : values) {
+            for (auto converged : values) {
+                for (auto work : values) {
+                    EXPECT_EQ(irlba::update_k(k, request, converged, work), ref_update_k(k, request, converged, work));
+                }
+            }
+        }
+    }
+}
+
 class ComputeTest : public ::testing::TestWithParam<std::tuple<int, int, int> > {
 protected:
     template<class Param>
@@ -159,7 +204,7 @@ TEST(Compute, Fails) {
     }
     EXPECT_TRUE(message.find("cannot be greater than") != std::string::npos);
 
-    // Requested number of SVs > smaller dimension of the matrix.
+    // Requested number of SVs >= smaller dimension of the matrix with non-exact computation.
     message.clear();
     try {
         irlba::Options opt;
@@ -169,6 +214,17 @@ TEST(Compute, Fails) {
         message = e.what();
     }
     EXPECT_TRUE(message.find("must be less than") != std::string::npos);
+
+    // Requested number of SVs + extra work is zero.
+    message.clear();
+    try {
+        irlba::Options opt;
+        opt.extra_work = 0;
+        irlba::compute(wrapped, 0, opt);
+    } catch (const std::exception& e) {
+        message = e.what();
+    }
+    EXPECT_TRUE(message.find("must be positive") != std::string::npos);
 
     // Initialization vector is not of the right length.
     message.clear();

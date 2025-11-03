@@ -53,10 +53,10 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
     EXPECT_EQ(A.get_values().size(), values.size());
     EXPECT_EQ(A.get_pointers().size(), nc + 1);
     if (nt > 1) {
-        EXPECT_EQ(A.get_primary_starts().size(), nt);
-        EXPECT_EQ(A.get_primary_ends().size(), nt);
-        EXPECT_EQ(A.get_secondary_nonzero_starts().size(), nt + 1);
-        EXPECT_EQ(A.get_secondary_nonzero_starts().front().size(), nc);
+        EXPECT_EQ(A.get_primary_boundaries().size(), nt + 1);
+        EXPECT_EQ(A.get_secondary_boundaries().size(), nt + 1);
+        EXPECT_EQ(A.get_secondary_nonzero_boundaries().size(), nt + 1);
+        EXPECT_EQ(A.get_secondary_nonzero_boundaries().front().size(), nc);
     }
 
     irlba::ParallelSparseMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(values), decltype(indices), decltype(nzeros)> A2(nc, nr, values, indices, nzeros, false, nt);

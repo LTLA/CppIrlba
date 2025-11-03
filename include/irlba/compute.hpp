@@ -11,6 +11,7 @@
 #include "lanczos.hpp"
 #include "Matrix/simple.hpp"
 
+#include "sanisizer/sanisizer.hpp"
 #include "Eigen/Dense"
 
 /**
@@ -27,7 +28,7 @@ template<typename EigenMatrix_>
 using JacobiSVD = Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV>;
 
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
-void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
+void exact(const Matrix_& matrix, const Eigen::Index requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
     JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols());
 
     auto realizer = matrix.new_known_realize_workspace();
@@ -42,6 +43,71 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
 
     outV.resize(matrix.cols(), requested_number);
     outV = svd.matrixV().leftCols(requested_number);
+}
+
+// Basically (requested * 2 >= smaller), but avoiding overflow from the product.
+inline bool requested_greater_than_or_equal_to_half_smaller(const Eigen::Index requested, const Eigen::Index smaller) {
+    const Eigen::Index half_smaller = smaller / 2;
+    if (requested == half_smaller) {
+        return smaller % 2 == 0;
+    } else {
+        return requested > half_smaller;
+    }
+}
+
+// Basically min(requested_number + extra_work, smaller), but avoiding overflow from the sum.
+inline Eigen::Index choose_requested_plus_extra_work_or_smaller(const Eigen::Index requested_number, const int extra_work, const Eigen::Index smaller) {
+    if (requested_number >= smaller) {
+        return smaller;
+    } else {
+        // This is guaranteed to fit into an Eigen::Index;
+        // either it's equal to 'smaller' or it's less than 'smaller'.
+        return requested_number + sanisizer::min(smaller - requested_number, extra_work);
+    }
+}
+
+// Setting 'k'. This looks kinda weird, but this is deliberate, see the text below Algorithm 3.1 of Baglama and Reichel.
+//
+// - Our n_converged is their k'.
+// - Our requested_number is their k.
+// - Our work is their m.
+// - Our returned k is their k + k''.
+//
+// They don't mention anything about the value corresponding to our input k, but I guess we always want k to increase.
+// So, if our proposed new value of k is lower than our current value of k, we just pick the latter.
+inline Eigen::Index update_k(Eigen::Index k, const Eigen::Index requested_number, const Eigen::Index n_converged, const Eigen::Index work) {
+    // Here, the goal is to reproduce this code from irlba's convtests() function, but without any risk of wraparound or overflow.
+    //
+    // if (k < requested_number + n_converged) {
+    //    k = requested_number + n_converged;
+    // }
+    // if (k > work - 3) {
+    //    k = work - 3;
+    // }
+    // if (k < 1) {
+    //    k = 1;
+    // }
+
+    if (work <= 3) {
+        return 1;
+    }
+    const Eigen::Index limit = work - 3;
+
+    const auto less_than_requested_plus_converged = [&](const Eigen::Index val) -> bool {
+        return val < requested_number || static_cast<Eigen::Index>(val - requested_number) < n_converged;
+    };
+
+    if (less_than_requested_plus_converged(k)) {
+        if (less_than_requested_plus_converged(limit)) {
+            return limit;
+        } else {
+            const Eigen::Index output = requested_number + n_converged;
+            return std::max(output, static_cast<Eigen::Index>(1));
+        }
+    } else {
+        const Eigen::Index output = std::min(k, limit);
+        return std::max(output, static_cast<Eigen::Index>(1));
+    }
 }
 /**
  * @endcond
@@ -74,14 +140,14 @@ void exact(const Matrix_& matrix, int requested_number, EigenMatrix_& outU, Eige
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 std::pair<bool, int> compute(
     const Matrix_& matrix,
-    Eigen::Index number,
+    const Eigen::Index number,
     EigenMatrix_& outU,
     EigenMatrix_& outV,
     EigenVector_& outD,
     const Options& options
 ) {
-    Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());
-    Eigen::Index requested_number = number;
+    const Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());
+    Eigen::Index requested_number = sanisizer::cast<Eigen::Index>(number);
     if (requested_number > smaller) {
         if (options.cap_number) {
             requested_number = smaller;
@@ -94,13 +160,21 @@ std::pair<bool, int> compute(
 
     // Falling back to an exact SVD for small matrices or if the requested number is too large 
     // (not enough of a workspace). Hey, I don't make the rules.
-    if ((options.exact_for_small_matrix && smaller < 6) || (options.exact_for_large_number && requested_number * 2 >= smaller)) {
+    if (
+        (options.exact_for_small_matrix && smaller < 6) ||
+        (options.exact_for_large_number && requested_greater_than_or_equal_to_half_smaller(requested_number, smaller))
+    ) {
         exact(matrix, requested_number, outU, outV, outD);
         return std::make_pair(true, 0);
     }
 
-    Eigen::Index work = std::min(requested_number + options.extra_work, smaller);
+    Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, options.extra_work, smaller);
+    if (work == 0) {
+        throw std::runtime_error("number of requested dimensions must be positive");
+    }
 
+    // Don't worry about sanitizing dimensions for Eigen constructors,
+    // as the former are stored as Eigen::Index and the latter accepts Eigen::Index inputs.
     EigenMatrix_ V(matrix.cols(), work);
     std::mt19937_64 eng(options.seed);
     if (options.initial) {
@@ -170,12 +244,12 @@ std::pair<bool, int> compute(
 
         Eigen::Index n_converged = 0;
         if (iter > 0) {
-            auto Smax = *std::max_element(BS.begin(), BS.end());
-            auto threshold = Smax * tol;
+            const auto Smax = *std::max_element(BS.begin(), BS.end());
+            const auto threshold = Smax * tol;
 
             for (Eigen::Index j = 0; j < work; ++j) {
                 if (std::abs(res[j]) <= threshold) {
-                    auto ratio = std::abs(BS[j] - prevS[j]) / BS[j];
+                    const auto ratio = std::abs(BS[j] - prevS[j]) / BS[j];
                     if (ratio <= svtol_actual) {
                         ++n_converged;
                     }
@@ -189,23 +263,7 @@ std::pair<bool, int> compute(
         }
         prevS = BS;
 
-        // Setting 'k'. This looks kinda weird, but this is deliberate,
-        // see the text below Algorithm 3.1 of Baglama and Reichel.
-        //
-        // - Our n_converged is their k'.
-        // - Our requested_number is their k.
-        // - Our work is their m.
-        // - Our k is their k + k''.
-        if (n_converged + requested_number > k) {
-            k = n_converged + requested_number;
-        }
-        if (k > work - 3) {
-            k = work - 3;
-        }
-        if (k < 1) {
-            k = 1;
-        }
-
+        k = update_k(k, requested_number, n_converged, work);
         Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
         V.leftCols(k) = Vtmp.leftCols(k);
 
@@ -221,7 +279,7 @@ std::pair<bool, int> compute(
         W.leftCols(k) = Wtmp.leftCols(k);
 
         B.setZero(work, work);
-        for (Eigen::Index l = 0; l < k; ++l) {
+        for (I<decltype(k)> l = 0; l < k; ++l) {
             B(l, l) = BS[l];
 
             // This assignment looks weird but is deliberate, see Equation
@@ -245,7 +303,7 @@ std::pair<bool, int> compute(
     outV.resize(matrix.cols(), requested_number);
     outV.noalias() = V * svd.matrixV().leftCols(requested_number);
 
-    return std::make_pair(converged, iter + 1);
+    return std::make_pair(converged, (converged ? iter + 1 : iter));
 }
 
 /**
@@ -343,7 +401,7 @@ struct Results {
 template<class EigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class Matrix_>
 Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index number, const Options& options) {
     Results<EigenMatrix_, EigenVector_> output;
-    auto stats = compute(matrix, number, output.U, output.V, output.D, options);
+    const auto stats = compute(matrix, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;
@@ -366,7 +424,7 @@ Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index 
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
 Results<OutputEigenMatrix_, EigenVector_> compute_simple(const InputEigenMatrix_& matrix, Eigen::Index number, const Options& options) {
     Results<OutputEigenMatrix_, EigenVector_> output;
-    auto stats = compute_simple(matrix, number, output.U, output.V, output.D, options);
+    const auto stats = compute_simple(matrix, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;
