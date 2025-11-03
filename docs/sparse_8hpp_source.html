@@ -170,11 +170,11 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                sanisizer::resize(my_secondary_boundaries, nthreads_p1);</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                Eigen::Index secondary_counter = 0;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                PointerType sofar = 0;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                PointerType cum_rows = 0;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                PointerType cum_secondary = 0;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; my_num_threads; ++t) {</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                    sofar += per_thread_floor + (t &lt; per_thread_extra); <span class="comment">// first few threads might get an extra element to deal with the remainder.</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                    <span class="keywordflow">while</span> (secondary_counter &lt; my_secondary_dim &amp;&amp; cum_rows &lt;= sofar) {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                        cum_rows += secondary_nonzeros[secondary_counter];</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                    <span class="keywordflow">while</span> (secondary_counter &lt; my_secondary_dim &amp;&amp; cum_secondary &lt;= sofar) {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                        cum_secondary += secondary_nonzeros[secondary_counter];</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                        ++secondary_counter;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                    }</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                    my_secondary_boundaries[t + 1] = secondary_counter;</div>
