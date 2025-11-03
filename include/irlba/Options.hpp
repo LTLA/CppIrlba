@@ -69,7 +69,7 @@ struct Options {
     /**
      * Seed for the creation of random vectors, primarily during initialization of the IRLBA algorithm.
      */
-    uint64_t seed = std::mt19937_64::default_seed;
+    typename std::mt19937_64::result_type seed = std::mt19937_64::default_seed;
 
     /**
      * Pointer to an `EigenVector_` (see `compute()`) containing the initial values of the first right singular vector.

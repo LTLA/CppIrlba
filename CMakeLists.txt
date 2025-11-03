@@ -25,9 +25,10 @@ else()
     find_package(Eigen3 5.0.0 CONFIG REQUIRED)
     find_package(ltla_aarand 1.0.0 CONFIG REQUIRED)
     find_package(ltla_subpar 0.3.1 CONFIG REQUIRED)
+    find_package(ltla_sanisizer 0.1.0 CONFIG REQUIRED)
 endif()
 
-target_link_libraries(irlba INTERFACE Eigen3::Eigen ltla::aarand ltla::subpar)
+target_link_libraries(irlba INTERFACE Eigen3::Eigen ltla::aarand ltla::subpar ltla::sanisizer)
 
 # Tests
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)

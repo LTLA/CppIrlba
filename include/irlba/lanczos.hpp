@@ -62,10 +62,10 @@ void run_lanczos_bidiagonalization(
     const Options& options) 
 {
     typedef typename EigenMatrix_::Scalar Float;
-    Float raw_eps = options.invariant_subspace_tolerance;
-    Float eps = (raw_eps < 0 ? std::pow(std::numeric_limits<Float>::epsilon(), 0.8) : raw_eps);
+    const Float raw_eps = options.invariant_subspace_tolerance;
+    const Float eps = (raw_eps < 0 ? std::pow(std::numeric_limits<Float>::epsilon(), 0.8) : raw_eps);
 
-    Eigen::Index work = W.cols();
+    const Eigen::Index work = W.cols();
     auto& F = inter.F;
     auto& W_next = inter.W_next;
     auto& otmp = inter.orthog_tmp;
@@ -88,7 +88,8 @@ void run_lanczos_bidiagonalization(
     // The Lanczos iterations themselves, see algorithm 2.1 of Baglama and Reichel.
     for (Eigen::Index j = start; j < work; ++j) {
         // This step is equivalent to F = mat.adjoint() * W.col(j).
-        // This is because W_next is assigned into W.col(start) at the start, or W.col(j+1) from the previous iteration.
+        // Remember that W_next is assigned into W.col(start) at the start, or W.col(j+1) from the previous iteration;
+        // so W_next is equal to W.col(j) in the current iteration.
         inter.awork->multiply(W_next, F); 
 
         F -= S * V.col(j); // equivalent to daxpy.
