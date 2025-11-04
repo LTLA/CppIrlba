@@ -124,14 +124,15 @@ inline Eigen::Index update_k(Eigen::Index k, const Eigen::Index requested_number
  *
  * @param[in] matrix Input matrix.
  * @param number Number of singular triplets to obtain.
- * @param[out] outU Output matrix where columns contain the first left singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of rows in `mat`.
- * @param[out] outV Output matrix where columns contain the first right singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of columns in `mat`.
- * @param[out] outD Vector to store the first singular values.
- * The length is set to `number` on output.
+ * The returned number of triplets may be lower, see `Options::cap_number` for details.
+ * @param[out] outU Output matrix containing the left singular vectors corresponding to the largest singular values.
+ * Each column corresponds to a left singular vector, of which there are `number` (or less, depending on `Options::cap_number`).
+ * The number of rows is equal to the number of rows in `mat`.
+ * @param[out] outV Output matrix containing the right singular vectors corresponding to the largest singular values.
+ * Each column corresponds to a right singular vector, of which there are `number` (or less, depending on `Options::cap_number`).
+ * The number of rows is equal to the number of columns in `mat`.
+ * @param[out] outD Output vector containing the largest singular values, ordered by decreasing size.
+ * This has length equal to `number` (or lower, depending on `Options::cap_number`).
  * @param options Further options.
  *
  * @return A pair where the first entry indicates whether the algorithm converged,
@@ -315,14 +316,15 @@ std::pair<bool, int> compute(
  *
  * @param[in] matrix Input matrix.
  * @param number Number of singular triplets to obtain.
- * @param[out] outU Output matrix where columns contain the first left singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of rows in `mat`.
- * @param[out] outV Output matrix where columns contain the first right singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of columns in `mat`.
- * @param[out] outD Vector to store the first singular values.
- * The length is set to `number` on output.
+ * The returned number of triplets may be lower, see `Options::cap_number` for details.
+ * @param[out] outU Output matrix containing the left singular vectors corresponding to the largest singular values.
+ * Each column corresponds to a left singular vector, of which there are `number` (or less, depending on `Options::cap_number`).
+ * The number of rows is equal to the number of rows in `mat`.
+ * @param[out] outV Output matrix containing the right singular vectors corresponding to the largest singular values.
+ * Each column corresponds to a right singular vector, of which there are `number` (or less, depending on `Options::cap_number`).
+ * The number of rows is equal to the number of columns in `mat`.
+ * @param[out] outD Output vector containing the largest singular values, ordered by decreasing size.
+ * This has length equal to `number` (or lower, depending on `Options::cap_number`).
  * @param options Further options.
  *
  * @return A pair where the first entry indicates whether the algorithm converged,
@@ -348,29 +350,29 @@ std::pair<bool, int> compute_simple(
 }
 
 /**
- * @brief Result of the IRLBA-based decomposition.
+ * @brief Results of the IRLBA-based SVD by `compute()`.
  * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
  */
 template<class EigenMatrix_, class EigenVector_>
 struct Results {
     /**
-     * The left singular vectors, stored as columns of `U`.
-     * The number of rows in `U` is equal to the number of rows in the input matrix,
-     * and the number of columns is equal to the number of requested vectors.
+     * Matrix of left singular vectors corresponding to the largest singular values.
+     * Each column corresponds to a left singular vector, the number of which is no greater than `number`.
+     * The number of rows is equal to the number of rows in the input matrix.
      */
     EigenMatrix_ U;
 
     /**
-     * The right singular vectors, stored as columns of `U`.
-     * The number of rows in `U` is equal to the number of columns in the input matrix,
-     * and the number of columns is equal to the number of requested vectors.
+     * Matrix of right singular vectors corresponding to the largest singular values.
+     * Each column corresponds to a right singular vector, the number of which is no greater than `number`.
+     * The number of rows is equal to the number of columns in the input matrix.
      */
     EigenMatrix_ V;
 
     /**
-     * The requested number of singular values, ordered by decreasing value.
-     * These correspond to the vectors in `U` and `V`.
+     * Vector of the largest singular values, ordered by decreasing value.
+     * The number of values is no greater than `number`.
      */
     EigenVector_ D;
 
