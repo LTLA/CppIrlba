@@ -5,7 +5,7 @@ var indexSectionsWithContent =
   2: "i",
   3: "ciops",
   4: "cegmnprs",
-  5: "cdeimsuv",
+  5: "cdeimrsuv",
   6: "p",
   7: "cfil"
 };

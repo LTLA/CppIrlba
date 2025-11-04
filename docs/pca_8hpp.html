@@ -91,6 +91,7 @@ $(function(){ initResizable(false); });
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">pca.hpp File Reference</div></div>
@@ -178,6 +179,12 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="pca_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1PcaResults.html">irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="namespaceirlba.html#a2c12531bd748c5fdd6d8d45148b0b72f">pca()</a></code>.  <a href="structirlba_1_1PcaResults.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html">irlba</a></td></tr>
@@ -186,12 +193,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0f28d73593e7da019e54b134dd149888" id="r_a0f28d73593e7da019e54b134dd149888"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:a0f28d73593e7da019e54b134dd149888"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a0f28d73593e7da019e54b134dd149888">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
-<tr class="separator:a0f28d73593e7da019e54b134dd149888"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a834ea1fa5dd1463d27f407219deb19" id="r_a4a834ea1fa5dd1463d27f407219deb19"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
-<tr class="memitem:a4a834ea1fa5dd1463d27f407219deb19"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a4a834ea1fa5dd1463d27f407219deb19">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
-<tr class="separator:a4a834ea1fa5dd1463d27f407219deb19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c12531bd748c5fdd6d8d45148b0b72f" id="r_a2c12531bd748c5fdd6d8d45148b0b72f"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
+<tr class="memitem:a2c12531bd748c5fdd6d8d45148b0b72f"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a2c12531bd748c5fdd6d8d45148b0b72f">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:a2c12531bd748c5fdd6d8d45148b0b72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa25f7f3d0984dd765f925538e47bfb6a" id="r_aa25f7f3d0984dd765f925538e47bfb6a"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
+<tr class="memitem:aa25f7f3d0984dd765f925538e47bfb6a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1PcaResults.html">PcaResults</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#aa25f7f3d0984dd765f925538e47bfb6a">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:aa25f7f3d0984dd765f925538e47bfb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Perform PCA with IRLBA. </p>

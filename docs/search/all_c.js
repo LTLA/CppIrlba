@@ -4,5 +4,6 @@ var searchData=
   ['realize_5fcopy_1',['realize_copy',['../classirlba_1_1RealizeWorkspace.html#afbd1cdc749cdca173d5659bb9a8718c1',1,'irlba::RealizeWorkspace']]],
   ['realizeworkspace_2',['RealizeWorkspace',['../classirlba_1_1RealizeWorkspace.html',1,'irlba']]],
   ['results_3',['Results',['../structirlba_1_1Results.html',1,'irlba']]],
-  ['rows_4',['rows',['../classirlba_1_1CenteredMatrix.html#a7bd996660d56400904d1191d3d9dee96',1,'irlba::CenteredMatrix::rows()'],['../classirlba_1_1Matrix.html#a445f7873a357819428df497c3ed69a33',1,'irlba::Matrix::rows()'],['../classirlba_1_1ScaledMatrix.html#aee91777f1fc6065af5d62da64014317c',1,'irlba::ScaledMatrix::rows()'],['../classirlba_1_1SimpleMatrix.html#a61f8ae12917ce7029309a94bcd19076a',1,'irlba::SimpleMatrix::rows()'],['../classirlba_1_1ParallelSparseMatrix.html#a7ea7b264d343553c52cb4e0a04bf0cf9',1,'irlba::ParallelSparseMatrix::rows()']]]
+  ['rotation_4',['rotation',['../structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521',1,'irlba::PcaResults']]],
+  ['rows_5',['rows',['../classirlba_1_1CenteredMatrix.html#a7bd996660d56400904d1191d3d9dee96',1,'irlba::CenteredMatrix::rows()'],['../classirlba_1_1Matrix.html#a445f7873a357819428df497c3ed69a33',1,'irlba::Matrix::rows()'],['../classirlba_1_1ScaledMatrix.html#aee91777f1fc6065af5d62da64014317c',1,'irlba::ScaledMatrix::rows()'],['../classirlba_1_1SimpleMatrix.html#a61f8ae12917ce7029309a94bcd19076a',1,'irlba::SimpleMatrix::rows()'],['../classirlba_1_1ParallelSparseMatrix.html#a7ea7b264d343553c52cb4e0a04bf0cf9',1,'irlba::ParallelSparseMatrix::rows()']]]
 ];

@@ -124,8 +124,8 @@ Collaboration diagram for irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae2d0db17316cb8865003c01177cd94f0" id="r_ae2d0db17316cb8865003c01177cd94f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2d0db17316cb8865003c01177cd94f0">CenteredMatrix</a> (const MatrixPointer_ &amp;matrix, const CenterPointer_ &amp;center)</td></tr>
-<tr class="separator:ae2d0db17316cb8865003c01177cd94f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96d8f2c6d97030e86f23c7256b70e556" id="r_a96d8f2c6d97030e86f23c7256b70e556"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96d8f2c6d97030e86f23c7256b70e556">CenteredMatrix</a> (MatrixPointer_ matrix, CenterPointer_ center)</td></tr>
+<tr class="separator:a96d8f2c6d97030e86f23c7256b70e556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bd996660d56400904d1191d3d9dee96" id="r_a7bd996660d56400904d1191d3d9dee96"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bd996660d56400904d1191d3d9dee96">rows</a> () const</td></tr>
 <tr class="separator:a7bd996660d56400904d1191d3d9dee96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ccca89f9ed6d8a609503b0833cc945b" id="r_a2ccca89f9ed6d8a609503b0833cc945b"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ccca89f9ed6d8a609503b0833cc945b">cols</a> () const</td></tr>
@@ -164,8 +164,8 @@ class irlba::CenteredMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, Cent
 </dl>
 <p>This class computes the matrix-vector product after centering all columns in the matrix, i.e., subtracting the mean of each column from the values of that column. Naively doing such an operation would involve loss of sparsity, which we avoid by deferring the subtraction into the subspace defined by <code>right</code>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae2d0db17316cb8865003c01177cd94f0" name="ae2d0db17316cb8865003c01177cd94f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2d0db17316cb8865003c01177cd94f0">&#9670;&#160;</a></span>CenteredMatrix()</h2>
+<a id="a96d8f2c6d97030e86f23c7256b70e556" name="a96d8f2c6d97030e86f23c7256b70e556"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96d8f2c6d97030e86f23c7256b70e556">&#9670;&#160;</a></span>CenteredMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,12 +178,12 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class MatrixPointer_  = co
         <tr>
           <td class="memname"><a class="el" href="classirlba_1_1CenteredMatrix.html">irlba::CenteredMatrix</a>&lt; EigenVector_, EigenMatrix_, MatrixPointer_, CenterPointer_ &gt;::CenteredMatrix </td>
           <td>(</td>
-          <td class="paramtype">const MatrixPointer_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+          <td class="paramtype">MatrixPointer_</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const CenterPointer_ &amp;</td>          <td class="paramname"><span class="paramname"><em>center</em></span>&#160;)</td>
+          <td class="paramtype">CenterPointer_</td>          <td class="paramname"><span class="paramname"><em>center</em></span>&#160;)</td>
         </tr>
       </table>
   </td>

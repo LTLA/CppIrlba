@@ -134,11 +134,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ParallelSparseWorkspace.html">ParallelSparseWorkspace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> for multiplication of a <code><a class="el" href="classirlba_1_1ParallelSparseMatrix.html" title="Sparse matrix with customizable parallelization.">ParallelSparseMatrix</a></code>.  <a href="classirlba_1_1ParallelSparseWorkspace.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1PcaResults.html">PcaResults</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="#a2c12531bd748c5fdd6d8d45148b0b72f">pca()</a></code>.  <a href="structirlba_1_1PcaResults.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1RealizeWorkspace.html">RealizeWorkspace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for realizing a <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.  <a href="classirlba_1_1RealizeWorkspace.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Results.html">Results</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of the IRLBA-based decomposition.  <a href="structirlba_1_1Results.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based SVD by <code><a class="el" href="#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>.  <a href="structirlba_1_1Results.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classirlba_1_1ScaledAdjointWorkspace.html">ScaledAdjointWorkspace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a> class for multiplying a transposed <code><a class="el" href="classirlba_1_1ScaledMatrix.html" title="Deferred scaling of a matrix.">ScaledMatrix</a></code>.  <a href="classirlba_1_1ScaledAdjointWorkspace.html#details">More...</a><br /></td></tr>
@@ -185,12 +188,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a7ddcae16077f8210cfab2f59ee3effed" id="r_a7ddcae16077f8210cfab2f59ee3effed"><td class="memTemplParams" colspan="2">template&lt;typename Task_ , class Run_ &gt; </td></tr>
 <tr class="memitem:a7ddcae16077f8210cfab2f59ee3effed"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7ddcae16077f8210cfab2f59ee3effed">parallelize</a> (Task_ num_tasks, Run_ run_task)</td></tr>
 <tr class="separator:a7ddcae16077f8210cfab2f59ee3effed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f28d73593e7da019e54b134dd149888" id="r_a0f28d73593e7da019e54b134dd149888"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:a0f28d73593e7da019e54b134dd149888"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a0f28d73593e7da019e54b134dd149888">pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
-<tr class="separator:a0f28d73593e7da019e54b134dd149888"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a834ea1fa5dd1463d27f407219deb19" id="r_a4a834ea1fa5dd1463d27f407219deb19"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
-<tr class="memitem:a4a834ea1fa5dd1463d27f407219deb19"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4a834ea1fa5dd1463d27f407219deb19">pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
-<tr class="separator:a4a834ea1fa5dd1463d27f407219deb19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c12531bd748c5fdd6d8d45148b0b72f" id="r_a2c12531bd748c5fdd6d8d45148b0b72f"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
+<tr class="memitem:a2c12531bd748c5fdd6d8d45148b0b72f"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2c12531bd748c5fdd6d8d45148b0b72f">pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:a2c12531bd748c5fdd6d8d45148b0b72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa25f7f3d0984dd765f925538e47bfb6a" id="r_aa25f7f3d0984dd765f925538e47bfb6a"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
+<tr class="memitem:aa25f7f3d0984dd765f925538e47bfb6a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1PcaResults.html">PcaResults</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa25f7f3d0984dd765f925538e47bfb6a">pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a> &amp;options)</td></tr>
+<tr class="separator:aa25f7f3d0984dd765f925538e47bfb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements IRLBA for approximate SVD. </p>
@@ -247,10 +250,10 @@ template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set to <code>number</code> on output. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. The returned number of triplets may be lower, see <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code> for details. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix containing the left singular vectors corresponding to the largest singular values. Each column corresponds to a left singular vector, of which there are <code>number</code> (or less, depending on <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code>). The number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix containing the right singular vectors corresponding to the largest singular values. Each column corresponds to a right singular vector, of which there are <code>number</code> (or less, depending on <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code>). The number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Output vector containing the largest singular values, ordered by decreasing size. This has length equal to <code>number</code> (or lower, depending on <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code>). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>
@@ -301,7 +304,7 @@ template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Result of the IRLBA-based decomposition.">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
 
 </div>
 </div>
@@ -348,7 +351,7 @@ template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = E
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Result of the IRLBA-based decomposition.">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
 
 </div>
 </div>
@@ -404,10 +407,10 @@ template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVect
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set to <code>number</code> on output. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. The returned number of triplets may be lower, see <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code> for details. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix containing the left singular vectors corresponding to the largest singular values. Each column corresponds to a left singular vector, of which there are <code>number</code> (or less, depending on <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code>). The number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix containing the right singular vectors corresponding to the largest singular values. Each column corresponds to a right singular vector, of which there are <code>number</code> (or less, depending on <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code>). The number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Output vector containing the largest singular values, ordered by decreasing size. This has length equal to <code>number</code> (or lower, depending on <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code>). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>
@@ -454,8 +457,8 @@ template&lt;typename Task_ , class Run_ &gt; </div>
 
 </div>
 </div>
-<a id="a4a834ea1fa5dd1463d27f407219deb19" name="a4a834ea1fa5dd1463d27f407219deb19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a834ea1fa5dd1463d27f407219deb19">&#9670;&#160;</a></span>pca() <span class="overload">[1/2]</span></h2>
+<a id="aa25f7f3d0984dd765f925538e47bfb6a" name="aa25f7f3d0984dd765f925538e47bfb6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa25f7f3d0984dd765f925538e47bfb6a">&#9670;&#160;</a></span>pca() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -463,7 +466,7 @@ template&lt;typename Task_ , class Run_ &gt; </div>
 template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt; irlba::pca </td>
+          <td class="memname"><a class="el" href="structirlba_1_1PcaResults.html">PcaResults</a>&lt; OutputEigenMatrix_, EigenVector_ &gt; irlba::pca </td>
           <td>(</td>
           <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
         </tr>
@@ -489,7 +492,7 @@ template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = E
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Convenient overload of <code><a class="el" href="#a0f28d73593e7da019e54b134dd149888">pca()</a></code> that allocates memory for the output matrices of the SVD.</p>
+<p>Convenient overload of <code><a class="el" href="#a2c12531bd748c5fdd6d8d45148b0b72f">pca()</a></code> that allocates memory for the output matrices of the PCA.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
@@ -500,20 +503,20 @@ template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = E
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix where rows are observations and columns are features. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? This should be set to <code>true</code> if the matrix is not already centered. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Result of the IRLBA-based decomposition.">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a></code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
 
 </div>
 </div>
-<a id="a0f28d73593e7da019e54b134dd149888" name="a0f28d73593e7da019e54b134dd149888"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f28d73593e7da019e54b134dd149888">&#9670;&#160;</a></span>pca() <span class="overload">[2/2]</span></h2>
+<a id="a2c12531bd748c5fdd6d8d45148b0b72f" name="a2c12531bd748c5fdd6d8d45148b0b72f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c12531bd748c5fdd6d8d45148b0b72f">&#9670;&#160;</a></span>pca() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -543,17 +546,17 @@ template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVect
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outU</em></span>, </td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>scores</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outV</em></span>, </td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>rotation</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outD</em></span>, </td>
+          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>variances</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -573,13 +576,13 @@ template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVect
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix where rows are observations and columns are features. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? This should be set to <code>true</code> if the matrix is not already centered. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix where columns contain the first left singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix where columns contain the first right singular vectors. Dimensions are set automatically on output; the number of columns is set to <code>number</code> and the number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Vector to store the first singular values. The length is set to <code>number</code> on output. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of principal components to obtain. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scores</td><td>Output matrix for the principal component scores. Each row corresponds to an observation while each column corresponds to a principal component. On output, the number of rows is equal to the number of columns in <code>matrix</code>, while the number of columns is equal to <code>number</code> (or less, if <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code> is applied). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rotation</td><td>Output matrix in which to store the rotation matrix. Each row corresponds to an feature while each column corresponds to a principal component. On output, the number of rows is equal to the number of rows in <code>matrix</code>, while the number of columns is equal to <code>number</code> (or less, if <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code> is applied). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">variances</td><td>Vector to store the variance explained by each principal component. On output, the length of this vector is equal to <code>number</code> (or less, if <code><a class="el" href="structirlba_1_1Options.html#a4e6e040a6ff921f48c70961ad9876c31">Options::cap_number</a></code> is applied). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
   </table>
   </dd>

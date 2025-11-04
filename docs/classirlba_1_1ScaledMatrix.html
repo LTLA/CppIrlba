@@ -124,8 +124,8 @@ Collaboration diagram for irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, Ma
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a48c27c2c1b443f6fafac86c1a5c04cc1" id="r_a48c27c2c1b443f6fafac86c1a5c04cc1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48c27c2c1b443f6fafac86c1a5c04cc1">ScaledMatrix</a> (const MatrixPointer_ &amp;matrix, const ScalePointer_ &amp;scale, bool column, bool divide)</td></tr>
-<tr class="separator:a48c27c2c1b443f6fafac86c1a5c04cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866e5f0b08ae01a026b63fbcbeb8e041" id="r_a866e5f0b08ae01a026b63fbcbeb8e041"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a866e5f0b08ae01a026b63fbcbeb8e041">ScaledMatrix</a> (MatrixPointer_ matrix, ScalePointer_ scale, bool column, bool divide)</td></tr>
+<tr class="separator:a866e5f0b08ae01a026b63fbcbeb8e041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee91777f1fc6065af5d62da64014317c" id="r_aee91777f1fc6065af5d62da64014317c"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee91777f1fc6065af5d62da64014317c">rows</a> () const</td></tr>
 <tr class="separator:aee91777f1fc6065af5d62da64014317c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b7503144b1b012eb434e40bbc7290cc" id="r_a7b7503144b1b012eb434e40bbc7290cc"><td class="memItemLeft" align="right" valign="top">Eigen::Index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b7503144b1b012eb434e40bbc7290cc">cols</a> () const</td></tr>
@@ -164,8 +164,8 @@ class irlba::ScaledMatrix&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScaleP
 </dl>
 <p>This class computes the matrix-vector product after scaling all rows or columns in the matrix, i.e., multiplying or dividing the values of each row/column by some arbitrary value. For example, we can use this to divide each column by the standard deviation to achieve unit variance in principal components analyses. Naively doing such an operation would involve a copy of the matrix, which we avoid by deferring the scaling into the subspace defined by <code>rhs</code>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a48c27c2c1b443f6fafac86c1a5c04cc1" name="a48c27c2c1b443f6fafac86c1a5c04cc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48c27c2c1b443f6fafac86c1a5c04cc1">&#9670;&#160;</a></span>ScaledMatrix()</h2>
+<a id="a866e5f0b08ae01a026b63fbcbeb8e041" name="a866e5f0b08ae01a026b63fbcbeb8e041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a866e5f0b08ae01a026b63fbcbeb8e041">&#9670;&#160;</a></span>ScaledMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,12 +178,12 @@ template&lt;class EigenVector_ , class EigenMatrix_ , class MatrixPointer_  = co
         <tr>
           <td class="memname"><a class="el" href="classirlba_1_1ScaledMatrix.html">irlba::ScaledMatrix</a>&lt; EigenVector_, EigenMatrix_, MatrixPointer_, ScalePointer_ &gt;::ScaledMatrix </td>
           <td>(</td>
-          <td class="paramtype">const MatrixPointer_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+          <td class="paramtype">MatrixPointer_</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ScalePointer_ &amp;</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
+          <td class="paramtype">ScalePointer_</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

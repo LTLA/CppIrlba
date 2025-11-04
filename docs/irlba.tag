@@ -95,6 +95,7 @@
     <includes id="simple_8hpp" name="simple.hpp" local="yes" import="no" module="no" objc="no">Matrix/simple.hpp</includes>
     <includes id="centered_8hpp" name="centered.hpp" local="yes" import="no" module="no" objc="no">Matrix/centered.hpp</includes>
     <includes id="scaled_8hpp" name="scaled.hpp" local="yes" import="no" module="no" objc="no">Matrix/scaled.hpp</includes>
+    <class kind="struct">irlba::PcaResults</class>
     <namespace>irlba</namespace>
   </compound>
   <compound kind="class">
@@ -136,8 +137,8 @@
       <type></type>
       <name>CenteredMatrix</name>
       <anchorfile>classirlba_1_1CenteredMatrix.html</anchorfile>
-      <anchor>ae2d0db17316cb8865003c01177cd94f0</anchor>
-      <arglist>(const MatrixPointer_ &amp;matrix, const CenterPointer_ &amp;center)</arglist>
+      <anchor>a96d8f2c6d97030e86f23c7256b70e556</anchor>
+      <arglist>(MatrixPointer_ matrix, CenterPointer_ center)</arglist>
     </member>
     <member kind="function">
       <type>Eigen::Index</type>
@@ -550,6 +551,47 @@
       <arglist>(const EigenVector_ &amp;right, EigenVector_ &amp;output)</arglist>
     </member>
   </compound>
+  <compound kind="struct">
+    <name>irlba::PcaResults</name>
+    <filename>structirlba_1_1PcaResults.html</filename>
+    <templarg>class EigenMatrix_</templarg>
+    <templarg>class EigenVector_</templarg>
+    <member kind="variable">
+      <type>EigenMatrix_</type>
+      <name>scores</name>
+      <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
+      <anchor>a7d882ecc1895491df377de953477f662</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>EigenMatrix_</type>
+      <name>rotation</name>
+      <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
+      <anchor>ab97a992b7080c77cee1b4e349edf2521</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>EigenVector_</type>
+      <name>variances</name>
+      <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
+      <anchor>ab175b5cb7799e7ca44182cd447699071</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>iterations</name>
+      <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
+      <anchor>abdc9a3e29efba76992af948627bbbe89</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>bool</type>
+      <name>converged</name>
+      <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
+      <anchor>abe63e04a2765cce76a32b47d39561a1d</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
   <compound kind="class">
     <name>irlba::RealizeWorkspace</name>
     <filename>classirlba_1_1RealizeWorkspace.html</filename>
@@ -637,8 +679,8 @@
       <type></type>
       <name>ScaledMatrix</name>
       <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
-      <anchor>a48c27c2c1b443f6fafac86c1a5c04cc1</anchor>
-      <arglist>(const MatrixPointer_ &amp;matrix, const ScalePointer_ &amp;scale, bool column, bool divide)</arglist>
+      <anchor>a866e5f0b08ae01a026b63fbcbeb8e041</anchor>
+      <arglist>(MatrixPointer_ matrix, ScalePointer_ scale, bool column, bool divide)</arglist>
     </member>
     <member kind="function">
       <type>Eigen::Index</type>
@@ -867,6 +909,7 @@
     <class kind="class">irlba::ParallelSparseMatrix</class>
     <class kind="class">irlba::ParallelSparseRealizeWorkspace</class>
     <class kind="class">irlba::ParallelSparseWorkspace</class>
+    <class kind="struct">irlba::PcaResults</class>
     <class kind="class">irlba::RealizeWorkspace</class>
     <class kind="struct">irlba::Results</class>
     <class kind="class">irlba::ScaledAdjointWorkspace</class>
@@ -917,14 +960,14 @@
       <type>std::pair&lt; bool, int &gt;</type>
       <name>pca</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a0f28d73593e7da019e54b134dd149888</anchor>
-      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options &amp;options)</arglist>
+      <anchor>a2c12531bd748c5fdd6d8d45148b0b72f</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options &amp;options)</arglist>
     </member>
     <member kind="function">
-      <type>Results&lt; OutputEigenMatrix_, EigenVector_ &gt;</type>
+      <type>PcaResults&lt; OutputEigenMatrix_, EigenVector_ &gt;</type>
       <name>pca</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a4a834ea1fa5dd1463d27f407219deb19</anchor>
+      <anchor>aa25f7f3d0984dd765f925538e47bfb6a</anchor>
       <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const Options &amp;options)</arglist>
     </member>
   </compound>
