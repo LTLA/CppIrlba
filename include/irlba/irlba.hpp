@@ -6,6 +6,12 @@
 #include "parallel.hpp"
 #include "Options.hpp"
 
+#include "Matrix/interface.hpp"
+#include "Matrix/simple.hpp"
+#include "Matrix/centered.hpp"
+#include "Matrix/scaled.hpp"
+#include "Matrix/sparse.hpp"
+
 /**
  * @file irlba.hpp
  * @brief Implements IRLBA
