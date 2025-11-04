@@ -16,6 +16,11 @@
     <includes id="pca_8hpp" name="pca.hpp" local="yes" import="no" module="no" objc="no">pca.hpp</includes>
     <includes id="parallel_8hpp" name="parallel.hpp" local="yes" import="no" module="no" objc="no">parallel.hpp</includes>
     <includes id="Options_8hpp" name="Options.hpp" local="yes" import="no" module="no" objc="no">Options.hpp</includes>
+    <includes id="interface_8hpp" name="interface.hpp" local="yes" import="no" module="no" objc="no">Matrix/interface.hpp</includes>
+    <includes id="simple_8hpp" name="simple.hpp" local="yes" import="no" module="no" objc="no">Matrix/simple.hpp</includes>
+    <includes id="centered_8hpp" name="centered.hpp" local="yes" import="no" module="no" objc="no">Matrix/centered.hpp</includes>
+    <includes id="scaled_8hpp" name="scaled.hpp" local="yes" import="no" module="no" objc="no">Matrix/scaled.hpp</includes>
+    <includes id="sparse_8hpp" name="sparse.hpp" local="yes" import="no" module="no" objc="no">Matrix/sparse.hpp</includes>
     <namespace>irlba</namespace>
   </compound>
   <compound kind="file">

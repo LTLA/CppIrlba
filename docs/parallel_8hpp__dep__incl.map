@@ -1,7 +1,8 @@
 <map id="irlba/parallel.hpp" name="irlba/parallel.hpp">
-<area shape="rect" id="Node000001" title="Classes for parallelized multiplication." alt="" coords="97,5,212,31"/>
+<area shape="rect" id="Node000001" title="Classes for parallelized multiplication." alt="" coords="80,5,194,31"/>
 <area shape="rect" id="Node000002" href="$sparse_8hpp.html" title="Sparse matrix with parallelized multiplication." alt="" coords="5,79,157,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,44,95,80,92,77,129,40"/>
-<area shape="rect" id="Node000003" href="$irlba_8hpp.html" title="Implements IRLBA." alt="" coords="180,79,278,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,40,218,77,215,81,176,44"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,45,93,80,88,77,116,41"/>
+<area shape="rect" id="Node000003" href="$irlba_8hpp.html" title="Implements IRLBA." alt="" coords="88,153,186,178"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="156,43,172,78,173,100,167,121,149,154,144,151,162,119,167,99,166,80,152,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,115,130,151,125,154,97,118"/>
 </map>
