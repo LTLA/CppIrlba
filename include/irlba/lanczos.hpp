@@ -59,8 +59,8 @@ void run_lanczos_bidiagonalization(
     EigenMatrix_& B, 
     Engine_& eng, 
     Eigen::Index start, 
-    const Options& options) 
-{
+    const Options<EigenVector_>& options
+) {
     typedef typename EigenMatrix_::Scalar Float;
     const Float raw_eps = options.invariant_subspace_tolerance;
     const Float eps = (raw_eps < 0 ? std::pow(std::numeric_limits<Float>::epsilon(), 0.8) : raw_eps);

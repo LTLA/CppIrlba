@@ -61,7 +61,7 @@ std::pair<bool, int> pca(
     OutputEigenMatrix_& scores,
     OutputEigenMatrix_& rotation,
     EigenVector_& variances,
-    const Options& options
+    const Options<EigenVector_>& options
 ) {
     const Eigen::Index nr = matrix.rows();
     const Eigen::Index nc = matrix.cols();
@@ -193,7 +193,7 @@ struct PcaResults {
  * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
  */
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
-PcaResults<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options& options) {
+PcaResults<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options<EigenVector_>& options) {
     PcaResults<OutputEigenMatrix_, EigenVector_> output;
     const auto stats = pca(matrix, center, scale, number, output.scores, output.rotation, output.variances, options);
     output.converged = stats.first;

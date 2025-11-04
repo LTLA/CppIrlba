@@ -107,8 +107,7 @@ TEST_P(ComputeTest, Basic) {
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-6);
 
     // Also works with some custom initialization.
-    auto init = create_random_vector(A.cols(), 1239 + nr + nc + rank);
-    opt.initial = &init;
+    opt.initial = create_random_vector(A.cols(), 1239 + nr + nc + rank);
     auto res2 = irlba::compute(wrapped, rank, opt);
     expect_equal_vectors(res.D, res2.D, 1e-6);
 }
@@ -228,10 +227,9 @@ TEST(Compute, Fails) {
 
     // Initialization vector is not of the right length.
     message.clear();
-    Eigen::VectorXd init(1);
     try {
         irlba::Options opt;
-        opt.initial = &init;
+        opt.initial = Eigen::VectorXd(1);
         irlba::compute(wrapped, 2, opt);
     } catch (const std::exception& e) {
         message = e.what();

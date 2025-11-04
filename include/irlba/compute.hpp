@@ -145,7 +145,7 @@ std::pair<bool, int> compute(
     EigenMatrix_& outU,
     EigenMatrix_& outV,
     EigenVector_& outD,
-    const Options& options
+    const Options<EigenVector_>& options
 ) {
     const Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());
     Eigen::Index requested_number = sanisizer::cast<Eigen::Index>(number);
@@ -178,12 +178,12 @@ std::pair<bool, int> compute(
     // as the former are stored as Eigen::Index and the latter accepts Eigen::Index inputs.
     EigenMatrix_ V(matrix.cols(), work);
     std::mt19937_64 eng(options.seed);
-    if (options.initial) {
-        auto init = reinterpret_cast<EigenVector_*>(options.initial);
-        if (init->size() != V.rows()) {
+    if (options.initial.has_value()) {
+        const auto& init = *(options.initial);
+        if (init.size() != V.rows()) {
             throw std::runtime_error("initialization vector does not have expected number of rows");
         }
-        V.col(0) = *init;
+        V.col(0) = init;
     } else {
         fill_with_random_normals(V, 0, eng);
     }
@@ -337,7 +337,7 @@ std::pair<bool, int> compute_simple(
     OutputEigenMatrix_& outU,
     OutputEigenMatrix_& outV,
     EigenVector_& outD,
-    const Options& options
+    const Options<EigenVector_>& options
 ) {
     SimpleMatrix<EigenVector_, OutputEigenMatrix_, const InputEigenMatrix_*> wrapped(&matrix);
 
@@ -401,7 +401,7 @@ struct Results {
  * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
  */
 template<class EigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class Matrix_>
-Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index number, const Options& options) {
+Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index number, const Options<EigenVector_>& options) {
     Results<EigenMatrix_, EigenVector_> output;
     const auto stats = compute(matrix, number, output.U, output.V, output.D, options);
     output.converged = stats.first;
@@ -424,7 +424,7 @@ Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index 
  * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
  */
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
-Results<OutputEigenMatrix_, EigenVector_> compute_simple(const InputEigenMatrix_& matrix, Eigen::Index number, const Options& options) {
+Results<OutputEigenMatrix_, EigenVector_> compute_simple(const InputEigenMatrix_& matrix, Eigen::Index number, const Options<EigenVector_>& options) {
     Results<OutputEigenMatrix_, EigenVector_> output;
     const auto stats = compute_simple(matrix, number, output.U, output.V, output.D, options);
     output.converged = stats.first;

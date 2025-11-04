@@ -2,6 +2,7 @@
 #define IRLBA_OPTIONS_HPP
 
 #include <cstdint>
+#include <optional>
 
 /**
  * @file Options.hpp
@@ -11,8 +12,11 @@
 namespace irlba {
 
 /**
- * @brief Options for the IRLBA algorithm.
+ * @brief Options for running IRLBA in `compute()` and `pca()`.
+ *
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class to store the initial values.
  */
+template<class EigenVector_ = Eigen::VectorXd>
 struct Options {
     /**
      * Set the tolerance to use to define invariant subspaces.
@@ -72,10 +76,10 @@ struct Options {
     typename std::mt19937_64::result_type seed = std::mt19937_64::default_seed;
 
     /**
-     * Pointer to an `EigenVector_` (see `compute()`) containing the initial values of the first right singular vector.
-     * This should have length equal to the number of columns of the input `matrix`.
+     * Pointer to the initial values of the first right singular vector.
+     * This should have length equal to the number of columns of the input `matrix` in `compute()` or `pca()`.
      */
-    void * initial = NULL;
+    std::optional<EigenVector_> initial;
 };
 
 }
