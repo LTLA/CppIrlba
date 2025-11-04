@@ -97,7 +97,7 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for a matrix to use in <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>.  
+<p>Interface for a matrix to use in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="interface_8hpp_source.html">interface.hpp</a>&gt;</code></p>
@@ -139,7 +139,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class EigenVector_, class EigenMatrix_&gt;<br />
-class irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</div><p>Interface for a matrix to use in <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>. </p>
+class irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</div><p>Interface for a matrix to use in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code>. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code>. </td></tr>
@@ -234,7 +234,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A new workspace for adjoint matrix multiplication. The lifetime of this object should not exceed that of its parent <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.</dd></dl>
-<p>Subclasses may override this method to return a pointer to a specific <code><a class="el" href="classirlba_1_1AdjointWorkspace.html" title="Workspace class for multiplying a transposed Matrix.">AdjointWorkspace</a></code> subclass. This is used for devirtualization in <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>. If no override is provided, <code><a class="el" href="#a21e0ea4abfe872d6c0d6730a997db828">new_adjoint_workspace()</a></code> is called instead. </p>
+<p>Subclasses may override this method to return a pointer to a specific <code><a class="el" href="classirlba_1_1AdjointWorkspace.html" title="Workspace class for multiplying a transposed Matrix.">AdjointWorkspace</a></code> subclass. This is used for devirtualization in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code>. If no override is provided, <code><a class="el" href="#a21e0ea4abfe872d6c0d6730a997db828">new_adjoint_workspace()</a></code> is called instead. </p>
 
 </div>
 </div>
@@ -263,7 +263,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A new workspace for matrix realization. The lifetime of this object should not exceed that of its parent <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.</dd></dl>
-<p>Subclasses may override this method to return a pointer to a specific <code><a class="el" href="classirlba_1_1RealizeWorkspace.html" title="Workspace class for realizing a Matrix.">RealizeWorkspace</a></code> subclass. This is used for devirtualization in <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>. If no override is provided, <code><a class="el" href="#a34bc2683917efaf71525446eef8b7786">new_realize_workspace()</a></code> is called instead. </p>
+<p>Subclasses may override this method to return a pointer to a specific <code><a class="el" href="classirlba_1_1RealizeWorkspace.html" title="Workspace class for realizing a Matrix.">RealizeWorkspace</a></code> subclass. This is used for devirtualization in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code>. If no override is provided, <code><a class="el" href="#a34bc2683917efaf71525446eef8b7786">new_realize_workspace()</a></code> is called instead. </p>
 
 </div>
 </div>
@@ -292,7 +292,7 @@ template&lt;class EigenVector_ , class EigenMatrix_ &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A new workspace for matrix multiplication. The lifetime of this object should not exceed that of its parent <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">Matrix</a></code>.</dd></dl>
-<p>Subclasses may override this method to return a pointer to a specific <code><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a></code> subclass. This is used for devirtualization in <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>. If no override is provided, <code><a class="el" href="#a6abf35c662b5f18dddfa1a5e68a3d227">new_workspace()</a></code> is called instead. </p>
+<p>Subclasses may override this method to return a pointer to a specific <code><a class="el" href="classirlba_1_1Workspace.html" title="Workspace class for multiplying a Matrix.">Workspace</a></code> subclass. This is used for devirtualization in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code>. If no override is provided, <code><a class="el" href="#a6abf35c662b5f18dddfa1a5e68a3d227">new_workspace()</a></code> is called instead. </p>
 
 </div>
 </div>

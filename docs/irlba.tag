@@ -308,74 +308,75 @@
   <compound kind="struct">
     <name>irlba::Options</name>
     <filename>structirlba_1_1Options.html</filename>
+    <templarg>class EigenVector_</templarg>
     <member kind="variable">
       <type>double</type>
       <name>invariant_subspace_tolerance</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>ad746aa1f21cf2b8b5eb50500ccf1d4bc</anchor>
+      <anchor>ab6e3d538d647a3c72b7ea655c7486a57</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>convergence_tolerance</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a1fd00b6a91fb447f35c0c0cfa65dafd7</anchor>
+      <anchor>a019f546a47e990071416a11687c14d71</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>singular_value_ratio_tolerance</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a1e6e7fa2394b489f39e613c0f0fa3092</anchor>
+      <anchor>a9b8e78abc2333d8b7a9ee9a0635e3f02</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>int</type>
       <name>extra_work</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>ab903b879a43cb167ddbab093b44c32e0</anchor>
+      <anchor>a179a747996c1a3d4fbf89215d97334d1</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>int</type>
       <name>max_iterations</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>afc7f9a04a63cc7033c2103cdebab3612</anchor>
+      <anchor>a5f53aad8e0d9b6d1a1a9647413f638fa</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>bool</type>
       <name>exact_for_small_matrix</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a6139d421c988fe1818bfe338f9ce85ad</anchor>
+      <anchor>a85195d98803d717976c17b267708af4f</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>bool</type>
       <name>exact_for_large_number</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>ae4bd4e00dd4815e3aa66b0b23f8820b0</anchor>
+      <anchor>a1924053077a1dac0332c139776faf6d3</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>bool</type>
       <name>cap_number</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a4e6e040a6ff921f48c70961ad9876c31</anchor>
+      <anchor>a95fbe9c985391959881f1107a87320bc</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>std::mt19937_64::result_type</type>
       <name>seed</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>aeaaa742e5abf1ac4852d247ed8e3eac3</anchor>
+      <anchor>afb7a12a2d949da2399a30b2aca10fa62</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>void *</type>
+      <type>std::optional&lt; EigenVector_ &gt;</type>
       <name>initial</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>ab7d48ae8392f7097519642f5b2ffe26c</anchor>
+      <anchor>a83537f6e35482091fd60fc61b7b53714</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -930,29 +931,29 @@
       <type>std::pair&lt; bool, int &gt;</type>
       <name>compute</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a2a7a32f05a96168350184b5d7da5da24</anchor>
-      <arglist>(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options &amp;options)</arglist>
+      <anchor>abff001679bf73625640310429e8d1aa6</anchor>
+      <arglist>(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::pair&lt; bool, int &gt;</type>
       <name>compute_simple</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>ad3aed8e6de2f1f8f82b54a84f419ded5</anchor>
-      <arglist>(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options &amp;options)</arglist>
+      <anchor>ac57532aaea92612012d712610b3d1a08</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>Results&lt; EigenMatrix_, EigenVector_ &gt;</type>
       <name>compute</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a1fba15566b7b2f50bdcddb1b7df3ed4c</anchor>
-      <arglist>(const Matrix_ &amp;matrix, Eigen::Index number, const Options &amp;options)</arglist>
+      <anchor>aee162d595de9fdfdcf5d379de54365d3</anchor>
+      <arglist>(const Matrix_ &amp;matrix, Eigen::Index number, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>Results&lt; OutputEigenMatrix_, EigenVector_ &gt;</type>
       <name>compute_simple</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a7f0da0f8a90c7aeb5f243097a751b87e</anchor>
-      <arglist>(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, const Options &amp;options)</arglist>
+      <anchor>a22b51a9ba8a634d25fc16008d4bdfba8</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -965,15 +966,15 @@
       <type>std::pair&lt; bool, int &gt;</type>
       <name>pca</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>a2c12531bd748c5fdd6d8d45148b0b72f</anchor>
-      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options &amp;options)</arglist>
+      <anchor>a641f100ff5163f650781c9db49958a4b</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>PcaResults&lt; OutputEigenMatrix_, EigenVector_ &gt;</type>
       <name>pca</name>
       <anchorfile>namespaceirlba.html</anchorfile>
-      <anchor>aa25f7f3d0984dd765f925538e47bfb6a</anchor>
-      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const Options &amp;options)</arglist>
+      <anchor>a36261b9ee1f9f74d841685e568f7c1ce</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
   </compound>
   <compound kind="page">

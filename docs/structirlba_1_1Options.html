@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>irlba: irlba::Options Struct Reference</title>
+<title>irlba: irlba::Options&lt; EigenVector_ &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,49 +93,58 @@ $(function(){ initResizable(false); });
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structirlba_1_1Options-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">irlba::Options Struct Reference</div></div>
+  <div class="headertitle"><div class="title">irlba::Options&lt; EigenVector_ &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="structirlba_1_1Options.html" title="Options for the IRLBA algorithm.">Options</a> for the IRLBA algorithm.  
+<p><a class="el" href="structirlba_1_1Options.html" title="Options for running IRLBA in compute() and pca().">Options</a> for running IRLBA in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code> and <code><a class="el" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca()</a></code>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Options_8hpp_source.html">Options.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ad746aa1f21cf2b8b5eb50500ccf1d4bc" id="r_ad746aa1f21cf2b8b5eb50500ccf1d4bc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad746aa1f21cf2b8b5eb50500ccf1d4bc">invariant_subspace_tolerance</a> = -1</td></tr>
-<tr class="separator:ad746aa1f21cf2b8b5eb50500ccf1d4bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fd00b6a91fb447f35c0c0cfa65dafd7" id="r_a1fd00b6a91fb447f35c0c0cfa65dafd7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1fd00b6a91fb447f35c0c0cfa65dafd7">convergence_tolerance</a> = 1e-5</td></tr>
-<tr class="separator:a1fd00b6a91fb447f35c0c0cfa65dafd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e6e7fa2394b489f39e613c0f0fa3092" id="r_a1e6e7fa2394b489f39e613c0f0fa3092"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e6e7fa2394b489f39e613c0f0fa3092">singular_value_ratio_tolerance</a> = -1</td></tr>
-<tr class="separator:a1e6e7fa2394b489f39e613c0f0fa3092"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab903b879a43cb167ddbab093b44c32e0" id="r_ab903b879a43cb167ddbab093b44c32e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab903b879a43cb167ddbab093b44c32e0">extra_work</a> = 7</td></tr>
-<tr class="separator:ab903b879a43cb167ddbab093b44c32e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc7f9a04a63cc7033c2103cdebab3612" id="r_afc7f9a04a63cc7033c2103cdebab3612"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc7f9a04a63cc7033c2103cdebab3612">max_iterations</a> = 1000</td></tr>
-<tr class="separator:afc7f9a04a63cc7033c2103cdebab3612"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6139d421c988fe1818bfe338f9ce85ad" id="r_a6139d421c988fe1818bfe338f9ce85ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6139d421c988fe1818bfe338f9ce85ad">exact_for_small_matrix</a> = true</td></tr>
-<tr class="separator:a6139d421c988fe1818bfe338f9ce85ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4bd4e00dd4815e3aa66b0b23f8820b0" id="r_ae4bd4e00dd4815e3aa66b0b23f8820b0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4bd4e00dd4815e3aa66b0b23f8820b0">exact_for_large_number</a> = true</td></tr>
-<tr class="separator:ae4bd4e00dd4815e3aa66b0b23f8820b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e6e040a6ff921f48c70961ad9876c31" id="r_a4e6e040a6ff921f48c70961ad9876c31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e6e040a6ff921f48c70961ad9876c31">cap_number</a> = false</td></tr>
-<tr class="separator:a4e6e040a6ff921f48c70961ad9876c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaaa742e5abf1ac4852d247ed8e3eac3" id="r_aeaaa742e5abf1ac4852d247ed8e3eac3"><td class="memItemLeft" align="right" valign="top">std::mt19937_64::result_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeaaa742e5abf1ac4852d247ed8e3eac3">seed</a> = std::mt19937_64::default_seed</td></tr>
-<tr class="separator:aeaaa742e5abf1ac4852d247ed8e3eac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7d48ae8392f7097519642f5b2ffe26c" id="r_ab7d48ae8392f7097519642f5b2ffe26c"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7d48ae8392f7097519642f5b2ffe26c">initial</a> = NULL</td></tr>
-<tr class="separator:ab7d48ae8392f7097519642f5b2ffe26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6e3d538d647a3c72b7ea655c7486a57" id="r_ab6e3d538d647a3c72b7ea655c7486a57"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6e3d538d647a3c72b7ea655c7486a57">invariant_subspace_tolerance</a> = -1</td></tr>
+<tr class="separator:ab6e3d538d647a3c72b7ea655c7486a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019f546a47e990071416a11687c14d71" id="r_a019f546a47e990071416a11687c14d71"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a019f546a47e990071416a11687c14d71">convergence_tolerance</a> = 1e-5</td></tr>
+<tr class="separator:a019f546a47e990071416a11687c14d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b8e78abc2333d8b7a9ee9a0635e3f02" id="r_a9b8e78abc2333d8b7a9ee9a0635e3f02"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b8e78abc2333d8b7a9ee9a0635e3f02">singular_value_ratio_tolerance</a> = -1</td></tr>
+<tr class="separator:a9b8e78abc2333d8b7a9ee9a0635e3f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a179a747996c1a3d4fbf89215d97334d1" id="r_a179a747996c1a3d4fbf89215d97334d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a179a747996c1a3d4fbf89215d97334d1">extra_work</a> = 7</td></tr>
+<tr class="separator:a179a747996c1a3d4fbf89215d97334d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f53aad8e0d9b6d1a1a9647413f638fa" id="r_a5f53aad8e0d9b6d1a1a9647413f638fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f53aad8e0d9b6d1a1a9647413f638fa">max_iterations</a> = 1000</td></tr>
+<tr class="separator:a5f53aad8e0d9b6d1a1a9647413f638fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85195d98803d717976c17b267708af4f" id="r_a85195d98803d717976c17b267708af4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85195d98803d717976c17b267708af4f">exact_for_small_matrix</a> = true</td></tr>
+<tr class="separator:a85195d98803d717976c17b267708af4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1924053077a1dac0332c139776faf6d3" id="r_a1924053077a1dac0332c139776faf6d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1924053077a1dac0332c139776faf6d3">exact_for_large_number</a> = true</td></tr>
+<tr class="separator:a1924053077a1dac0332c139776faf6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95fbe9c985391959881f1107a87320bc" id="r_a95fbe9c985391959881f1107a87320bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95fbe9c985391959881f1107a87320bc">cap_number</a> = false</td></tr>
+<tr class="separator:a95fbe9c985391959881f1107a87320bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb7a12a2d949da2399a30b2aca10fa62" id="r_afb7a12a2d949da2399a30b2aca10fa62"><td class="memItemLeft" align="right" valign="top">std::mt19937_64::result_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb7a12a2d949da2399a30b2aca10fa62">seed</a> = std::mt19937_64::default_seed</td></tr>
+<tr class="separator:afb7a12a2d949da2399a30b2aca10fa62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83537f6e35482091fd60fc61b7b53714" id="r_a83537f6e35482091fd60fc61b7b53714"><td class="memItemLeft" align="right" valign="top">std::optional&lt; EigenVector_ &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83537f6e35482091fd60fc61b7b53714">initial</a></td></tr>
+<tr class="separator:a83537f6e35482091fd60fc61b7b53714"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="structirlba_1_1Options.html" title="Options for the IRLBA algorithm.">Options</a> for the IRLBA algorithm. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class EigenVector_ = Eigen::VectorXd&gt;<br />
+struct irlba::Options&lt; EigenVector_ &gt;</div><p><a class="el" href="structirlba_1_1Options.html" title="Options for running IRLBA in compute() and pca().">Options</a> for running IRLBA in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code> and <code><a class="el" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca()</a></code>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class to store the initial values. </td></tr>
+  </table>
+  </dd>
+</dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4e6e040a6ff921f48c70961ad9876c31" name="a4e6e040a6ff921f48c70961ad9876c31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e6e040a6ff921f48c70961ad9876c31">&#9670;&#160;</a></span>cap_number</h2>
+<a id="a95fbe9c985391959881f1107a87320bc" name="a95fbe9c985391959881f1107a87320bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95fbe9c985391959881f1107a87320bc">&#9670;&#160;</a></span>cap_number</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool irlba::Options::cap_number = false</td>
+          <td class="memname">bool <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::cap_number = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -143,14 +152,16 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1fd00b6a91fb447f35c0c0cfa65dafd7" name="a1fd00b6a91fb447f35c0c0cfa65dafd7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fd00b6a91fb447f35c0c0cfa65dafd7">&#9670;&#160;</a></span>convergence_tolerance</h2>
+<a id="a019f546a47e990071416a11687c14d71" name="a019f546a47e990071416a11687c14d71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a019f546a47e990071416a11687c14d71">&#9670;&#160;</a></span>convergence_tolerance</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double irlba::Options::convergence_tolerance = 1e-5</td>
+          <td class="memname">double <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::convergence_tolerance = 1e-5</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -158,14 +169,16 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae4bd4e00dd4815e3aa66b0b23f8820b0" name="ae4bd4e00dd4815e3aa66b0b23f8820b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4bd4e00dd4815e3aa66b0b23f8820b0">&#9670;&#160;</a></span>exact_for_large_number</h2>
+<a id="a1924053077a1dac0332c139776faf6d3" name="a1924053077a1dac0332c139776faf6d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1924053077a1dac0332c139776faf6d3">&#9670;&#160;</a></span>exact_for_large_number</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool irlba::Options::exact_for_large_number = true</td>
+          <td class="memname">bool <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::exact_for_large_number = true</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -173,14 +186,16 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6139d421c988fe1818bfe338f9ce85ad" name="a6139d421c988fe1818bfe338f9ce85ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6139d421c988fe1818bfe338f9ce85ad">&#9670;&#160;</a></span>exact_for_small_matrix</h2>
+<a id="a85195d98803d717976c17b267708af4f" name="a85195d98803d717976c17b267708af4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85195d98803d717976c17b267708af4f">&#9670;&#160;</a></span>exact_for_small_matrix</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool irlba::Options::exact_for_small_matrix = true</td>
+          <td class="memname">bool <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::exact_for_small_matrix = true</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -188,14 +203,16 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab903b879a43cb167ddbab093b44c32e0" name="ab903b879a43cb167ddbab093b44c32e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab903b879a43cb167ddbab093b44c32e0">&#9670;&#160;</a></span>extra_work</h2>
+<a id="a179a747996c1a3d4fbf89215d97334d1" name="a179a747996c1a3d4fbf89215d97334d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a179a747996c1a3d4fbf89215d97334d1">&#9670;&#160;</a></span>extra_work</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">int irlba::Options::extra_work = 7</td>
+          <td class="memname">int <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::extra_work = 7</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -203,29 +220,33 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab7d48ae8392f7097519642f5b2ffe26c" name="ab7d48ae8392f7097519642f5b2ffe26c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7d48ae8392f7097519642f5b2ffe26c">&#9670;&#160;</a></span>initial</h2>
+<a id="a83537f6e35482091fd60fc61b7b53714" name="a83537f6e35482091fd60fc61b7b53714"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83537f6e35482091fd60fc61b7b53714">&#9670;&#160;</a></span>initial</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void* irlba::Options::initial = NULL</td>
+          <td class="memname">std::optional&lt;EigenVector_&gt; <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::initial</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Pointer to an <code>EigenVector_</code> (see <code><a class="el" href="namespaceirlba.html#a2a7a32f05a96168350184b5d7da5da24">compute()</a></code>) containing the initial values of the first right singular vector. This should have length equal to the number of columns of the input <code>matrix</code>. </p>
+<p>Pointer to the initial values of the first right singular vector. This should have length equal to the number of columns of the input <code>matrix</code> in <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code> or <code><a class="el" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca()</a></code>. </p>
 
 </div>
 </div>
-<a id="ad746aa1f21cf2b8b5eb50500ccf1d4bc" name="ad746aa1f21cf2b8b5eb50500ccf1d4bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad746aa1f21cf2b8b5eb50500ccf1d4bc">&#9670;&#160;</a></span>invariant_subspace_tolerance</h2>
+<a id="ab6e3d538d647a3c72b7ea655c7486a57" name="ab6e3d538d647a3c72b7ea655c7486a57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6e3d538d647a3c72b7ea655c7486a57">&#9670;&#160;</a></span>invariant_subspace_tolerance</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double irlba::Options::invariant_subspace_tolerance = -1</td>
+          <td class="memname">double <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::invariant_subspace_tolerance = -1</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -233,14 +254,16 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="afc7f9a04a63cc7033c2103cdebab3612" name="afc7f9a04a63cc7033c2103cdebab3612"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc7f9a04a63cc7033c2103cdebab3612">&#9670;&#160;</a></span>max_iterations</h2>
+<a id="a5f53aad8e0d9b6d1a1a9647413f638fa" name="a5f53aad8e0d9b6d1a1a9647413f638fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f53aad8e0d9b6d1a1a9647413f638fa">&#9670;&#160;</a></span>max_iterations</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">int irlba::Options::max_iterations = 1000</td>
+          <td class="memname">int <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::max_iterations = 1000</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -248,14 +271,16 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aeaaa742e5abf1ac4852d247ed8e3eac3" name="aeaaa742e5abf1ac4852d247ed8e3eac3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeaaa742e5abf1ac4852d247ed8e3eac3">&#9670;&#160;</a></span>seed</h2>
+<a id="afb7a12a2d949da2399a30b2aca10fa62" name="afb7a12a2d949da2399a30b2aca10fa62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb7a12a2d949da2399a30b2aca10fa62">&#9670;&#160;</a></span>seed</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::mt19937_64::result_type irlba::Options::seed = std::mt19937_64::default_seed</td>
+          <td class="memname">std::mt19937_64::result_type <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::seed = std::mt19937_64::default_seed</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -263,18 +288,20 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1e6e7fa2394b489f39e613c0f0fa3092" name="a1e6e7fa2394b489f39e613c0f0fa3092"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e6e7fa2394b489f39e613c0f0fa3092">&#9670;&#160;</a></span>singular_value_ratio_tolerance</h2>
+<a id="a9b8e78abc2333d8b7a9ee9a0635e3f02" name="a9b8e78abc2333d8b7a9ee9a0635e3f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b8e78abc2333d8b7a9ee9a0635e3f02">&#9670;&#160;</a></span>singular_value_ratio_tolerance</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double irlba::Options::singular_value_ratio_tolerance = -1</td>
+          <td class="memname">double <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::singular_value_ratio_tolerance = -1</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tolerance on the relative differences between singular values across iterations. Lower values improve the accuracy of the decomposition. If -1, the value in <code><a class="el" href="#a1fd00b6a91fb447f35c0c0cfa65dafd7">Options::convergence_tolerance</a></code> is used. </p>
+<p>Tolerance on the relative differences between singular values across iterations. Lower values improve the accuracy of the decomposition. If -1, the value in <code><a class="el" href="#a019f546a47e990071416a11687c14d71">Options::convergence_tolerance</a></code> is used. </p>
 
 </div>
 </div>
