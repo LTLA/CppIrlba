@@ -209,7 +209,7 @@ public:
      * @param divide Whether to divide by the supplied scaling factors.
      * If `false`, multiplication is performed instead.
      */
-    ScaledMatrix(const MatrixPointer_& matrix, const ScalePointer_& scale, bool column, bool divide) : 
+    ScaledMatrix(MatrixPointer_ matrix, ScalePointer_ scale, bool column, bool divide) : 
         my_matrix(std::move(matrix)),
         my_scale(std::move(scale)),
         my_column(column),

@@ -149,7 +149,7 @@ public:
      * @param center Pointer to a vector of length equal to the number of columns of `matrix`,
      * containing the value to subtract from each column.
      */
-    CenteredMatrix(const MatrixPointer_& matrix, const CenterPointer_& center) :
+    CenteredMatrix(MatrixPointer_ matrix, CenterPointer_ center) :
         my_matrix(std::move(matrix)),
         my_center(std::move(center))
     {}

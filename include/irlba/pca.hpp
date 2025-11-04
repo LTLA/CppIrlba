@@ -27,18 +27,21 @@ namespace irlba {
  * @tparam OutputEigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `OutputEigenMatrix_`.
  *
- * @param[in] matrix Input matrix.
+ * @param[in] matrix Input matrix where rows are observations and columns are features.
  * @param center Should the matrix be centered by column?
+ * This should be set to `true` if the matrix is not already centered.
  * @param scale Should the matrix be scaled to unit variance for each column?
- * @param number Number of singular triplets to obtain.
- * @param[out] outU Output matrix where columns contain the first left singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of rows in `mat`.
- * @param[out] outV Output matrix where columns contain the first right singular vectors.
- * Dimensions are set automatically on output;
- * the number of columns is set to `number` and the number of rows is equal to the number of columns in `mat`.
- * @param[out] outD Vector to store the first singular values.
- * The length is set to `number` on output.
+ * @param number Number of principal components to obtain.
+ * @param[out] scores Output matrix for the principal component scores.
+ * Each row corresponds to an observation while each column corresponds to a principal component.
+ * On output, the number of rows is equal to the number of columns in `matrix`,
+ * while the number of columns is equal to `number` (or less, if `Options::cap_number` is applied).
+ * @param[out] rotation Output matrix in which to store the rotation matrix.
+ * Each row corresponds to an feature while each column corresponds to a principal component.
+ * On output, the number of rows is equal to the number of rows in `matrix`,
+ * while the number of columns is equal to `number` (or less, if `Options::cap_number` is applied).
+ * @param[out] variances Vector to store the variance explained by each principal component.
+ * On output, the length of this vector is equal to `number` (or less, if `Options::cap_number` is applied).
  * @param options Further options.
  *
  * @return A pair where the first entry indicates whether the algorithm converged,
@@ -55,19 +58,11 @@ std::pair<bool, int> pca(
     bool center,
     bool scale,
     Eigen::Index number,
-    OutputEigenMatrix_& outU,
-    OutputEigenMatrix_& outV,
-    EigenVector_& outD,
+    OutputEigenMatrix_& scores,
+    OutputEigenMatrix_& rotation,
+    EigenVector_& variances,
     const Options& options
 ) {
-    // Reduce the size of the binary by forcing all compute() calls to use virtual dispatch,
-    // rather than realizing four new instances of the same function with different Matrix subclasses.
-    typedef Matrix<EigenVector_, OutputEigenMatrix_> Interface;
-    SimpleMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(&matrix)> > wrapped(&matrix);
-    if (!scale && !center) {
-        return compute<Interface>(wrapped, number, outU, outV, outD, options);
-    }
-
     const Eigen::Index nr = matrix.rows();
     const Eigen::Index nc = matrix.cols();
 
@@ -87,50 +82,110 @@ std::pair<bool, int> pca(
         scale0.resize(nc);
     }
 
-    for (Eigen::Index i = 0; i < nc; ++i) {
-        typename EigenVector_::Scalar mean = 0;
-        if (center) {
-            mean = matrix.col(i).sum() / nr;
-            center0[i] = mean;
-        }
-        if (scale) {
-            EigenVector_ current = matrix.col(i); // force it to be a Vector, even if it's a sparse matrix.
-            typename EigenVector_::Scalar var = 0;
-            for (auto x : current) {
-                var += (x - mean)*(x - mean);
+    if (center || scale) {
+        EigenVector_ buffer;
+        for (Eigen::Index i = 0; i < nc; ++i) {
+            buffer = matrix.col(i);
+
+            typename EigenVector_::Scalar mean = 0;
+            if (center) {
+                mean = buffer.sum() / nr;
+                center0[i] = mean;
             }
 
-            if (var) {
-                scale0[i] = std::sqrt(var/(nr - 1));
-            } else {
-                scale0[i] = 1;
+            if (scale) {
+                typename EigenVector_::Scalar var = 0;
+                for (const auto x : buffer) {
+                    var += (x - mean) * (x - mean);
+                }
+
+                if (var) {
+                    scale0[i] = std::sqrt(var/(nr - 1));
+                } else {
+                    scale0[i] = 1;
+                }
             }
         }
     }
+
+    // Reduce the size of the binary by forcing all compute() calls to use virtual dispatch,
+    // rather than realizing four new instances of the same function with different Matrix subclasses.
+    std::unique_ptr<Matrix<EigenVector_, OutputEigenMatrix_> > ptr;
+    ptr.reset(new SimpleMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(&matrix)> >(&matrix));
 
     if (center) {
-        CenteredMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(&wrapped)>, I<decltype(&center0)> > centered(&wrapped, &center0);
-        if (scale) {
-            ScaledMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(&centered)>, I<decltype(&scale0)> > centered_scaled(&centered, &scale0, true, true);
-            return compute<Interface>(centered_scaled, number, outU, outV, outD, options);
-        } else {
-            return compute<Interface>(centered, number, outU, outV, outD, options);
-        }
-    } else {
-        ScaledMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(&wrapped)>, I<decltype(&scale0)> > scaled(&wrapped, &scale0, true, true);
-        return compute<Interface>(scaled, number, outU, outV, outD, options);
+        std::unique_ptr<Matrix<EigenVector_, OutputEigenMatrix_> > alt;
+        alt.reset(new CenteredMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(ptr)>, I<decltype(&center0)> >(std::move(ptr), &center0));
+        ptr.swap(alt);
     }
+
+    if (scale) {
+        std::unique_ptr<Matrix<EigenVector_, OutputEigenMatrix_> > alt;
+        alt.reset(new ScaledMatrix<EigenVector_, OutputEigenMatrix_, I<decltype(ptr)>, I<decltype(&scale0)> >(std::move(ptr), &scale0, true, true));
+        ptr.swap(alt);
+    }
+
+    const auto stats = compute(*ptr, number, scores, rotation, variances, options);
+    if (nc > 1) {
+        const auto denom = nc - 1;
+        for (auto& v : variances) {
+            v = v * v / denom;
+        }
+    }
+
+    return stats;
 }
 
+/**
+ * @brief Results of the IRLBA-based PCA by `pca()`.
+ * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` class.
+ * @tparam EigenVector_ A floating-point `Eigen::Vector` class, typically of the same scalar type as `EigenMatrix_`.
+ */
+template<class EigenMatrix_, class EigenVector_>
+struct PcaResults {
+    /**
+     * Matrix of principal component scores. 
+     * Each row corresponds to an observation while each column corresponds to a principal component.
+     * The number of rows is equal to the number of columns in `matrix`,
+     * while the number of columns is equal to `number` (or less, if `Options::cap_number` is applied).
+     */
+    EigenMatrix_ scores;
+
+    /**
+     * Rotation matrix.
+     * Each row corresponds to an feature while each column corresponds to a principal component.
+     * The number of rows is equal to the number of rows in `matrix`,
+     * while the number of columns is equal to `number` (or less, if `Options::cap_number` is applied).
+     */
+    EigenMatrix_ rotation;
+
+    /**
+     * Variance explained by each principal component.
+     * The length of this vector is equal to `number` (or less, if `Options::cap_number` is applied).
+     */
+    EigenVector_ variances;
+
+    /**
+     * The number of restart iterations performed.
+     */
+    int iterations;
+
+    /**
+     * Whether the algorithm converged.
+     */
+    bool converged;
+};
+
 /** 
- * Convenient overload of `pca()` that allocates memory for the output matrices of the SVD.
+ * Convenient overload of `pca()` that allocates memory for the output matrices of the PCA.
  *
  * @tparam InputEigenMatrix_ An **Eigen** matrix class containing the input data.
  * @tparam OutputEigenMatrix_ A dense floating-point `Eigen::Matrix` class for the output.
  * @tparam EigenVector_ A floating-point `Eigen::Vector` class for the output, typically of the same scalar type as `EigenMatrix_`.
  *
- * @param[in] matrix Input matrix.
+ * @param[in] matrix Input matrix where rows are observations and columns are features.
  * @param center Should the matrix be centered by column?
+ * This should be set to `true` if the matrix is not already centered.
  * @param scale Should the matrix be scaled to unit variance for each column?
  * @param number Number of singular triplets to obtain.
  * @param options Further options.
@@ -138,9 +193,9 @@ std::pair<bool, int> pca(
  * @return A `Results` object containing the singular vectors and values, as well as some statistics on convergence.
  */
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
-Results<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options& options) {
-    Results<OutputEigenMatrix_, EigenVector_> output;
-    const auto stats = pca(matrix, center, scale, number, output.U, output.V, output.D, options);
+PcaResults<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options& options) {
+    PcaResults<OutputEigenMatrix_, EigenVector_> output;
+    const auto stats = pca(matrix, center, scale, number, output.scores, output.rotation, output.variances, options);
     output.converged = stats.first;
     output.iterations = stats.second;
     return output;
