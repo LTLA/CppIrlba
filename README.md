@@ -30,7 +30,7 @@ Eigen::MatrixXd mat;
 auto result = irlba::compute_simple(mat, 5, opt);
 result.U; // left singular vectors
 result.V; // right singular vectors
-result.S; // singular values
+result.D; // singular values
 ```
 
 To perform a PCA:
@@ -44,6 +44,38 @@ pcres.variances;
 ```
 
 See the [reference documentation](https://ltla.github.io/CppIrlba) for more details.
+
+## Customizing matrices
+
+The `irlba::Matrix` interface allows us to use different matrix representations for `irlba::compute()`.
+For example, we can defer column-centering to efficiently perform PCA on a sparse matrix:
+
+```cpp
+// Some sparse matrix.
+Eigen::SparseMatrix<double> spmat;
+
+// Wrap the Eigen matrix in a wrapper for compatibility with irlba::Matrix.
+irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&spmat)> wrapped(&spmat);
+
+// Define column centers.
+Eigen::VectorXd center;
+
+// Create a matrix where the column-centering is performed during multiplication.
+// This avoids instantiating the actual centered matrix, which would lose sparsity.
+irlba::CenteredMatrix<Eigen::VectorXd, Eigen::MatrixXd> centered(&wrapped, &center);
+
+auto centered_res = irlba::compute(centered, 5, opt);
+```
+
+We provide several subclasses that implement the `irlba::Matrix` interface:
+
+- `SimpleMatrix`, which wraps existing **Eigen** matrices.
+- `CenteredMatrix`, for deferred centering of columns.
+- `ScaledMatrix`, for deferred scaling of rows or columns.
+- `ParallelSparseMatrix`, for parallelized multiplication of a sparse matrx.
+
+Developers can easily create their own `Matrix` subclass by implementing methods for matrix-vector multiplication. 
+For example, the [**scran_pca**](https://github.com/libscran/scran_pca) library performs PCA on a matrix of residuals without ever explicitly creating that matrix.
 
 ## Building projects
 
@@ -90,17 +122,12 @@ cmake --build . --target install
 
 By default, this will use `FetchContent` to fetch all external dependencies.
 If you want to install them manually, use `-DPOWERIT_FETCH_EXTERN=OFF`.
-See the commit hashes in [`extern/CMakeLists.txt`](extern/CMakeLists.txt) to find compatible versions of each dependency.
+See [`extern/CMakeLists.txt`](extern/CMakeLists.txt) to find compatible versions of each dependency.
 
 ### Manual
 
 If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
-Note that this requires manual management of a few dependencies:
-
-- [**Eigen**](https://gitlab.com/libeigen/eigen), for matrix manipulations.
-- [**aarand**](https://github.com/LTLA/aarand), for system-agnostic random distribution functions.
-
-See [`extern/CMakeLists.txt`](extern/CMakeLists.txt) for more details.
+Note that this requires the dependencies listed in [`extern/CMakeLists.txt`](extern/CMakeLists.txt). 
 
 ## References
 
