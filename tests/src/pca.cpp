@@ -26,11 +26,12 @@ protected:
 
 static std::vector<Eigen::MatrixXd> spawn_center_scale(const Eigen::MatrixXd& A) {
     Eigen::MatrixXd centered = A, scaled = A, both = A;
+    const auto nrow = A.rows(), ncol = A.cols();
 
-    for (Eigen::Index i = 0; i < A.cols(); ++i) {
+    for (Eigen::Index i = 0; i < ncol; ++i) {
         double mean = A.col(i).sum() / A.rows();
         double var1 = 0, var2 = 0;
-        for (Eigen::Index j = 0; j < A.rows(); ++j) {
+        for (Eigen::Index j = 0; j < nrow; ++j) {
             double x = A(j, i);
             centered(j, i) -= mean;
             both(j, i) -= mean;
@@ -38,17 +39,26 @@ static std::vector<Eigen::MatrixXd> spawn_center_scale(const Eigen::MatrixXd& A)
             var2 += x * x;
         }
 
-        both.col(i) /= std::sqrt(var1/(A.rows() - 1));
-        scaled.col(i) /= std::sqrt(var2/(A.rows() - 1));
+        both.col(i) /= std::sqrt(var1/(nrow - 1));
+        scaled.col(i) /= std::sqrt(var2/(nrow - 1));
     }
 
     return std::vector<Eigen::MatrixXd>{ centered, scaled, both };
 }
 
-static Eigen::VectorXd d2var(const Eigen::VectorXd& D, std::size_t nc) {
+static Eigen::MatrixXd u2pcs(const Eigen::MatrixXd& U, const Eigen::VectorXd& D) {
+    Eigen::MatrixXd output = U;
+    Eigen::Index rank = output.cols();
+    for (Eigen::Index r = 0; r < rank; ++r) {
+        output.col(r) *= D.coeff(r);
+    }
+    return output;
+}
+
+static Eigen::VectorXd d2var(const Eigen::VectorXd& D, std::size_t nr) {
     Eigen::VectorXd output = D;
     for (auto& out : output) {
-        out = out * out / (nc - 1);
+        out = out * out / (nr - 1);
     }
     return output;
 }
@@ -66,18 +76,25 @@ TEST_P(PcaTest, Basic) {
     irlba::Options opt;
     auto ref = irlba::pca(A, true, true, rank, opt);
 
+    EXPECT_EQ(ref.scores.rows(), A.rows());
+    EXPECT_EQ(ref.scores.cols(), rank);
+    EXPECT_EQ(ref.rotation.rows(), A.cols());
+    EXPECT_EQ(ref.rotation.cols(), rank);
+    EXPECT_EQ(ref.variances.rows(), rank);
+
     {
         const auto& res = ref;
 
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&both)> wrapper(&both);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors<true>(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors<true>(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
 
         for (std::size_t i = 0; i < rank; ++i) {
-            EXPECT_TRUE(std::abs(res.scores.col(i).sum()) < 1e-8);
+            EXPECT_LT(std::abs(res.scores.col(i).sum()), 1e-8);
+            EXPECT_TRUE(same_same(res.scores.col(i).squaredNorm() / (nr - 1), res.variances[i], 1e-8));
         }    
     }
 
@@ -88,12 +105,13 @@ TEST_P(PcaTest, Basic) {
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&centered)> wrapper(&centered);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors<true>(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors<true>(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
 
         for (std::size_t i = 0; i < rank; ++i) {
-            EXPECT_TRUE(std::abs(res.scores.col(i).sum()) < 1e-8);
+            EXPECT_LT(std::abs(res.scores.col(i).sum()), 1e-8);
+            EXPECT_TRUE(same_same(res.scores.col(i).squaredNorm() / (nr - 1), res.variances[i], 1e-8));
         }    
     }
 
@@ -104,8 +122,8 @@ TEST_P(PcaTest, Basic) {
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&scaled)> wrapper(&scaled);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
     }
 
@@ -116,8 +134,8 @@ TEST_P(PcaTest, Basic) {
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapper(&A);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
     }
 }
@@ -133,8 +151,8 @@ INSTANTIATE_TEST_SUITE_P(
 );
 
 TEST(Pca, SmallExactCenterScale) {
-    int nc = 3;
-    Eigen::MatrixXd small = create_random_matrix(10, nc);
+    int nr = 10;
+    Eigen::MatrixXd small = create_random_matrix(nr, 3);
 
     auto spawned = spawn_center_scale(small);
     const auto& centered = spawned[0];
@@ -146,17 +164,24 @@ TEST(Pca, SmallExactCenterScale) {
     const int rank = 2;
     auto ref = irlba::pca(small, true, true, rank, opt);
 
+    EXPECT_EQ(ref.scores.rows(), small.rows());
+    EXPECT_EQ(ref.scores.cols(), rank);
+    EXPECT_EQ(ref.rotation.rows(), small.cols());
+    EXPECT_EQ(ref.rotation.cols(), rank);
+    EXPECT_EQ(ref.variances.rows(), rank);
+
     {
         const auto& res = ref;
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&both)> wrapper(&both);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
 
         for (int i = 0; i < rank; ++i) {
-            EXPECT_TRUE(std::abs(res.scores.col(i).sum()) < 1e-8);
+            EXPECT_LT(std::abs(res.scores.col(i).sum()), 1e-8);
+            EXPECT_TRUE(same_same(res.scores.col(i).squaredNorm() / (nr - 1), res.variances[i], 1e-8));
         }    
     }
 
@@ -167,12 +192,13 @@ TEST(Pca, SmallExactCenterScale) {
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&centered)> wrapper(&centered);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
 
         for (int i = 0; i < rank; ++i) {
-            EXPECT_TRUE(std::abs(res.scores.col(i).sum()) < 1e-8);
+            EXPECT_LT(std::abs(res.scores.col(i).sum()), 1e-8);
+            EXPECT_TRUE(same_same(res.scores.col(i).squaredNorm() / (nr - 1), res.variances[i], 1e-8));
         }    
     }
 
@@ -183,8 +209,8 @@ TEST(Pca, SmallExactCenterScale) {
         irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&scaled)> wrapper(&scaled);
         auto res2 = irlba::compute(wrapper, rank, opt);
 
-        expect_equal_vectors(res.variances, d2var(res2.D, nc));
-        expect_equal_column_vectors(res.scores, res2.U);
+        expect_equal_vectors(res.variances, d2var(res2.D, nr));
+        expect_equal_column_vectors(res.scores, u2pcs(res2.U, res2.D));
         expect_equal_column_vectors(res.rotation, res2.V);
     }
 }

@@ -126,8 +126,10 @@ std::pair<bool, int> pca(
     }
 
     const auto stats = compute(*ptr, number, scores, rotation, variances, options);
+
+    scores.array().rowwise() *= variances.adjoint().array();
     if (nc > 1) {
-        const auto denom = nc - 1;
+        const auto denom = nr - 1;
         for (auto& v : variances) {
             v = v * v / denom;
         }
