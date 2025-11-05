@@ -184,46 +184,48 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keyword">const</span> <span class="keyword">auto</span> stats = <a class="code hl_function" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute</a>(*ptr, number, scores, rotation, variances, options);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> (nc &gt; 1) {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keyword">const</span> <span class="keyword">auto</span> denom = nc - 1;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; v : variances) {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            v = v * v / denom;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        }</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    }</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">return</span> stats;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>}</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    scores.array().rowwise() *= variances.adjoint().array();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">if</span> (nc &gt; 1) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keyword">const</span> <span class="keyword">auto</span> denom = nr - 1;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; v : variances) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            v = v * v / denom;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">return</span> stats;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>}</div>
 </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
-<div class="foldopen" id="foldopen00145" data-start="{" data-end="};">
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html">  145</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structirlba_1_1PcaResults.html">PcaResults</a> {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">  152</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">scores</a>;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">  160</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">rotation</a>;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">  166</a></span>    EigenVector_ <a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">variances</a>;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">  171</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">iterations</a>;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">  176</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">converged</a>;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>};</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
+<div class="foldopen" id="foldopen00147" data-start="{" data-end="};">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html">  147</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structirlba_1_1PcaResults.html">PcaResults</a> {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">  154</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">scores</a>;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">  162</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">rotation</a>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">  168</a></span>    EigenVector_ <a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">variances</a>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">  173</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">iterations</a>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">  178</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">converged</a>;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>};</div>
 </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> OutputEigenMatrix_ = Eigen::MatrixXd, <span class="keyword">class</span> EigenVector_ = Eigen::VectorXd, <span class="keyword">class</span> InputEigenMatrix_&gt;</div>
-<div class="foldopen" id="foldopen00196" data-start="{" data-end="}">
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="namespaceirlba.html#a36261b9ee1f9f74d841685e568f7c1ce">  196</a></span><a class="code hl_struct" href="structirlba_1_1PcaResults.html">PcaResults&lt;OutputEigenMatrix_, EigenVector_&gt;</a> <a class="code hl_function" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca</a>(<span class="keyword">const</span> InputEigenMatrix_&amp; matrix, <span class="keywordtype">bool</span> center, <span class="keywordtype">bool</span> scale, Eigen::Index number, <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options) {</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <a class="code hl_struct" href="structirlba_1_1PcaResults.html">PcaResults&lt;OutputEigenMatrix_, EigenVector_&gt;</a> output;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keyword">const</span> <span class="keyword">auto</span> stats = <a class="code hl_function" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca</a>(matrix, center, scale, number, output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">scores</a>, output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">rotation</a>, output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">variances</a>, options);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">converged</a> = stats.first;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">iterations</a> = stats.second;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordflow">return</span> output;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>}</div>
-</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> OutputEigenMatrix_ = Eigen::MatrixXd, <span class="keyword">class</span> EigenVector_ = Eigen::VectorXd, <span class="keyword">class</span> InputEigenMatrix_&gt;</div>
+<div class="foldopen" id="foldopen00198" data-start="{" data-end="}">
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno"><a class="line" href="namespaceirlba.html#a36261b9ee1f9f74d841685e568f7c1ce">  198</a></span><a class="code hl_struct" href="structirlba_1_1PcaResults.html">PcaResults&lt;OutputEigenMatrix_, EigenVector_&gt;</a> <a class="code hl_function" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca</a>(<span class="keyword">const</span> InputEigenMatrix_&amp; matrix, <span class="keywordtype">bool</span> center, <span class="keywordtype">bool</span> scale, Eigen::Index number, <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options) {</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <a class="code hl_struct" href="structirlba_1_1PcaResults.html">PcaResults&lt;OutputEigenMatrix_, EigenVector_&gt;</a> output;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keyword">const</span> <span class="keyword">auto</span> stats = <a class="code hl_function" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca</a>(matrix, center, scale, number, output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">scores</a>, output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">rotation</a>, output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">variances</a>, options);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">converged</a> = stats.first;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    output.<a class="code hl_variable" href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">iterations</a> = stats.second;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keywordflow">return</span> output;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>}</div>
+</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>}</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="acentered_8hpp_html"><div class="ttname"><a href="centered_8hpp.html">centered.hpp</a></div><div class="ttdoc">Deferred centering for a matrix.</div></div>
 <div class="ttc" id="aclassirlba_1_1CenteredMatrix_html"><div class="ttname"><a href="classirlba_1_1CenteredMatrix.html">irlba::CenteredMatrix</a></div><div class="ttdoc">Deferred centering of a matrix.</div><div class="ttdef"><b>Definition</b> centered.hpp:145</div></div>
 <div class="ttc" id="aclassirlba_1_1ScaledMatrix_html"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html">irlba::ScaledMatrix</a></div><div class="ttdoc">Deferred scaling of a matrix.</div><div class="ttdef"><b>Definition</b> scaled.hpp:201</div></div>
@@ -235,12 +237,12 @@ $(function(){ initResizable(false); });
 <div class="ttc" id="ascaled_8hpp_html"><div class="ttname"><a href="scaled_8hpp.html">scaled.hpp</a></div><div class="ttdoc">Deferred scaling for a matrix.</div></div>
 <div class="ttc" id="asimple_8hpp_html"><div class="ttname"><a href="simple_8hpp.html">simple.hpp</a></div><div class="ttdoc">Simple wrapper around an Eigen matrix.</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html"><div class="ttname"><a href="structirlba_1_1Options.html">irlba::Options</a></div><div class="ttdoc">Options for running IRLBA in compute() and pca().</div><div class="ttdef"><b>Definition</b> Options.hpp:20</div></div>
-<div class="ttc" id="astructirlba_1_1PcaResults_html"><div class="ttname"><a href="structirlba_1_1PcaResults.html">irlba::PcaResults</a></div><div class="ttdoc">Results of the IRLBA-based PCA by pca().</div><div class="ttdef"><b>Definition</b> pca.hpp:145</div></div>
-<div class="ttc" id="astructirlba_1_1PcaResults_html_a7d882ecc1895491df377de953477f662"><div class="ttname"><a href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">irlba::PcaResults::scores</a></div><div class="ttdeci">EigenMatrix_ scores</div><div class="ttdef"><b>Definition</b> pca.hpp:152</div></div>
-<div class="ttc" id="astructirlba_1_1PcaResults_html_ab175b5cb7799e7ca44182cd447699071"><div class="ttname"><a href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">irlba::PcaResults::variances</a></div><div class="ttdeci">EigenVector_ variances</div><div class="ttdef"><b>Definition</b> pca.hpp:166</div></div>
-<div class="ttc" id="astructirlba_1_1PcaResults_html_ab97a992b7080c77cee1b4e349edf2521"><div class="ttname"><a href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">irlba::PcaResults::rotation</a></div><div class="ttdeci">EigenMatrix_ rotation</div><div class="ttdef"><b>Definition</b> pca.hpp:160</div></div>
-<div class="ttc" id="astructirlba_1_1PcaResults_html_abdc9a3e29efba76992af948627bbbe89"><div class="ttname"><a href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">irlba::PcaResults::iterations</a></div><div class="ttdeci">int iterations</div><div class="ttdef"><b>Definition</b> pca.hpp:171</div></div>
-<div class="ttc" id="astructirlba_1_1PcaResults_html_abe63e04a2765cce76a32b47d39561a1d"><div class="ttname"><a href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">irlba::PcaResults::converged</a></div><div class="ttdeci">bool converged</div><div class="ttdef"><b>Definition</b> pca.hpp:176</div></div>
+<div class="ttc" id="astructirlba_1_1PcaResults_html"><div class="ttname"><a href="structirlba_1_1PcaResults.html">irlba::PcaResults</a></div><div class="ttdoc">Results of the IRLBA-based PCA by pca().</div><div class="ttdef"><b>Definition</b> pca.hpp:147</div></div>
+<div class="ttc" id="astructirlba_1_1PcaResults_html_a7d882ecc1895491df377de953477f662"><div class="ttname"><a href="structirlba_1_1PcaResults.html#a7d882ecc1895491df377de953477f662">irlba::PcaResults::scores</a></div><div class="ttdeci">EigenMatrix_ scores</div><div class="ttdef"><b>Definition</b> pca.hpp:154</div></div>
+<div class="ttc" id="astructirlba_1_1PcaResults_html_ab175b5cb7799e7ca44182cd447699071"><div class="ttname"><a href="structirlba_1_1PcaResults.html#ab175b5cb7799e7ca44182cd447699071">irlba::PcaResults::variances</a></div><div class="ttdeci">EigenVector_ variances</div><div class="ttdef"><b>Definition</b> pca.hpp:168</div></div>
+<div class="ttc" id="astructirlba_1_1PcaResults_html_ab97a992b7080c77cee1b4e349edf2521"><div class="ttname"><a href="structirlba_1_1PcaResults.html#ab97a992b7080c77cee1b4e349edf2521">irlba::PcaResults::rotation</a></div><div class="ttdeci">EigenMatrix_ rotation</div><div class="ttdef"><b>Definition</b> pca.hpp:162</div></div>
+<div class="ttc" id="astructirlba_1_1PcaResults_html_abdc9a3e29efba76992af948627bbbe89"><div class="ttname"><a href="structirlba_1_1PcaResults.html#abdc9a3e29efba76992af948627bbbe89">irlba::PcaResults::iterations</a></div><div class="ttdeci">int iterations</div><div class="ttdef"><b>Definition</b> pca.hpp:173</div></div>
+<div class="ttc" id="astructirlba_1_1PcaResults_html_abe63e04a2765cce76a32b47d39561a1d"><div class="ttname"><a href="structirlba_1_1PcaResults.html#abe63e04a2765cce76a32b47d39561a1d">irlba::PcaResults::converged</a></div><div class="ttdeci">bool converged</div><div class="ttdef"><b>Definition</b> pca.hpp:178</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -106,20 +106,21 @@ $(function(){ initResizable(false); });
 <div class="line">Eigen::MatrixXd mat;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Get the first 5 singular triplets:</span></div>
-<div class="line"><span class="keyword">auto</span> result = <a class="code hl_function" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute</a>(mat, 5, opt);</div>
+<div class="line"><span class="keyword">auto</span> result = <a class="code hl_function" href="namespaceirlba.html#ac57532aaea92612012d712610b3d1a08">irlba::compute_simple</a>(mat, 5, opt);</div>
 <div class="line">result.U; <span class="comment">// left singular vectors</span></div>
 <div class="line">result.V; <span class="comment">// right singular vectors</span></div>
 <div class="line">result.S; <span class="comment">// singular values</span></div>
 <div class="ttc" id="airlba_8hpp_html"><div class="ttname"><a href="irlba_8hpp.html">irlba.hpp</a></div><div class="ttdoc">Implements IRLBA.</div></div>
-<div class="ttc" id="anamespaceirlba_html_abff001679bf73625640310429e8d1aa6"><div class="ttname"><a href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; compute(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:142</div></div>
+<div class="ttc" id="anamespaceirlba_html_ac57532aaea92612012d712610b3d1a08"><div class="ttname"><a href="namespaceirlba.html#ac57532aaea92612012d712610b3d1a08">irlba::compute_simple</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; compute_simple(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:334</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html"><div class="ttname"><a href="structirlba_1_1Options.html">irlba::Options</a></div><div class="ttdoc">Options for running IRLBA in compute() and pca().</div><div class="ttdef"><b>Definition</b> Options.hpp:20</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html_a179a747996c1a3d4fbf89215d97334d1"><div class="ttname"><a href="structirlba_1_1Options.html#a179a747996c1a3d4fbf89215d97334d1">irlba::Options::extra_work</a></div><div class="ttdeci">int extra_work</div><div class="ttdef"><b>Definition</b> Options.hpp:47</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html_a5f53aad8e0d9b6d1a1a9647413f638fa"><div class="ttname"><a href="structirlba_1_1Options.html#a5f53aad8e0d9b6d1a1a9647413f638fa">irlba::Options::max_iterations</a></div><div class="ttdeci">int max_iterations</div><div class="ttdef"><b>Definition</b> Options.hpp:53</div></div>
 </div><!-- fragment --><p>To perform a PCA:</p>
 <div class="fragment"><div class="line"><span class="comment">// Get the first 5 principal components without scaling:</span></div>
-<div class="line"><span class="keyword">auto</span> res = <a class="code hl_function" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">irlba::pca</a>(mat, <span class="keyword">true</span>, <span class="keyword">false</span>, 5, opt);</div>
-<div class="line">Eigen::MatrixXd components = res.U;</div>
-<div class="line">components *= res.S.asDiagonal();</div>
+<div class="line"><span class="keyword">auto</span> pcres = <a class="code hl_function" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">irlba::pca</a>(mat, <span class="keyword">true</span>, <span class="keyword">false</span>, 5, opt);</div>
+<div class="line">pcres.components;</div>
+<div class="line">pcres.rotation;</div>
+<div class="line">pcres.variances;</div>
 <div class="ttc" id="anamespaceirlba_html_a641f100ff5163f650781c9db49958a4b"><div class="ttname"><a href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">irlba::pca</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; pca(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> pca.hpp:56</div></div>
 </div><!-- fragment --><p>See the <a href="https://ltla.github.io/CppIrlba">reference documentation</a> for more details.</p>
 <h1>Building projects</h1>
