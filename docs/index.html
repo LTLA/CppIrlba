@@ -175,14 +175,9 @@ $(function(){ initResizable(false); });
 <div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake .. -DIRLBA_TESTS=OFF</div>
 <div class="line">cmake --build . --target install</div>
-</div><!-- fragment --><p>By default, this will use <code>FetchContent</code> to fetch all external dependencies. If you want to install them manually, use <code>-DPOWERIT_FETCH_EXTERN=OFF</code>. See the commit hashes in <a href="extern/CMakeLists.txt"><code>extern/CMakeLists.txt</code></a> to find compatible versions of each dependency.</p>
+</div><!-- fragment --><p>By default, this will use <code>FetchContent</code> to fetch all external dependencies. If you want to install them manually, use <code>-DPOWERIT_FETCH_EXTERN=OFF</code>. See <a href="extern/CMakeLists.txt"><code>extern/CMakeLists.txt</code></a> to find compatible versions of each dependency.</p>
 <h2>Manual</h2>
-<p>If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's <code>-I</code>. Note that this requires manual management of a few dependencies:</p>
-<ul>
-<li><a href="https://gitlab.com/libeigen/eigen"><b>Eigen</b></a>, for matrix manipulations.</li>
-<li><a href="https://github.com/LTLA/aarand"><b>aarand</b></a>, for system-agnostic random distribution functions.</li>
-</ul>
-<p>See <a href="extern/CMakeLists.txt"><code>extern/CMakeLists.txt</code></a> for more details.</p>
+<p>If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's <code>-I</code>. Note that this requires the dependencies listed in <a href="extern/CMakeLists.txt"><code>extern/CMakeLists.txt</code></a>.</p>
 <h1>References</h1>
 <p>Baglama, James and Reichel, Lothar (2005). Augmented implicitly restarted Lanczos bidiagonalization methods. <em>SIAM J. Sci. Comput.</em>, 27(1), 19-42. </p>
 </div></div><!-- PageDoc -->
