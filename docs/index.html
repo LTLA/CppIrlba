@@ -123,6 +123,33 @@ $(function(){ initResizable(false); });
 <div class="line">pcres.variances;</div>
 <div class="ttc" id="anamespaceirlba_html_a641f100ff5163f650781c9db49958a4b"><div class="ttname"><a href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">irlba::pca</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; pca(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> pca.hpp:56</div></div>
 </div><!-- fragment --><p>See the <a href="https://ltla.github.io/CppIrlba">reference documentation</a> for more details.</p>
+<h1>Customizing matrices</h1>
+<p>The <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">irlba::Matrix</a></code> interface allows us to use different matrix representations for <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute()</a></code>. For example, we can defer column-centering to efficiently perform PCA on a sparse matrix:</p>
+<div class="fragment"><div class="line"><span class="comment">// Some sparse matrix.</span></div>
+<div class="line">Eigen::SparseMatrix&lt;double&gt; spmat;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Wrap the Eigen matrix in a wrapper for compatibility with irlba::Matrix.</span></div>
+<div class="line"><a class="code hl_class" href="classirlba_1_1SimpleMatrix.html">irlba::SimpleMatrix</a>&lt;Eigen::VectorXd, Eigen::MatrixXd, <span class="keyword">decltype</span>(&amp;spmat)&gt; wrapped(&amp;spmat);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Define column centers.</span></div>
+<div class="line">Eigen::VectorXd center;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Create a matrix where the column-centering is performed during multiplication.</span></div>
+<div class="line"><span class="comment">// This avoids instantiating the actual centered matrix, which would lose sparsity.</span></div>
+<div class="line"><a class="code hl_class" href="classirlba_1_1CenteredMatrix.html">irlba::CenteredMatrix&lt;Eigen::VectorXd, Eigen::MatrixXd&gt;</a> centered(&amp;wrapped, &amp;center);</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> centered_res = <a class="code hl_function" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute</a>(centered, 5, opt);</div>
+<div class="ttc" id="aclassirlba_1_1CenteredMatrix_html"><div class="ttname"><a href="classirlba_1_1CenteredMatrix.html">irlba::CenteredMatrix</a></div><div class="ttdoc">Deferred centering of a matrix.</div><div class="ttdef"><b>Definition</b> centered.hpp:145</div></div>
+<div class="ttc" id="aclassirlba_1_1SimpleMatrix_html"><div class="ttname"><a href="classirlba_1_1SimpleMatrix.html">irlba::SimpleMatrix</a></div><div class="ttdoc">A Matrix-compatible wrapper around a &quot;simple&quot; matrix.</div><div class="ttdef"><b>Definition</b> simple.hpp:125</div></div>
+<div class="ttc" id="anamespaceirlba_html_abff001679bf73625640310429e8d1aa6"><div class="ttname"><a href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; compute(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:142</div></div>
+</div><!-- fragment --><p>We provide several subclasses that implement the <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">irlba::Matrix</a></code> interface:</p>
+<ul>
+<li><code>SimpleMatrix</code>, which wraps existing <b>Eigen</b> matrices.</li>
+<li><code>CenteredMatrix</code>, for deferred centering of columns.</li>
+<li><code>ScaledMatrix</code>, for deferred scaling of rows or columns.</li>
+<li><code>ParallelSparseMatrix</code>, for parallelized multiplication of a sparse matrx.</li>
+</ul>
+<p>Developers can easily create their own <code>Matrix</code> subclass by implementing methods for matrix-vector multiplication. For example, the <a href="https://github.com/libscran/scran_pca"><b>scran_pca</b></a> library performs PCA on a matrix of residuals without ever explicitly creating that matrix.</p>
 <h1>Building projects</h1>
 <h2>CMake with <code>FetchContent</code></h2>
 <p>If you're using CMake, you just need to add something like this to your <code>CMakeLists.txt</code>:</p>
