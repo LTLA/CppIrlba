@@ -27,7 +27,7 @@ opt.max_iterations = 50;
 Eigen::MatrixXd mat;
 
 // Get the first 5 singular triplets:
-auto result = irlba::compute(mat, 5, opt);
+auto result = irlba::compute_simple(mat, 5, opt);
 result.U; // left singular vectors
 result.V; // right singular vectors
 result.S; // singular values
@@ -37,9 +37,10 @@ To perform a PCA:
 
 ```cpp
 // Get the first 5 principal components without scaling:
-auto res = irlba::pca(mat, true, false, 5, opt);
-Eigen::MatrixXd components = res.U;
-components *= res.S.asDiagonal();
+auto pcres = irlba::pca(mat, true, false, 5, opt);
+pcres.components;
+pcres.rotation;
+pcres.variances;
 ```
 
 See the [reference documentation](https://ltla.github.io/CppIrlba) for more details.
