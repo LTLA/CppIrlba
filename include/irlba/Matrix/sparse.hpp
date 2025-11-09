@@ -104,7 +104,7 @@ public:
                     auto s = primary_start;
                     for (int thread = 0; thread < my_num_threads; ++thread) {
                         const auto limit = my_secondary_boundaries[thread + 1];
-                        while (s < primary_end && my_indices[s] < limit) {
+                        while (s < primary_end && static_cast<Eigen::Index>(my_indices[s]) < limit) { // cast is safe as my_indices[s] < my_secondary_dim.
                             ++s; 
                         }
                         my_secondary_nonzero_boundaries[thread + 1][c] = s;
@@ -124,7 +124,12 @@ private:
     bool my_column_major;
 
     std::vector<Eigen::Index> my_primary_boundaries;
+
+    // In theory, it is possible that the IndexArray type (i.e., IndexType) is not large enough to hold my_secondary_dim.
+    // So while it is safe to cast from the IndexType to Eigen::Index, it is not safe to go the other way;
+    // hence we use an Eigen::Index to hold the secondary boundaries as the last entry is equal to my_secondary_dim.
     std::vector<Eigen::Index> my_secondary_boundaries;
+
     std::vector<std::vector<PointerType> > my_secondary_nonzero_boundaries;
 
 public:
